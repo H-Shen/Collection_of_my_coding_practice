@@ -2,7 +2,7 @@
 A collection of my coding practice
 
 * The environment of coding:
-  * Python 2.7.16
+   	* Python 2.7.16
 	* Python 3.6.7
 	* javac 1.8.0_191
 	* java version "1.8.0_191"
