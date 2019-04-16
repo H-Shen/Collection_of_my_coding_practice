@@ -20,7 +20,7 @@ struct Stats0 {
 };
 
 const int MAXN = 20;
-const char NON_EXIST[] = "NA";
+const char NOT_EXIST[] = "NA";
 char s[MAXN];
 
 vector<Student> LevelA;
@@ -76,7 +76,7 @@ void command1(char level) {
             break;
     }
     if (!haveAns) {
-        printf("%s\n", NON_EXIST);
+        printf("%s\n", NOT_EXIST);
     }
 }
 
@@ -86,7 +86,7 @@ void command2(const string &lectureNumber) {
                lectureNumberStats[lectureNumber].studentNumber,
                lectureNumberStats[lectureNumber].totalGrade);
     } else {
-        printf("%s\n", NON_EXIST);
+        printf("%s\n", NOT_EXIST);
     }
 }
 
@@ -128,7 +128,7 @@ void command3(const string &examDate) {
             printf("%s %d\n", i.lectureNumber.c_str(), i.studentNumber);
         }
     } else {
-        printf("%s\n", NON_EXIST);
+        printf("%s\n", NOT_EXIST);
     }
 }
 
@@ -185,7 +185,7 @@ int main() {
                 command3(s);
                 break;
             default:
-                printf("%s\n", NON_EXIST);
+                printf("%s\n", NOT_EXIST);
         }
     }
 
