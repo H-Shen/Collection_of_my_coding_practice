@@ -1,5 +1,5 @@
 # Collection-of-Coding-Practice
-A collection of my coding practice
+A collection of my coding practice, will be updated inconsistently.
 
 * Local environment of coding:
 
