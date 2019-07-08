@@ -4,8 +4,8 @@ A collection of my coding practice, will be updated inconsistently.
 * Local environment of coding:
 
 	* For Python
-   		* Python 2.7.16
-		* Python 3.6.7
+   		* Python 2.7.16 (.py)
+		* Python 3.6.7 (.py3)
 	
 	* For Java
 		* javac 1.8.0_191
