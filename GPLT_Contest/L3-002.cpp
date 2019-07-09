@@ -11,7 +11,7 @@ using namespace __gnu_pbds;
 
 const int MAXN = 20, MAXITEM = 100005;
 char s[MAXN];
-int vis[100005] = {0};
+int vis[MAXITEM] = {0};
 
 struct Node {
     int first;
