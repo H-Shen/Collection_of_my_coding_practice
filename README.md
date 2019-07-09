@@ -14,7 +14,7 @@ A collection of my coding practice, will be updated inconsistently.
 		* Java HotSpot(TM) 64-Bit Server VM (build 25.191-b12, mixed mode)
 		
 	* For Cpp
-		* g++-7 (Homebrew GCC 7.4.0) 7.4.0 (-std=c++14)
+		* g++-7 (Homebrew GCC 7.4.0) 7.4.0 (-std=c++14 -Wall -O2)
 
 	* For C
-		* gcc-7 (Homebrew GCC 7.4.0_2) 7.4.0 (-std=c11)
+		* gcc-7 (Homebrew GCC 7.4.0_2) 7.4.0 (-std=c11 -Wall -O2)
