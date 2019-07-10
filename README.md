@@ -18,3 +18,6 @@ A collection of my coding practice, will be updated inconsistently.
 
 	* For C
 		* gcc-7 (Homebrew GCC 7.4.0_2) 7.4.0 (-std=c11 -Wall -O2)
+
+    * For SQL
+        * sqlite 3.7.9
