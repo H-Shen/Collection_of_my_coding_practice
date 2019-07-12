@@ -1,7 +1,7 @@
 # Collection of My Coding Practice and Coding Templates
 A collection of my coding practice, will be updated inconsistently.
 
-* Local environment of coding:
+* Unless otherwise stated, the local environment of coding is:
 
 	* For Python
    		* Python 2.7.16 (.py)
