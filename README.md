@@ -21,3 +21,6 @@ A collection of my coding practice, will be updated inconsistently.
 
     * For SQL
         * sqlite 3.7.9
+
+    * For JavaScript
+        * V8 6.0.0
