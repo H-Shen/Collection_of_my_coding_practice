@@ -5,7 +5,7 @@ def fib():
     while 1:
         a, b = b, a + b
         yield b
- 
+
 try:
     while 1:
         n = input()

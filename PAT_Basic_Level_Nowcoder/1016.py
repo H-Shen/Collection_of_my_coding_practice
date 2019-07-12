@@ -12,7 +12,7 @@ def decimalToAny(num,n):
        new_num_str = remainder_string+new_num_str
        num = num // n
    return new_num_str
-    
+
 try:
     while 1:
         num, n = map(int, raw_input().split())

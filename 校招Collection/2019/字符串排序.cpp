@@ -11,7 +11,7 @@ bool cmp(const string &a, const string &b) {
 }
 
 int main() {
-    
+
     ios_base::sync_with_stdio(false);
     int n;
     cin >> n;

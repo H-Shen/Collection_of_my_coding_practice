@@ -7,7 +7,7 @@ const int MAXN = 26;
 int A[MAXN];
 
 int main() {
-    
+
     ios_base::sync_with_stdio(false);
     string s;
     cin >> s;
@@ -20,6 +20,6 @@ int main() {
         }
     }
     cout << endl;
-    
+
     return 0;
 }

@@ -7,7 +7,7 @@
 using namespace std;
 
 int main() {
-    
+
     ios_base::sync_with_stdio(false);
     int n;
     cin >> n;
@@ -15,12 +15,12 @@ int main() {
     for (auto &&i : A) {
         cin >> i;
     }
-    
+
     if (n <= 2) {
         cout << "Possible" << endl;
         return 0;
     }
-    
+
     sort(A.begin(), A.end());
     bool haveAns = true;
     for (int i = 1; i < n - 1; ++i) {

@@ -32,6 +32,6 @@ int main() {
         result = result + static_cast<long long>(i) * static_cast<long long>(i);
     }
     cout << result << endl;
-    
+
     return 0;
 }

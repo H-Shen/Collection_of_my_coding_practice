@@ -57,7 +57,7 @@ int main()
         }
         currentAddress = save[currentAddress].nextAddress;
     }
-    
+
     int cntA = A.size();
     if (cntA == 0) {
         printf("0 %s -1\n", s);

@@ -5,7 +5,7 @@ def fib():
     while 1:
         a.append(a[-1] + a[-2])
         yield a[-1]
- 
+
 try:
     while 1:
         n = int(input())

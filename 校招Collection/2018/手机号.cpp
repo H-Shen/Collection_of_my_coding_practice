@@ -17,7 +17,7 @@ bool allDigits(const string &s) {
 }
 
 int main() {
-    
+
     ios_base::sync_with_stdio(false);
     int t;
     string s, head;

@@ -7,7 +7,7 @@ def fib():
         yield b
 gen = fib()
 result = [next(gen) for i in xrange(90)]
- 
+
 try:
     while 1:
         print result[input() - 1]

@@ -7,7 +7,7 @@ using namespace std;
 using ll = long long;
 
 int main() {
-    
+
     ll S = 0;
     ll X = 0;
     ll n = -1;
@@ -18,6 +18,6 @@ int main() {
     }
     X = S - (1 + n) * n / 2;
     cout << X << endl;
-    
+
     return 0;
 }

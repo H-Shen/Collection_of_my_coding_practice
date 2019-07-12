@@ -10,7 +10,7 @@ for i in opList:
             tmp = eval(formula)
             if not tmp in Dict:
                 Dict[tmp] = formula
-                
+
 n = int(input())
 for i in range(n):
     target = int(input())

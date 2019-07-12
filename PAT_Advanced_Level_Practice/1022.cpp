@@ -86,7 +86,7 @@ int main() {
                 int queryInt = stoi(query, nullptr, 16);
                 copy(publishYearList[queryInt].begin(), publishYearList[queryInt].end(), back_inserter(tempList));
         }
-        
+
         printf("%s\n", str.c_str());
         if (tempList.empty())
             printf("Not Found\n");

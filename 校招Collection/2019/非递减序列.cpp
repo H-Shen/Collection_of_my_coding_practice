@@ -16,7 +16,7 @@ bool checkIncrease(const vector<int> &A, int i) {
 }
 
 int main() {
-    
+
     vector<int> A;
     int n;
     while (cin >> n) {

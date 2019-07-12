@@ -34,7 +34,7 @@ int main() {
             break;
         }
     }
-    
+
     if (TSize == -1) {
         return 0;
     }

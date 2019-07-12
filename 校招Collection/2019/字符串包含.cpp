@@ -7,7 +7,7 @@
 using namespace std;
 
 int main() {
-    
+
     string a, b;
     while (cin >> a >> b) {
         if (b.size() > a.size()) {

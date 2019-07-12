@@ -1,5 +1,5 @@
 // https://www.nowcoder.com/practice/07b66536f3f94f88908fe598108172d5
-    
+
 #include <cstdio>
 #include <algorithm>
 #include <vector>

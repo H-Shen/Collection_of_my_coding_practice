@@ -52,10 +52,10 @@ int days(int year, int month, int day)
 }
 
 int main() {
-    
+
     int y, m, d;
     cin >> y >> m >> d;
     cout << days(y, m, d) << endl;
-    
+
     return 0;
 }

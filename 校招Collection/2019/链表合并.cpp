@@ -34,7 +34,7 @@ int main() {
 
     // merge
     A.merge(B);
-    
+
     // output
     bool firstItem = true;
     for (const auto &it : A) {

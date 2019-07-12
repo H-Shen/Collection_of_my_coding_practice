@@ -1,6 +1,6 @@
 from decimal import Decimal, getcontext
 getcontext().prec=1005
- 
+
 try:
     while 1:
         a, b, n = map(int, raw_input().split())

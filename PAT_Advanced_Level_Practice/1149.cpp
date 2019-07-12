@@ -41,7 +41,7 @@ int main() {
                 break;
             }
         }
-        
+
         if (hasAns) {
             cout << "Yes";
         } else {

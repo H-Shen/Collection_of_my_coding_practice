@@ -148,6 +148,6 @@ int main() {
     for (const auto & i : A) {
         cout << i << endl;
     }
-    
+
     return 0;
 }

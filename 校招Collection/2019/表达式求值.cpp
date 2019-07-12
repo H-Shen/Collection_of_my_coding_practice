@@ -5,19 +5,19 @@
 using namespace std;
 
 int main() {
-    
+
     ios_base::sync_with_stdio(false);
     int a, b, c;
     cin >> a >> b >> c;
     int maxVal = -1;
-    
+
     maxVal = max(maxVal, a+b*c);
     maxVal = max(maxVal, a*b+c);
     maxVal = max(maxVal, a+b+c);
     maxVal = max(maxVal, a*b*c);
     maxVal = max(maxVal, (a+b)*c);
     maxVal = max(maxVal, a*(b+c));
-    
+
     cout << maxVal << endl;
     return 0;
 }

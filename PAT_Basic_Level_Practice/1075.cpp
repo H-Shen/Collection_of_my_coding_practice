@@ -50,7 +50,7 @@ int main() {
         }
         currentAdd = inputNode[currentAdd].nextAddress;
     }
-    
+
     int len0 = static_cast<int>(negativeNode.size());
     int len1 = static_cast<int>(zeroToK.size());
     int len2 = static_cast<int>(largerThanK.size());
