@@ -18,7 +18,7 @@ int main() {
         sum += A[i];
     }
 
-    //checking the remainder 
+    //checking the remainder
     if (sum % n != 0) {
         printf("-1\n");
     }
@@ -48,7 +48,7 @@ int main() {
         int cnt = 0;
         int rest = 0;
         vector <int> lessThanAvg;
-        
+
         for (i = 0; i < n; ++i) {
             if (A[i] < avg) {
                 lessThanAvg.push_back(A[i]);
@@ -57,14 +57,14 @@ int main() {
                 rest = rest + A[i] - avg;
             }
         }
-        
+
         int lessThanAvgLen = lessThanAvg.size();
         for (i = 0; i < lessThanAvgLen; ++i) {
             while (lessThanAvg[i] != avg) {
                 ++cnt;
                 rest -= 2;
                 lessThanAvg[i] += 2;
-                
+
                 //not enough number to allocate
                 if (rest < 0) {
                     printf("-1\n");
@@ -72,7 +72,7 @@ int main() {
                 }
             }
         }
-        
+
         printf("%d\n", cnt);
     }
     return 0;
