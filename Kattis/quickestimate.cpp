@@ -1,0 +1,19 @@
+// https://open.kattis.com/problems/quickestimate
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    int n;
+    string s;
+    cin >> n;
+    while (n--)
+    {
+        cin >> s;
+        cout << s.size() << endl;
+    }
+    return 0;
+}
