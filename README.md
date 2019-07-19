@@ -6,6 +6,7 @@ The collection of my coding practice, will be updated inconsistently.
 	* For Python
    		* Python 2.7.16 (.py)
 		* Python 3.6.7 (.py3)
+        * PyPy 7.1.1-beta0 with GCC 4.2.1 Compatible Apple LLVM 10.0.1 (clang-1001.0.46.4) (.pypy3)
 
 	* For Java
 		* javac 1.8.0_191
