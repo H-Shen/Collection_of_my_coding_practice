@@ -1,0 +1,13 @@
+def triangles():
+    L = [1]
+    while 1:
+        yield L
+        L.append(0)
+        L = [L[i - 1] + L[i] for i in range(len(L))]
+                
+for i in range(int(input())):
+    a = triangles()
+    for j in range(int(input()) + 1):
+        current = next(a)
+    current = [str(x % 10 ** 9) for x in current]
+    print(' '.join(current))

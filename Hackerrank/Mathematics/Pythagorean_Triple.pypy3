@@ -1,0 +1,16 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+import sys
+
+def pythagoreanTriple(a):
+    # Complete this function
+    if a % 2 == 0:
+        b, c = (a // 2) ** 2 - 1, (a // 2) ** 2 + 1
+    else:
+        b, c = (a ** 2 - 1) // 2, (a ** 2 + 1) // 2
+    return [a, b, c]
+        
+
+a = int(input().strip())
+triple = pythagoreanTriple(a)
+print (" ".join(map(str, triple)))
