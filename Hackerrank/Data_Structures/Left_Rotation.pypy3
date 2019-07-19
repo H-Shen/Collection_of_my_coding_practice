@@ -1,0 +1,6 @@
+from collections import deque
+
+n, d = list(map(int,input().split()))
+arr = deque(list(map(int,input().split())))
+arr.rotate(-d)
+print(' '.join(list(map(str,arr))))
