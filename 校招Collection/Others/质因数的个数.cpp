@@ -1,3 +1,5 @@
+// https://www.nowcoder.com/practice/20426b85f7fc4ba8b0844cc04807fbd9
+
 #include<cstring>
 #include<ctime>
 #include<iostream>

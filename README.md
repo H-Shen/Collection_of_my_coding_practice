@@ -28,3 +28,6 @@ Since the earliest code was written in 2016, the requirement of formats, the API
 
     * ***For JavaScript***
         * V8 6.0.0
+
+    * ***For Go***
+        * v1.9.1
