@@ -1,22 +1,19 @@
-# https://www.nowcoder.com/practice/ff99c43dd07f4e95a8f2f5448da3772a
+# https://www.nowcoder.com/practice/7960b5038a2142a18e27e4c733855dac
 
-a = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z'.split()
-b = 'V W X Y Z A B C D E F G H I J K L M N O P Q R S T U'.split()
-table = dict(zip(a, b))
+a = 'abcdefghijklmnopqrstuvwxyza'
+b = {'e': 3, 'y': 9, 'n': 6, 'b': 2, 'f': 3, 'r': 7, 'c': 2, 'p': 7, 'z': 9, 'l': 5, 'i': 4, 't': 8, 'h': 4, 'v': 8, 'k': 5, 'q': 7, 'o': 6, 'j': 5, 'x': 9, 'd': 3, 'g': 4, 's': 7, 'w': 9, 'm': 6, 'u': 8, 'a': 2}
 
 try:
     while 1:
         s = raw_input()
-        if s == 'ENDOFINPUT':
-            break
-        if s == 'START' or s == 'END':
-            continue
-        output = ''
+        r = ''
         for i in s:
-            if i in table:
-                output += table[i]
+            if i.isupper():
+                r += a[a.index(i.lower()) + 1]
+            elif i in b:
+                r += str(b[i])
             else:
-                output += i
-        print output
+                r += i
+        print r
 except:
     pass
