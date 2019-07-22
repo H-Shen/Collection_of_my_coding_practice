@@ -38,6 +38,6 @@ try:
     while 1:
         a = map(int, raw_input().split())
         numTable = list(permutations(a))
-        print(calc24())
+        print calc24()
 except:
     pass
