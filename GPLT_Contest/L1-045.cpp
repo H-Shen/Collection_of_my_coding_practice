@@ -1,30 +1,10 @@
-#include <iostream>
-#include <unordered_map>
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-unordered_map <string, string> A = {{"ChuiZi", "Bu"}, {"Bu", "JianDao"} , {"JianDao", "ChuiZi"}};
-
 int main() {
-
-    int k;
-    cin >> k;
-    string input;
-    int cnt = 0;
-
-    while (cin >> input) {
-        if (input == "End") {
-            break;
-        }
-        if (cnt == k) {
-            cout << input << endl;
-            cnt = 0;
-        }
-        else {
-            cout << A[input] << endl;
-            ++cnt;
-        }
-    }
+    string s;
+    getline(cin, s);
+    cout << "Hello " << s << endl;
     return 0;
 }
