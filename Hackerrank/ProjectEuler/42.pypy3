@@ -1,0 +1,14 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+def t(s):
+    n = int(pow(2 * s, 0.5))
+    if n * (n + 1) == 2 * s:
+        return n
+    elif (n - 1) * n == 2 * s:
+        return n - 1
+    return -1
+
+N = int(input())
+for i in range(N):
+    s = int(input())
+    print(t(s))

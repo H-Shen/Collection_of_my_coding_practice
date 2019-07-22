@@ -20,8 +20,6 @@ void pre(void){
     return;
 }
 
-
-
 bool check(int n) {
     int n_copy = n;
     int current = 10;
@@ -38,12 +36,8 @@ bool check(int n) {
         if (isNotPrime[temp] == 1)
             return false;
     }
-
-
     return true;
 }
-
-
 
 void pre2(void) {
     int pos = 0;
@@ -54,7 +48,7 @@ void pre2(void) {
     }
 }
 
-int main(void) {
+int main() {
     pre();
     pre2();
     int N;

@@ -13,4 +13,4 @@ def pythagoreanTriple(a):
 
 a = int(input().strip())
 triple = pythagoreanTriple(a)
-print (" ".join(map(str, triple)))
+print(" ".join(map(str, triple)))
