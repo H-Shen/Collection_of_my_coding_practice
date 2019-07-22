@@ -2,6 +2,8 @@
 
 using namespace std;
 
+const int MOD = 1234567;
+
 vector<string> split_string(string);
 
 /*
@@ -13,9 +15,9 @@ int connectingTowns(int n, vector<int> routes) {
      */
     int result = 1;
     for (const int &i : routes) {
-        result = (result * i) % 1234567;
+        result = (result * i) % MOD;
     }
-    return result % 1234567;
+    return result % MOD;
 }
 
 int main()
