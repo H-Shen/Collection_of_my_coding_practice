@@ -2,7 +2,7 @@
 
 try:
     while 1:
-        a, a_reverse = [], []
+        a, a_reverse = list(), list()
         b = [''] * 10
         for i in xrange(10):
             s = raw_input()
@@ -18,8 +18,8 @@ try:
         for j in xrange(input()):
             query = raw_input()
             if query in string:
-                print('Yes')
+                print 'Yes'
             else:
-                print('No')
+                print 'No'
 except:
     pass

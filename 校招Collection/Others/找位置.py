@@ -2,7 +2,7 @@
 
 from collections import OrderedDict
 try:
-    while 1:
+    while True:
         s = raw_input()
         result = OrderedDict()
         L = len(s)
@@ -15,6 +15,6 @@ try:
             if len(j[1]) > 1:
                 a = str(j[0]) + ':'
                 b = ',' + a
-                print(a + b.join(map(str, j[1])))
+                print a + b.join(map(str, j[1]))
 except:
     pass
