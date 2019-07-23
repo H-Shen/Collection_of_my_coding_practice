@@ -1,0 +1,17 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+from fractions import gcd
+from functools import reduce
+
+def lcm(x, y):
+    return x * y // gcd(x, y)
+
+def lcmMutil(L):
+    return reduce(lambda x, y: lcm(x, y), L)
+
+preComputation = [lcmMutil(range(1, i + 1)) for i in range(1, 41)]
+
+t = int(input().strip())
+for a0 in range(t):
+    n = int(input().strip())
+    print(preComputation[n - 1])

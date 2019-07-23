@@ -1,0 +1,10 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+from math import factorial
+t = int(input())
+for i in range(t):
+    a = list(map(int,input().split()))
+    n, m = a[0], a[1]
+    result = factorial(m + n) // (factorial(m) * factorial(n))
+    result %= (10 ** 9 + 7)
+    print(result)
