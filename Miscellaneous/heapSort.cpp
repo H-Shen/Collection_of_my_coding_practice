@@ -14,8 +14,8 @@
  * storing elements from some ordered type T using heapsort.
  * </p>
  *
- * Compile: g++-7 -std=c++14 -Wall -O2 ArrayUtils.cpp -o ArrayUtils
- * Execute: ./ArrayUtils
+ * Compile: g++-7 -std=c++14 -Wall -O2 heapSort.cpp -o heapSort
+ * Execute: ./heapSort
  *
  * @author Haohu Shen
  * @date 2019/07/03
