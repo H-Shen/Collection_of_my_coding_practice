@@ -1,38 +1,30 @@
 // https://open.kattis.com/problems/judging
-#include <string>
-#include <iostream>
-#include <algorithm>
-#include <unordered_map>
+#include<bits/stdc++.h>
 
 using namespace std;
 
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int n;
     string s;
     cin >> n;
-    unordered_map <string, int> A;
-    unordered_map <string, int> B;
+    unordered_map<string, int> A;
+    unordered_map<string, int> B;
 
-    for (int i = 0; i < n; ++i)
-    {
+    for (int i = 0; i < n; ++i) {
         cin >> s;
         ++A[s];
     }
 
-    for (int i = 0; i < n; ++i)
-    {
+    for (int i = 0; i < n; ++i) {
         cin >> s;
         ++B[s];
     }
 
     int cnt = 0;
-    for (const auto &i : A)
-    {
-        if (B.find(i.first) != B.end())
-        {
+    for (const auto &i : A) {
+        if (B.find(i.first) != B.end()) {
             cnt += min(B[i.first], i.second);
         }
     }

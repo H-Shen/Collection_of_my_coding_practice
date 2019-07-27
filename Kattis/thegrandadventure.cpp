@@ -1,8 +1,6 @@
 // https://open.kattis.com/problems/thegrandadventure
 
-#include <iostream>
-#include <stack>
-#include <string>
+#include<bits/stdc++.h>
 
 using namespace std;
 

@@ -1,22 +1,16 @@
 // https://open.kattis.com/problems/cups
 
-#include <cstdio>
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include <vector>
+#include<bits/stdc++.h>
 
 using namespace std;
 const int maxn = 9;
 
-struct Cup
-{
+struct Cup {
     int d;
     string color;
 };
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int n;
     string a, b;
@@ -24,16 +18,13 @@ int main()
     int d;
     cin >> n;
 
-    vector <Cup> A(n);
-    for (int i = 0; i < n; ++i)
-    {
+    vector<Cup> A(n);
+    for (int i = 0; i < n; ++i) {
         cin >> a >> b;
-        try
-        {
+        try {
             d = stoi(a);
             color = b;
-        } catch(...)
-        {
+        } catch (...) {
             d = stoi(b) * 2;
             color = a;
         }
@@ -41,13 +32,11 @@ int main()
         A[i].d = d;
     }
 
-    sort(A.begin(), A.end(), [](const Cup &a, const Cup &b)->bool
-    {
+    sort(A.begin(), A.end(), [](const Cup &a, const Cup &b) -> bool {
         return (a.d < b.d);
     });
 
-    for (const auto &i : A)
-    {
+    for (const auto &i : A) {
         cout << i.color << endl;
     }
 

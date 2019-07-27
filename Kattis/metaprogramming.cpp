@@ -1,10 +1,5 @@
 // https://open.kattis.com/problems/metaprogramming
-#include <string>
-#include <iostream>
-#include <unordered_map>
-#include <vector>
-#include <sstream>
-#include <iterator>
+#include<bits/stdc++.h>
 
 using namespace std;
 

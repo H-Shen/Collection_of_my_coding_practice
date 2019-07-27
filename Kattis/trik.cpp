@@ -1,24 +1,18 @@
 // https://open.kattis.com/problems/trik
 
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include <vector>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
 
-    vector <int> L = {1, 0, 0};
+    vector<int> L = {1, 0, 0};
     string s;
     cin >> s;
 
-    for (const auto &i : s)
-    {
-        switch (i)
-        {
+    for (const auto &i : s) {
+        switch (i) {
             case 'A':
                 swap(L[0], L[1]);
                 break;
@@ -31,10 +25,8 @@ int main()
         }
     }
 
-    for (int i = 0; i < 3; ++i)
-    {
-        if (L[i] == 1)
-        {
+    for (int i = 0; i < 3; ++i) {
+        if (L[i] == 1) {
             cout << i + 1 << endl;
             break;
         }

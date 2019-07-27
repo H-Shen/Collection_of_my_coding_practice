@@ -1,7 +1,6 @@
 // https://open.kattis.com/problems/onechicken
 
-#include <iostream>
-#include <cmath>
+#include<bits/stdc++.h>
 
 using namespace std;
 
@@ -16,8 +15,7 @@ int main() {
     if (a > b) {
         if (diff > 1) {
             cout << "Dr. Chaz needs " << diff << " more pieces of chicken!";
-        }
-        else {
+        } else {
             cout << "Dr. Chaz needs " << diff << " more piece of chicken!";
         }
     } else {

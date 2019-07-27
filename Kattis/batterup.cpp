@@ -1,19 +1,16 @@
 // https://open.kattis.com/problems/batterup
-#include <cstdio>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     int n, val;
     scanf("%d", &n);
     int sum = 0;
     int cnt = 0;
-    while (n--)
-    {
+    while (n--) {
         scanf("%d", &val);
-        if (val != -1)
-        {
+        if (val != -1) {
             sum += val;
             ++cnt;
         }

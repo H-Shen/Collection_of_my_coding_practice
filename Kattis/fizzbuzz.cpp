@@ -1,32 +1,22 @@
 // https://open.kattis.com/problems/fizzbuzz
-#include <iostream>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int x, y, n;
     cin >> x >> y >> n;
-    for (int i = 1; i <= n; ++i)
-    {
-        if (i % x == 0)
-        {
-            if (i % y == 0)
-            {
+    for (int i = 1; i <= n; ++i) {
+        if (i % x == 0) {
+            if (i % y == 0) {
                 cout << "FizzBuzz" << endl;
-            }
-            else
-            {
+            } else {
                 cout << "Fizz" << endl;
             }
-        }
-        else if (i % y == 0)
-        {
+        } else if (i % y == 0) {
             cout << "Buzz" << endl;
-        }
-        else
-        {
+        } else {
             cout << i << endl;
         }
     }

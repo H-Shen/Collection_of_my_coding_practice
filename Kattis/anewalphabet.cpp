@@ -1,15 +1,11 @@
 // https://open.kattis.com/problems/anewalphabet
-#include <cctype>
-#include <string>
-#include <unordered_map>
-#include <iostream>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
-    unordered_map <string, string> A;
+    unordered_map<string, string> A;
 
     A["a"] = "@";
     A["b"] = "8";
@@ -43,21 +39,15 @@ int main()
     char tmp = '\0';
     string tmpStr;
 
-    for (auto && ch : s)
-    {
-        if (ch >= 'A' && ch <= 'Z')
-        {
+    for (auto &&ch : s) {
+        if (ch >= 'A' && ch <= 'Z') {
             tmp = tolower(ch);
             tmpStr = tmp;
             res = res + A[tmpStr];
-        }
-        else if (ch >= 'a' && ch <= 'z')
-        {
+        } else if (ch >= 'a' && ch <= 'z') {
             tmpStr = ch;
             res = res + A[tmpStr];
-        }
-        else
-        {
+        } else {
             res = res + ch;
         }
     }

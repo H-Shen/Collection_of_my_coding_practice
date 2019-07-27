@@ -1,42 +1,33 @@
 // https://open.kattis.com/problems/icpcawards
-#include <cmath>
-#include <iostream>
-#include <string>
-#include <unordered_set>
-#include <vector>
+#include<bits/stdc++.h>
 
 using namespace std;
 
 const double eps = 1e-8;
 const double pi = acos(-1);
 
-struct schoolNameAndTopTeam
-{
+struct schoolNameAndTopTeam {
     string schoolName;
     string topTeam;
 };
 
-inline int sgn(double a)
-{
+inline int sgn(double a) {
     if (a < -eps) return -1;
     if (a > eps) return 1;
     return 0;
 }
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int n;
-    unordered_set <string> schoolNameList;
+    unordered_set<string> schoolNameList;
     string schoolName, teamName;
-    vector <schoolNameAndTopTeam> A;
+    vector<schoolNameAndTopTeam> A;
     cin >> n;
 
-    for (int i = 0; i < n; ++i)
-    {
+    for (int i = 0; i < n; ++i) {
         cin >> schoolName >> teamName;
-        if (schoolNameList.find(schoolName) == schoolNameList.end())
-        {
+        if (schoolNameList.find(schoolName) == schoolNameList.end()) {
             schoolNameList.insert(schoolName);
             schoolNameAndTopTeam tmp;
             tmp.schoolName = schoolName;
@@ -45,8 +36,7 @@ int main()
         }
     }
 
-    for (int i = 0; i < 12; ++i)
-    {
+    for (int i = 0; i < 12; ++i) {
         cout << A[i].schoolName << ' ' << A[i].topTeam << endl;
     }
 

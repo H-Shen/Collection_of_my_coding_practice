@@ -1,21 +1,18 @@
 // https://open.kattis.com/problems/differentdistances
-#include <cstdio>
-#include <cmath>
+#include<bits/stdc++.h>
 
 using namespace std;
 
 const double eps = 1e-6;
 
 inline
-bool is_zero(double a)
-{
+bool is_zero(double a) {
     if (a > eps) return false;
     if (a < -eps) return false;
     return true;
 }
 
-int main()
-{
+int main() {
 
     double x1, y1, x2, y2, p;
     while (1) {

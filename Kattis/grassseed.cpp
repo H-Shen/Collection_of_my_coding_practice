@@ -1,17 +1,15 @@
 // https://open.kattis.com/problems/grassseed
-#include <cstdio>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     double c, w, l;
     scanf("%lf", &c);
     int n;
     scanf("%d", &n);
     double s = 0.0;
-    while (n--)
-    {
+    while (n--) {
         scanf("%lf %lf", &w, &l);
         s = s + w * l * c;
     }

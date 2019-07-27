@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/baconeggsandspam
 //
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 
 using namespace std;
 

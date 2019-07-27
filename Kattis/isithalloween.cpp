@@ -1,17 +1,14 @@
 // https://open.kattis.com/problems/isithalloween
-#include <string>
-#include <iostream>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     string s;
     getline(cin, s);
     if (s == "OCT 31" || s == "DEC 25") {
         cout << "yup" << endl;
-    }
-    else {
+    } else {
         cout << "nope" << endl;
     }
     return 0;

@@ -1,25 +1,17 @@
 // https://open.kattis.com/problems/closestsums
-#include <string>
-#include <iostream>
-#include <cstdio>
-#include <unordered_map>
-#include <vector>
-#include <algorithm>
-#include <cmath>
+#include<bits/stdc++.h>
 
 using namespace std;
 const int maxn = 500005;
 int sum[maxn];
 
-int main()
-{
+int main() {
 
     ios_base::sync_with_stdio(false);
     int kase = 1;
     int n;
 
-    while (cin >> n)
-    {
+    while (cin >> n) {
         vector<int> A(n);
         for (auto &&i : A) {
             cin >> i;

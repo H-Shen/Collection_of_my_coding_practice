@@ -1,13 +1,6 @@
 // https://open.kattis.com/problems/zipfslaw
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
-#include <algorithm>
-#include <numeric>
-#include <regex>
-#include <unordered_map>
+#include<bits/stdc++.h>
 
 using namespace std;
 const regex R("[a-zA-Z]+");

@@ -1,6 +1,5 @@
 // https://open.kattis.com/problems/howmanydigits
-#include <cstdio>
-#include <cmath>
+#include<bits/stdc++.h>
 
 using namespace std;
 
@@ -8,17 +7,15 @@ const double PI = acos(-1.0);
 const double ln_10 = log(10.0);
 
 inline
-double reback(int N)
-{
-    return ceil((N*log(double(N))-N+0.5*log(2.0*N*PI))/ln_10);
+double reback(int N) {
+    return ceil((N * log(double(N)) - N + 0.5 * log(2.0 * N * PI)) / ln_10);
 }
 
-int main(){
+int main() {
     int n;
-    while(~scanf("%d",&n))
-    {
-        if(n<=1)printf("1\n");
-        else printf("%.0lf\n",reback(n));
+    while (~scanf("%d", &n)) {
+        if (n <= 1)printf("1\n");
+        else printf("%.0lf\n", reback(n));
     }
     return 0;
 }

@@ -1,12 +1,5 @@
 // https://open.kattis.com/problems/egypt
-#include <algorithm>
-#include <cstdio>
-#include <iostream>
-#include <unordered_map>
-#include <string>
-#include <vector>
-#include <cmath>
-#include <stack>
+#include<bits/stdc++.h>
 
 using namespace std;
 

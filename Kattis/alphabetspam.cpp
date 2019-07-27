@@ -1,20 +1,15 @@
-\\ https://open.kattis.com/problems/alphabetspam
-#include <cctype>
-#include <cstdio>
-#include <iostream>
-#include <string>
+// https://open.kattis.com/problems/alphabetspam
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     string str;
     int w = 0, l = 0, u = 0, s = 0;
     cin >> str;
     int len = str.size();
 
-    for (const auto &ch : str)
-    {
+    for (const auto &ch : str) {
         if (isupper(ch)) ++u;
         else if (islower(ch)) ++l;
         else if (ch == '_') ++w;

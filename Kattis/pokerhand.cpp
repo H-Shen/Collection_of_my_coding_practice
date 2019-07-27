@@ -1,25 +1,19 @@
 // https://open.kattis.com/problems/pokerhand
 
-#include <string>
-#include <iostream>
-#include <unordered_map>
-#include <algorithm>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     string s;
-    unordered_map <char, int> A;
+    unordered_map<char, int> A;
 
-    while (cin >> s)
-    {
+    while (cin >> s) {
         ++A[s[0]];
     }
 
     int maxVal = -1;
-    for (const auto &it : A)
-    {
+    for (const auto &it : A) {
         maxVal = max(maxVal, it.second);
     }
     cout << maxVal << endl;

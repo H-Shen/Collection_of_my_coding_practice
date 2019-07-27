@@ -1,11 +1,10 @@
 // https://open.kattis.com/problems/zamka
 
-#include <iostream>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int l, d, x;
     cin >> l >> d >> x;
@@ -14,23 +13,18 @@ int main()
     int minVal = 10005;
     int sum = 0;
 
-    for (int i = l, i_copy = l; i <= d; ++i)
-    {
+    for (int i = l, i_copy = l; i <= d; ++i) {
         sum = 0;
         i_copy = i;
-        while (i_copy > 0)
-        {
+        while (i_copy > 0) {
             sum += i_copy % 10;
             i_copy /= 10;
         }
-        if (sum == x)
-        {
-            if (i > maxVal)
-            {
+        if (sum == x) {
+            if (i > maxVal) {
                 maxVal = i;
             }
-            if (i < minVal)
-            {
+            if (i < minVal) {
                 minVal = i;
             }
         }

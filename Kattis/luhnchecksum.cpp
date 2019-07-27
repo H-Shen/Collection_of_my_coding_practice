@@ -1,7 +1,6 @@
 // https://open.kattis.com/problems/luhnchecksum
 //
-#include <string>
-#include <iostream>
+#include<bits/stdc++.h>
 
 using namespace std;
 
@@ -17,8 +16,7 @@ int handle(char ch) {
     return n;
 }
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
 
     int n;

@@ -1,26 +1,21 @@
 // https://open.kattis.com/problems/cd
-#include <cstdio>
-#include <unordered_set>
+#include<bits/stdc++.h>
 
 using namespace std;
-unordered_set <int> A;
+unordered_set<int> A;
 
-int main()
-{
+int main() {
     int n, m, pos, cnt;
-    while (1)
-    {
+    while (1) {
         cnt = 0;
         A.clear();
         scanf("%d %d", &n, &m);
         if (n == 0 && m == 0) break;
-        for (int i = 0; i < n; ++i)
-        {
+        for (int i = 0; i < n; ++i) {
             scanf("%d", &pos);
             A.insert(pos);
         }
-        for (int i = 0; i < m; ++i)
-        {
+        for (int i = 0; i < m; ++i) {
             scanf("%d", &pos);
             if (A.find(pos) != A.end()) ++cnt;
         }

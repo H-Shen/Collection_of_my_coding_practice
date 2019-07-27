@@ -1,10 +1,5 @@
 // https://open.kattis.com/problems/thinkingofanumber
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
-#include <algorithm>
-#include <numeric>
+#include<bits/stdc++.h>
 
 using namespace std;
 const int MAX = 50005;

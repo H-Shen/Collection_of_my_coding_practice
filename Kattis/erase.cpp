@@ -1,24 +1,18 @@
 // https://open.kattis.com/problems/erase
-#include <iostream>
-#include <string>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     int n;
     string a, b, c;
     cin >> n >> a >> b;
-    if (n % 2 == 0)
-    {
+    if (n % 2 == 0) {
         if (a == b) cout << "Deletion succeeded" << endl;
         else cout << "Deletion failed" << endl;
-    }
-    else
-    {
+    } else {
         c = a;
-        for (size_t i = 0; i < a.size(); ++i)
-        {
+        for (size_t i = 0; i < a.size(); ++i) {
             if (a[i] == '1') c[i] = '0';
             else c[i] = '1';
         }

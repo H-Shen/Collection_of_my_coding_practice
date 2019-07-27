@@ -1,15 +1,12 @@
 // https://open.kattis.com/problems/bela
-#include <iostream>
-#include <string>
-#include <unordered_map>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
-    unordered_map <char, int> dominant;
-    unordered_map <char, int> notDominant;
+    unordered_map<char, int> dominant;
+    unordered_map<char, int> notDominant;
 
     dominant['A'] = 11;
     dominant['K'] = 4;
@@ -34,15 +31,11 @@ int main()
     cin >> n >> suit;
     string card;
     int cnt = 0;
-    for (int i = 0; i < 4 * n; ++i)
-    {
+    for (int i = 0; i < 4 * n; ++i) {
         cin >> card;
-        if (card[1] == suit)
-        {
+        if (card[1] == suit) {
             cnt += dominant[card[0]];
-        }
-        else
-        {
+        } else {
             cnt += notDominant[card[0]];
         }
     }

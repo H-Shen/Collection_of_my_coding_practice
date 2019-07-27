@@ -1,12 +1,9 @@
 // https://open.kattis.com/problems/epigdanceoff
-#include <iostream>
-#include <string>
-#include <vector>
-#include <unordered_set>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-vector<vector<char> > rotate(const vector<vector<char> > & A, int n, int m) {
+vector<vector<char> > rotate(const vector<vector<char> > &A, int n, int m) {
     vector<vector<char> > result(m, vector<char>(n));
     for (int i = 0; i < m; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -38,7 +35,7 @@ int main() {
 
     string delimiter = string(n, '_');
     int count = 0;
-    for (const auto & i : A_rotate_string) {
+    for (const auto &i : A_rotate_string) {
         if (i == delimiter) {
             ++count;
         }

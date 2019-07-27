@@ -1,25 +1,18 @@
 // https://open.kattis.com/problems/judgingmoose
-#include <iostream>
-#include <algorithm>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int l, r, maxVal;
     cin >> l >> r;
-    if (l == 0 && r == 0)
-    {
+    if (l == 0 && r == 0) {
         cout << "Not a moose" << endl;
-    }
-    else if (l != r)
-    {
+    } else if (l != r) {
         maxVal = max(l, r) * 2;
         cout << "Odd " << maxVal << endl;
-    }
-    else
-    {
+    } else {
         cout << "Even " << l * 2 << endl;
     }
     return 0;

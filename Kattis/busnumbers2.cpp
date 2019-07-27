@@ -1,13 +1,5 @@
 // https://open.kattis.com/problems/busnumbers2
-#include <algorithm>
-#include <cstdio>
-#include <iostream>
-#include <unordered_map>
-#include <unordered_set>
-#include <string>
-#include <vector>
-#include <cmath>
-#include <stack>
+#include<bits/stdc++.h>
 
 using namespace std;
 const int MAXN = 74;
@@ -15,8 +7,8 @@ const int MAXN = 74;
 int main() {
 
     ios_base::sync_with_stdio(false);
-    unordered_map <int, int> A;
-    unordered_set <string> filter;
+    unordered_map<int, int> A;
+    unordered_set<string> filter;
     string s;
     for (int i = 1; i <= MAXN; ++i) {
         for (int j = 1; j <= MAXN; ++j) {
@@ -32,8 +24,8 @@ int main() {
         }
     }
 
-    vector <int> L;
-    for (const auto & it : A) {
+    vector<int> L;
+    for (const auto &it : A) {
         if (it.second > 1) {
             L.push_back(it.first);
         }

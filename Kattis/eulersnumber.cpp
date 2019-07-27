@@ -1,7 +1,5 @@
 // https://open.kattis.com/problems/eulersnumber
-#include <algorithm>
-#include <cstdio>
-#include <iostream>
+#include<bits/stdc++.h>
 
 using namespace std;
 const int maxn = 10005;
@@ -18,7 +16,7 @@ int main() {
     for (int i = 0; i <= n; ++i) {
         s += a[i];
     }
-    printf("%.12llf\n", s);
+    printf("%.12Lf\n", s);
 
     return 0;
 }

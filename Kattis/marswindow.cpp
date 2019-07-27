@@ -1,16 +1,13 @@
 // https://open.kattis.com/problems/marswindow
-#include <string>
-#include <iostream>
-#include <unordered_set>
+#include<bits/stdc++.h>
 
 using namespace std;
 
 const int gap = 26;
 
-unordered_set <int> A;
+unordered_set<int> A;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
 
     int year = 2018;

@@ -1,11 +1,10 @@
 // https://open.kattis.com/problems/tri
 
-#include <iostream>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int a, b, c;
     cin >> a >> b >> c;

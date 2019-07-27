@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/sortofsorting
 
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 
 using namespace std;
 
@@ -20,8 +20,7 @@ int main() {
             cin >> s;
             A.at(i) = make_pair(s, i);
         }
-        sort(A.begin(), A.end(), [](const pair<string, int> &lhs, const pair<string, int> &rhs)
-        {
+        sort(A.begin(), A.end(), [](const pair<string, int> &lhs, const pair<string, int> &rhs) {
             if (lhs.first.length() >= 2 && rhs.first.length() >= 2) {
                 if (lhs.first.substr(0, 2) == rhs.first.substr(0, 2)) {
                     return lhs.second < rhs.second;

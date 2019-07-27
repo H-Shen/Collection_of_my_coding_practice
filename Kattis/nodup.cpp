@@ -1,29 +1,22 @@
 // https://open.kattis.com/problems/nodup
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <unordered_set>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     string line;
-    unordered_set <string> A;
+    unordered_set<string> A;
     getline(cin, line);
     istringstream iss(line);
 
-    do
-    {
+    do {
         string s;
         iss >> s;
-        if (s == "")
-        {
+        if (s == "") {
             continue;
         }
-        if (A.find(s) != A.end())
-        {
+        if (A.find(s) != A.end()) {
             cout << "no" << endl;
             return 0;
         }

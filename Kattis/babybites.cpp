@@ -1,20 +1,16 @@
 // https://open.kattis.com/problems/babybites
-#include <string>
-#include <iostream>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int n;
     cin >> n;
     string s;
-    for (int i = 1; i <= n; ++i)
-    {
+    for (int i = 1; i <= n; ++i) {
         cin >> s;
-        if (s != to_string(i) && s != "mumble")
-        {
+        if (s != to_string(i) && s != "mumble") {
             cout << "something is fishy" << endl;
             return 0;
         }

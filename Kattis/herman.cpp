@@ -1,14 +1,11 @@
 // https://open.kattis.com/problems/herman
 
-#include <cmath>
-#include <cstdio>
-#include <iostream>
+#include<bits/stdc++.h>
 
 using namespace std;
 const double pi = acos(-1);
 
-int main()
-{
+int main() {
     int r;
     cin >> r;
     double s1 = pi * r * r;

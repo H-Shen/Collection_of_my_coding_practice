@@ -1,11 +1,6 @@
 // https://open.kattis.com/problems/phonelist
 
-#include <cstdio>
-
-#include <string>
-#include <vector>
-#include <algorithm>
-
+#include<bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/trie_policy.hpp>
 #include <ext/pb_ds/tag_and_trait.hpp>
@@ -16,7 +11,7 @@ using namespace __gnu_pbds;
 const int MAXN = 15;
 char str[MAXN];
 
-typedef trie<string,null_type,trie_string_access_traits<>,pat_trie_tag,trie_prefix_search_node_update> prefix_trie;
+typedef trie<string, null_type, trie_string_access_traits<>, pat_trie_tag, trie_prefix_search_node_update> prefix_trie;
 
 int main() {
 

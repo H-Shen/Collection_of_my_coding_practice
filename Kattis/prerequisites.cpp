@@ -1,56 +1,43 @@
 // https://open.kattis.com/problems/prerequisites
 
-#include <unordered_set>
-#include <iostream>
-#include <string>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int course, category, c, r, cnt;
     string courseNum;
     bool hasAns = true;
 
-    while (1)
-    {
+    while (1) {
         hasAns = true;
         cin >> course;
-        if (course == 0)
-        {
+        if (course == 0) {
             break;
         }
         cin >> category;
-        unordered_set <string> courseList;
-        for (int i = 0; i < course; ++i)
-        {
+        unordered_set<string> courseList;
+        for (int i = 0; i < course; ++i) {
             cin >> courseNum;
             courseList.insert(courseNum);
         }
-        for (int i = 0; i < category; ++i)
-        {
+        for (int i = 0; i < category; ++i) {
             cnt = 0;
             cin >> c >> r;
-            for (int j = 0; j < c; ++j)
-            {
+            for (int j = 0; j < c; ++j) {
                 cin >> courseNum;
-                if (courseList.find(courseNum) != courseList.end())
-                {
+                if (courseList.find(courseNum) != courseList.end()) {
                     ++cnt;
                 }
             }
-            if (cnt < r)
-            {
+            if (cnt < r) {
                 hasAns = false;
             }
         }
-        if (!hasAns)
-        {
+        if (!hasAns) {
             cout << "no";
-        }
-        else
-        {
+        } else {
             cout << "yes";
         }
         cout << endl;

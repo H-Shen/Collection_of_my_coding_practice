@@ -1,46 +1,31 @@
 // https://open.kattis.com/problems/quickbrownfox
-#include <iostream>
-#include <cstdio>
-#include <cctype>
-#include <functional>
-#include <algorithm>
-#include <string>
-#include <unordered_set>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     int n;
     string s;
     cin >> n;
     getchar();
-    while (n--)
-    {
+    while (n--) {
         getline(cin, s);
-        unordered_set <char> A;
+        unordered_set<char> A;
         transform(s.begin(), s.end(), s.begin(), ::tolower);
-        for (const auto &i : s)
-        {
-            if (isalpha(i))
-            {
+        for (const auto &i : s) {
+            if (isalpha(i)) {
                 A.insert(i);
             }
         }
         string res;
-        for (char i = 'a'; i <= 'z'; ++i)
-        {
-            if (A.find(i) == A.end())
-            {
+        for (char i = 'a'; i <= 'z'; ++i) {
+            if (A.find(i) == A.end()) {
                 res = res + i;
             }
         }
-        if (res == "")
-        {
+        if (res == "") {
             cout << "pangram" << endl;
-        }
-        else
-        {
+        } else {
             cout << "missing " << res << endl;
         }
     }

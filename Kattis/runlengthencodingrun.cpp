@@ -1,31 +1,21 @@
 // https://open.kattis.com/problems/runlengthencodingrun
 
-#include <string>
-#include <iostream>
-#include <cstdio>
-#include <unordered_map>
-#include <vector>
-#include <algorithm>
-#include <cmath>
+#include<bits/stdc++.h>
 
 using namespace std;
 
 inline
-string encode(const string &s)
-{
+string encode(const string &s) {
     string res;
     char lastChar = '\0';
     int count = 0;
-    for (const auto &ch : s)
-    {
-        if (lastChar == '\0')
-        {
+    for (const auto &ch : s) {
+        if (lastChar == '\0') {
             lastChar = ch;
             ++count;
             continue;
         }
-        if (ch != lastChar)
-        {
+        if (ch != lastChar) {
             res = res + lastChar + to_string(count);
             lastChar = ch;
             count = 1;
@@ -40,22 +30,18 @@ string encode(const string &s)
 }
 
 inline
-string decode(const string &s)
-{
+string decode(const string &s) {
     string res;
     char lastChar = '\0';
     string count;
-    for (const auto &ch : s)
-    {
-        if (lastChar == '\0')
-        {
+    for (const auto &ch : s) {
+        if (lastChar == '\0') {
             lastChar = ch;
             continue;
         }
-        if (ch >= '0' && ch <= '9')
-        {
+        if (ch >= '0' && ch <= '9') {
             count = count + ch;
-        } else{
+        } else {
 
             res = res + string(stoi(count), lastChar);
             count = "";
@@ -63,26 +49,21 @@ string decode(const string &s)
         }
     }
 
-    if (count != "")
-    {
+    if (count != "") {
         res = res + string(stoi(count), lastChar);
     }
     return res;
 }
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
 
     string a, b;
     cin >> a >> b;
 
-    if (a == "E")
-    {
+    if (a == "E") {
         cout << encode(b) << endl;
-    }
-    else
-    {
+    } else {
         cout << decode(b) << endl;
     }
 

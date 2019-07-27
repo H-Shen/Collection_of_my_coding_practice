@@ -1,12 +1,9 @@
 // https://open.kattis.com/problems/krizaljka
-#include <iostream>
-#include <string>
-#include <vector>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     string a, b;
     cin >> a >> b;
@@ -22,13 +19,12 @@ int main()
                 break;
             }
         }
-        if (hasAns)
-        {
+        if (hasAns) {
             break;
         }
     }
 
-    vector <string> res(len_b);
+    vector<string> res(len_b);
     for (auto &&k : res) {
         k = string(len_a, '.');
     }

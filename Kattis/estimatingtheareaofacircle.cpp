@@ -1,20 +1,15 @@
 // https://open.kattis.com/problems/estimatingtheareaofacircle
-#include <cmath>
-#include <cstdio>
-#include <iostream>
+#include<bits/stdc++.h>
 
 using namespace std;
 const double pi = acos(-1.0);
 
-int main()
-{
+int main() {
     double r;
     int m, c;
     double s1, s2;
-    while (cin >> r >> m >> c)
-    {
-        if (m == 0)
-        {
+    while (cin >> r >> m >> c) {
+        if (m == 0) {
             break;
         }
         s1 = pi * r * r;

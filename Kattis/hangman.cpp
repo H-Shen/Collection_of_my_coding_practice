@@ -1,13 +1,12 @@
 // https://open.kattis.com/problems/hangman
-#include <iostream>
-#include <string>
+#include<bits/stdc++.h>
 
 using namespace std;
 const int MAX_CHANCES = 10;
 const char CORRENT_ANSWER = 'a';
 
 bool allCorrect(const string &s) {
-    for (const auto & ch : s) {
+    for (const auto &ch : s) {
         if (ch != 'a') {
             return false;
         }
@@ -24,7 +23,7 @@ int main() {
     int chances = MAX_CHANCES;
     cin >> word >> perm;
 
-    for (const auto & ch : perm) {
+    for (const auto &ch : perm) {
         hasAns = false;
         for (size_t i = 0; i != word.size(); ++i) {
             if (word[i] == ch) {
