@@ -4,10 +4,8 @@
 
 #define WORD_LENGTH 7
 
-int check_letter(char c, int index)
-{
-    switch (index)
-    {
+int check_letter(char c, int index) {
+    switch (index) {
         case 0:
             return c == 'p' || c == 'P';
         case 1:
@@ -27,28 +25,23 @@ int check_letter(char c, int index)
     }
 }
 
-int read_line()
-{
+int read_line() {
     char next;
     int index = 0, found = 0;
-    while(1)
-    {
+    while (1) {
         if (scanf("%c", &next) == EOF) return 0;
-        if (next == '\n')
-        {
+        if (next == '\n') {
             printf(found ? "yes\n" : "no\n");
             return 1;
         }
-        if (!found)
-        {
+        if (!found) {
             if (check_letter(next, index++)) found = (index == WORD_LENGTH);
             else index = (next == 'p' || next == 'P');
         }
     }
 }
 
-int main()
-{
-    while(read_line()){};
+int main() {
+    while (read_line()) {}
     return 0;
 }
