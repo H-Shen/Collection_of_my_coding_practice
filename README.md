@@ -34,3 +34,6 @@ Since the earliest code was written in 2016, the requirement of formats, the API
 
     * ***For Shell***
         * GNU bash, version 3.2.57(1)-release (x86_64-apple-darwin18)
+
+    * ***For Php***
+        * PHP 7.1.23
