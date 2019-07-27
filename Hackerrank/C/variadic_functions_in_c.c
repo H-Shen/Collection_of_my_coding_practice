@@ -12,7 +12,7 @@ int sum(int count, ...) {
     va_start(valist, count);
     for (int i = 0; i < count; ++i) {
         result += va_arg(valist,
-        int);
+                         int);
     }
     va_end(valist);
     return result;
@@ -25,7 +25,7 @@ int min(int count, ...) {
     va_start(valist, count);
     for (int i = 0; i < count; ++i) {
         temp = va_arg(valist,
-        int);
+                      int);
         if (i == 0) {
             minVal = temp;
         } else if (minVal > temp) {
@@ -42,7 +42,7 @@ int max(int count, ...) {
     va_start(valist, count);
     for (int i = 0; i < count; ++i) {
         temp = va_arg(valist,
-        int);
+                      int);
         if (i == 0) {
             maxVal = temp;
         } else if (maxVal < temp) {

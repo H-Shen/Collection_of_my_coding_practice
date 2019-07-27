@@ -16,7 +16,7 @@ int main() {
 
     for (int i = 0; s[i] != '\0'; ++i) {
         if (isdigit(s[i])) {
-            ++count[(size_t)(s[i] - '0')];
+            ++count[(size_t) (s[i] - '0')];
         }
     }
 
