@@ -1,13 +1,12 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
-
 using namespace std;
 
 vector<int> parseInts(string str) {
     int temp;
     char tempChar;
-    stringstream ss(str);
+    stringstream ss (str);
     vector<int> res;
     while (ss >> temp) {
         res.emplace_back(temp);
@@ -20,7 +19,7 @@ int main() {
     string str;
     cin >> str;
     vector<int> integers = parseInts(str);
-    for (int i = 0; i < integers.size(); i++) {
+    for(size_t i = 0; i != integers.size(); i++) {
         cout << integers[i] << "\n";
     }
 
