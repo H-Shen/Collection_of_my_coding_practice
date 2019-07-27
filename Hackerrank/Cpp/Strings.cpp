@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
     // Complete the program
-    string a,b;
+    string a, b;
     cin >> a >> b;
     string c = a + b;
     cout << a.length() << " " << b.length() << endl;

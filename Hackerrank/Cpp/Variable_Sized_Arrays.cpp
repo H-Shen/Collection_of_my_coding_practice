@@ -3,7 +3,7 @@
 
 using namespace std;
 
-vector <vector<int> > arr;
+vector <vector<int>> arr;
 
 int main() {
 

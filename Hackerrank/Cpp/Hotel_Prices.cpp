@@ -6,11 +6,12 @@ using namespace std;
 class HotelRoom {
 public:
     HotelRoom(int bedrooms, int bathrooms)
-    : bedrooms_(bedrooms), bathrooms_(bathrooms) {}
+            : bedrooms_(bedrooms), bathrooms_(bathrooms) {}
 
     virtual int get_price() {
-        return 50*bedrooms_ + 100*bathrooms_;
+        return 50 * bedrooms_ + 100 * bathrooms_;
     }
+
 private:
     int bedrooms_;
     int bathrooms_;
@@ -19,16 +20,17 @@ private:
 class HotelApartment : public HotelRoom {
 public:
     HotelApartment(int bedrooms, int bathrooms)
-    : HotelRoom(bedrooms, bathrooms) {}
+            : HotelRoom(bedrooms, bathrooms) {}
 
     virtual int get_price() {
         return HotelRoom::get_price() + 100;
     }
 };
+
 int main() {
     int n;
     cin >> n;
-    vector<HotelRoom*> rooms;
+    vector < HotelRoom * > rooms;
     for (int i = 0; i < n; ++i) {
         string room_type;
         int bedrooms;

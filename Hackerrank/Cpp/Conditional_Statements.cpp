@@ -2,16 +2,15 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     int a;
     cin >> a;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     // Write Your Code Here
-    if (a>9)
+    if (a > 9)
         printf("Greater than 9\n");
-    switch (a){
+    switch (a) {
         case 1:
             printf("one\n");
             break;

@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+
 using namespace std;
 
 
@@ -14,7 +15,7 @@ int main() {
         a.push_back(temp);
     }
     sort(a.begin(), a.end());
-    int len = (int)a.size();
+    int len = (int) a.size();
     for (i = 0; i < len - 1; i++)
         cout << a[i] << ' ';
     cout << a[len - 1] << endl;

@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+
 using namespace std;
 
 int main() {
@@ -17,8 +18,7 @@ int main() {
         if (binary_search(a.begin(), a.end(), queryNum)) {
             pos = lower_bound(a.begin(), a.end(), queryNum) - a.begin();
             cout << "Yes " << pos + 1 << endl;
-        }
-        else {
+        } else {
             pos = lower_bound(a.begin(), a.end(), queryNum) - a.begin();
             cout << "No " << pos + 1 << endl;
         }

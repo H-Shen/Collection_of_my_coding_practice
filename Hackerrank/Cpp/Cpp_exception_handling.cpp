@@ -10,7 +10,7 @@ int largest_proper_divisor(int n) {
     if (n == 1) {
         throw invalid_argument("largest proper divisor is not defined for n=1");
     }
-    for (int i = n/2; i >= 1; --i) {
+    for (int i = n / 2; i >= 1; --i) {
         if (n % i == 0) {
             return i;
         }
@@ -22,7 +22,7 @@ void process_input(int n) {
     try {
         int d = largest_proper_divisor(n);
         cout << "result=" << d << endl;
-    } catch (std::invalid_argument& e) {
+    } catch (std::invalid_argument &e) {
         cout << e.what() << endl;
     }
     cout << "returning control flow to caller" << endl;

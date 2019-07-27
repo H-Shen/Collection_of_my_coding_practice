@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+
 using namespace std;
 
 
@@ -11,10 +12,10 @@ int main() {
     int n;
     cin >> n;
     vector<int> a(n);
-    for (auto &&i : a){
+    for (auto &&i : a) {
         cin >> i;
     }
-    for (int i= n - 1; i >= 0; --i) {
+    for (int i = n - 1; i >= 0; --i) {
         if (i == 0) {
             cout << a[i] << endl;
         } else {

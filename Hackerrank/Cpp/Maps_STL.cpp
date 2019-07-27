@@ -3,7 +3,7 @@
 
 using namespace std;
 
-unordered_map <string, int> score;
+unordered_map<string, int> score;
 
 int main() {
     int T, query, mark;

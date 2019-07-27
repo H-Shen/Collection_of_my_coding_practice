@@ -7,19 +7,21 @@ using namespace std;
 class Message {
 public:
     Message() {}
-    Message(const string &textStr, const int &cntStr) : text(textStr), cnt(cntStr){}
-    const string& get_text() const
-    {
+
+    Message(const string &textStr, const int &cntStr) : text(textStr), cnt(cntStr) {}
+
+    const string &get_text() const {
         return text;
     }
-    const int &get_cnt() const
-    {
+
+    const int &get_cnt() const {
         return cnt;
     }
-    bool operator < (const Message &rhs) const
-    {
+
+    bool operator<(const Message &rhs) const {
         return cnt < rhs.get_cnt();
     }
+
 private:
     string text;
     int cnt;
@@ -29,39 +31,46 @@ private:
 class MessageFactory {
 public:
     MessageFactory() {}
-    Message create_message(const string& text) {
+
+    Message create_message(const string &text) {
         ++totalCnt;
         return Message(text, totalCnt);
     }
+
 private:
     static int totalCnt;
 };
 
 int MessageFactory::totalCnt = 0;
+
 class Recipient {
 public:
     Recipient() {}
-    void receive(const Message& msg) {
+
+    void receive(const Message &msg) {
         messages_.push_back(msg);
     }
+
     void print_messages() {
         fix_order();
-        for (auto& msg : messages_) {
+        for (auto &msg : messages_) {
             cout << msg.get_text() << endl;
         }
         messages_.clear();
     }
+
 private:
     void fix_order() {
         sort(messages_.begin(), messages_.end());
     }
-    vector<Message> messages_;
+
+    vector <Message> messages_;
 };
 
 class Network {
 public:
-    static void send_messages(vector<Message> messages, Recipient& recipient) {
-    // simulates the unpredictable network, where sent messages might arrive in unspecified order
+    static void send_messages(vector <Message> messages, Recipient &recipient) {
+        // simulates the unpredictable network, where sent messages might arrive in unspecified order
         random_shuffle(messages.begin(), messages.end());
         for (auto msg : messages) {
             recipient.receive(msg);
@@ -70,11 +79,10 @@ public:
 };
 
 
-
 int main() {
     MessageFactory message_factory;
     Recipient recipient;
-    vector<Message> messages;
+    vector <Message> messages;
     string text;
     while (getline(cin, text)) {
         messages.push_back(message_factory.create_message(text));

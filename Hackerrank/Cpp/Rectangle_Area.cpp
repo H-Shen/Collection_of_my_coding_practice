@@ -1,6 +1,7 @@
 #include <iostream>
 
 using namespace std;
+
 /*
  * Create classes Rectangle and RectangleArea
  */
@@ -8,6 +9,7 @@ using namespace std;
 class Rectangle {
 public:
     int width = 0, height = 0;
+
     void display() {
         cout << width << ' ' << height << endl;
     }
@@ -18,13 +20,13 @@ public:
     void read_input() {
         cin >> width >> height;
     }
+
     void display() {
         cout << width * height << endl;
     }
 };
 
-int main()
-{
+int main() {
     /*
      * Declare a RectangleArea object
      */
