@@ -1,0 +1,5 @@
+a = input()
+b = input()
+c = input()
+d = input()
+print str(pow(a, b) + pow(c, d))

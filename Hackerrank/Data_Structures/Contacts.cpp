@@ -15,7 +15,7 @@ int main()
     while (n--) {
         scanf("%s %s", name, partial);
         s = partial;
-        if (strcmp(name, "add") == 0) {
+        if (!strcmp(name, "add")) {
             for (size_t i = 0; i <= s.size(); ++i) {
                 ++A[s.substr(0, i)];
             }

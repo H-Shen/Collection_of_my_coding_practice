@@ -33,9 +33,8 @@ int bSearch_recursion(const vector<T> &A, int low, int high, T key) {
         return bSearch_recursion(A, low, mid - 1, key);
     } else if (key > A[mid]) {
         return bSearch_recursion(A, mid + 1, high, key);
-    } else {
-        return mid;
     }
+    return mid;
 }
 
 // An implementation of binary search using 'while' loop.
@@ -120,7 +119,6 @@ vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound)
     if (upperbound - lowerbound + 1 < n) {
         throw invalid_argument("");
     }
-
 
     random_device dev;
     mt19937 random_generator(dev());
