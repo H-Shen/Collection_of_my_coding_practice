@@ -1,6 +1,4 @@
-#include <unordered_map>
-#include <sstream>
-#include <iostream>
+#include <bits/stdc++.h>
 
 const int MOD = 1000000;
 
