@@ -1,11 +1,4 @@
-#include <cstdio>
-#include <cstring>
-#include <cstdlib>
-
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <unordered_map>
+#include <bits/stdc++.h>
 
 using namespace std;
 

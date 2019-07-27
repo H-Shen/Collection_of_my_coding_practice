@@ -6,14 +6,12 @@ using ll = long long;
 
 ll gcd(ll a, ll b) { return (b > 0) ? gcd(b, a % b) : a; }
 
-struct frac
-{
+struct frac {
     ll m, n;
     bool isNeg;
 };
 
-frac operator + (frac a, frac b)
-{
+frac operator+(frac a, frac b) {
     if (a.isNeg) a.m = -a.m;
     if (b.isNeg) b.m = -b.m;
 
@@ -21,19 +19,32 @@ frac operator + (frac a, frac b)
     res.m = a.m * b.n + b.m * a.n;
     res.n = a.n * b.n;
 
-    if (res.m == 0) { res.n = 1; res.isNeg = false; return res;}
+    if (res.m == 0) {
+        res.n = 1;
+        res.isNeg = false;
+        return res;
+    }
 
-    if (res.m < 0) { res.m = -res.m; res.isNeg = true; }
+    if (res.m < 0) {
+        res.m = -res.m;
+        res.isNeg = true;
+    }
     else { res.isNeg = false; }
 
-    if (res.m % res.n == 0) { res.m /= res.n; res.n = 1; }
-    else { ll tmp = gcd(res.m, res.n); res.m /= tmp; res.n /= tmp; }
+    if (res.m % res.n == 0) {
+        res.m /= res.n;
+        res.n = 1;
+    }
+    else {
+        ll tmp = gcd(res.m, res.n);
+        res.m /= tmp;
+        res.n /= tmp;
+    }
 
     return res;
 }
 
-string repr (frac a)
-{
+string repr(frac a) {
     string res;
     if (a.n == 1) { res = res + to_string(a.m); }
     else if (a.m < a.n) { res = res + to_string(a.m) + '/' + to_string(a.n); }
@@ -54,8 +65,7 @@ string repr (frac a)
     return res;
 }
 
-frac parse(string a)
-{
+frac parse(string a) {
     int len = a.size();
     int i;
     string part0, part1;
@@ -87,8 +97,7 @@ frac parse(string a)
     return res;
 }
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int n;
     cin >> n;

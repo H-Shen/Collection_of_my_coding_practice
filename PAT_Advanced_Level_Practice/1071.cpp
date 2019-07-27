@@ -1,12 +1,4 @@
-#include <cctype>
-#include <cstdlib>
-#include <cstdio>
-
-#include <string>
-#include <vector>
-#include <iostream>
-#include <unordered_map>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 using pairType = unordered_map<string, int>::value_type;

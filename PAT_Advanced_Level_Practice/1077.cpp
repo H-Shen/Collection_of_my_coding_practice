@@ -1,15 +1,10 @@
-#include <cstdio>
-#include <string>
-#include <algorithm>
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 const int MAXN = 300;
 char s[MAXN];
 
-string common(string &a, string &b)
-{
+string common(string &a, string &b) {
     string res;
     auto it_a = a.crbegin(), it_b = b.crbegin();
     while (true) {
@@ -28,12 +23,11 @@ string common(string &a, string &b)
     return res;
 }
 
-int main()
-{
+int main() {
     int n;
     scanf("%d", &n);
     getchar();
-    vector <string> A(n);
+    vector<string> A(n);
     string str;
     int i;
 

@@ -1,9 +1,4 @@
-#include <cstring>
-#include <cctype>
-
-#include <iostream>
-#include <string>
-#include <unordered_set>
+#include <bits/stdc++.h>
 
 using namespace std;
 

@@ -11,15 +11,13 @@ using namespace std;
 const int MAXN = 20;
 char s[MAXN], s2[MAXN];
 
-struct Node
-{
+struct Node {
     int val;
     string currentAddress;
     string nextAddress;
 };
 
-int main()
-{
+int main() {
     int n;
     string currentAddress;
 
@@ -32,7 +30,7 @@ int main()
 
     currentAddress = s;
     int i;
-    unordered_map <string, Node> save;
+    unordered_map<string, Node> save;
     Node tmp;
 
     for (i = 0; i < n; ++i) {
@@ -42,14 +40,14 @@ int main()
         save[tmp.currentAddress] = tmp;
     }
 
-    vector <Node> A, B;
-    unordered_set <int> numSave;
+    vector<Node> A, B;
+    unordered_set<int> numSave;
 
     while (true) {
         if (currentAddress == "-1") {
             break;
         }
-        if ( numSave.find(abs(save[currentAddress].val)) == numSave.end() ) {
+        if (numSave.find(abs(save[currentAddress].val)) == numSave.end()) {
             numSave.insert(abs(save[currentAddress].val));
             A.push_back(save[currentAddress]);
         } else {

@@ -1,11 +1,4 @@
-#include <cstdio>
-#include <unordered_set>
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <unordered_map>
-#include <numeric>
-#include <functional>
+#include <bits/stdc++.h>
 
 using namespace std;
 

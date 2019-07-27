@@ -5,17 +5,17 @@ using namespace std;
 
 const int N = 10010;
 
-int prime[N] = {0},num_prime = 0;
+int prime[N] = {0}, num_prime = 0;
 int isNotPrime[N] = {1, 1};
-vector <int> hashPos;
+vector<int> hashPos;
 
 void preComputation() {
 
     int i;
-    for (i = 2 ; i < N; i++) {
+    for (i = 2; i < N; i++) {
         if (!isNotPrime[i])
-            prime[num_prime++]=i;
-        for(int j = 0; j < num_prime && i * prime[j] <  N ; j++) {
+            prime[num_prime++] = i;
+        for (int j = 0; j < num_prime && i * prime[j] < N; j++) {
             isNotPrime[i * prime[j]] = 1;
             if (!(i % prime[j]))
                 break;
@@ -49,8 +49,7 @@ int main() {
         if (hashPos[newPos] == 0) {
             printf("%d ", newPos);
             hashPos[newPos] = 1;
-        }
-        else {
+        } else {
             j = 1;
             haveAns = false;
             while (true) {
@@ -62,7 +61,7 @@ int main() {
                     }
                     printf("%d ", newPos);
                     hashPos[newPos] = 1;
-                    haveAns =  true;
+                    haveAns = true;
                     break;
                 }
             }
@@ -77,8 +76,7 @@ int main() {
     if (hashPos[newPos] == 0) {
         printf("%d", newPos);
         hashPos[newPos] = 1;
-    }
-    else {
+    } else {
         j = 1;
         haveAns = false;
         while (true) {
@@ -90,7 +88,7 @@ int main() {
                 }
                 printf("%d", newPos);
                 hashPos[newPos] = 1;
-                haveAns =  true;
+                haveAns = true;
                 break;
             }
         }

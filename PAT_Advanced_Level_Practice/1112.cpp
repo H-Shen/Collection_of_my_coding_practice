@@ -9,23 +9,20 @@
 using namespace std;
 constexpr int MAXN = 1005;
 
-struct key
-{
+struct key {
     int firstAppearIdx = -1;
-    vector <string> substring;
+    vector<string> substring;
 };
 
-unordered_map <char, key> outputSubstring(const string &a)
-{
-    unordered_map <char, key> A;
+unordered_map<char, key> outputSubstring(const string &a) {
+    unordered_map<char, key> A;
     string tmp;
     char lastChar = '\0';
     for (int i = 0; i < static_cast<int>(a.size()); ++i) {
         if (lastChar == '\0') {
             lastChar = a[i];
             tmp += lastChar;
-        }
-        else if (lastChar == a[i]) {
+        } else if (lastChar == a[i]) {
             tmp += lastChar;
         } else {
             A[tmp[0]].substring.push_back(tmp);
@@ -46,9 +43,8 @@ unordered_map <char, key> outputSubstring(const string &a)
     return A;
 }
 
-vector < pair <char, int> > sieveStuckedKeys(const unordered_map <char, key> &A, const int &k)
-{
-    vector < pair <char, int> > res;
+vector<pair<char, int> > sieveStuckedKeys(const unordered_map<char, key> &A, const int &k) {
+    vector<pair<char, int> > res;
     bool haveAns = true;
     for (auto it = A.cbegin(); it != A.cend(); ++it) {
         haveAns = true;
@@ -65,27 +61,25 @@ vector < pair <char, int> > sieveStuckedKeys(const unordered_map <char, key> &A,
     return res;
 }
 
-int main()
-{
+int main() {
     int k;
     char str[MAXN];
     scanf("%d %s", &k, str);
     string s = str;
-    vector < pair <char, int> > res = sieveStuckedKeys(outputSubstring(s), k);
-    sort(res.begin(), res.end(), [](const pair <char, int> &a, const pair <char, int> &b)
-    {
+    vector<pair<char, int> > res = sieveStuckedKeys(outputSubstring(s), k);
+    sort(res.begin(), res.end(), [](const pair<char, int> &a, const pair<char, int> &b) {
         return (a.second < b.second);
     });
 
     for (const auto &p : res) printf("%c", p.first);
     printf("\n");
 
-    unordered_set <char> repeatedChar;
+    unordered_set<char> repeatedChar;
     for (const auto &p : res) repeatedChar.insert(p.first);
 
     //sieve
     string ans;
-    for (int i = 0; i < static_cast<int>(s.size()); ) {
+    for (int i = 0; i < static_cast<int>(s.size());) {
         ans += s[i];
         if (repeatedChar.find(s[i]) != repeatedChar.end()) {
             i += k;

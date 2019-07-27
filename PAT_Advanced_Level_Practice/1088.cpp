@@ -1,28 +1,17 @@
-#include <cstdio>
-
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include <vector>
-#include <functional>
-#include <numeric>
-#include <deque>
-#include <unordered_map>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;
 
 ll gcd(ll a, ll b) { return (b > 0) ? gcd(b, a % b) : a; }
 
-struct frac
-{
+struct frac {
     bool isNeg;
     ll m, n;
     bool isLegal = true;
 };
 
-string repr(frac A)
-{
+string repr(frac A) {
 
     if (!A.isLegal) {
         return "Inf";
@@ -60,14 +49,13 @@ string repr(frac A)
     }
 
     if (A.isNeg) {
-        res = "(-" +  res + ')';
+        res = "(-" + res + ')';
     }
 
     return res;
 }
 
-void parse(const string &s, ll &m, ll &n, bool &isNeg)
-{
+void parse(const string &s, ll &m, ll &n, bool &isNeg) {
     int i = 0;
     int len = static_cast<int>(s.size());
 
@@ -94,8 +82,7 @@ void parse(const string &s, ll &m, ll &n, bool &isNeg)
     n = stol(second);
 }
 
-void simplify(frac &A)
-{
+void simplify(frac &A) {
     ll m, n;
 
     if (A.m == 0) {
@@ -121,8 +108,7 @@ void simplify(frac &A)
 
 }
 
-frac operator + (frac A, frac B)
-{
+frac operator+(frac A, frac B) {
     if (A.isNeg) {
         A.m = -A.m;
     }
@@ -145,16 +131,14 @@ frac operator + (frac A, frac B)
 
 }
 
-frac operator - (frac A, frac B)
-{
+frac operator-(frac A, frac B) {
     B.isNeg = !B.isNeg;
 
     frac res = A + B;
     return res;
 }
 
-frac operator * (frac A, frac B)
-{
+frac operator*(frac A, frac B) {
     frac res;
     if (A.isNeg && B.isNeg) {
         res.isNeg = false;
@@ -170,8 +154,7 @@ frac operator * (frac A, frac B)
     return res;
 }
 
-frac operator / (frac A, frac B)
-{
+frac operator/(frac A, frac B) {
     frac res;
     if (B.m == 0) {
         res.isLegal = false;
@@ -194,8 +177,7 @@ frac operator / (frac A, frac B)
 }
 
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     string a, b;
     cin >> a >> b;

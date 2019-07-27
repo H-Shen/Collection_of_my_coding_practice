@@ -12,20 +12,17 @@ using namespace std;
 const int MAXN = 20;
 char s[MAXN], s2[MAXN];
 
-struct Node
-{
+struct Node {
     int val;
     string currentAddress;
     string nextAddress;
 };
 
-bool cmp (const Node &a, const Node &b)
-{
+bool cmp(const Node &a, const Node &b) {
     return (a.val < b.val);
 }
 
-int main()
-{
+int main() {
     int n;
     string currentAddress;
 
@@ -37,7 +34,7 @@ int main()
 
     currentAddress = s;
     int i;
-    unordered_map <string, Node> save;
+    unordered_map<string, Node> save;
     Node tmp;
 
     for (i = 0; i < n; ++i) {
@@ -47,7 +44,7 @@ int main()
         save[tmp.currentAddress] = tmp;
     }
 
-    vector <Node> A(n);
+    vector<Node> A(n);
     int cnt = 0;
     while (true) {
         if (currentAddress == "-1") {

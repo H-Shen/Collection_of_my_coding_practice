@@ -8,8 +8,7 @@ using ll = long long;
 const int MAXN = 10005;
 char s[MAXN];
 
-int main()
-{
+int main() {
     string s0, s1, res;
 
     scanf("%[^\n]", s);
@@ -20,7 +19,7 @@ int main()
     getchar();
     s1 = s;
 
-    unordered_set <char> dict (s1.begin(), s1.end());
+    unordered_set<char> dict(s1.begin(), s1.end());
     for (const auto &p : s0) {
         if (dict.find(p) == dict.end()) {
             res += p;

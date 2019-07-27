@@ -42,24 +42,21 @@ int main() {
                 temp.num3 = s[2];
                 temp.num4 = s[1] + s[2];
                 a.push_back(temp);
-            }
-            else if (L <= s[2] && s[2] < H && s[1] >= H) {
+            } else if (L <= s[2] && s[2] < H && s[1] >= H) {
                 id temp;
                 temp.num1 = s[0];
                 temp.num2 = s[1];
                 temp.num3 = s[2];
                 temp.num4 = s[1] + s[2];
                 b.push_back(temp);
-            }
-            else if (L <= s[2] && s[2] < H && L <= s[1] && s[1] < H && s[1] >= s[2]) {
+            } else if (L <= s[2] && s[2] < H && L <= s[1] && s[1] < H && s[1] >= s[2]) {
                 id temp;
                 temp.num1 = s[0];
                 temp.num2 = s[1];
                 temp.num3 = s[2];
                 temp.num4 = s[1] + s[2];
                 c.push_back(temp);
-            }
-            else {
+            } else {
                 id temp;
                 temp.num1 = s[0];
                 temp.num2 = s[1];
@@ -71,10 +68,14 @@ int main() {
         }
     }
 
-    sort(a.begin(), a.end(), cmp); reverse(a.begin(), a.end());
-    sort(b.begin(), b.end(), cmp); reverse(b.begin(), b.end());
-    sort(c.begin(), c.end(), cmp); reverse(c.begin(), c.end());
-    sort(d.begin(), d.end(), cmp); reverse(d.begin(), d.end());
+    sort(a.begin(), a.end(), cmp);
+    reverse(a.begin(), a.end());
+    sort(b.begin(), b.end(), cmp);
+    reverse(b.begin(), b.end());
+    sort(c.begin(), c.end(), cmp);
+    reverse(c.begin(), c.end());
+    sort(d.begin(), d.end(), cmp);
+    reverse(d.begin(), d.end());
     vector<id> total;
     total.insert(total.end(), a.begin(), a.end());
     total.insert(total.end(), b.begin(), b.end());

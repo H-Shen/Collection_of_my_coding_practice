@@ -5,8 +5,8 @@
 
 using namespace std;
 
-unordered_map <string, unordered_set <string> > A;
-unordered_set <string> itemSet;
+unordered_map<string, unordered_set<string> > A;
+unordered_set<string> itemSet;
 
 int main() {
     int n, m, items;

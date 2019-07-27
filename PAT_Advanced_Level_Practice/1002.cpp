@@ -1,12 +1,4 @@
-#include <iostream>
-#include <string>
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <functional>
-#include <numeric>
-#include <deque>
-#include <unordered_map>
+#include <bits/stdc++.h>
 
 using namespace std;
 const double eps = 1e-6;

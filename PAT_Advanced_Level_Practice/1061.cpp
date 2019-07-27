@@ -1,15 +1,10 @@
-#include <iostream>
-#include <string>
-#include <cctype>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-vector <string> weekdays = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
+vector<string> weekdays = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     string a0, a1, b0, b1;
     cin >> a0 >> a1 >> b0 >> b1;
@@ -29,7 +24,7 @@ int main()
         }
     }
     for (; i < len0; ++i) {
-        if (a0[i] == a1[i] && ( (isdigit(a0[i]) || (a0[i] >= 'A' && a0[i] <= 'N') ) ) ) {
+        if (a0[i] == a1[i] && ((isdigit(a0[i]) || (a0[i] >= 'A' && a0[i] <= 'N')))) {
             res = res + a0[i];
             break;
         }

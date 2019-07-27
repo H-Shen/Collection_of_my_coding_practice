@@ -60,7 +60,7 @@ int main() {
     }
 
     vector<Stu> res;
-    for (auto & it : A) {
+    for (auto &it : A) {
         if (it.second.mid_score > it.second.final_score) {
             double tmpDouble = it.second.mid_score * 0.4 + it.second.final_score * 0.6;
             double tmpDD = tmpDouble - (int) tmpDouble;

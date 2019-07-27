@@ -1,10 +1,4 @@
-#include <cstring>
-#include <ctime>
-
-#include <iostream>
-#include <algorithm>
-#include <map>
-#include <sstream>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;
@@ -98,8 +92,7 @@ ll gcd(ll a, ll b) { //A gcd func which considers the negative nums
     return a;
 }
 
-ll Pollard_rho(ll x, ll c)
-{
+ll Pollard_rho(ll x, ll c) {
     ll i = 1, k = 2;
     ll x0 = rand() % x;
     ll y = x0;
@@ -142,18 +135,17 @@ int main() {
         findfac(n);
         sort(factor, factor + tol);
 
-        map <ll, ll> table;
+        map<ll, ll> table;
 
         for (int item = 0; item < tol; item++) {
             if (table.find(factor[item]) == table.end()) {
                 table[factor[item]] = 1;
-            }
-            else
+            } else
                 table[factor[item]]++;
         }
 
         cout << n << "=";
-        map <ll, ll>::iterator it;
+        map<ll, ll>::iterator it;
 
         string output;
 
@@ -164,9 +156,7 @@ int main() {
                 ss << it->first;
                 ss >> temp;
                 output = output + temp + "*";
-            }
-
-            else {
+            } else {
                 stringstream ss0, ss1;
                 string temp0, temp1;
                 ss0 << it->first;

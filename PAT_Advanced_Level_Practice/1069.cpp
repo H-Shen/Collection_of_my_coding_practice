@@ -1,12 +1,4 @@
-#include <cmath>
-#include <cstdio>
-
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include <unordered_set>
-#include <functional>
-#include <set>
+#include <bits/stdc++.h>
 
 using namespace std;
 const static int N = 4;
@@ -19,7 +11,7 @@ void handle(string &c) {
 }
 
 int main() {
-    
+
     ios_base::sync_with_stdio(false);
     string a, b, c;
     cin >> a;

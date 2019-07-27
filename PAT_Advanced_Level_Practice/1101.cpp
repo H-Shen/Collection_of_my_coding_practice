@@ -1,13 +1,4 @@
-#include <cmath>
-#include <cstdio>
-
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <unordered_map>
-#include <unordered_set>
-#include <set>
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;

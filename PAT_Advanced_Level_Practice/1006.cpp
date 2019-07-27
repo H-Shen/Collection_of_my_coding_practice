@@ -1,9 +1,4 @@
-#include <cstdio>
-
-#include <string>
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 const int MAXN = 20;

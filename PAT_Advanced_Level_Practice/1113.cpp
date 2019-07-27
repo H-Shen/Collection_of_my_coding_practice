@@ -1,12 +1,4 @@
-#include <cstdio>
-#include <cmath>
-
-#include <string>
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <numeric>
-#include <functional>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;

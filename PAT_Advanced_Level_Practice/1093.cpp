@@ -7,8 +7,7 @@ ll mod = 1000000007;
 constexpr int MAXN = 100005;
 char s[MAXN];
 
-int main()
-{
+int main() {
     ll countT = 0, countAT = 0, countPAT = 0;
     string str;
     scanf("%s", s);

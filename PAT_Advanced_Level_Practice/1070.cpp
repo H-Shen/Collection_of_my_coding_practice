@@ -6,8 +6,8 @@
 using namespace std;
 
 const double EPS = 1e-10;
-inline int sgn(double a)
-{
+
+inline int sgn(double a) {
     if (a < -EPS)
         return -1;
     if (a < EPS)
@@ -21,17 +21,15 @@ struct Mooncake {
     double price;
 };
 
-bool cmp(const Mooncake &A, const Mooncake &B)
-{
+bool cmp(const Mooncake &A, const Mooncake &B) {
     return (sgn(A.price - B.price) > 0);
 }
 
-int main()
-{
+int main() {
     int n, d, i;
     scanf("%d %d", &n, &d);
 
-    vector <Mooncake> mooncake(n);
+    vector<Mooncake> mooncake(n);
     for (i = 0; i < n; ++i) {
         scanf("%lf", &mooncake[i].vol);
     }
@@ -56,5 +54,5 @@ int main()
         }
     }
     printf("%.2lf\n", sum);
-    return 0 ;
+    return 0;
 }

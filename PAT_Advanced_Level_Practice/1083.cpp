@@ -1,9 +1,4 @@
-#include <cstring>
-
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 constexpr int MAXN = 15;

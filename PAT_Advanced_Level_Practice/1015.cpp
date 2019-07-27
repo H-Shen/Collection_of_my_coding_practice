@@ -1,10 +1,4 @@
-#include <cstdlib>
-#include <cstdio>
-
-#include <algorithm>
-#include <vector>
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;

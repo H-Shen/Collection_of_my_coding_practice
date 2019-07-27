@@ -1,11 +1,4 @@
-#include <iostream>
-#include <string>
-#include <cstdio>
-#include <algorithm>
-#include <vector>
-#include <functional>
-#include <numeric>
-#include <deque>
+#include <bits/stdc++.h>
 
 using namespace std;
 

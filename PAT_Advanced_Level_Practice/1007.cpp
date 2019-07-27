@@ -1,9 +1,4 @@
-#include <cstdio>
-#include <cstring>
-#include <cstdlib>
-
-#include <string>
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 

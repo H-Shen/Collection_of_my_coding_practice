@@ -1,28 +1,20 @@
-#include <cmath>
-#include <cstdio>
-
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;
 
-struct Stu
-{
+struct Stu {
     string name;
     string gender;
     string id;
     int grade;
 };
 
-int main()
-{
+int main() {
 
     int n;
-    vector <Stu> male;
-    vector <Stu> female;
+    vector<Stu> male;
+    vector<Stu> female;
     Stu tmp;
     cin >> n;
     for (int i = 0; i < n; ++i) {
@@ -33,7 +25,7 @@ int main()
             female.push_back(tmp);
         }
     }
-    auto f = [](const Stu &a, const Stu &b)->bool{ return a.grade < b.grade;};
+    auto f = [](const Stu &a, const Stu &b) -> bool { return a.grade < b.grade; };
     bool haveAns = true;
     int femaleMaxGrade = 0, maleMinGrade = 0;
 
