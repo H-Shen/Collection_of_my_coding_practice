@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 
+using namespace std;
+
 const int convert = 12;
 
 int main() {
@@ -16,7 +18,6 @@ int main() {
         s = "AM";
     }
 
-    printf("%d:%d %s\n", hour, minute, s.ctr());
-
+    printf("%d:%d %s\n", hour, minute, s.c_str());
     return 0;
 }
