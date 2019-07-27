@@ -18,8 +18,7 @@ int main() {
         if (s[i] != ' ') {
             putchar(s[i]);
             onlyOneSpace = 0;
-        }
-        else if (onlyOneSpace != 1) {
+        } else if (onlyOneSpace != 1) {
             onlyOneSpace = 1;
             putchar('\n');
         }

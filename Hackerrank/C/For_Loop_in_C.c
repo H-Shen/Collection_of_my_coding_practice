@@ -3,20 +3,18 @@
 #include <math.h>
 #include <stdlib.h>
 
-int main() 
-{
+int main() {
     int a, b;
     scanf("%d\n%d", &a, &b);
-  	// Complete the code.
+    // Complete the code.
     char A[][10] = {"one", "two", "three",
-                          "four", "five", "six",
-                          "seven", "eight", "nine"};
+                    "four", "five", "six",
+                    "seven", "eight", "nine"};
     for (int n = a; n <= b; ++n) {
         if (n > 9) {
             if (n & 1) {
                 printf("odd\n");
-            }
-            else {
+            } else {
                 printf("even\n");
             }
         } else {

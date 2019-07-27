@@ -6,11 +6,11 @@
 
 
 void calculate_the_maximum(int n, int k) {
-  //Write your code here.
+    //Write your code here.
     int maxVal = 0;
     int a_max = maxVal, b_max = maxVal, c_max = maxVal;
     int a, b, c;
-    
+
     for (int i = 1; i <= n - 1; ++i) {
         for (int j = i + 1; j <= n; ++j) {
             a = i & j;
@@ -27,9 +27,9 @@ void calculate_the_maximum(int n, int k) {
 
 int main() {
     int n, k;
-  
+
     scanf("%d %d", &n, &k);
     calculate_the_maximum(n, k);
- 
+
     return 0;
 }
