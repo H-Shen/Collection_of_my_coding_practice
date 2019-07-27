@@ -1,14 +1,10 @@
-#include <iostream>
-#include <iterator>
-#include <regex>
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 const regex r0("6{10,}");
 const regex r1("6{4,}");
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     string text;
     getline(cin, text);

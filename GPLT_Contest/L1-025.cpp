@@ -1,12 +1,11 @@
 #include <iostream>
 #include <string>
-#include <sstream>
 
 using namespace std;
 
 const int maxn = 2;
 
-bool judge(string s) {
+bool judge(const string &s) {
 
     int tmp = 0;
 
@@ -26,48 +25,45 @@ bool judge(string s) {
 int main() {
 
     string s, s_a, s_b;
-    int a, b;
+    int a = 0;
+    int b = 0;
     int cnt = 0;
     bool haveNoAns = false;
 
-    while (1) {
+    while (true) {
 
-            if (cnt == maxn) {
-                break;
+        if (cnt == maxn) {
+            break;
+        }
+        if (cnt == 0) {
+            cin >> s;
+            getchar();
+            if (judge(s)) {
+                s_a = s;
+                a = stoi(s);
+            } else {
+                s_a = "?";
+                haveNoAns = true;
             }
-            if (cnt == 0) {
-                cin >> s;
-                getchar();
-                if (judge(s)) {
-                    s_a = s;
-                    a = stoi(s);
-                }
-                else {
-                    s_a = "?";
-                    haveNoAns = true;
-                }
-                ++cnt;
+            ++cnt;
+        } else if (cnt == 1) {
+            getline(cin, s);
+            if (judge(s)) {
+                s_b = s;
+                b = stoi(s);
+            } else {
+                s_b = "?";
+                haveNoAns = true;
             }
-            else if (cnt == 1) {
-                getline(cin, s);
-                if (judge(s)) {
-                    s_b = s;
-                    b = stoi(s);
-                }
-                else {
-                    s_b = "?";
-                    haveNoAns = true;
-                }
-                ++cnt;
-            }
+            ++cnt;
+        }
     }
 
 
     cout << s_a << " + " << s_b << " = ";
     if (haveNoAns) {
         cout << "?" << endl;
-    }
-    else {
+    } else {
         cout << a + b << endl;
     }
 

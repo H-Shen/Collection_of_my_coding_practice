@@ -16,8 +16,8 @@ int vis[MAXITEM] = {0};
 struct Node {
     int first;
     int second;
-    bool operator < (const Node &other) const
-    {
+
+    bool operator<(const Node &other) const {
         if (first == other.first) {
             return (second < other.second);
         }
@@ -25,12 +25,11 @@ struct Node {
     }
 };
 
-tree <Node,null_type, less<Node>, rb_tree_tag,
-     tree_order_statistics_node_update> Rbtree;
-vector <Node> A;
+tree<Node, null_type, less<Node>, rb_tree_tag,
+        tree_order_statistics_node_update> Rbtree;
+vector<Node> A;
 
-int main()
-{
+int main() {
     int N;
     scanf("%d", &N);
     int len = 0;

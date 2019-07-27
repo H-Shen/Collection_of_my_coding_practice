@@ -11,12 +11,12 @@ int main() {
     cin >> s;
 
     auto it = s.begin();
-    while ( *it != ':') {
+    while (*it != ':') {
         s_a = s_a + (*it);
         ++it;
     }
     ++it;
-    while ( it != s.end() ) {
+    while (it != s.end()) {
         s_b = s_b + (*it);
         ++it;
     }
@@ -24,10 +24,9 @@ int main() {
     a = stoi(s_a);
     b = stoi(s_b);
 
-    if ( a >= 0 && a <= 12 ) {
+    if (a >= 0 && a <= 12) {
         cout << "Only " << s << ".  Too early to Dang." << endl;
-    }
-    else {
+    } else {
         int cnt = a - 12;
         if (b > 0) {
             ++cnt;

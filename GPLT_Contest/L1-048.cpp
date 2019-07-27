@@ -7,7 +7,7 @@ int main() {
 
     int m, s;
     cin >> m >> s;
-    vector < vector <int> > A(m, vector <int> (s));
+    vector<vector<int> > A(m, vector<int>(s));
 
     int i, j, k;
     for (i = 0; i < m; ++i) {
@@ -24,14 +24,14 @@ int main() {
         return 0;
     }
 
-    vector < vector <int> > B(s, vector <int> (n));
+    vector<vector<int> > B(s, vector<int>(n));
     for (i = 0; i < s; ++i) {
         for (j = 0; j < n; ++j) {
             cin >> B.at(i).at(j);
         }
     }
 
-    vector < vector <int> > C(m, vector <int> (n));
+    vector<vector<int> > C(m, vector<int>(n));
     for (i = 0; i < m; ++i) {
         for (j = 0; j < n; ++j) {
             for (k = 0; k < s; ++k) {

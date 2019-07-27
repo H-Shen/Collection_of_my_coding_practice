@@ -1,16 +1,15 @@
-#include <iostream>
-#include <ctime>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 typedef long long ll;
 
-ll mult_mod(ll a,ll b,ll c)  { // a * b % c
+ll mult_mod(ll a, ll b, ll c) { // a * b % c
     a %= c;
     b %= c;
     ll result = 0;
     while (b > 0) {
-        if(b & 1) {
+        if (b & 1) {
             result += a;
             result %= c;
         }
@@ -23,7 +22,7 @@ ll mult_mod(ll a,ll b,ll c)  { // a * b % c
 }
 
 
-ll pow_mod(ll x,ll n,ll mod) {  // x^n % c
+ll pow_mod(ll x, ll n, ll mod) {  // x^n % c
     if (n == 1)
         return x % mod;
     x %= mod;
@@ -38,12 +37,12 @@ ll pow_mod(ll x,ll n,ll mod) {  // x^n % c
     return result;
 }
 
-bool millerRabinPrimeCheckHelper(ll a,ll n,ll x,ll t) {
+bool millerRabinPrimeCheckHelper(ll a, ll n, ll x, ll t) {
     ll result = pow_mod(a, x, n);
     ll last = result;
-    for (int i = 1;i <= t; i++) {
+    for (int i = 1; i <= t; i++) {
         result = mult_mod(result, result, n);
-        if (result == 1 && last != 1 && last != n-1)
+        if (result == 1 && last != 1 && last != n - 1)
             return true;
         last = result;
     }
@@ -61,7 +60,7 @@ bool millerRabinPrimeCheck(ll n) {
     if ((n & 1) == 0)
         return false;
 
-    ll x = n-1;
+    ll x = n - 1;
     ll t = 0;
     while ((x & 1) == 0) {
         x >>= 1;
@@ -79,13 +78,12 @@ int main() {
     ll n;
     int cnt;
     cin >> cnt;
-    while(cnt--) {
+    while (cnt--) {
         cin >> n;
-        if ( millerRabinPrimeCheck(n) ) {
+        if (millerRabinPrimeCheck(n)) {
             cout << "Yes" << endl;
-        }
-        else {
-            cout << "No"  << endl;
+        } else {
+            cout << "No" << endl;
         }
 
     }

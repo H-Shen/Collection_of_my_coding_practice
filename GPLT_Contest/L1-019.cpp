@@ -1,5 +1,4 @@
-#include <string>
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -24,8 +23,7 @@ int main() {
 
         if (A0 == s && A1 != s) {
             --L0;
-        }
-        else {
+        } else {
             --L1;
         }
 
@@ -40,6 +38,6 @@ int main() {
             break;
         }
     }
-  
+
     return 0;
 }

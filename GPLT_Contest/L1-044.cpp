@@ -4,7 +4,9 @@
 
 using namespace std;
 
-unordered_map <string, string> A = {{"ChuiZi", "Bu"}, {"Bu", "JianDao"} , {"JianDao", "ChuiZi"}};
+unordered_map<string, string> A = {{"ChuiZi",  "Bu"},
+                                   {"Bu",      "JianDao"},
+                                   {"JianDao", "ChuiZi"}};
 
 int main() {
 
@@ -20,8 +22,7 @@ int main() {
         if (cnt == k) {
             cout << input << endl;
             cnt = 0;
-        }
-        else {
+        } else {
             cout << A[input] << endl;
             ++cnt;
         }

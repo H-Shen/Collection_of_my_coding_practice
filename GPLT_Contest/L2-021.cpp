@@ -12,7 +12,7 @@ struct User {
     int totalSize;
 };
 
-bool cmp(const User & a, const User & b) {
+bool cmp(const User &a, const User &b) {
     if (a.uniqueSize == b.uniqueSize) {
         return (a.totalSize < b.totalSize);
     }
@@ -24,15 +24,15 @@ int main() {
     int n, m, i, j;
     string id;
     cin >> n;
-    vector <User> A(n);
+    vector<User> A(n);
 
     for (j = 0; j < n; ++j) {
         cin >> id >> m;
-        vector <int> tmp(m);
+        vector<int> tmp(m);
         for (i = 0; i < m; ++i) {
             cin >> tmp[i];
         }
-        unordered_set <int> tmpSet (tmp.begin(), tmp.end());
+        unordered_set<int> tmpSet(tmp.begin(), tmp.end());
         A[j].uniqueSize = tmpSet.size();
         A[j].totalSize = m;
         A[j].id = id;

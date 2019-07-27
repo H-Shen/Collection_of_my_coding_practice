@@ -17,8 +17,7 @@ int main() {
     int rest = len % B;
     if (rest != 0) {
         W = len / B + 1;
-    }
-    else {
+    } else {
         W = len / B;
     }
 
@@ -28,7 +27,7 @@ int main() {
         return 0;
     }
 
-    vector < vector <char> > A(W);
+    vector<vector<char> > A(W);
     int i, j;
     for (i = 0; i < W; ++i) {
         A[i].resize(B);
@@ -38,9 +37,8 @@ int main() {
         for (j = 0; j < B; ++j) {
             if (pos == len) {
                 A[i][j] = ' ';
-            }
-            else {
-                A[i][j] =  s[pos];
+            } else {
+                A[i][j] = s[pos];
                 ++pos;
             }
         }

@@ -1,10 +1,4 @@
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <algorithm>
-#include <numeric>
-#include <functional>
-#include <unordered_set>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -15,16 +9,19 @@ class Fraction {
 public:
 
     void Simplify();
+
     void Display();
 
-    Fraction operator + (const Fraction &f) const;
-    Fraction operator - (const Fraction &f) const;
+    Fraction operator+(const Fraction &f) const;
+
+    Fraction operator-(const Fraction &f) const;
 
     int numerator = 1;
     int denominator = 1;
     bool isNegative = false;
 
     Fraction(int x, int y, bool z) : numerator(x), denominator(y), isNegative(z) {};
+
     Fraction() {};
 };
 
@@ -41,7 +38,7 @@ void Fraction::Simplify() {
     denominator /= Gcd;
 }
 
-Fraction Fraction::operator + (const Fraction &f) const {
+Fraction Fraction::operator+(const Fraction &f) const {
 
     Fraction res;
 
@@ -52,13 +49,12 @@ Fraction Fraction::operator + (const Fraction &f) const {
         res.numerator = numerator * f.denominator + denominator * f.numerator;
     }
 
-    //DIFFERENT SIGN
+        //DIFFERENT SIGN
     else {
         res.denominator = denominator * f.denominator;
-        if (isNegative == false && f.isNegative == true) {
+        if (!isNegative && f.isNegative) {
             res.numerator = numerator * f.denominator - denominator * f.numerator;
-        }
-        else {
+        } else {
             res.numerator = denominator * f.numerator - numerator * f.denominator;
         }
 
@@ -72,13 +68,12 @@ Fraction Fraction::operator + (const Fraction &f) const {
     return res;
 }
 
-Fraction Fraction::operator - (const Fraction &f) const {
+Fraction Fraction::operator-(const Fraction &f) const {
 
     Fraction f_copy = f;
-    if (f_copy.isNegative == false) {
+    if (!f_copy.isNegative) {
         f_copy.isNegative = true;
-    }
-    else {
+    } else {
         f_copy.isNegative = false;
     }
 
@@ -93,8 +88,7 @@ void Fraction::Display() {
     if (denominator == 0) {
         printf("Inf");
         return;
-    }
-    else if (numerator == 0) {
+    } else if (numerator == 0) {
         printf("0");
         return;
     }
@@ -102,15 +96,14 @@ void Fraction::Display() {
     string displayResult;
     if (denominator == 1) {
         displayResult = to_string(numerator);
-    }
-    else if (numerator > denominator) {
-        displayResult = to_string(numerator / denominator) + ' ' + to_string(numerator % denominator) + '/' + to_string(denominator);
-    }
-    else {
+    } else if (numerator > denominator) {
+        displayResult = to_string(numerator / denominator) + ' ' + to_string(numerator % denominator) + '/' +
+                        to_string(denominator);
+    } else {
         displayResult = to_string(numerator) + '/' + to_string(denominator);
     }
 
-    if (isNegative == true) {
+    if (isNegative) {
         displayResult = "-" + displayResult;
     }
 
@@ -140,7 +133,7 @@ int main() {
 
     int n, i;
     scanf("%d", &n);
-    vector <Fraction> A(n);
+    vector<Fraction> A(n);
     for (i = 0; i < n; ++i) {
         string f_str;
         scanf("%s", s);
