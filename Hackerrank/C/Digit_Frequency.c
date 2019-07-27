@@ -1,7 +1,5 @@
 #include <stdio.h>
-#include <string.h>
-#include <math.h>
-#include <stdlib.h>
+#include <ctype.h>
 
 int main() {
 
@@ -26,7 +24,6 @@ int main() {
         printf("%d ", count[i]);
     }
     printf("%d\n", count[digits - 1]);
-
 
     return 0;
 }
