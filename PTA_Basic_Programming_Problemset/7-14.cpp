@@ -1,7 +1,7 @@
 #include <cstdio>
 
 using namespace std;
-const int MAXN = 5;
+const int MAX_ELEMENT = 5;
 
 int main() {
 
@@ -13,7 +13,7 @@ int main() {
         printf("%5d", a);
         sum += a;
         ++count;
-        if (count == MAXN) {
+        if (count == MAX_ELEMENT) {
             printf("\n");
             count = 0;
         }

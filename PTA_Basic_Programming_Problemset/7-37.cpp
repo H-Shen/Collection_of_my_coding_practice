@@ -2,7 +2,7 @@
 #include <iostream>
 
 using namespace std;
-const size_t MAXN = 30;
+const size_t MAX_ELEMENT = 30;
 vector<int> A;
 int cnt, n;
 
@@ -30,7 +30,7 @@ void dfs(int Rest, int End, int Num) {
 int main() {
 
     ios_base::sync_with_stdio(false);
-    A.resize(MAXN);
+    A.resize(MAX_ELEMENT);
     cin >> n;
     if (n <= 0 || n > 30) {
         return 0;

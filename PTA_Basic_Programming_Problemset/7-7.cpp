@@ -1,9 +1,9 @@
-#include <cstdio>
+#include <bits/stdc++.h>
 
 const int convert = 12;
 
 int main() {
-    char *s = nullptr;
+    string s;
     int hour, minute;
     scanf("%d:%d", &hour, &minute);
 
@@ -16,7 +16,7 @@ int main() {
         s = "AM";
     }
 
-    printf("%d:%d %s\n", hour, minute, s);
+    printf("%d:%d %s\n", hour, minute, s.ctr());
 
     return 0;
 }

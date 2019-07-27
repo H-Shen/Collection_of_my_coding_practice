@@ -4,7 +4,7 @@
 #include <vector>
 
 using namespace std;
-const int MAXN = 6;
+const int MAX_ELEMENT = 6;
 const int LENGTH = 4;
 
 int main() {
@@ -29,7 +29,7 @@ int main() {
     int count = 1;
     for (const auto &it : result) {
         cout << it;
-        if (count == MAXN) {
+        if (count == MAX_ELEMENT) {
             cout << endl;
             count = 1;
         } else {
