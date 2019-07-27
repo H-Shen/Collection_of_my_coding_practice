@@ -22,7 +22,7 @@ int main() {
 
     bool haveAns = false;
     for (i = S; i <= M;) {
-        if (A[strList[i]] == false) {
+        if (!A[strList[i]]) {
             A[strList[i]] = true;
             printf("%s\n", strList[i].c_str());
             haveAns = true;

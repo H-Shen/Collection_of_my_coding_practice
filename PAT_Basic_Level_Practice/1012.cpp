@@ -4,8 +4,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
 
     bool hasA1 = false;
     bool hasA2 = false;
@@ -31,11 +30,10 @@ int main()
         }
 
         if (tmp % 5 == 1) {
-            if (change == false) {
+            if (!change) {
                 A2 = A2 + tmp;
                 change = true;
-            }
-            else {
+            } else {
                 A2 = A2 - tmp;
                 change = false;
             }
@@ -59,11 +57,11 @@ int main()
         }
     }
 
-    printf( (hasA1 == false) ? "N " : "%d ", A1);
-    printf( (hasA2 == false) ? "N " : "%d ", A2);
-    printf( (hasA3 == false) ? "N " : "%d ", A3);
-    printf( (hasA4 == false) ? "N " : "%.1f ", (double)A4 / cnt);
-    printf( (hasA5 == false) ? "N\n" : "%d\n", A5);
+    printf(!hasA1 ? "N " : "%d ", A1);
+    printf(!hasA2 ? "N " : "%d ", A2);
+    printf(!hasA3 ? "N " : "%d ", A3);
+    printf(!hasA4 ? "N " : "%.1f ", (double) A4 / cnt);
+    printf(!hasA5 ? "N\n" : "%d\n", A5);
 
     return 0;
 }

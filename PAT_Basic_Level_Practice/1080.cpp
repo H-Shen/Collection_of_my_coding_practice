@@ -37,7 +37,7 @@ int main() {
     string str;
 
     unordered_map<string, Stu> A;
-    int i, j;
+    int i;
     for (i = 0; i < p; ++i) {
         scanf("%s %d", s, &tmp);
         str = s;

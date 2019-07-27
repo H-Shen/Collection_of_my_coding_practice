@@ -1,7 +1,4 @@
-#include <algorithm>
-#include <string>
-#include <vector>
-#include <map>
+#include <cstdio>
 
 using namespace std;
 

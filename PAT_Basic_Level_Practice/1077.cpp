@@ -1,7 +1,6 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <functional>
 #include <numeric>
 
 using namespace std;
