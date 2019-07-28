@@ -1,11 +1,6 @@
 // https://www.nowcoder.com/practice/480caa5ffd164ac8b71caaa6d0f4e6db
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <unordered_set>
-#include <sstream>
+#include <bits/stdc++.h>
 
 using namespace std;
 

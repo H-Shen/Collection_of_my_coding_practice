@@ -4,19 +4,20 @@
 
 using namespace std;
 
-struct ListNode
-{
+struct ListNode {
     int m_nKey;
-    ListNode* next = nullptr;
+    ListNode *next = nullptr;
+
     ListNode(int key) : m_nKey(key) {}
+
     ListNode() {}
 };
 
 int main() {
 
     // create
-    ListNode* head = new ListNode();
-    ListNode* temp = head;
+    ListNode *head = new ListNode();
+    ListNode *temp = head;
     for (int i = 1; i <= 7; ++i) {
         temp->next = new ListNode(i);
         temp = temp->next;
@@ -46,7 +47,7 @@ int main() {
     while (head != nullptr) {
         temp = head;
         head = head->next;
-        delete(temp);
+        delete (temp);
     }
 
     return 0;

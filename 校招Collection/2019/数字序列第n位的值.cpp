@@ -10,10 +10,10 @@ int main() {
     int N;
     cin >> N;
     int n = static_cast<int>(sqrt(static_cast<double>(2 * N)));
-    while ( 2*N > (1+n)*n ) {
+    while (2 * N > (1 + n) * n) {
         ++n;
     }
-    while ( 2+n*(n-1) > 2*N ) {
+    while (2 + n * (n - 1) > 2 * N) {
         --n;
     }
     cout << n << endl;

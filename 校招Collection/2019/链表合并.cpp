@@ -1,8 +1,6 @@
 // https://www.nowcoder.com/practice/27c833289e5f4f5e9ba3718ce9136759?tpId=98
 
-#include <iostream>
-#include <list>
-#include <sstream>
+#include <bits/stdc++.h>
 
 using namespace std;
 

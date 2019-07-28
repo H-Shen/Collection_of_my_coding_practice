@@ -32,7 +32,7 @@ int main() {
     int secondMax = INT_MIN;
     int secondMaxIdx = -1;
     for (size_t i = 0; i != A.size(); ++i) {
-        if (A[i] <= firstMax && A[i] >= secondMax && i != firstMaxIdx) {
+        if (A[i] <= firstMax && A[i] >= secondMax && firstMaxIdx != static_cast<int>(i)) {
             secondMax = A[i];
             secondMaxIdx = i;
         }
@@ -40,7 +40,7 @@ int main() {
 
     int thirdMax = INT_MIN;
     for (size_t i = 0; i != A.size(); ++i) {
-        if (A[i] <= secondMax && A[i] >= thirdMax && i != secondMaxIdx) {
+        if (A[i] <= secondMax && A[i] >= thirdMax && secondMaxIdx != static_cast<int>(i)) {
             thirdMax = A[i];
         }
     }

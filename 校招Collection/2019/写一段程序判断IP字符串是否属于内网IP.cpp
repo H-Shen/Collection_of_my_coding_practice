@@ -1,7 +1,6 @@
 // https://www.nowcoder.com/practice/80ce674313ff43af9d7ac7a41ae21527
 
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 

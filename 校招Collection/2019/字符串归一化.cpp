@@ -11,7 +11,7 @@ int main() {
     ios_base::sync_with_stdio(false);
     string s;
     cin >> s;
-    for (const auto & ch : s) {
+    for (const auto &ch : s) {
         ++A[ch - 'a'];
     }
     for (size_t i = 0; i != MAXN; ++i) {

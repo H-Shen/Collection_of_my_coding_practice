@@ -17,8 +17,7 @@ int maxSubsequence(int A[], int n) {
 
         if (currentSum > maxSum) {
             maxSum = currentSum;
-        }
-        else if (currentSum < 0) {
+        } else if (currentSum < 0) {
             currentSum = 0;
         }
     }
@@ -32,7 +31,7 @@ int main() {
 
     int n;
     scanf("%d", &n);
-    int* A = new int[n];
+    int *A = new int[n];
     for (int i = 0; i < n; ++i) {
         scanf("%d", &A[i]);
     }

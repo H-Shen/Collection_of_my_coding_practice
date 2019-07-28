@@ -1,12 +1,6 @@
 // https://www.nowcoder.com/practice/678417477f424f8f8f97c54941abf631
 
-#include <ctime>
-#include <climits>
-
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 const int MAXN = 10;
@@ -23,7 +17,7 @@ int parent(int x) {
     }
 }
 
-void bubbleUp(int x, vector<int> & A) {
+void bubbleUp(int x, vector<int> &A) {
     while (!isRoot(x)) {
         if (A.at(x) > A.at(parent(x))) {
             int temp = A.at(x);
@@ -37,29 +31,29 @@ void bubbleUp(int x, vector<int> & A) {
 }
 
 bool hasLeft(int x, int heapSize) {
-    return (2*x + 1 < heapSize);
+    return (2 * x + 1 < heapSize);
 }
 
 int left(int x, int heapSize) {
     if (hasLeft(x, heapSize)) {
-        return 2*x + 1;
+        return 2 * x + 1;
     }
     throw out_of_range("");
 }
 
 bool hasRight(int x, int heapSize) {
-    return (2*x + 2 < heapSize);
+    return (2 * x + 2 < heapSize);
 }
 
 int right(int x, int heapSize) {
     if (hasRight(x, heapSize)) {
-        return 2*x + 2;
+        return 2 * x + 2;
     } else {
         throw out_of_range("");
     }
 }
 
-void bubbleDown(int x, int heapSize, vector<int> & A) {
+void bubbleDown(int x, int heapSize, vector<int> &A) {
     while (hasLeft(x, heapSize)) {
         if (hasRight(x, heapSize)) {
             if (A.at(left(x, heapSize)) >= A.at(right(x, heapSize))) {
@@ -145,7 +139,7 @@ int main() {
         A.push_back(temp);
     }
     heapSort(A);
-    for (const auto & i : A) {
+    for (const auto &i : A) {
         cout << i << endl;
     }
 

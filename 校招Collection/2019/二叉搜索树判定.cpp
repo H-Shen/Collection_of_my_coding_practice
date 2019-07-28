@@ -10,10 +10,11 @@ struct TreeNode {
     int val;
     TreeNode *left;
     TreeNode *right;
+
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void inorderTraversal(TreeNode * root) {
+void inorderTraversal(TreeNode *root) {
     if (root) {
         inorderTraversal(root->left);
         A.emplace_back(root->val);

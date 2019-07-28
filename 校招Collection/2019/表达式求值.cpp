@@ -11,12 +11,12 @@ int main() {
     cin >> a >> b >> c;
     int maxVal = -1;
 
-    maxVal = max(maxVal, a+b*c);
-    maxVal = max(maxVal, a*b+c);
-    maxVal = max(maxVal, a+b+c);
-    maxVal = max(maxVal, a*b*c);
-    maxVal = max(maxVal, (a+b)*c);
-    maxVal = max(maxVal, a*(b+c));
+    maxVal = max(maxVal, a + b * c);
+    maxVal = max(maxVal, a * b + c);
+    maxVal = max(maxVal, a + b + c);
+    maxVal = max(maxVal, a * b * c);
+    maxVal = max(maxVal, (a + b) * c);
+    maxVal = max(maxVal, a * (b + c));
 
     cout << maxVal << endl;
     return 0;

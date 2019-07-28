@@ -22,10 +22,9 @@ int main() {
     }
 
     auto maxPair = max_element(begin(A), end(A),
-            [](const pair<int, int> &p1, const pair<int, int> &p2)
-            {
-                return p1.second < p2.second;
-            });
+                               [](const pair<int, int> &p1, const pair<int, int> &p2) {
+                                   return p1.second < p2.second;
+                               });
 
     cout << maxPair->first << endl;
     return 0;

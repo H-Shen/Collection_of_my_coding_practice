@@ -1,12 +1,6 @@
 // https://www.nowcoder.com/practice/6b668316f0ac4421ae86d7ead4301b42
 
-#include <cstdio>
-#include <cstring>
-#include <cmath>
-
-#include <iostream>
-#include <algorithm>
-#include <sstream>
+#include <bits/stdc++.h>
 
 #define L(x) (1 << (x))
 
@@ -16,12 +10,11 @@ const double PI = acos(-1.0);
 const int L_FFT = 133015;
 double ax[L_FFT], ay[L_FFT], bx[L_FFT], by[L_FFT];
 int sum[L_FFT];
-int x1[L_FFT],x2[L_FFT];
+int x1[L_FFT], x2[L_FFT];
 
-int revv(int x, int bits){
+int revv(int x, int bits) {
     int ret = 0;
-    for (int i = 0; i < bits; i++)
-    {
+    for (int i = 0; i < bits; i++) {
         ret <<= 1;
         ret |= x & 1;
         x >>= 1;
@@ -29,8 +22,7 @@ int revv(int x, int bits){
     return ret;
 }
 
-void fft(double * a, double * b, int n, bool rev)
-{
+void fft(double *a, double *b, int n, bool rev) {
     int bits = 0;
     while (1 << bits < n) ++bits;
     for (int i = 0; i < n; i++) {
@@ -56,19 +48,18 @@ void fft(double * a, double * b, int n, bool rev)
             }
         }
     }
-    if (rev)
-    {
+    if (rev) {
         for (int i = 0; i < n; i++)
             a[i] /= n, b[i] /= n;
     }
 }
 
-int solve(int a[],int na,int b[],int nb,int ans[]) {
+int solve(int a[], int na, int b[], int nb, int ans[]) {
     int len = max(na, nb), ln;
-    for(ln=0; L(ln)<len; ++ln);
-    len=L(++ln);
-    for (int i = 0; i < len ; ++i) {
-        if (i >= na) ax[i] = 0, ay[i] =0;
+    for (ln = 0; L(ln) < len; ++ln);
+    len = L(++ln);
+    for (int i = 0; i < len; ++i) {
+        if (i >= na) ax[i] = 0, ay[i] = 0;
         else ax[i] = a[i], ay[i] = 0;
     }
     fft(ax, ay, len, 0);
@@ -88,30 +79,30 @@ int solve(int a[],int na,int b[],int nb,int ans[]) {
     return len;
 }
 
-string mul(string sa,string sb) {
+string mul(string sa, string sb) {
 
     if (sa == "0" || sb == "0")
         return "0";
 
     string ans;
-    int l1,l2,l,i;
+    int l1, l2, l, i;
     memset(sum, 0, sizeof(sum));
     l1 = static_cast<int>(sa.size());
     l2 = static_cast<int>(sb.size());
 
-    for(i = 0; i < l1; i++)
+    for (i = 0; i < l1; i++)
         x1[i] = sa[l1 - i - 1] - '0';
-    for(i = 0; i < l2; i++)
+    for (i = 0; i < l2; i++)
         x2[i] = sb[l2 - i - 1] - '0';
     l = solve(x1, l1, x2, l2, sum);
-    for(i = 0; i<l || sum[i] >= 10; i++) {
+    for (i = 0; i < l || sum[i] >= 10; i++) {
         sum[i + 1] += sum[i] / 10;
         sum[i] %= 10;
     }
     l = i;
-    while(sum[l] <= 0 && l>0)
+    while (sum[l] <= 0 && l > 0)
         l--;
-    for(i = l; i >= 0; i--)
+    for (i = l; i >= 0; i--)
         ans += sum[i] + '0';
     return ans;
 }

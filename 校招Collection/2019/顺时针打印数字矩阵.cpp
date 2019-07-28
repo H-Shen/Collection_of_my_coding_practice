@@ -4,7 +4,7 @@
 
 using namespace std;
 
-vector<int> clockwisePrint(const vector<vector<int> > & mat, int n, int m) {
+vector<int> clockwisePrint(const vector<vector<int> > &mat, int n, int m) {
 
     int leftCorneri = 0, leftCornerj = 0, rightCorneri = n - 1, rightCornerj = m - 1;
     int counter = 0;
@@ -19,13 +19,11 @@ vector<int> clockwisePrint(const vector<vector<int> > & mat, int n, int m) {
         for (i = 0; i <= m - 1; i++) {
             result.push_back(mat[0][i]);
         }
-    }
-    else if (m == 1) {
+    } else if (m == 1) {
         for (i = 0; i <= n - 1; i++) {
             result.push_back(mat[i][0]);
         }
-    }
-    else {
+    } else {
         while (true) {
             for (i = leftCorneri; i <= rightCornerj; i++) {
                 result.push_back(mat[leftCorneri][i]);
@@ -51,7 +49,10 @@ vector<int> clockwisePrint(const vector<vector<int> > & mat, int n, int m) {
             }
             if (counter == total)
                 break;
-            leftCorneri++; leftCornerj++; rightCorneri--; rightCornerj--;
+            leftCorneri++;
+            leftCornerj++;
+            rightCorneri--;
+            rightCornerj--;
         }
     }
     return result;

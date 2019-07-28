@@ -19,7 +19,7 @@ int main() {
         return 0;
     }
 
-    vector<vector<int> >A(n, vector<int>(m));
+    vector<vector<int> > A(n, vector<int>(m));
 
     int counter = 1;
     // (j, i)
