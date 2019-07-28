@@ -8,7 +8,7 @@ int main() {
 
     int A[N][N], rot[n][n];
     int i, j, input, posX, posY, op1, op2;
-    while (1) {
+    while (true) {
         for (i = 0; i < N; i++) {
             for (j = 0; j < N; j++) {
                 input = scanf("%d", &A[i][j]);

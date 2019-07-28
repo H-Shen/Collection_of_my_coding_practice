@@ -49,7 +49,7 @@ int main() {
     }
 
     vector<Node> nodeList;
-    while (1) {
+    while (true) {
         nodeList.push_back(input[curAdd]);
         if (input[curAdd].nextAdd == "-1") {
             break;

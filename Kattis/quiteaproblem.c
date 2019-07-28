@@ -28,7 +28,7 @@ int check_letter(char c, int index) {
 int read_line() {
     char next;
     int index = 0, found = 0;
-    while (1) {
+    while (true) {
         if (scanf("%c", &next) == EOF) return 0;
         if (next == '\n') {
             printf(found ? "yes\n" : "no\n");

@@ -9,7 +9,7 @@ int main() {
     string s;
     string split = "";
 
-    while (1) {
+    while (true) {
         cin >> n;
         if (n == 0) {
             break;

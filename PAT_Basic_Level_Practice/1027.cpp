@@ -8,7 +8,7 @@ int main() {
     scanf("%d %c", &A, &ch);
     A_copy = A;
 
-    while (1) {
+    while (true) {
         if (A_copy % 2 == 0) {
             --A_copy;
             continue;

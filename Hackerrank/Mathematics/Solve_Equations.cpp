@@ -57,7 +57,7 @@ vector < pair <ll, ll> > allSolutions(ll a, ll b, ll c, ll d, ll &x, ll &y) {
 
     ll t = (x - x0) / B;
 
-    while (1) {
+    while (true) {
         x = x0 + B * t;
         y = y0 - A * t;
         pair <ll, ll> tmp = {x, y};

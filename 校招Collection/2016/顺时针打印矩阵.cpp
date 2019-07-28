@@ -24,7 +24,7 @@ public:
             }
         }
         else {
-            while (1) {
+            while (true) {
                 for (i = leftCorneri; i <= rightCornerj; i++) {
                     result.push_back(mat[leftCorneri][i]);
                     counter++;

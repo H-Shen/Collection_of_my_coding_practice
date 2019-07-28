@@ -6,7 +6,7 @@ int main() {
     int n;
     int cnt = 0;
     cin >> n;
-    while (1) {
+    while (true) {
         if (n == 1) {
             break;
         }

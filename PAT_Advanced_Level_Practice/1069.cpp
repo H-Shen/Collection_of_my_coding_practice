@@ -17,7 +17,7 @@ int main() {
     cin >> a;
     handle(a);
 
-    while (1) {
+    while (true) {
         unordered_set<char> tmp(a.begin(), a.end());
         if (tmp.size() == 1) {
             cout << a << " - " << a << " = 0000" << endl;

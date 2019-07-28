@@ -19,7 +19,7 @@ int main() {
         ++i;
     }
     char j = '0';
-    while (1) {
+    while (true) {
         if (A.find(j) != A.end()) {
             printf("%c:%d\n", j, A[j]);
         }

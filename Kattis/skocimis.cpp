@@ -14,7 +14,7 @@ int main() {
     int cnt = 0;
     int diff0 = 0;
     int diff1 = 0;
-    while (1) {
+    while (true) {
         diff0 = A[1] - A[0];
         diff1 = A[2] - A[1];
         if (diff1 == 1 && diff0 == 1) {

@@ -10,7 +10,7 @@ int main() {
     string courseNum;
     bool hasAns = true;
 
-    while (1) {
+    while (true) {
         hasAns = true;
         cin >> course;
         if (course == 0) {

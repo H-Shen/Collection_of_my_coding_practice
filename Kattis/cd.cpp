@@ -6,7 +6,7 @@ unordered_set<int> A;
 
 int main() {
     int n, m, pos, cnt;
-    while (1) {
+    while (true) {
         cnt = 0;
         A.clear();
         scanf("%d %d", &n, &m);

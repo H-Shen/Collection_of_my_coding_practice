@@ -10,7 +10,7 @@ int main() {
     ios_base::sync_with_stdio(false);
     int n;
     string s;
-    while (1) {
+    while (true) {
         cin >> n;
         if (n == 0) {
             break;

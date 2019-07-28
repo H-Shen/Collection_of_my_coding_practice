@@ -34,7 +34,7 @@ int main(void){
     cin >> T;
     while (T--) {
         cin >> N;
-        while (1) {
+        while (true) {
             if (table.find(N) == table.end())
                 N--;
             else {

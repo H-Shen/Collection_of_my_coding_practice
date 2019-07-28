@@ -16,7 +16,7 @@ int main() {
     string answer;
     unordered_map<char, item> A;
 
-    while (1) {
+    while (true) {
         cin >> submitTime;
         if (submitTime == -1) {
             break;

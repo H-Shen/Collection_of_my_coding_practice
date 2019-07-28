@@ -34,7 +34,7 @@ int main() {
     int nodeListLen = 0;
     Node currentNode = allNodeList[headNodeAddress];
 
-    while (1) {
+    while (true) {
         nodeList.push_back(currentNode);
         ++nodeListLen;
         if (currentNode.nextAddress == "-1") {

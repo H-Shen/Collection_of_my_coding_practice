@@ -43,7 +43,7 @@ int main() {
 
         int cnt = 0;
         int leftCorneri = 0, leftCornerj = 0, rightCorneri = m - 1, rightCornerj = n - 1;
-        while (1) {
+        while (true) {
             for (i = leftCorneri; i <= rightCornerj; ++i) {
                 a[leftCorneri][i] = A[cnt++];
             }

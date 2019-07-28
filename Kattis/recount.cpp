@@ -9,7 +9,7 @@ unordered_map<string, int> A;
 int main() {
     ios_base::sync_with_stdio(false);
     string s;
-    while (1) {
+    while (true) {
         getline(cin, s);
         if (s == "***") {
             break;

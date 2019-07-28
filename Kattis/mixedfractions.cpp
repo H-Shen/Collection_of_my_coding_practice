@@ -7,7 +7,7 @@ using ll = long long;
 int main() {
     ios_base::sync_with_stdio(false);
     ll a, b;
-    while (1) {
+    while (true) {
         cin >> a >> b;
         if (a == 0 && b == 0) {
             break;

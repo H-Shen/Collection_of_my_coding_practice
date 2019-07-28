@@ -37,7 +37,7 @@ int main() {
     vector<Node> largerThanK;
     string currentAdd = headAddress;
 
-    while (1) {
+    while (true) {
 
         if (inputNode[currentAdd].val > k) {
             largerThanK.push_back(inputNode[currentAdd]);

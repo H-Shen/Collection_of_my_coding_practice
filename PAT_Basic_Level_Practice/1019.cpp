@@ -21,7 +21,7 @@ int main() {
         return 0;
     }
 
-    while (1) {
+    while (true) {
 
         sort(s.begin(), s.end());
         s_rev = s;

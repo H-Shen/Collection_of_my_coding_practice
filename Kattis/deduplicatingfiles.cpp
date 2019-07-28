@@ -16,7 +16,7 @@ int hashGet(string s) {
 int main() {
     int n;
     string s;
-    while (1) {
+    while (true) {
         cin >> n;
         getchar();
         if (n == 0) {

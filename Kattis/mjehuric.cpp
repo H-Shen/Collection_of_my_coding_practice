@@ -21,7 +21,7 @@ int main() {
         cin >> i;
     }
 
-    while (1) {
+    while (true) {
         if (A == ans) {
             break;
         }

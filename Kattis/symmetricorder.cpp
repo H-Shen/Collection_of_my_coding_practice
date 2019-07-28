@@ -11,7 +11,7 @@ int main() {
     string s;
     bool change = false;
 
-    while (1) {
+    while (true) {
         change = false;
         cin >> n;
         if (n == 0) {

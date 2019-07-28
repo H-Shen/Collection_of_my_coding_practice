@@ -24,7 +24,7 @@ bool judge(int n) {
     int sum = 0;
     unordered_set<int> A;
 
-    while (1) {
+    while (true) {
         sum = 0;
         while (n > 0) {
             sum = sum + (n % 10) * (n % 10);

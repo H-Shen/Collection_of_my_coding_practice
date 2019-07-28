@@ -7,7 +7,7 @@ int main() {
 
     ios_base::sync_with_stdio(false);
     vector<int> A;
-    while (1) {
+    while (true) {
         vector<int>().swap(A);
         A.resize(3);
         for (auto &&i : A) {

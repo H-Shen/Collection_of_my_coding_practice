@@ -15,7 +15,7 @@ bool is_zero(double a) {
 int main() {
 
     double x1, y1, x2, y2, p;
-    while (1) {
+    while (true) {
         scanf("%lf %lf %lf %lf %lf", &x1, &y1, &x2, &y2, &p);
 
         if (is_zero(x1)) break;

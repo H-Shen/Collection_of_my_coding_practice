@@ -96,7 +96,7 @@ ll Pollard_rho(ll x, ll c) {
     ll i = 1, k = 2;
     ll x0 = rand() % x;
     ll y = x0;
-    while (1) {
+    while (true) {
         i++;
         x0 = (mult_mod(x0, x0, x) + c) % x;
         ll d = gcd(y - x0, x);
