@@ -1,6 +1,7 @@
 // https://open.kattis.com/problems/quiteaproblem
 
 #include <stdio.h>
+#include <stdbool.h>
 
 #define WORD_LENGTH 7
 
