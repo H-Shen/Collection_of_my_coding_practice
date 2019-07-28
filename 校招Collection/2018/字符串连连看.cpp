@@ -6,8 +6,7 @@ using namespace std;
 const string pattern("(\\w)\\1{2,}");
 const regex r(pattern);
 
-int main()
-{
+int main() {
     string s;
     smatch result;
     getline(cin, s);

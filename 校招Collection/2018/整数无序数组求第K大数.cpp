@@ -5,7 +5,7 @@
 using namespace std;
 
 struct cmp {
-    bool operator() (const int & lhs, const int & rhs) const {
+    bool operator()(const int &lhs, const int &rhs) const {
         return lhs > rhs;
     }
 };

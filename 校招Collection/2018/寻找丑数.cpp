@@ -16,7 +16,7 @@ void GetUglyNumber_Solution(int index) {
     int a = 0;
     int b = 0;
     int c = 0;
-    int*dp = new int[index];
+    int *dp = new int[index];
     dp[0] = 1;
     for (int i = 1; i < index; i++) {
         dp[i] = min(dp[a] * 2, min(dp[b] * 3, dp[c] * 5));

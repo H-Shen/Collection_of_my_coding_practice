@@ -15,8 +15,8 @@ int main() {
         return 0;
     }
 
-    vector <int> A(n);
-    for (auto && i : A) {
+    vector<int> A(n);
+    for (auto &&i : A) {
         cin >> i;
     }
     int maxVal = *max_element(A.begin(), A.end());

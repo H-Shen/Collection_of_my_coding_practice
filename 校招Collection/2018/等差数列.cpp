@@ -22,7 +22,6 @@ int main() {
     }
 
     sort(A.begin(), A.end());
-    bool haveAns = true;
     for (int i = 1; i < n - 1; ++i) {
         if (A[i] - A[i - 1] != A[i + 1] - A[i]) {
             cout << "Impossible" << endl;

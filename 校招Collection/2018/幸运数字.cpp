@@ -23,8 +23,7 @@ vector<string> add(const vector<string> &A) {
     return result;
 }
 
-int main()
-{
+int main() {
     vector<string> A = {"6", "8"};
     vector<string> temp = A;
 

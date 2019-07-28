@@ -39,8 +39,7 @@ string f(const string &s) {
 
 int main() {
 
-    auto cmp = [](const string &lhs, const string &rhs)
-    {
+    auto cmp = [](const string &lhs, const string &rhs) {
         vector<int> lhs_vec = getVector(lhs);
         vector<int> rhs_vec = getVector(rhs);
         if (lhs_vec.at(0) == rhs_vec.at(0)) {

@@ -13,11 +13,11 @@ int num_prime = 0;
 int main() {
 
     // pre
-    for (int i = 2 ; i < N; i++) {
+    for (int i = 2; i < N; i++) {
         if (!isNotPrime[i]) {
-            prime[num_prime++]=i;
+            prime[num_prime++] = i;
         }
-        for(int j = 0; j < num_prime && i * prime[j] <  N ; j++) {
+        for (int j = 0; j < num_prime && i * prime[j] < N; j++) {
             isNotPrime[i * prime[j]] = 1;
             if (!(i % prime[j])) {
                 break;

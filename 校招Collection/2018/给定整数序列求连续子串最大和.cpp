@@ -23,8 +23,7 @@ int maxSubsequence(const vector<int> &A) {
 
         if (currentSum > maxSum) {
             maxSum = currentSum;
-        }
-        else if (currentSum < 0) {
+        } else if (currentSum < 0) {
             currentSum = 0;
         }
     }

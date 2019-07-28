@@ -1,10 +1,6 @@
 // https://www.nowcoder.com/practice/e172dbac7d9140e98eef66c9ebbe25f8
 
-#include <string>
-#include <unordered_map>
-#include <cstdio>
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -18,8 +14,8 @@ int main() {
     string str = s;
     int n = static_cast<int>(str.size());
     for (int i = 0; i < n; ++i) {
-        for (int j = i; j < n ; ++j) {
-            ++A[str.substr(i,  j - i + 1)];
+        for (int j = i; j < n; ++j) {
+            ++A[str.substr(i, j - i + 1)];
         }
     }
     int maxVal = 0;
