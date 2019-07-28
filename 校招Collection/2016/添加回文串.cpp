@@ -1,6 +1,5 @@
 inline
-bool isPalindrome(const string & A, const int len)
-{
+bool isPalindrome(const string &A, const int len) {
     for (int i = 0, j = len - 1; i < j; ++i, --j) {
         if (A[i] != A[j]) {
             return false;

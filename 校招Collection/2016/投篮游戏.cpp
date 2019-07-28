@@ -11,8 +11,8 @@ int main() {
     bool haveAns;
 
     while (~scanf("%d %d", &p, &n)) {
-        vector <int> a(p);
-        vector <int> b(n);
+        vector<int> a(p);
+        vector<int> b(n);
         haveAns = false;
         for (i = 0; i < n; i++) {
             scanf("%d", &b[i]);
@@ -22,8 +22,7 @@ int main() {
             if (a[tmp] == 1) {
                 haveAns = true;
                 break;
-            }
-            else {
+            } else {
                 a[tmp] = 1;
             }
         }

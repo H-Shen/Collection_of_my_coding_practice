@@ -11,16 +11,16 @@ public:
      */
     int countBitDiff(int m, int n) {
 
-		int num = m ^ n;
+        int num = m ^n;
         int k = 0;
-    	int a;
+        int a;
 
-    	while (num != 0){
-        	if (num & 1) {
+        while (num != 0) {
+            if (num & 1) {
                 k++;
             }
-        	num >>= 1;
-    	}
+            num >>= 1;
+        }
         return k;
     }
 };

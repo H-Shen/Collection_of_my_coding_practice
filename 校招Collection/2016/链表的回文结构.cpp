@@ -9,9 +9,9 @@ struct ListNode {
 
 class PalindromeList {
 public:
-    bool chkPalindrome(ListNode* A) {
+    bool chkPalindrome(ListNode *A) {
         // write code here
-        ListNode* curr = A;
+        ListNode *curr = A;
         int length = 0;
         while (curr) {
             ++length;
@@ -24,15 +24,15 @@ public:
         }
 
         // a lambda function to reverse a linked list
-        auto reverseList = [=](ListNode* head)-> ListNode* {
+        auto reverseList = [=](ListNode *head) -> ListNode * {
 
             if (!head || !head->next) {
                 return head;
             }
 
-            ListNode* prev = head;
-            ListNode* curr = head->next;
-            ListNode* temp;
+            ListNode *prev = head;
+            ListNode *curr = head->next;
+            ListNode *temp;
 
             while (curr) {
                 temp = curr->next;
@@ -51,14 +51,14 @@ public:
             reversePosition = length / 2;
         }
 
-        ListNode* reverseNode = A;
+        ListNode *reverseNode = A;
         int counter = 0;
         while (counter <= reversePosition) {
             reverseNode = reverseNode->next;
             ++counter;
         }
 
-        ListNode* p = reverseList(reverseNode);
+        ListNode *p = reverseList(reverseNode);
         curr = A;
         while (p) {
             if (curr->val != p->val) {

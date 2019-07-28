@@ -24,7 +24,7 @@ int main() {
             x1 = max(x1, x);
             y1 = max(y1, y);
         }
-        ll side = max( abs(y1 - y0), abs(x1 - x0) );
+        ll side = max(abs(y1 - y0), abs(x1 - x0));
         printf("%lld\n", side * side);
     }
 

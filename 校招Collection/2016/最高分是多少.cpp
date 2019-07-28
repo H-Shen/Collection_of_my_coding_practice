@@ -17,15 +17,14 @@ int main(void) {
             scanf("%d", &A[i]);
         }
         for (i = 0; i < M; i++) {
-        	scanf(" %c", &temp);
+            scanf(" %c", &temp);
             if (temp == 'Q') {
-				scanf("%d %d", &idA, &idB);
+                scanf("%d %d", &idA, &idB);
                 if (idA > idB)
                     swap(idA, idB);
                 maxVal = *max_element(A.begin() + idA - 1, A.begin() + idB);
                 printf("%d\n", maxVal);
-            }
-            else {
+            } else {
                 scanf("%d %d", &idA, &tempVal);
                 A[idA - 1] = tempVal;
             }

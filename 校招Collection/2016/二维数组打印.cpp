@@ -2,7 +2,7 @@
 
 class Printer {
 public:
-    vector<int> arrayPrint(vector<vector<int> > arr, int n) {
+    vector<int> arrayPrint(vector <vector<int>> arr, int n) {
         const int initial = -123456;
         for (int i = 0; i < n; i++) {
             reverse(arr[i].begin(), arr[i].end());
@@ -13,7 +13,7 @@ public:
             item[i] = initial;
         }
 
-        vector<vector<int> > a(2 * n - 1);
+        vector <vector<int>> a(2 * n - 1);
         for (int i = 0; i < 2 * n - 1; i++) {
             a[i] = item;
         }

@@ -6,8 +6,7 @@ using namespace std;
 
 const double EPS = 1e-6;
 
-inline int sgn(double a)
-{
+inline int sgn(double a) {
     if (a < -EPS) {
         return -1;
     }
@@ -17,12 +16,11 @@ inline int sgn(double a)
     return 1;
 }
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int n, m, x, y, t, i, j;
     while (cin >> n >> m >> x >> y >> t) {
-        vector < vector <double> > A(n);
+        vector<vector<double> > A(n);
         for (auto &p : A) {
             p.resize(m);
         }

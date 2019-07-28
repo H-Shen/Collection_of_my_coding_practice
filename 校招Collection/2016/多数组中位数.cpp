@@ -6,7 +6,7 @@ public:
         multiset<int> a;
         int i;
         int pos = 1;
-        int len= arr1.size();
+        int len = arr1.size();
         int kth = len;
         for (i = 0; i < len; i++)
             a.insert(arr1[i]);

@@ -4,8 +4,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     int n, i;
     while (~scanf("%d", &n)) {
 
@@ -14,7 +13,7 @@ int main()
             continue;
         }
 
-        vector <int> A(n);
+        vector<int> A(n);
         for (i = 0; i < n; ++i) {
             scanf("%d", &A[i]);
         }
@@ -24,11 +23,11 @@ int main()
             continue;
         }
 
-        vector <int> D(n - 1);
+        vector<int> D(n - 1);
         for (i = 0; i < n - 2; ++i) {
             D[i] = A[i + 1] - A[i];
         }
-        vector <int> minValList;
+        vector<int> minValList;
         int maxDList = *max_element(D.begin(), D.end());
 
         for (i = 0; i < n - 3; ++i) {
