@@ -22,13 +22,12 @@ int main() {
         len = static_cast<int>(str.size());
         crnStr = "";
         inQuota = false;
-        unordered_set <string> res;
+        unordered_set<string> res;
 
         for (i = 0; i < len; i++) {
             if (str[i] == '\"') {
                 inQuota = !inQuota;
-            }
-            else if (inQuota)
+            } else if (inQuota)
                 crnStr += str[i];
             else {
                 if (str[i] == ',') {

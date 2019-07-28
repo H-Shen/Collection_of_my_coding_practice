@@ -2,8 +2,8 @@
 
 class Solution {
 public:
-    vector<vector<int> > FindContinuousSequence(int s) {
-        vector<vector<int> > res;
+    vector <vector<int>> FindContinuousSequence(int s) {
+        vector <vector<int>> res;
         int n = 2;
         int a;
 

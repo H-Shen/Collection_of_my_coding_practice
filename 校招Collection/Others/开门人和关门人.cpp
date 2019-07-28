@@ -18,7 +18,7 @@ struct id {
 };
 
 inline
-bool cmpLater(const id& x, const id& y) {
+bool cmpLater(const id &x, const id &y) {
     if (x.checkoutHour == y.checkoutHour) {
         if (x.checkoutMin == y.checkoutMin)
             return (x.checkoutSec > y.checkoutSec);
@@ -28,7 +28,7 @@ bool cmpLater(const id& x, const id& y) {
 }
 
 inline
-bool cmpEarlier(const id& x, const id& y) {
+bool cmpEarlier(const id &x, const id &y) {
     if (x.checkinHour == y.checkinHour) {
         if (x.checkinMin == y.checkinMin)
             return (x.checkinSec < y.checkinSec);

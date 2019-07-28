@@ -5,8 +5,7 @@
 using namespace std;
 constexpr double eps = 1e-6;
 
-inline int sgn(double a)
-{
+inline int sgn(double a) {
     if (a < -eps) {
         return -1;
     }
@@ -16,15 +15,13 @@ inline int sgn(double a)
     return 1;
 }
 
-bool cmp(const pair <int, double> &a, const pair <int, double> &b)
-{
+bool cmp(const pair<int, double> &a, const pair<int, double> &b) {
     double tmp_a = a.second / static_cast<double>(a.first);
     double tmp_b = b.second / static_cast<double>(b.first);
     return (sgn(tmp_a - tmp_b) > 0);
 }
 
-int main()
-{
+int main() {
     int m, n;
     double val;
     while (true) {
@@ -33,7 +30,7 @@ int main()
             break;
         }
         val = 0.0;
-        vector <pair<int, double> > A(static_cast<unsigned long>(m));
+        vector<pair<int, double> > A(static_cast<unsigned long>(m));
         for (auto &i : A) {
             scanf("%d %lf", &i.first, &i.second);
         }

@@ -22,7 +22,7 @@ int main() {
         int interval = len - sublen;
 
         for (int i = 0; i <= interval; i++) {
-            string temp (Tstr, i, sublen);
+            string temp(Tstr, i, sublen);
             if (temp == Pstr)
                 counter++;
         }

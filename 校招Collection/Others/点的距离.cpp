@@ -9,9 +9,10 @@ class CPoint {
 private:
     int x, y;
 public:
-    explicit CPoint(int x_, int y_) : x(x_), y(y_){}
-    double operator - (CPoint const &obj) const {
-        int temp = (x - obj.x)*(x - obj.x) + (y - obj.y)*(y - obj.y);
+    explicit CPoint(int x_, int y_) : x(x_), y(y_) {}
+
+    double operator-(CPoint const &obj) const {
+        int temp = (x - obj.x) * (x - obj.x) + (y - obj.y) * (y - obj.y);
         return sqrt(static_cast<double>(temp));
     }
 };

@@ -17,7 +17,7 @@ vector<vector<int> > subsetsWithDup(vector<int> &S) {
     for (int i = 0; i < a; i++) {
         vector<int> comb;
         for (int j = 0; j < n; j++) {
-            if ( (i >> j ) % 2 == 1 ) {
+            if ((i >> j) % 2 == 1) {
                 comb.push_back(S[j]);
             }
         }
@@ -40,12 +40,10 @@ int main() {
             if (a[i] % 5 == 0) {
                 b.push_back(a[i]);
                 sum_b += a[i];
-            }
-            else if (a[i] % 3 == 0 && a[i] % 15 != 0) {
+            } else if (a[i] % 3 == 0 && a[i] % 15 != 0) {
                 c.push_back(a[i]);
                 sum_c += a[i];
-            }
-            else {
+            } else {
                 d.push_back(a[i]);
                 sum_d += a[i];
             }

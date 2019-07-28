@@ -8,18 +8,21 @@ class Complex {
 private:
     int a, b;
 public:
-    Complex() : a(0), b(0){}
-    Complex operator + (Complex const &obj) {
+    Complex() : a(0), b(0) {}
+
+    Complex operator+(Complex const &obj) {
         Complex result;
         result.a = a + obj.a;
         result.b = b + obj.b;
         return result;
     }
-    friend ostream & operator << (ostream &out, const Complex &object);
-    friend istream & operator >> (istream &in,  Complex &object);
+
+    friend ostream &operator<<(ostream &out, const Complex &object);
+
+    friend istream &operator>>(istream &in, Complex &object);
 };
 
-ostream & operator << (ostream &out, const Complex &object) {
+ostream &operator<<(ostream &out, const Complex &object) {
     out << object.a;
     if (object.b != 0) {
         if (object.b > 0) {
@@ -30,7 +33,7 @@ ostream & operator << (ostream &out, const Complex &object) {
     return out;
 }
 
-istream & operator >> (istream &in,  Complex &object) {
+istream &operator>>(istream &in, Complex &object) {
     in >> object.a >> object.b;
     return in;
 }

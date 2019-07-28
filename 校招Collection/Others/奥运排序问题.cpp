@@ -80,7 +80,7 @@ void fixRank(vector<Country> &A, int controlNum, int len) {
             break;
         }
 
-        //fix by prize rank
+            //fix by prize rank
         case (1) : {
             lastItem = A[0].prize;
             lastRank = A[0].rankByPrize;
@@ -95,7 +95,7 @@ void fixRank(vector<Country> &A, int controlNum, int len) {
             break;
         }
 
-        //fix by golden2people rank
+            //fix by golden2people rank
         case (2) : {
             lastItemFraction = A[0].golden2people;
             lastRank = A[0].rankByGolden2People;
@@ -110,7 +110,7 @@ void fixRank(vector<Country> &A, int controlNum, int len) {
             break;
         }
 
-        //fix by prize2people rank
+            //fix by prize2people rank
         case (3) : {
             lastItemFraction = A[0].prize2people;
             lastRank = A[0].rankByPrize2People;

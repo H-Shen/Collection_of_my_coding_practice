@@ -19,9 +19,11 @@ public:
             deg += 360;
         }
     }
-    Angle operator - (Angle const &obj) const {
+
+    Angle operator-(Angle const &obj) const {
         return Angle(deg - obj.deg);
     }
+
     double getSine() const {
         return sin(deg * PI / 180.0);
     }

@@ -17,8 +17,7 @@ int main() {
                     break;
                 res = res + s[i];
                 i += 2;
-            }
-            else {
+            } else {
                 res = res + s[i];
                 i++;
             }

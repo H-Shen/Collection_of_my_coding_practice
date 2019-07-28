@@ -1,8 +1,6 @@
 // https://www.nowcoder.com/practice/df219d60a7af4171a981ef56bd597f7b
 
-#include <cstdio>
-#include <cstring>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -37,7 +35,7 @@ int main() {
         for (ll i = 0; i < n; i++) {
             scanf("%lld", &A[i]);
         }
-        printf("%lld\n" , maxSubsequence(A, n));
+        printf("%lld\n", maxSubsequence(A, n));
     }
     return 0;
 }

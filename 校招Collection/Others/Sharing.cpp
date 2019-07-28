@@ -13,8 +13,8 @@ struct Node {
     string nextNodeAddress;
 };
 
-unordered_map <string, Node> A;
-vector <Node> B, C;
+unordered_map<string, Node> A;
+vector<Node> B, C;
 string strB, strC;
 
 int posSuffix(string &A, string &B) {
@@ -79,8 +79,7 @@ int main() {
         pos = posSuffix(strB, strC);
         if (pos == 0) {
             cout << -1 << endl;
-        }
-        else {
+        } else {
             cout << B[len_B - pos].address << endl;
         }
 
@@ -88,8 +87,8 @@ int main() {
         A.clear();
         strB = "";
         strC = "";
-        vector <Node> ().swap(B);
-        vector <Node> ().swap(C);
+        vector<Node>().swap(B);
+        vector<Node>().swap(C);
     }
     return 0;
 }

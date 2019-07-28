@@ -18,7 +18,7 @@ int main() {
     while (~scanf("%d", &n)) {
 
         getchar();
-        vector <string> res;
+        vector<string> res;
 
         while (n--) {
 

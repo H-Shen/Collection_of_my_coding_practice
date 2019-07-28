@@ -11,8 +11,7 @@ struct TreeNode {
 };*/
 class Solution {
 public:
-    int TreeDepth(TreeNode *pRoot)
-    {
+    int TreeDepth(TreeNode *pRoot) {
         int rightDepth = 0, leftDepth = 0;
         if (!pRoot) {
             return 0;

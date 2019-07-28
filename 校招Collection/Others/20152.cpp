@@ -1,20 +1,21 @@
-#include <cassert>
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
+
 using namespace std;
 
 struct A {
     int n;
-    A() { };
-    A(int n_ ):n(n_) { }
-    A operator + (A other) const
-    {
-        A res (n + other.n);
+
+    A() {};
+
+    A(int n_) : n(n_) {}
+
+    A operator+(A other) const {
+        A res(n + other.n);
         return res;
     }
 };
-int main()
-{
+
+int main() {
     A c;
     const A a(10);
     c = a + A(30);

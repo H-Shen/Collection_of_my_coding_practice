@@ -1,11 +1,6 @@
 // https://www.nowcoder.com/practice/5cb47b86911c4aa48722e531a51ec823
 
-#include <cstdio>
-#include <map>
-#include <unordered_map>
-#include <unordered_set>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 

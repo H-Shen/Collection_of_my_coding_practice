@@ -10,11 +10,12 @@
 using namespace std;
 
 void operate(string str, int &a, int &b, int &c) {
-    for (int i = 0; i < str.size(); i++) {
+    int len = static_cast<int>(str.size());
+    for (int i = 0; i < len; i++) {
         if (str[i] == '+' || str[i] == '-')
             continue;
         else if (str[i] == 'x') {
-            if (i + 1 < str.size() && str[i + 1] == '^') {
+            if (i + 1 < len && str[i + 1] == '^') {
                 if (i - 1 >= 0 && str[i - 1] == '-')
                     --a;
                 else
@@ -35,8 +36,8 @@ void operate(string str, int &a, int &b, int &c) {
             }
             if (j - 1 >= 0 && str[j - 1] == '-')
                 temp_sum = 0 - temp_sum;
-            if (i < str.size() && str[i] == 'x') {
-                if (i + 1 < str.size() && str[i + 1] == '^') {
+            if (i < len && str[i] == 'x') {
+                if (i + 1 < len && str[i + 1] == '^') {
                     a = a + temp_sum;
                     i = i + 2;
                 } else {
@@ -52,7 +53,8 @@ int main() {
     string str;
     while (cin >> str) {
         int j = 0;
-        for (int i = 0; i < str.size(); i++) {
+        int len = static_cast<int>(str.size());
+        for (int i = 0; i < len; i++) {
             if (str[i] == '=')
                 j = i;
         }

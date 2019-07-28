@@ -2,18 +2,16 @@
 
 // https://www.nowcoder.com/practice/82215ba86ace4a2690fd9ded27fe9f49
 
-#include <stack>
-#include <unordered_map>
-#include <sstream>
-#include <vector>
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-const unordered_map<string, int> op = {{"/", 0}, {"+", 0}, {"*", 0}, {"-", 0}};
+const unordered_map<string, int> op = {{"/", 0},
+                                       {"+", 0},
+                                       {"*", 0},
+                                       {"-", 0}};
 
-int convert(const string& n) {
+int convert(const string &n) {
     stringstream ss;
     int result;
     ss << n;
@@ -21,7 +19,7 @@ int convert(const string& n) {
     return result;
 }
 
-int eval(const string& num1, const string& sign, const string& num2) {
+int eval(const string &num1, const string &sign, const string &num2) {
     int result;
     int Num1 = convert(num1), Num2 = convert(num2);
     if (sign == "+")
@@ -42,7 +40,7 @@ int eval(const string& num1, const string& sign, const string& num2) {
 
 int evalPN(vector<string> &tokens) {
     string num1, num2, result;
-    stack <string> opList;
+    stack<string> opList;
     int len = tokens.size();
     for (int i = 0; i < len; i++) {
         if (op.find(tokens[i]) != op.end()) {
@@ -52,8 +50,7 @@ int evalPN(vector<string> &tokens) {
             opList.pop();
             result = to_string(eval(num2, tokens[i], num1));
             opList.push(result);
-        }
-        else {
+        } else {
             opList.push(tokens[i]);
         }
     }

@@ -13,15 +13,15 @@ int main() {
             for (j = 0; j < N; j++) {
                 input = scanf("%d", &A[i][j]);
                 if (input == EOF) {
-                    return 0;
+                    goto ending;
                 }
             }
         }
         scanf("%d %d %d %d", &op1, &op2, &posX, &posY);
 
-        int Xor = op1 ^ op2;
-        posX--;
-        posY--;
+        int Xor = op1 ^op2;
+        --posX;
+        --posY;
 
         switch (Xor) {
             //(1 ^ 2)
@@ -38,7 +38,7 @@ int main() {
                 }
                 break;
             }
-            //(1 ^ 3)
+                //(1 ^ 3)
             case (2) : {
                 for (i = 0; i < n; i++) {
                     for (j = 0; j < n; j++) {
@@ -52,7 +52,7 @@ int main() {
                 }
                 break;
             }
-            //(2 ^ 2)
+                //(2 ^ 2)
             case (0) : {
                 for (i = 0; i < m; i++) {
                     for (j = 0; j < m; j++) {
@@ -66,7 +66,7 @@ int main() {
                 }
                 break;
             }
-            //(2 ^ 3)
+                //(2 ^ 3)
             default : {
                 for (i = 0; i < n; i++) {
                     for (j = 0; j < n; j++) {
@@ -88,5 +88,8 @@ int main() {
             printf("%d\n", A[i][N - 1]);
         }
     }
-    return 0;
+    ending:
+    {
+        return 0;
+    }
 }

@@ -6,15 +6,15 @@
 using namespace std;
 
 const int N = 100003;
-int prime[N] = {0},num_prime = 0;
+int prime[N] = {0}, num_prime = 0;
 int isNotPrime[N] = {1, 1};
 int pos = 0;
 
-void sieve(){
-    for (int i = 2 ; i < N; i++) {
+void sieve() {
+    for (int i = 2; i < N; i++) {
         if (!isNotPrime[i])
-            prime[num_prime++]=i;
-        for(int j = 0; j < num_prime && i * prime[j] <  N ; j++) {
+            prime[num_prime++] = i;
+        for (int j = 0; j < num_prime && i * prime[j] < N; j++) {
             isNotPrime[i * prime[j]] = 1;
             if (!(i % prime[j]))
                 break;
@@ -24,7 +24,7 @@ void sieve(){
     return;
 }
 
-unordered_map <int, int> result;
+unordered_map<int, int> result;
 
 int main() {
 

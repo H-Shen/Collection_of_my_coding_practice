@@ -8,7 +8,7 @@
 
 using namespace std;
 
-vector <int> A;
+vector<int> A;
 
 int main() {
     int n, i;
@@ -29,7 +29,7 @@ int main() {
         }
 
         printf("%d\n", maxVal);
-        vector <int> ().swap(A);
+        vector<int>().swap(A);
     }
     return 0;
 }

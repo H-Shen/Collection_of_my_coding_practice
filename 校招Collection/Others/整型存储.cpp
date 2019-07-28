@@ -12,7 +12,8 @@ class Number {
 private:
     int data;
 public:
-    explicit Number(int data_) : data(data_){}
+    explicit Number(int data_) : data(data_) {}
+
     ~Number() {
         bool isNegative = false;
         if (data < 0) {

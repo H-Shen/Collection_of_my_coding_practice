@@ -1,12 +1,16 @@
-#include <iostream>
-#include <cassert>
+#include <bits/stdc++.h>
+
 using namespace std;
-class Sample{
+
+class Sample {
 public:
     int v;
-    Sample(int n):v(n) { }
+
+    explicit Sample(int n) : v(n) {}
+
     Sample(const Sample &A) { v = 10; }
 };
+
 int main() {
     Sample a(5);
     Sample b = a;

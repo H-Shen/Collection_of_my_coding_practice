@@ -47,7 +47,10 @@ vector<vector<int> > generateMatrix(int n) {
             }
             if (counter == total)
                 break;
-            leftCorneri++; leftCornerj++; rightCorneri--; rightCornerj--;
+            leftCorneri++;
+            leftCornerj++;
+            rightCorneri--;
+            rightCornerj--;
         }
     }
     return matrix;

@@ -1,11 +1,6 @@
 // https://www.nowcoder.com/practice/bf3ec474bb7d410dbb9d5bbcd07a93e5
 
-#include <cstring>
-#include <cstdio>
-#include <cstdlib>
-
-#include <string>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 

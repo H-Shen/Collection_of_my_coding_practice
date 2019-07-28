@@ -72,7 +72,7 @@ int main() {
         getchar();
 
         //SPLIT
-        vector <string> res(4);
+        vector<string> res(4);
         istringstream f(s);
         subStr = "";
         i = 0;
@@ -90,7 +90,7 @@ int main() {
         tmp.stringSave = s;
 
         //DATE
-        vector <int> res_date(3);
+        vector<int> res_date(3);
         istringstream f0(res[1]);
         subStr = "";
         i = 0;
@@ -103,7 +103,7 @@ int main() {
 
         //TIME
         res[2].erase(res[2].find(","), 1);
-        vector <int> res_time(3);
+        vector<int> res_time(3);
         istringstream f1(res[2]);
         subStr = "";
         i = 0;
@@ -116,7 +116,7 @@ int main() {
 
         //LAP
         res[3].erase(res[3].find("("), 3);
-        vector <int> res_lap(2);
+        vector<int> res_lap(2);
         istringstream f2(res[3]);
         subStr = "";
         i = 0;
@@ -136,5 +136,5 @@ int main() {
     for (int i = 0; i < TaskListLen; i++) {
         printf("%s\n", TaskList[i].stringSave.c_str());
     }
-	return 0;
+    return 0;
 }

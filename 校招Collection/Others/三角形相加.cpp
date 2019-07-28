@@ -13,7 +13,9 @@ public:
         y += y_;
         x += x_;
     }
+
     explicit CTriangle() = default;
+
     ~CTriangle() {
         cout << "A(0," << y;
         cout << "),B(0,0),C(";

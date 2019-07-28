@@ -2,7 +2,7 @@
 
 class Solution {
 public:
-    vector<int> maxInWindows(const vector<int>& num, unsigned int size) {
+    vector<int> maxInWindows(const vector<int> &num, unsigned int size) {
         int n = static_cast<int>(num.size());
         int k = (int) size;
         vector<int> res;

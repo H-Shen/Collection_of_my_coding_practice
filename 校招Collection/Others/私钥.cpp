@@ -1,30 +1,26 @@
 // https://www.nowcoder.com/practice/5f660caeeed04543b59250cae5218bd8
 
-#include <cstdio>
-#include <iostream>
-#include <vector>
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 constexpr int maxn = 200;
 char s[maxn];
 
-int main()
-{
+int main() {
     int n, k, i, j;
     string str;
     while (~scanf("%d %d", &n, &k)) {
-        vector <int> A(static_cast<unsigned long>(n));
+        vector<int> A(static_cast<unsigned long>(n));
         for (i = 0; i < n; ++i) {
             scanf("%d", &A[i]);
         }
         scanf("%s", s);
         str = s;
-        if (str.size() < n) {
+        if (static_cast<int>(str.size()) < n) {
             str += string(n - str.size(), ' ');
         }
         for (i = 0; i < k; ++i) {
-            vector <char> res(static_cast<unsigned long>(n), ' ');
+            vector<char> res(static_cast<unsigned long>(n), ' ');
             for (j = 0; j < n; ++j) {
                 res[A[j] - 1] = str[j];
             }

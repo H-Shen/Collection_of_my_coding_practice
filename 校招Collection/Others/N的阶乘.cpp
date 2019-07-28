@@ -9,15 +9,15 @@ int a[L_FAC];
 
 string fac(int n) {
 
-    if(n == 0)
+    if (n == 0)
         return "1";
 
     string ans;
-    fill(a,a + L_FAC,0);
-    int s = 0,m = n;
-    while(m)
-        a[++s] = m % 10,m /= 10;
-    for(int i = n - 1;i >= 2; i--) {
+    fill(a, a + L_FAC, 0);
+    int s = 0, m = n;
+    while (m)
+        a[++s] = m % 10, m /= 10;
+    for (int i = n - 1; i >= 2; i--) {
         int w = 0;
         for (int j = 1; j <= s; j++) {
             a[j] = a[j] * i + w;

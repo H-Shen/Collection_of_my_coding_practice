@@ -39,7 +39,7 @@ int main() {
     int lineNum, i;
     int len = 0;
     bool haveAns;
-    deque <Log> table;
+    deque<Log> table;
     char str[maxLen];
 
     while (~scanf("%s %d", str, &lineNum)) {

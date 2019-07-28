@@ -17,30 +17,29 @@ int main() {
                 if (c == 0) {
                     cout << "x=0.00" << endl;
                 }
-                // Case 2
+                    // Case 2
                 else {
                     cout << -1 << endl;
                 }
             }
-            // Case 3
+                // Case 3
             else {
                 printf("x=%.2lf\n", static_cast<double>((c * (-1.0)) / b));
             }
-        }
-        else {
-            int delta = b*b - 4*a*c;
+        } else {
+            int delta = b * b - 4 * a * c;
             // Case 4
             if (delta < 0) {
                 cout << -1 << endl;
             }
-            // Case 5
+                // Case 5
             else if (delta == 0) {
                 printf("x=%.2lf\n", static_cast<double>((-b) / (2.0 * a)));
             }
-             // Case 6
+                // Case 6
             else {
-                double x1 = (-b-sqrt(static_cast<double>(delta))) / (2.0 * a);
-                double x2 = (-b+sqrt(static_cast<double>(delta))) / (2.0 * a);
+                double x1 = (-b - sqrt(static_cast<double>(delta))) / (2.0 * a);
+                double x2 = (-b + sqrt(static_cast<double>(delta))) / (2.0 * a);
                 printf("x1=%.2lf,x2=%.2lf\n", x1, x2);
             }
         }

@@ -1,9 +1,6 @@
 // https://www.nowcoder.com/practice/662ed635c2d445729a1227ee879a3610
 
-#include <vector>
-#include <algorithm>
-#include <iostream>
-#include <set>
+#include <bits/stdc++.h>
 
 using namespace std;
 

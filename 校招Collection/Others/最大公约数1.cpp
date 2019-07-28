@@ -1,9 +1,6 @@
-#include <iostream>
-#include <numeric>
 // https://www.nowcoder.com/practice/021010dda9f04900a86738931a5600a4
 
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 

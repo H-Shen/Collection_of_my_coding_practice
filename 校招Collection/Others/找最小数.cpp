@@ -13,7 +13,7 @@ int main() {
     for (auto &&i : A) {
         cin >> i.first >> i.second;
     }
-    sort(A.begin(), A.end(), [](const pair<int, int>&a, const pair<int, int>&b) {
+    sort(A.begin(), A.end(), [](const pair<int, int> &a, const pair<int, int> &b) {
         if (a.first == b.first) {
             return (a.second < b.second);
         }

@@ -27,8 +27,7 @@ int main() {
         result.at(i) = make_pair(iter->first, iter->second);
         ++iter;
     }
-    sort(result.begin(), result.end(), [](const pair<string, int> &a, const pair<string, int> &b)
-    {
+    sort(result.begin(), result.end(), [](const pair<string, int> &a, const pair<string, int> &b) {
         return (a.first < b.first);
     });
     for (const auto &it : result) {
