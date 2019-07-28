@@ -1,12 +1,9 @@
-#include <assert.h>
-#include <limits.h>
-#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-char* readline();
+char *readline();
 
 /*
  * Complete the handshake function below.
@@ -18,20 +15,19 @@ int handshake(int n) {
     return (n & 1) ? ((n - 1) / 2 * n) : (n / 2 * (n - 1));
 }
 
-int main()
-{
-    FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
+int main() {
+    FILE *fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    char* t_endptr;
-    char* t_str = readline();
-    int t = strtol(t_str, &t_endptr, 10);
+    char *t_endptr;
+    char *t_str = readline();
+    int t = (int) strtol(t_str, &t_endptr, 10);
 
     if (t_endptr == t_str || *t_endptr != '\0') { exit(EXIT_FAILURE); }
 
     for (int t_itr = 0; t_itr < t; t_itr++) {
-        char* n_endptr;
-        char* n_str = readline();
-        int n = strtol(n_str, &n_endptr, 10);
+        char *n_endptr;
+        char *n_str = readline();
+        int n = (int) strtol(n_str, &n_endptr, 10);
 
         if (n_endptr == n_str || *n_endptr != '\0') { exit(EXIT_FAILURE); }
 
@@ -45,14 +41,14 @@ int main()
     return 0;
 }
 
-char* readline() {
+char *readline() {
     size_t alloc_length = 1024;
     size_t data_length = 0;
-    char* data = malloc(alloc_length);
+    char *data = malloc(alloc_length);
 
     while (true) {
-        char* cursor = data + data_length;
-        char* line = fgets(cursor, alloc_length - data_length, stdin);
+        char *cursor = data + data_length;
+        char *line = fgets(cursor, (int) (alloc_length - data_length), stdin);
 
         if (!line) { break; }
 

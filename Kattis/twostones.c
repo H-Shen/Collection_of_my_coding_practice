@@ -5,10 +5,10 @@
 int main(void) {
     int n;
     scanf("%d", &n);
-    if (n % 2 == 0) {
-        printf("Bob\n");
-    } else {
+    if (n & 1) {
         printf("Alice\n");
+    } else {
+        printf("Bob\n");
     }
     return 0;
 }

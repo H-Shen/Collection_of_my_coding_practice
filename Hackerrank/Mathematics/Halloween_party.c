@@ -1,12 +1,9 @@
-#include <assert.h>
-#include <limits.h>
-#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-char* readline();
+char *readline();
 
 /*
  * Complete the halloweenParty function below.
@@ -15,23 +12,22 @@ long halloweenParty(long k) {
     /*
      * Write your code here.
      */
-     long a = k / 2;
-     return a * (k - a);
+    long a = k / 2;
+    return a * (k - a);
 }
 
-int main()
-{
-    FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
+int main() {
+    FILE *fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    char* t_endptr;
-    char* t_str = readline();
-    int t = strtol(t_str, &t_endptr, 10);
+    char *t_endptr;
+    char *t_str = readline();
+    int t = (int) strtol(t_str, &t_endptr, 10);
 
     if (t_endptr == t_str || *t_endptr != '\0') { exit(EXIT_FAILURE); }
 
     for (int t_itr = 0; t_itr < t; t_itr++) {
-        char* k_endptr;
-        char* k_str = readline();
+        char *k_endptr;
+        char *k_str = readline();
         long k = strtol(k_str, &k_endptr, 10);
 
         if (k_endptr == k_str || *k_endptr != '\0') { exit(EXIT_FAILURE); }
@@ -46,14 +42,14 @@ int main()
     return 0;
 }
 
-char* readline() {
+char *readline() {
     size_t alloc_length = 1024;
     size_t data_length = 0;
-    char* data = malloc(alloc_length);
+    char *data = malloc(alloc_length);
 
     while (true) {
-        char* cursor = data + data_length;
-        char* line = fgets(cursor, alloc_length - data_length, stdin);
+        char *cursor = data + data_length;
+        char *line = fgets(cursor, (int) (alloc_length - data_length), stdin);
 
         if (!line) { break; }
 

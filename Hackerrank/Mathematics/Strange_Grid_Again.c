@@ -1,13 +1,11 @@
-#include <assert.h>
-#include <limits.h>
-#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-char* readline();
-char** split_string(char*);
+char *readline();
+
+char **split_string(char *);
 
 /*
  * Complete the strangeGrid function below.
@@ -16,23 +14,22 @@ long long strangeGrid(long long r, long long c) {
     /*
      * Write your code here.
      */
-    return (r & 1) ? (5*r-7+2*c) : (5*r-11+2*c);
+    return (r & 1) ? (5 * r - 7 + 2 * c) : (5 * r - 11 + 2 * c);
 }
 
-int main()
-{
-    FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
+int main() {
+    FILE *fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    char** rc = split_string(readline());
+    char **rc = split_string(readline());
 
-    char* r_endptr;
-    char* r_str = rc[0];
+    char *r_endptr;
+    char *r_str = rc[0];
     long long r = strtol(r_str, &r_endptr, 10);
 
     if (r_endptr == r_str || *r_endptr != '\0') { exit(EXIT_FAILURE); }
 
-    char* c_endptr;
-    char* c_str = rc[1];
+    char *c_endptr;
+    char *c_str = rc[1];
     long long c = strtol(c_str, &c_endptr, 10);
 
     if (c_endptr == c_str || *c_endptr != '\0') { exit(EXIT_FAILURE); }
@@ -46,14 +43,14 @@ int main()
     return 0;
 }
 
-char* readline() {
+char *readline() {
     size_t alloc_length = 1024;
     size_t data_length = 0;
-    char* data = malloc(alloc_length);
+    char *data = malloc(alloc_length);
 
     while (true) {
-        char* cursor = data + data_length;
-        char* line = fgets(cursor, alloc_length - data_length, stdin);
+        char *cursor = data + data_length;
+        char *line = fgets(cursor, (int) (alloc_length - data_length), stdin);
 
         if (!line) { break; }
 
@@ -78,14 +75,14 @@ char* readline() {
     return data;
 }
 
-char** split_string(char* str) {
-    char** splits = NULL;
-    char* token = strtok(str, " ");
+char **split_string(char *str) {
+    char **splits = NULL;
+    char *token = strtok(str, " ");
 
     int spaces = 0;
 
     while (token) {
-        splits = realloc(splits, sizeof(char*) * ++spaces);
+        splits = realloc(splits, sizeof(char *) * ++spaces);
         if (!splits) {
             return splits;
         }

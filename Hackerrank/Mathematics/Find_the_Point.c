@@ -1,13 +1,11 @@
-#include <assert.h>
-#include <limits.h>
-#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-char* readline();
-char** split_string(char*);
+char *readline();
+
+char **split_string(char *);
 
 /*
  * Complete the findPoint function below.
@@ -22,56 +20,55 @@ char** split_string(char*);
  * return a;
  *
  */
-int* findPoint(int px, int py, int qx, int qy, int* result_count) {
+int *findPoint(int px, int py, int qx, int qy, int *result_count) {
     /*
      * Write your code here.
      */
     *result_count = 2;
-    int* result = (int *)calloc(2, sizeof(int));
+    int *result = (int *) calloc(2, sizeof(int));
     *result = qx * 2 - px;
     *(result + 1) = qy * 2 - py;
     return result;
 }
 
-int main()
-{
-    FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
+int main() {
+    FILE *fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    char* n_endptr;
-    char* n_str = readline();
-    int n = strtol(n_str, &n_endptr, 10);
+    char *n_endptr;
+    char *n_str = readline();
+    int n = (int) strtol(n_str, &n_endptr, 10);
 
     if (n_endptr == n_str || *n_endptr != '\0') { exit(EXIT_FAILURE); }
 
     for (int n_itr = 0; n_itr < n; n_itr++) {
-        char** pxPyQxQy = split_string(readline());
+        char **pxPyQxQy = split_string(readline());
 
-        char* px_endptr;
-        char* px_str = pxPyQxQy[0];
-        int px = strtol(px_str, &px_endptr, 10);
+        char *px_endptr;
+        char *px_str = pxPyQxQy[0];
+        int px = (int) strtol(px_str, &px_endptr, 10);
 
         if (px_endptr == px_str || *px_endptr != '\0') { exit(EXIT_FAILURE); }
 
-        char* py_endptr;
-        char* py_str = pxPyQxQy[1];
-        int py = strtol(py_str, &py_endptr, 10);
+        char *py_endptr;
+        char *py_str = pxPyQxQy[1];
+        int py = (int) strtol(py_str, &py_endptr, 10);
 
         if (py_endptr == py_str || *py_endptr != '\0') { exit(EXIT_FAILURE); }
 
-        char* qx_endptr;
-        char* qx_str = pxPyQxQy[2];
-        int qx = strtol(qx_str, &qx_endptr, 10);
+        char *qx_endptr;
+        char *qx_str = pxPyQxQy[2];
+        int qx = (int) strtol(qx_str, &qx_endptr, 10);
 
         if (qx_endptr == qx_str || *qx_endptr != '\0') { exit(EXIT_FAILURE); }
 
-        char* qy_endptr;
-        char* qy_str = pxPyQxQy[3];
-        int qy = strtol(qy_str, &qy_endptr, 10);
+        char *qy_endptr;
+        char *qy_str = pxPyQxQy[3];
+        int qy = (int) strtol(qy_str, &qy_endptr, 10);
 
         if (qy_endptr == qy_str || *qy_endptr != '\0') { exit(EXIT_FAILURE); }
 
         int result_count;
-        int* result = findPoint(px, py, qx, qy, &result_count);
+        int *result = findPoint(px, py, qx, qy, &result_count);
 
         for (int result_itr = 0; result_itr < result_count; result_itr++) {
             fprintf(fptr, "%d", result[result_itr]);
@@ -89,14 +86,14 @@ int main()
     return 0;
 }
 
-char* readline() {
+char *readline() {
     size_t alloc_length = 1024;
     size_t data_length = 0;
-    char* data = malloc(alloc_length);
+    char *data = malloc(alloc_length);
 
     while (true) {
-        char* cursor = data + data_length;
-        char* line = fgets(cursor, alloc_length - data_length, stdin);
+        char *cursor = data + data_length;
+        char *line = fgets(cursor, (int) (alloc_length - data_length), stdin);
 
         if (!line) { break; }
 
@@ -121,14 +118,14 @@ char* readline() {
     return data;
 }
 
-char** split_string(char* str) {
-    char** splits = NULL;
-    char* token = strtok(str, " ");
+char **split_string(char *str) {
+    char **splits = NULL;
+    char *token = strtok(str, " ");
 
     int spaces = 0;
 
     while (token) {
-        splits = realloc(splits, sizeof(char*) * ++spaces);
+        splits = realloc(splits, sizeof(char *) * ++spaces);
         if (!splits) {
             return splits;
         }
