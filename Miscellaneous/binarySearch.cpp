@@ -8,11 +8,9 @@
  */
 
 // 2019/07/28
-// In order to avoid overflow, (low + high) / 2 could be changed to low + (high - low) / 2
+// The reason why (low + high) / 2 was changed to low + (high - low) / 2 is to avoid the overflow.
 
-#include <climits>
 #include <cassert>
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -31,7 +29,7 @@ int bSearch_recursion(const vector<T> &A, int low, int high, T key) {
     if (low > high) {
         return -1;
     }
-    int mid = (low + high) / 2;
+    int mid = low + (high - low) / 2;
     if (key < A[mid]) {
         return bSearch_recursion(A, low, mid - 1, key);
     } else if (key > A[mid]) {
@@ -52,7 +50,7 @@ int bSearch(const vector<T> &A, T key) {
         if (low > high) {
             return -1;
         }
-        int mid = (low + high) / 2;
+        int mid = low + (high - low) / 2;
         if (key < A[mid]) {
             high = mid - 1;
         } else if (key > A[mid]) {
@@ -75,7 +73,7 @@ int lowerBound(const vector<T> &A, T key) {
         if (low >= high) {
             return low;
         }
-        int mid = (low + high) / 2;
+        int mid = low + (high - low) / 2;
         if (key <= A[mid]) {
             high = mid;
         } else {
@@ -96,7 +94,7 @@ int upperBound(const vector<T> &A, T key) {
         if (low >= high) {
             return low;
         }
-        int mid = (low + high) / 2;
+        int mid = low + (high - low) / 2;
         if (key >= A[mid]) {
             low = mid + 1;
         } else {
