@@ -15,8 +15,7 @@ int main() {
 
     if (len_b > len_a) {
         haveAns = false;
-    }
-    else {
+    } else {
         for (i = 0, j = 0; j < len_a; j++) {
             if (b[i] == a[j]) {
                 i++;
@@ -27,10 +26,9 @@ int main() {
         }
     }
 
-    if (haveAns == false) {
+    if (!haveAns) {
         printf("No\n");
-    }
-    else {
+    } else {
         printf("Yes\n");
     }
 

@@ -17,7 +17,7 @@ int main() {
 
     for (j = 1; j < MAXN; j++) {
 
-        bitset <MAXLEN> a(j);
+        bitset<MAXLEN> a(j);
         str = a.to_string();
 
         //f(x)

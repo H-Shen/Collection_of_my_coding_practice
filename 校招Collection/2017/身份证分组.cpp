@@ -28,8 +28,7 @@ int main() {
             cout << s_clean;
         else if (len_s_clean <= 14) {
             cout << s_clean.substr(0, 6) << ' ' << s_clean.substr(6);
-        }
-        else {
+        } else {
             cout << s_clean.substr(0, 6) << ' ' << s_clean.substr(6, 8) << ' ' << s_clean.substr(14);
         }
         cout << endl;

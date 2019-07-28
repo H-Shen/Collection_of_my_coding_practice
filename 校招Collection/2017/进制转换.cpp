@@ -1,17 +1,35 @@
 // https://www.nowcoder.com/practice/ac61207721a34b74b06597fe6eb67c52
 
-#include <iostream>
-#include <unordered_map>
-#include <string>
-#include <sstream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-unordered_map <int, string> baseStr = {{10, "A"}, {11, "B"}, {12, "C"},
-    {13, "D"}, {14, "E"}, {15, "F"}, {16, "G"}, {17, "H"}, {18, "I"},
-    {19, "J"}, {20, "K"}, {21, "L"}, {22, "M"}, {23, "N"}, {24, "O"},
-    {25, "P"}, {26, "Q"}, {27, "R"}, {28, "S"}, {29, "T"}, {30, "U"},
-    {31, "V"}, {32, "W"}, {33, "X"}, {34, "Y"}, {35, "Z"}};
+unordered_map<int, string> baseStr = {{10, "A"},
+                                      {11, "B"},
+                                      {12, "C"},
+                                      {13, "D"},
+                                      {14, "E"},
+                                      {15, "F"},
+                                      {16, "G"},
+                                      {17, "H"},
+                                      {18, "I"},
+                                      {19, "J"},
+                                      {20, "K"},
+                                      {21, "L"},
+                                      {22, "M"},
+                                      {23, "N"},
+                                      {24, "O"},
+                                      {25, "P"},
+                                      {26, "Q"},
+                                      {27, "R"},
+                                      {28, "S"},
+                                      {29, "T"},
+                                      {30, "U"},
+                                      {31, "V"},
+                                      {32, "W"},
+                                      {33, "X"},
+                                      {34, "Y"},
+                                      {35, "Z"}};
 
 string decimalToAny(int num, int n) {
     bool flag = true;
@@ -28,8 +46,7 @@ string decimalToAny(int num, int n) {
         remainder = num % n;
         if (remainder > 9 && remainder < 36) {
             remainder_string = baseStr[remainder];
-        }
-        else {
+        } else {
             stringstream tmp;
             tmp << remainder;
             tmp >> remainder_string;
@@ -38,10 +55,9 @@ string decimalToAny(int num, int n) {
         num /= n;
     }
 
-    if (flag == true) {
+    if (flag) {
         return new_num_str;
-    }
-    else {
+    } else {
         new_num_str = "-" + new_num_str;
         return new_num_str;
     }
@@ -52,7 +68,7 @@ string baseMToBaseN(string M, int m, int n) {
     int decimal = strtol(p, NULL, m);
 
     if (decimal == 0)
-		return "0";
+        return "0";
 
     return decimalToAny(decimal, n);
 }

@@ -1,55 +1,52 @@
 // https://www.nowcoder.com/practice/876e3c5fcfa5469f8376370d5de87c06
 
-#include <cstdio>
-#include <algorithm>
-#include <unordered_set>
-#include <numeric>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-template <typename Iterator>
+template<typename Iterator>
 
-   /* Credits: Mark Nelson http://marknelson.us */
-   inline bool next_combination(const Iterator first, Iterator k, const Iterator last) {
-      if ((first == last) || (first == k) || (last == k))
-         return false;
-      Iterator itr1 = first;
-      Iterator itr2 = last;
-      ++itr1;
-      if (last == itr1)
-         return false;
-      itr1 = last;
-      --itr1;
-      itr1 = k;
-      --itr2;
-      while (first != itr1) {
-         if (*--itr1 < *itr2) {
+/* Credits: Mark Nelson http://marknelson.us */
+inline bool next_combination(const Iterator first, Iterator k, const Iterator last) {
+    if ((first == last) || (first == k) || (last == k))
+        return false;
+    Iterator itr1 = first;
+    Iterator itr2 = last;
+    ++itr1;
+    if (last == itr1)
+        return false;
+    itr1 = last;
+    --itr1;
+    itr1 = k;
+    --itr2;
+    while (first != itr1) {
+        if (*--itr1 < *itr2) {
             Iterator j = k;
             while (!(*itr1 < *j)) ++j;
-            iter_swap(itr1,j);
+            iter_swap(itr1, j);
             ++itr1;
             ++j;
             itr2 = k;
-            rotate(itr1,j,last);
+            rotate(itr1, j, last);
             while (last != j) {
-               ++j;
-               ++itr2;
+                ++j;
+                ++itr2;
             }
-            rotate(k,itr2,last);
+            rotate(k, itr2, last);
             return true;
-         }
-      }
-      rotate(first,k,last);
-      return false;
-   }
+        }
+    }
+    rotate(first, k, last);
+    return false;
+}
 
-unordered_set <int> sumList;
+unordered_set<int> sumList;
 
 int main() {
 
     int len, i;
     scanf("%d", &len);
-    int * A = new int[len];
+    int *A = new int[len];
 
     for (i = 0; i < len; i++) {
         scanf("%d", &A[i]);
@@ -70,7 +67,7 @@ int main() {
     }
 
     int sumListLen = sumList.size();
-    int * sumListSort= new int[sumListLen];
+    int *sumListSort = new int[sumListLen];
     copy(sumList.begin(), sumList.end(), sumListSort);
     sort(sumListSort, sumListSort + sumListLen);
 
@@ -92,7 +89,8 @@ int main() {
         }
     }
 
-ending:{ printf("%d\n", result); }
+    ending:
+    { printf("%d\n", result); }
 
     return 0;
 }

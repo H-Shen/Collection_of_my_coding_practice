@@ -4,16 +4,15 @@
 
 using namespace std;
 
-bool cmp(const string & a, const string & b) {
+bool cmp(const string &a, const string &b) {
     return (a + b) > (b + a);
 }
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     int n;
     while (cin >> n) {
-        vector <string> A(n);
+        vector<string> A(n);
         for (auto &i : A) cin >> i;
         sort(A.begin(), A.end(), cmp);
         for (auto &i : A) cout << i;

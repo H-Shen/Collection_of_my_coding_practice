@@ -5,14 +5,14 @@
 using namespace std;
 
 const int N = 1010;
-int prime[N] = {0},num_prime = 0;
+int prime[N] = {0}, num_prime = 0;
 int isNotPrime[N] = {1, 1};
 
 void pre() {
-    for (int i = 2 ; i < N; i++) {
+    for (int i = 2; i < N; i++) {
         if (!isNotPrime[i])
-            prime[num_prime++]=i;
-        for(int j = 0; j < num_prime && i * prime[j] <  N ; j++) {
+            prime[num_prime++] = i;
+        for (int j = 0; j < num_prime && i * prime[j] < N; j++) {
             isNotPrime[i * prime[j]] = 1;
             if (!(i % prime[j]))
                 break;
@@ -35,8 +35,7 @@ int main() {
                 Pair++;
             }
         }
-    }
-    else {
+    } else {
         for (i = 2; i < n / 2 + 1; i++) {
             j = n - i;
             if (isNotPrime[i] != 1 && isNotPrime[j] != 1) {

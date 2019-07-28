@@ -16,8 +16,7 @@ bool isPalindrome(string s, int n) {
                 break;
             }
         }
-    }
-    else {
+    } else {
         for (i = 0, j = n - 1; i <= (n - 1) / 2; i++, j--) {
             if (s[i] != s[j]) {
                 res = false;
@@ -45,8 +44,8 @@ int main() {
 
     //HEAD AND MID
     for (i = 0; i < len_a; i++) {
-        string c0 (a, 0, i);
-        string c1 (a, i);
+        string c0(a, 0, i);
+        string c1(a, i);
         c = c0 + b + c1;
         if (isPalindrome(c, len))
             cnt++;

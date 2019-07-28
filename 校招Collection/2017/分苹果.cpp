@@ -12,7 +12,7 @@ int main() {
     scanf("%d", &n);
 
     int sum = 0;
-    vector <int> A(n);
+    vector<int> A(n);
     for (i = 0; i < n; ++i) {
         scanf("%d", &A[i]);
         sum += A[i];
@@ -21,8 +21,7 @@ int main() {
     //checking the remainder
     if (sum % n != 0) {
         printf("-1\n");
-    }
-    else {
+    } else {
 
         int avg = sum / n;
 
@@ -34,8 +33,7 @@ int main() {
                     return 0;
                 }
             }
-        }
-        else {
+        } else {
             for (i = 0; i < n; ++i) {
                 if (A[i] % 2 == 0) {
                     printf("-1\n");
@@ -47,13 +45,12 @@ int main() {
         //calculating times for allocation
         int cnt = 0;
         int rest = 0;
-        vector <int> lessThanAvg;
+        vector<int> lessThanAvg;
 
         for (i = 0; i < n; ++i) {
             if (A[i] < avg) {
                 lessThanAvg.push_back(A[i]);
-            }
-            else if (A[i] > avg) {
+            } else if (A[i] > avg) {
                 rest = rest + A[i] - avg;
             }
         }

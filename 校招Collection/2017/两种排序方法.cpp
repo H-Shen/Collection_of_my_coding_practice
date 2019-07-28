@@ -10,8 +10,8 @@ using namespace std;
 const int MAXN = 105;
 char s[MAXN];
 
-vector <string> List, List_copy;
-vector <int> lenList, lenList_copy;
+vector<string> List, List_copy;
+vector<int> lenList, lenList_copy;
 
 int main() {
 
@@ -42,9 +42,9 @@ int main() {
 
     if (b1 && b2)
         printf("both\n");
-    else if (b1 && !b2)
+    else if (b1)
         printf("lexicographically\n");
-    else if (!b1 && b2)
+    else if (b2)
         printf("lengths\n");
     else
         printf("none\n");

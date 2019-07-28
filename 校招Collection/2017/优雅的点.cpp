@@ -11,18 +11,17 @@ int main() {
     int cnt = 0;
     scanf("%d", &n);
 
-    r = sqrt((double)n);
+    r = sqrt((double) n);
     if (r * r == n) {
         cnt += 4;
         upperBound = r / sqrt(2.0);
-    }
-    else {
+    } else {
         upperBound = sqrt(n / 2.0);
     }
     int j, j_sqrt;
     for (i = 1; i <= upperBound; i++) {
         j = n - i * i;
-        j_sqrt = sqrt((double)j);
+        j_sqrt = sqrt((double) j);
         if (j_sqrt * j_sqrt == j) {
             if (j_sqrt == i)
                 cnt += 4;

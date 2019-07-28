@@ -6,7 +6,7 @@
 
 using namespace std;
 
-unordered_set <string> A;
+unordered_set<string> A;
 int lenA = 0;
 
 int main() {

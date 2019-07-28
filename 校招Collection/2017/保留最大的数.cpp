@@ -11,8 +11,7 @@ size_t Search(string &s, int &len) {
         if (lastVal < s[i]) {
             res = i - 1;
             break;
-        }
-        else {
+        } else {
             lastVal = s[i];
             res = i;
         }
@@ -36,7 +35,7 @@ int main() {
             len--;
         }
 
-    cout << s << endl;
+        cout << s << endl;
     }
     return 0;
 }

@@ -16,8 +16,8 @@ int main() {
     cin >> T;
     while (T--) {
         cin >> n >> k;
-        vector <int> A(2 * n);
-        vector <int> B(2 * n);
+        vector<int> A(2 * n);
+        vector<int> B(2 * n);
         for (i = 0; i < 2 * n; i++) {
             cin >> A[i];
         }
@@ -25,11 +25,10 @@ int main() {
         while (k--) {
             B = A;
             for (j = 0; j < 2 * n; j++) {
-                if (change == false) {
+                if (!change) {
                     B[j] = A[2 * n - 1 - j / 2];
                     change = true;
-                }
-                else {
+                } else {
                     B[j] = A[n - 1 - j / 2];
                     change = false;
                 }
