@@ -5,6 +5,9 @@
 
 using namespace std;
 
+const int MAXN = 10005;
+int arr[MAXN];
+
 void printKMax(int arr[], int n, int k) {
     deque<int> A(static_cast<unsigned long>(k));
     int i;
@@ -25,7 +28,6 @@ void printKMax(int arr[], int n, int k) {
         while ((!A.empty()) && arr[i] > arr[A.back()]) {
             A.pop_back();
         }
-
         A.emplace_back(i);
     }
     printf("%d\n", arr[A.front()]);
@@ -39,7 +41,6 @@ int main() {
         int n, k;
         scanf("%d %d", &n, &k);
         int i;
-        int arr[n];
         for (i = 0; i < n; i++)
             scanf("%d", &arr[i]);
         printKMax(arr, n, k);
