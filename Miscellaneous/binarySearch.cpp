@@ -7,6 +7,9 @@
  * @date 2019/07/12
  */
 
+// 2019/07/28
+// In order to avoid overflow, (low + high) / 2 could be changed to low + (high - low) / 2
+
 #include <climits>
 #include <cassert>
 
