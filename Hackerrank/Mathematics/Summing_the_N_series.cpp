@@ -13,8 +13,7 @@ int summingSeries(long n) {
     return static_cast<int>((n % MOD) * (n % MOD) % MOD);
 }
 
-int main()
-{
+int main() {
     ofstream fout(getenv("OUTPUT_PATH"));
 
     int t;

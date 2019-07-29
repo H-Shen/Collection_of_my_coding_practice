@@ -9,7 +9,7 @@ vector<string> split_string(string);
 /*
  * Complete the connectingTowns function below.
  */
-int connectingTowns(int n, vector<int> routes) {
+int connectingTowns(const vector<int>& routes) {
     /*
      * Write your code here.
      */
@@ -20,8 +20,7 @@ int connectingTowns(int n, vector<int> routes) {
     return result % MOD;
 }
 
-int main()
-{
+int main() {
     ofstream fout(getenv("OUTPUT_PATH"));
 
     int t;
@@ -38,15 +37,15 @@ int main()
 
         vector<string> routes_temp = split_string(routes_temp_temp);
 
-        vector<int> routes(n-1);
+        vector<int> routes(static_cast<unsigned long>(n - 1));
 
-        for (int routes_itr = 0; routes_itr < n-1; routes_itr++) {
+        for (int routes_itr = 0; routes_itr < n - 1; routes_itr++) {
             int routes_item = stoi(routes_temp[routes_itr]);
 
             routes[routes_itr] = routes_item;
         }
 
-        int result = connectingTowns(n, routes);
+        int result = connectingTowns(routes);
 
         fout << result << "\n";
     }
@@ -57,7 +56,7 @@ int main()
 }
 
 vector<string> split_string(string input_string) {
-    string::iterator new_end = unique(input_string.begin(), input_string.end(), [] (const char &x, const char &y) {
+    string::iterator new_end = unique(input_string.begin(), input_string.end(), [](const char &x, const char &y) {
         return x == y and x == ' ';
     });
 

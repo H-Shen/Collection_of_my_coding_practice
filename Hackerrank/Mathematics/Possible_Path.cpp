@@ -1,8 +1,4 @@
-#include <cmath>
-#include <cstdio>
-#include <vector>
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -13,7 +9,7 @@ using namespace std;
 // 5.Every point (a, b) can be routed to point (gcd(a,b), gcd(a,b)). This is because the moves (subtractions) made by Euclid's Algorithm (subtraction method) can be simulated by using the operations presented in the problem.
 // So if two points (a,b) and (x,y) can be routed to the same gcd point, then they are connected.
 
-typedef long long ll;
+using ll = long long;
 
 int main() {
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */
@@ -24,8 +20,7 @@ int main() {
         cin >> a >> b >> x >> y;
         if (__gcd(a, b) == __gcd(x, y)) {
             cout << "YES" << endl;
-        }
-        else {
+        } else {
             cout << "NO" << endl;
         }
     }

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int lowestTriangle(int base, int area){
+int lowestTriangle(int base, int area) {
     // Complete this function
     int temp = 2 * area;
     if (temp % base == 0) {
