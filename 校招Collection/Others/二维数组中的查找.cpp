@@ -2,7 +2,7 @@
 
 class Solution {
 public:
-    bool Find(int target, vector<vector<int>> matrix) {
+    bool Find(int target, vector <vector<int>> matrix) {
 
         if (matrix.empty() || matrix.at(0).empty()) {
             return false;

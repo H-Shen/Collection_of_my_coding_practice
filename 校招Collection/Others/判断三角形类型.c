@@ -9,8 +9,8 @@ typedef long long ll;
 ll A[LEN];
 
 int cmp(const void *a, const void *b) {
-    ll *lhs = (ll *)a;
-    ll *rhs = (ll *)b;
+    ll *lhs = (ll *) a;
+    ll *rhs = (ll *) b;
     if (*lhs > *rhs) {
         return 1;
     } else if (*lhs == *rhs) {
@@ -24,7 +24,7 @@ int main(void) {
     ll s;
     while (~scanf("%lld %lld %lld", &A[0], &A[1], &A[2])) {
         qsort(A, LEN, sizeof(ll), cmp);
-        s = A[0]*A[0] + A[1]*A[1] - A[2]*A[2];
+        s = A[0] * A[0] + A[1] * A[1] - A[2] * A[2];
         if (s == 0) {
             printf("直角三角形\n");
         } else if (s > 0) {

@@ -13,7 +13,7 @@ public:
 
         auto minString = [](vector<string> &str) {
             string minVal = str[0];
-            for (const string& i : str) {
+            for (const string &i : str) {
                 if (i < minVal)
                     minVal = i;
             }
@@ -21,17 +21,17 @@ public:
         };
 
         unordered_map<string, vector<string>> A;
-        for (const auto& i : str) {
+        for (const auto &i : str) {
             string a(i);
             multiset<char> temp;
             for (auto j : a)
                 temp.insert(j);
-            string b (temp.begin(), temp.end());
+            string b(temp.begin(), temp.end());
             A[b].emplace_back(a);
         }
 
         vector<string> result;
-        for (auto & it : A)
+        for (auto &it : A)
             result.push_back(minString(it.second));
         sort(result.begin(), result.end());
         return result;

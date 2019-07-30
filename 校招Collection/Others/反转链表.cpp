@@ -10,7 +10,7 @@ struct ListNode {
 };*/
 class Solution {
 public:
-    ListNode* ReverseList(ListNode* head) {
+    ListNode *ReverseList(ListNode *head) {
         if (!head || !(head->next)) {
             return head;
         }

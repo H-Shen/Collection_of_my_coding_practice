@@ -4,7 +4,7 @@ class Rearrange {
 public:
     vector<int> findSegment(vector<int> A, int n) {
         // write code here
-        vector <int> A_copy = A;
+        vector<int> A_copy = A;
         sort(A_copy.begin(), A_copy.end());
         int startPos = 0, endPos = n - 1;
         while (startPos < n) {

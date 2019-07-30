@@ -11,7 +11,7 @@
 */
 class Solution {
 public:
-    vector<int> printListFromTailToHead(ListNode* head) {
+    vector<int> printListFromTailToHead(ListNode *head) {
         vector<int> result;
         auto currentNode = head;
         while (currentNode) {

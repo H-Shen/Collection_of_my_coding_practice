@@ -1,7 +1,6 @@
 // https://www.nowcoder.com/practice/54275ddae22f475981afa2244dd448c6
 
-class Solution
-{
+class Solution {
 public:
     void push(int node) {
         stack1.push(node);

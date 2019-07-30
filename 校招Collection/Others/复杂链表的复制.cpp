@@ -11,8 +11,7 @@ struct RandomListNode {
 */
 class Solution {
 public:
-    RandomListNode* Clone(RandomListNode* pHead)
-    {
+    RandomListNode *Clone(RandomListNode *pHead) {
         auto p = pHead;
         auto t = pHead;
         while (p) {

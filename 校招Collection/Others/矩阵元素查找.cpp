@@ -6,7 +6,7 @@ using namespace std;
 
 class Finder {
 public:
-    vector<int> findElement(vector<vector<int> > mat, int n, int m, int x) {
+    vector<int> findElement(vector <vector<int>> mat, int n, int m, int x) {
         vector<int> res;
         for (int i = 0; i < n; i++) {
             if (binary_search(mat[i].begin(), mat[i].end(), x)) {

@@ -8,7 +8,7 @@ struct ListNode {
 };*/
 class Remove {
 public:
-    bool removeNode(ListNode* pNode) {
+    bool removeNode(ListNode *pNode) {
         // write code here
         bool result{pNode && pNode->next};
         if (result) {

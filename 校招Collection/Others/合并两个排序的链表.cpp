@@ -10,8 +10,7 @@ struct ListNode {
 };*/
 class Solution {
 public:
-    ListNode* Merge(ListNode* head1, ListNode* head2)
-    {
+    ListNode *Merge(ListNode *head1, ListNode *head2) {
         if (!head1) {
             return head2;
         } else if (!head2) {

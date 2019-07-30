@@ -16,8 +16,7 @@ public:
             if (article[i] == x) {
                 x_pos.push_back(i);
                 x_pos_len++;
-            }
-            else if (article[i] == y) {
+            } else if (article[i] == y) {
                 y_pos.push_back(i);
                 y_pos_len++;
             }
@@ -27,11 +26,9 @@ public:
         for (i = 0; i < x_pos_len; i++) {
             if (x_pos[i] < y_pos[0]) {
                 currentAbsDiff = y_pos[0] - x_pos[i];
-            }
-            else if (x_pos[i] > y_pos[y_pos_len - 1]) {
+            } else if (x_pos[i] > y_pos[y_pos_len - 1]) {
                 currentAbsDiff = -y_pos[y_pos_len - 1] + x_pos[i];
-            }
-            else {
+            } else {
                 for (j = 0; j < y_pos_len - 1; j++) {
                     if ((x_pos[i] - y_pos[j]) * (x_pos[i] - y_pos[j + 1]) < 0) {
                         currentAbsDiff = min(abs(x_pos[i] - y_pos[j]), abs(x_pos[i] - y_pos[j + 1]));

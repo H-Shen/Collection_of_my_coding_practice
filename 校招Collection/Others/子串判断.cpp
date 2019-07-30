@@ -2,7 +2,7 @@
 
 class Substr {
 public:
-    vector<bool> chkSubStr(vector<string> p, int n, string s) {
+    vector<bool> chkSubStr(vector <string> p, int n, string s) {
         // write code here
         vector<bool> result(p.size());
         for (int i = 0; i < n; ++i) {

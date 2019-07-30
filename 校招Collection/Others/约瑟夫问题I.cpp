@@ -5,8 +5,8 @@ public:
     int getResult(int n, int m) {
         // write code here
         int s = 0;
-    	for (int i = 2; i <= n; i++)
-        	s = (s + m) % i;
-    	return s + 1;
+        for (int i = 2; i <= n; i++)
+            s = (s + m) % i;
+        return s + 1;
     }
 };

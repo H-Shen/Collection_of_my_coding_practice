@@ -1,7 +1,7 @@
 // https://www.nowcoder.com/practice/6235a76b1e404f748f7c820583125c50
 class CatDogAsylum {
 public:
-    vector<int> asylum(vector<vector<int> > ope) {
+    vector<int> asylum(vector <vector<int>> ope) {
         // write code here
         list<int> asylum;
         queue<int> dog, cat;

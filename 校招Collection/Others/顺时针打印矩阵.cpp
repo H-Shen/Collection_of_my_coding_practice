@@ -2,7 +2,7 @@
 
 class Solution {
 public:
-    vector<int> printMatrix(vector<vector<int> > mat) {
+    vector<int> printMatrix(vector <vector<int>> mat) {
 
         vector<int> result;
         int n = mat.size();
@@ -22,13 +22,11 @@ public:
             for (i = 0; i <= m - 1; i++) {
                 result.push_back(mat[0][i]);
             }
-        }
-        else if (m == 1) {
+        } else if (m == 1) {
             for (i = 0; i <= n - 1; i++) {
                 result.push_back(mat[i][0]);
             }
-        }
-        else {
+        } else {
             while (1) {
                 for (i = leftCorneri; i <= rightCornerj; i++) {
                     result.push_back(mat[leftCorneri][i]);
@@ -54,7 +52,10 @@ public:
                 }
                 if (counter == total)
                     break;
-                leftCorneri++; leftCornerj++; rightCorneri--; rightCornerj--;
+                leftCorneri++;
+                leftCornerj++;
+                rightCorneri--;
+                rightCornerj--;
             }
         }
         return result;

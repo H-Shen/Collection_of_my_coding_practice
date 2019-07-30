@@ -13,6 +13,7 @@ public:
             S_min.push(std::min(value, S_min.top()));
         }
     }
+
     void pop() {
         if (S.empty()) {
             throw logic_error("");
@@ -20,12 +21,14 @@ public:
         S.pop();
         S_min.pop();
     }
+
     int top() {
         if (S.empty()) {
             throw logic_error("");
         }
         return S.top();
     }
+
     int min() {
         if (S_min.empty()) {
             throw logic_error("");

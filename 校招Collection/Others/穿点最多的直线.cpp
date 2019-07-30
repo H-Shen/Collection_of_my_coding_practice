@@ -50,8 +50,9 @@ struct Line {
     Fraction k;
     Fraction b;
 
-    Line () {};
-    Line (const Point &A, const Point &B) {
+    Line() {};
+
+    Line(const Point &A, const Point &B) {
 
         int delta_x = 0, delta_y = 0;
 
@@ -62,20 +63,17 @@ struct Line {
             if (A.y < 0) {
                 b.isNegative = true;
                 b.x = (-1) * A.y;
-            }
-            else {
+            } else {
                 b.x = A.y;
             }
-        }
-        else {
+        } else {
             delta_x = B.x - A.x;
             delta_y = B.y - A.y;
             if (delta_x * delta_y < 0) {
                 k.isNegative = true;
                 k.x = abs(delta_y);
                 k.y = abs(delta_x);
-            }
-            else {
+            } else {
                 k.x = delta_y;
                 k.y = delta_x;
             }
@@ -88,8 +86,7 @@ struct Line {
             b.isNegative = true;
             b.x = abs(delta_tmp);
             b.y = abs(delta_x);
-        }
-        else {
+        } else {
             b.x = delta_tmp;
             b.y = delta_x;
         }
@@ -98,15 +95,15 @@ struct Line {
 };
 
 struct hashCalc {
-	size_t operator()(const Line &key) const {
+    size_t operator()(const Line &key) const {
 
-		return ((hash<int>()(key.k.x)
-			^   (hash<int>()(key.k.y) << 1)) >> 1)
-			^   (hash<int>()(key.b.x) << 1);
-	}
+        return ((hash<int>()(key.k.x)
+                 ^ (hash<int>()(key.k.y) << 1)) >> 1)
+               ^ (hash<int>()(key.b.x) << 1);
+    }
 };
 
-bool operator == (Fraction self, Fraction other) {
+bool operator==(Fraction self, Fraction other) {
     other.Simplify();
     self.Simplify();
     if (self.x == other.x && self.y == other.y && self.isNegative == other.isNegative) {
@@ -116,27 +113,26 @@ bool operator == (Fraction self, Fraction other) {
 }
 
 struct cmp {
-	bool operator () (const Line &self, const Line &other) const {
-		return self.k == other.k
-			&& self.b == other.b;
-	}
+    bool operator()(const Line &self, const Line &other) const {
+        return self.k == other.k
+               && self.b == other.b;
+    }
 };
 
 class DenseLine {
 public:
-    vector<double> getLine(vector<Point> p, int n) {
+    vector<double> getLine(vector <Point> p, int n) {
 
-        unordered_map <Line, int, hashCalc, cmp> LineCollection;
-        vector <double> res;
+        unordered_map<Line, int, hashCalc, cmp> LineCollection;
+        vector<double> res;
 
         int i, j;
         for (i = 0; i < n - 1; i++) {
             for (j = i + 1; j < n; j++) {
-                Line tmp (p[i], p[j]);
+                Line tmp(p[i], p[j]);
                 if (LineCollection.find(tmp) == LineCollection.end()) {
                     LineCollection[tmp] = 1;
-                }
-                else {
+                } else {
                     LineCollection[tmp]++;
                 }
             }

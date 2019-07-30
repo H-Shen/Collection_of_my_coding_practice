@@ -1,10 +1,7 @@
 // write your code here cpp
 // https://www.nowcoder.com/practice/41d40d1b2a82471f81900cce4320bd3b
 
-#include <cstdio>
-#include <string>
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 

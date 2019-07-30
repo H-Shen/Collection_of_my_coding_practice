@@ -70,7 +70,7 @@ public:
         reverse(C.begin(), C.end());
         int len = static_cast<int>(C.size());
 
-        vector<ListNode *> res;
+        vector < ListNode * > res;
         int i;
         for (i = 0; i < len; i++) {
             auto newPtr = new ListNode(C[i] - GAP);

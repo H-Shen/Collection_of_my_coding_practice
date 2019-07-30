@@ -8,7 +8,7 @@ struct ListNode {
 };*/
 class Palindrome {
 public:
-    bool isPalindrome(ListNode* pHead) {
+    bool isPalindrome(ListNode *pHead) {
         // write code here
         auto curr = pHead;
         int length = 0;
@@ -23,15 +23,15 @@ public:
         }
 
         // a lambda function to reverse a linked list
-        auto reverseList = [=](ListNode* head)-> ListNode* {
+        auto reverseList = [=](ListNode *head) -> ListNode * {
 
             if (!head || !head->next) {
                 return head;
             }
 
-            ListNode* prev = head;
-            ListNode* curr = head->next;
-            ListNode* temp;
+            ListNode *prev = head;
+            ListNode *curr = head->next;
+            ListNode *temp;
 
             while (curr) {
                 temp = curr->next;
