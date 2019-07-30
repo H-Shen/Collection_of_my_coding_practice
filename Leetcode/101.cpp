@@ -27,9 +27,6 @@ bool treeSymmetricCheck(TreeNode* p, TreeNode* q) {
 class Solution {
 public:
     bool isSymmetric(TreeNode* root) {
-        if (root == nullptr) {
-            return true;
-        }
-        return treeSymmetricCheck(root, root);
+        return (root) ? treeSymmetricCheck(root, root) : true;
     }
 };

@@ -74,7 +74,7 @@ void free_doubly_linked_list(DoublyLinkedListNode* node) {
  */
 DoublyLinkedListNode* sortedInsert(DoublyLinkedListNode* head, int data) {
     auto newNode = new DoublyLinkedListNode(data);
-    if (head == nullptr) {
+    if (!head) {
         return newNode;
     }
     if (data < head->data) {
@@ -84,7 +84,7 @@ DoublyLinkedListNode* sortedInsert(DoublyLinkedListNode* head, int data) {
     }
 
     auto currentNode = head;
-    while (currentNode->next != nullptr) {
+    while (currentNode->next) {
         if (currentNode->data <= data && currentNode->next->data > data) {
             auto nextNode = currentNode->next;
             currentNode->next = newNode;

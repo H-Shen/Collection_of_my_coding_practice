@@ -26,7 +26,7 @@ int main() {
     // get length
     int length = 0;
     temp = head;
-    while (temp->next != nullptr) {
+    while (temp->next) {
         ++length;
         temp = temp->next;
     }
@@ -44,7 +44,7 @@ int main() {
     }
 
     // release
-    while (head != nullptr) {
+    while (head) {
         temp = head;
         head = head->next;
         delete (temp);

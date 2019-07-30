@@ -29,7 +29,7 @@ int main() {
         const int trans_strlen = 2 * (ori_strlen - 1);
         char *str = (char *) malloc(trans_strlen + 1);
 
-        if (str == nullptr)
+        if (!str)
             continue;
 
         //init string str[]
@@ -43,7 +43,7 @@ int main() {
 
 
         int *P = (int *) malloc(trans_strlen * sizeof(int));
-        if (P == nullptr)
+        if (!P)
             continue;
         P[0] = 0;
 
@@ -80,7 +80,7 @@ int main() {
 
         char *longest_palindrome = (char *) malloc(max_len + 1);
 
-        if (longest_palindrome == nullptr)
+        if (!longest_palindrome)
             continue;
 
         if ('#' == str[max_index - max_len])

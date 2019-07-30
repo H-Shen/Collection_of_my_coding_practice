@@ -73,7 +73,7 @@ SinglyLinkedListNode* insertNodeAtPosition(SinglyLinkedListNode* head, int data,
     auto newNode = new SinglyLinkedListNode(data);
     auto currentNode = head;
     int length = 0;
-    while (currentNode != nullptr) {
+    while (currentNode) {
         ++length;
         currentNode = currentNode->next;
     }
@@ -87,7 +87,7 @@ SinglyLinkedListNode* insertNodeAtPosition(SinglyLinkedListNode* head, int data,
     // TAIL
     if (position == length) {
         currentNode = head;
-        while (currentNode->next != nullptr) {
+        while (currentNode->next) {
             currentNode = currentNode->next;
         }
         currentNode->next = newNode;

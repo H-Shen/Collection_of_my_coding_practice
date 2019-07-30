@@ -72,7 +72,7 @@ SinglyLinkedListNode* deleteNode(SinglyLinkedListNode* head, int position) {
 
     int length = 0;
     auto currentNode = head;
-    while (currentNode != nullptr) {
+    while (currentNode) {
         ++length;
         currentNode = currentNode->next;
     }
@@ -91,7 +91,7 @@ SinglyLinkedListNode* deleteNode(SinglyLinkedListNode* head, int position) {
     // TAIL
     if (position == length - 1) {
         currentNode = head;
-        while (currentNode->next->next != nullptr) {
+        while (currentNode->next->next) {
             currentNode = currentNode->next;
         }
         currentNode->next = nullptr;

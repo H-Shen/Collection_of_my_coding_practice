@@ -70,7 +70,7 @@ void free_singly_linked_list(SinglyLinkedListNode* node) {
  */
 SinglyLinkedListNode* reverse(SinglyLinkedListNode* head) {
 
-    if (head == nullptr || head->next == nullptr) {
+    if (!head || !head->next) {
         return head;
     }
 

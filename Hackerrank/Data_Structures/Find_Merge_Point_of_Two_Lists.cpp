@@ -72,12 +72,12 @@ int findMergeNode(SinglyLinkedListNode* head1, SinglyLinkedListNode* head2) {
     int length1 = 0;
     int length2 = 0;
     auto tempNode1 = head1;
-    while (tempNode1 != nullptr) {
+    while (tempNode1) {
         ++length1;
         tempNode1 = tempNode1->next;
     }
     tempNode1 = head2;
-    while (tempNode1 != nullptr) {
+    while (tempNode1) {
         ++length2;
         tempNode1 = tempNode1->next;
     }

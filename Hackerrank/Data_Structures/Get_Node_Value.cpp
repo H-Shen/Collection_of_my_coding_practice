@@ -71,7 +71,7 @@ void free_singly_linked_list(SinglyLinkedListNode* node) {
 int getNode(SinglyLinkedListNode* head, int positionFromTail) {
     auto currentNode = head;
     int length = 0;
-    while (currentNode != nullptr) {
+    while (currentNode) {
         ++length;
         currentNode = currentNode->next;
     }

@@ -69,7 +69,7 @@ void free_singly_linked_list(SinglyLinkedListNode* node) {
  *
  */
 void reversePrint(SinglyLinkedListNode* head) {
-    if (head != nullptr) {
+    if (head) {
         reversePrint(head->next);
         cout << head->data << endl;
     }

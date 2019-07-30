@@ -12,13 +12,10 @@ struct TreeNode {
 class Solution {
 public:
     void Mirror(TreeNode *root) {
-        if (root == nullptr) {
-            return;
+        if (root) {
+            swap(root->left, root->right);
+            Mirror(root->left);
+            Mirror(root->right);
         }
-
-        swap(root->left, root->right);
-        Mirror(root->left);
-        Mirror(root->right);
-
     }
 };

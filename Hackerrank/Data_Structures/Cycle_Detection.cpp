@@ -71,7 +71,7 @@ void free_singly_linked_list(SinglyLinkedListNode* node) {
 bool has_cycle(SinglyLinkedListNode* head) {
     auto slowNode = head;
     auto fastNode = head;
-    while (fastNode != nullptr && fastNode->next != nullptr) {
+    while (fastNode && fastNode->next) {
         slowNode = slowNode->next;
         fastNode = fastNode->next->next;
         if (slowNode == fastNode) {

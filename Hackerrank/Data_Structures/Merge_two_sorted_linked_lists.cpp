@@ -72,14 +72,14 @@ SinglyLinkedListNode* mergeLists(SinglyLinkedListNode* head1, SinglyLinkedListNo
 
     int n1 = 0;
     auto tempNode1 = head1;
-    while (tempNode1 != nullptr) {
+    while (tempNode1) {
         ++n1;
         tempNode1 = tempNode1->next;
     }
 
     int n2 = 0;
     auto tempNode2 = head2;
-    while (tempNode2 != nullptr) {
+    while (tempNode2) {
         ++n2;
         tempNode2 = tempNode2->next;
     }

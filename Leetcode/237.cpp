@@ -10,14 +10,14 @@ class Solution {
 public:
     void deleteNode(ListNode* node) {
 
-        if (node == nullptr || node->next == nullptr) {
+        if (!node || !node->next) {
             return;
         }
 
         // Since accessing the head of the linked list is not allowed,
         // a way to solve it is iteratively replacing the value of the current node with the value of next node, which takes O(n) steps.
         auto currentNode = node;
-        while (currentNode->next->next != nullptr) {
+        while (currentNode->next->next) {
             currentNode->val = currentNode->next->val;
             currentNode = currentNode->next;
         }

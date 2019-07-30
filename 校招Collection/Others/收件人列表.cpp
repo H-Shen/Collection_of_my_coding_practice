@@ -27,7 +27,7 @@ int main() {
             getchar();
             str = s;
 
-            if (strstr(s, " ") != nullptr || strstr(s, ",") != nullptr) {
+            if (strstr(s, " ") || strstr(s, ",")) {
                 str = quote + str + quote;
             }
             res.push_back(str);
