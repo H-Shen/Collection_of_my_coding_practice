@@ -9,7 +9,7 @@ public:
     int pop() {
 
         if (stack1.empty()) {
-            throw invalid_argument("");
+            throw out_of_range("");
         }
         while (!stack1.empty()) {
             stack2.push(stack1.top());

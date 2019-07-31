@@ -78,7 +78,7 @@ SinglyLinkedListNode* deleteNode(SinglyLinkedListNode* head, int position) {
     }
 
     if (position < 0 || position >= length) {
-        throw invalid_argument("");
+        throw out_of_range("");
     }
 
     // HEAD

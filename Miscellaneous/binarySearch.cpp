@@ -110,18 +110,18 @@ vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound)
 
     // It is impossible that n is lower than 0 and n == 0 is also not allowed.
     if (n <= 0) {
-        throw invalid_argument("");
+        throw out_of_range("");
     }
 
     // It is impossible that lowerbound is greater than upperbound.
     if (lowerbound > upperbound) {
-        throw invalid_argument("");
+        throw out_of_range("");
     }
 
     // If the number between the lowerbound and the upperbound(all inclusive) are smaller than n,
     // then it is impossible to generate n unique numbers.
     if (upperbound - lowerbound + 1 < n) {
-        throw invalid_argument("");
+        throw out_of_range("");
     }
 
     random_device dev;

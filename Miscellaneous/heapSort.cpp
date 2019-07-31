@@ -112,7 +112,7 @@ namespace HeapSort {
                     ++heapSize;
                     bubbleUp(x, A);
                 } else {
-                    throw invalid_argument("");
+                    throw out_of_range("");
                 }
                 ++i;
             }
