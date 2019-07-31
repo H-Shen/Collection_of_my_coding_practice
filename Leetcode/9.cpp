@@ -1,27 +1,17 @@
 class Solution {
 public:
-    bool isPalindrome(int x) {
-
-        if (x < 0) {
+    bool isPalindrome(int A) {
+        if (A < 0) {
             return false;
         }
-        if (x == 0) {
-            return true;
+        if (A % 10 == 0 && A != 0) {
+            return false;
         }
-
-        int x_copy(x);
-        const int MAXN = 15;
-        int A[MAXN];
-        int length = 0;
-        while (x_copy > 0) {
-            A[length++] = x_copy % 10;
-            x_copy /= 10;
+        decltype(A) A_rev{0};
+        while (A > A_rev) {
+            A_rev = A_rev * 10 + A % 10;
+            A /= 10;
         }
-        for (int i = 0; i <= (length - 1) / 2; ++i) {
-            if (A[i] != A[length - i - 1]) {
-                return false;
-            }
-        }
-        return true;
+        return (A == A_rev || A == A_rev / 10);
     }
 };

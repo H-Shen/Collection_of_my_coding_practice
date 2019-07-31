@@ -4,8 +4,27 @@
 
 using namespace std;
 
+bool isPalindrome(long long A);
+
 bool isPalindrome(const string &A);
 
+inline
+bool isPalindrome(long long A) {
+    if (A < 0) {
+        return false;
+    }
+    if (A % 10 == 0 && A != 0) {
+        return false;
+    }
+    decltype(A) A_rev{0};
+    while (A > A_rev) {
+        A_rev = A_rev * 10 + A % 10;
+        A /= 10;
+    }
+    return (A == A_rev || A == A_rev / 10);
+}
+
+inline
 bool isPalindrome(const string &A) {
     if (!A.empty()) {
         size_t len = A.size();
@@ -49,11 +68,16 @@ bool isPalindrome(const vector<T> &A, const BinaryPredicate &comp) {
 
 int main() {
 
-    assert(isPalindrome(vector<int>{2}));
-    assert(isPalindrome(vector<int>{2, 2}));
-    assert(isPalindrome(vector<int>{2, 3, 2}));
-    assert(!isPalindrome(vector<int>{2, 3, 4, 5, 2}));
-    assert(isPalindrome(vector<int>{}));
+    assert(isPalindrome(0));
+    assert(isPalindrome(1));
+    assert(isPalindrome(121));
+    assert(isPalindrome(11));
+    assert(isPalindrome(12321));
+    assert(isPalindrome(1221));
+    assert(!isPalindrome(-1));
+    assert(!isPalindrome(12341));
+    assert(!isPalindrome(12381991113311));
+    assert(isPalindrome(1234567890987654321));
 
     assert(isPalindrome(""));
     assert(isPalindrome("a"));
@@ -62,6 +86,12 @@ int main() {
     assert(isPalindrome("abcba"));
     assert(!isPalindrome("abcda"));
     assert(isPalindrome("abba"));
+
+    assert(isPalindrome(vector<int>{2}));
+    assert(isPalindrome(vector<int>{2, 2}));
+    assert(isPalindrome(vector<int>{2, 3, 2}));
+    assert(!isPalindrome(vector<int>{2, 3, 4, 5, 2}));
+    assert(isPalindrome(vector<int>{}));
 
     auto cmp = [](const pair<int, int> &lhs, const pair<int, int> &rhs) -> bool {
         return (lhs.first == rhs.first);

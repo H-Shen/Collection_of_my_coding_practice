@@ -5,11 +5,19 @@
 
 using namespace std;
 
+
 inline
-bool isPalindrome(const string &s) {
-    string s_copy = s;
-    reverse(s_copy.begin(), s_copy.end());
-    return (s_copy == s);
+bool isPalindrome(const string &A) {
+    if (!A.empty()) {
+        size_t len = A.size();
+        size_t half = (len - 1) / 2;
+        for (size_t i = 0; i <= half; ++i) {
+            if (A.at(i) != A.at(len - i - 1)) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 int main() {
