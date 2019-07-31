@@ -29,14 +29,14 @@ int main() {
 
 /* Your code will be pasted here */
 int FactorialSum(List L) {
-  if (L == NULL) {
+  if (!L) {
     return 0;
   }
   PtrToNode ptr = L;
   int res = 0, tmp = 0;
   int i;
 
-  while (ptr != NULL) {
+  while (ptr) {
     if (ptr->Data == 0) {
       tmp = 1;
     } else {

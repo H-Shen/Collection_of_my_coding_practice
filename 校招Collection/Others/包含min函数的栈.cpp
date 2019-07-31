@@ -16,7 +16,7 @@ public:
 
     void pop() {
         if (S.empty()) {
-            throw logic_error("");
+            throw out_of_range("");
         }
         S.pop();
         S_min.pop();
@@ -24,14 +24,14 @@ public:
 
     int top() {
         if (S.empty()) {
-            throw logic_error("");
+            throw out_of_range("");
         }
         return S.top();
     }
 
     int min() {
         if (S_min.empty()) {
-            throw logic_error("");
+            throw out_of_range("");
         }
         return S_min.top();
     }

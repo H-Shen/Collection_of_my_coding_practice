@@ -99,7 +99,7 @@ void heapSort(vector<int> &A) {
                 ++heapSize;
                 bubbleUp(x, A);
             } else {
-                throw invalid_argument("");
+                throw out_of_range("");
             }
             ++i;
         }
