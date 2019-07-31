@@ -24,6 +24,9 @@ using namespace std;
 // The function will return an index where A[index] = key.
 // If the key is not in A, -1 will be returned as output.
 
+vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound);
+vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound);
+
 template<typename T>
 int bSearch_recursion(const vector<T> &A, int low, int high, T key) {
     if (low > high) {
@@ -131,7 +134,7 @@ vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound)
     int temp;
     for (auto &&i : result) {
         while (true) {
-            temp = dist(random_generator);
+            temp = static_cast<int>(dist(random_generator));
             if (Save.find(temp) == Save.end()) {
                 i = temp;
                 Save.insert(temp);
@@ -162,7 +165,7 @@ vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound) {
 
         int counter = n / 3;
         while (counter--) {
-            int index = dist(random_generator);
+            int index = static_cast<int>(dist(random_generator));
             if (index == 0) {
                 result.at(static_cast<unsigned long>(index) + 1) = result.at(static_cast<unsigned long>(index));
             } else if (index == n - 1) {

@@ -7,9 +7,8 @@
  * @date 2019/07/13
  */
 
-#include <climits>
-#include <cassert>
 
+#include <cassert>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -18,6 +17,9 @@
 #include <random>
 
 using namespace std;
+
+vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound);
+vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound);
 
 // Precondition
 // 1) A is an array with length n ≥ 1 storing values of some type T that is given as input
@@ -70,7 +72,7 @@ vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound)
     int temp;
     for (auto &&i : result) {
         while (true) {
-            temp = dist(random_generator);
+            temp = static_cast<int>(dist(random_generator));
             if (Save.find(temp) == Save.end()) {
                 i = temp;
                 Save.insert(temp);
@@ -101,7 +103,7 @@ vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound) {
 
         int counter = n / 3;
         while (counter--) {
-            int index = dist(random_generator);
+            int index = static_cast<int>(dist(random_generator));
             if (index == 0) {
                 result.at(static_cast<unsigned long>(index) + 1) = result.at(static_cast<unsigned long>(index));
             } else if (index == n - 1) {
@@ -163,7 +165,6 @@ int main() {
 
     val = 123;
     cout << linearSearch(A, val) << endl;
-
 
     return 0;
 }

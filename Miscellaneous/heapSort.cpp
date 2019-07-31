@@ -23,120 +23,121 @@
 
 using namespace std;
 
-inline
-bool isRoot(const int &x) {
-    return (x == 0);
-}
+namespace HeapSort {
 
-inline
-int parent(const int &x) {
-    if (x == 0) {
+    inline
+    bool isRoot(const int &x) {
+        return (x == 0);
+    }
+
+    inline
+    int parent(const int &x) {
+        if (x == 0) {
+            throw out_of_range("");
+        }
+        return (x - 1) / 2;
+    }
+
+    template<typename T>
+    void bubbleUp(int x, vector<T> &A) {
+        while (!isRoot(x) && A.at(x) > A.at(parent(x))) {
+            swap(A.at(x), A.at(parent(x)));
+            x = parent(x);
+        }
+    }
+
+    inline
+    bool hasLeft(const int &x, const int &heapSize) {
+        return (2 * x + 1 < heapSize);
+    }
+
+    inline
+    int left(const int &x, const int &heapSize) {
+        if (hasLeft(x, heapSize)) {
+            return 2 * x + 1;
+        }
         throw out_of_range("");
     }
-    return (x - 1) / 2;
-}
 
-template<typename T>
-void bubbleUp(int x, vector<T> &A) {
-    while (!isRoot(x) && A.at(x) > A.at(parent(x))) {
-        swap(A.at(x), A.at(parent(x)));
-        x = parent(x);
+    inline
+    bool hasRight(const int &x, const int &heapSize) {
+        return (2 * x + 2 < heapSize);
     }
-}
 
-inline
-bool hasLeft(const int &x, const int &heapSize) {
-    return (2 * x + 1 < heapSize);
-}
-
-inline
-int left(const int &x, const int &heapSize) {
-    if (hasLeft(x, heapSize)) {
-        return 2 * x + 1;
-    }
-    throw out_of_range("");
-}
-
-inline
-bool hasRight(const int &x, const int &heapSize) {
-    return (2 * x + 2 < heapSize);
-}
-
-inline
-int right(const int &x, const int &heapSize) {
-    if (hasRight(x, heapSize)) {
-        return 2 * x + 2;
-    }
-    throw out_of_range("");
-}
-
-template<typename T>
-void bubbleDown(int x, int heapSize, vector<T> &A) {
-    while (hasLeft(x, heapSize)) {
+    inline
+    int right(const int &x, const int &heapSize) {
         if (hasRight(x, heapSize)) {
-            if (A.at(left(x, heapSize)) >= A.at(right(x, heapSize))) {
-                if (A.at(left(x, heapSize)) > A.at(x)) {
-                    swap(A.at(left(x, heapSize)), A.at(x));
-                    x = left(x, heapSize);
+            return 2 * x + 2;
+        }
+        throw out_of_range("");
+    }
+
+    template<typename T>
+    void bubbleDown(int x, int heapSize, vector<T> &A) {
+        while (hasLeft(x, heapSize)) {
+            if (hasRight(x, heapSize)) {
+                if (A.at(left(x, heapSize)) >= A.at(right(x, heapSize))) {
+                    if (A.at(left(x, heapSize)) > A.at(x)) {
+                        swap(A.at(left(x, heapSize)), A.at(x));
+                        x = left(x, heapSize);
+                    } else {
+                        break;
+                    }
+                } else if (A.at(right(x, heapSize)) > A.at(x)) {
+                    swap(A.at(right(x, heapSize)), A.at(x));
+                    x = right(x, heapSize);
                 } else {
                     break;
                 }
-            } else if (A.at(right(x, heapSize)) > A.at(x)) {
-                swap(A.at(right(x, heapSize)), A.at(x));
-                x = right(x, heapSize);
+            } else if (A.at(left(x, heapSize)) > A.at(x)) {
+                swap(A.at(left(x, heapSize)), A.at(x));
+                x = left(x, heapSize);
             } else {
                 break;
             }
-        } else if (A.at(left(x, heapSize)) > A.at(x)) {
-            swap(A.at(left(x, heapSize)), A.at(x));
-            x = left(x, heapSize);
-        } else {
-            break;
         }
     }
-}
 
-template<typename T>
-void heapSort(vector<T> &A) {
-    try {
-        int heapSize = 1;
-        int i = 1;
-        int len = static_cast<int>(A.size());
+    template<typename T>
+    void heapSort(vector<T> &A) {
+        try {
+            int heapSize = 1;
+            int i = 1;
+            int len = static_cast<int>(A.size());
 
-        while (i < len) {
-            if (heapSize < len) {
-                int x = heapSize;
-                A.at(x) = A.at(i);
-                ++heapSize;
-                bubbleUp(x, A);
-            } else {
-                throw invalid_argument("");
-            }
-            ++i;
-        }
-
-        i = len - 1;
-
-        while (i > 0) {
-            int largest;
-            if (heapSize == 0) {
-                throw out_of_range("");
-            } else {
-                int temp = A.at(heapSize - 1);
-                --heapSize;
-                if (heapSize == 0) {
-                    largest = temp;
+            while (i < len) {
+                if (heapSize < len) {
+                    int x = heapSize;
+                    A.at(x) = A.at(i);
+                    ++heapSize;
+                    bubbleUp(x, A);
                 } else {
-                    largest = A.at(0);
-                    A.at(0) = temp;
-                    bubbleDown(0, heapSize, A);
+                    throw invalid_argument("");
                 }
+                ++i;
             }
-            A.at(i) = largest;
-            --i;
+            i = len - 1;
+            while (i > 0) {
+                int largest;
+                if (heapSize == 0) {
+                    throw out_of_range("");
+                } else {
+                    int temp = A.at(heapSize - 1);
+                    --heapSize;
+                    if (heapSize == 0) {
+                        largest = temp;
+                    } else {
+                        largest = A.at(0);
+                        A.at(0) = temp;
+                        bubbleDown(0, heapSize, A);
+                    }
+                }
+                A.at(i) = largest;
+                --i;
+            }
+        } catch (...) {
+            return;
         }
-    } catch (...) {
-        return;
     }
 }
 
@@ -158,11 +159,11 @@ int main() {
 
         vector<int> A(len_dist(random_generator));
         for (auto &&i : A) {
-            i = dist(random_generator);
+            i = static_cast<int>(dist(random_generator));
         }
         vector<int> A_copy(A.begin(), A.end());
 
-        heapSort(A);
+        HeapSort::heapSort(A);
         sort(A_copy.begin(), A_copy.end());
         assert(A == A_copy);
     }
