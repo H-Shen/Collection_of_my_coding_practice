@@ -8,14 +8,22 @@ import java.math.BigInteger;
  */
 class Fraction implements Comparable<Fraction> {
 
+    private static final int        ARGUMENT_LENGTH = 4;
     /**
      * Fields of a fraction.
      */
-    private BigInteger numerator;
-    private BigInteger denominator;
+    private              BigInteger numerator;
+    private              BigInteger denominator;
 
     /**
-     * Constructor which takes the numerator and the denominator
+     * Constructor which takes the numerator and the denominator whose type are both String
+     */
+    private Fraction(String numerator, String denominator) {
+        this(new BigInteger(numerator), new BigInteger(denominator));
+    }
+
+    /**
+     * Constructor which takes the numerator and the denominator whose type are both BigInteger
      *
      * @param numerator   the numerator of the fraction
      * @param denominator the denominator of the fraction
@@ -25,10 +33,11 @@ class Fraction implements Comparable<Fraction> {
             throw new ArithmeticException("/ zero");
         }
 
+        // Since BigInteger is immutable, there is no need to do a deepcopy.
         this.numerator = numerator;
         this.denominator = denominator;
 
-        // the denominator would always be positive
+        // The denominator would always be positive
         if (this.denominator.compareTo(BigInteger.ZERO) < 0) {
             this.denominator = this.denominator.multiply(new BigInteger("-1"));
             this.numerator = this.numerator.multiply(new BigInteger("-1"));
@@ -42,25 +51,90 @@ class Fraction implements Comparable<Fraction> {
      * @param obj another Fraction object
      */
     private Fraction(Fraction obj) {
-        numerator = obj.getNumerator();
-        denominator = obj.getDenominator();
-        reduce();
+        this(obj.getNumerator(), obj.getDenominator());
+    }
+
+    /**
+     * A method checks if the string is not an integer.
+     *
+     * @param s the string to check
+     * @return true if the string is not an integer, otherwise false.
+     */
+    private static boolean isNotInteger(String s) {
+        // Case 1: s contains redundant leading zeros
+        if (s.length() > 1 && s.charAt(0) == '0') {
+            return true;
+        }
+        // Case 2: s contains only a '-'
+        if (s.length() == 1 && s.charAt(0) == '-') {
+            return true;
+        }
+        // Case 3: s contains illegal characters.
+        for (int i = 0; i < s.length(); ++i) {
+            if (i == 0 && s.charAt(i) == '-') {
+                continue;
+            }
+            if (!Character.isDigit(s.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        try {
+            if (args.length != ARGUMENT_LENGTH || isNotInteger(args[0]) || isNotInteger(args[1]) ||
+                    isNotInteger(args[2]) || isNotInteger(args[3])) {
+                throw new IllegalArgumentException();
+            }
+            Fraction a = new Fraction(args[0], args[1]);
+            Fraction b = new Fraction(args[2], args[3]);
+            System.out.println(a.add(b));
+            System.out.println(a.subtract(b));
+            System.out.println(a.multiply(b));
+            System.out.println(a.divide(b));
+        } catch (ArithmeticException ae) {
+            System.out.println(ae.toString());
+        } catch (Exception ex) {
+            System.out.println("Usage: ./Fraction numerator denominator");
+            System.exit(0);
+        }
     }
 
     /**
      * Subtraction for two Fraction objects
-     * @param a another Fraction object
-     * @return
+     *
+     * @param obj another Fraction object
+     * @return a Fraction object
      */
-    private Fraction subtract(Fraction a) {
-        BigInteger n = numerator.multiply(a.getDenominator()).subtract(denominator.multiply(
-                a.getNumerator()));
-        BigInteger m = denominator.multiply(a.getDenominator());
-        return new Fraction(n, m);
+    public Fraction subtract(Fraction obj) {
+        BigInteger numerator = this.numerator.multiply(obj.getDenominator()).subtract(this.denominator.multiply(
+                obj.getNumerator()));
+        BigInteger denominator = this.denominator.multiply(obj.getDenominator());
+        return new Fraction(numerator, denominator);
+    }
+
+    public Fraction add(Fraction obj) {
+        BigInteger numerator =
+                this.numerator.multiply(obj.getDenominator()).add(this.denominator.multiply(obj.getNumerator()));
+        BigInteger denominator = this.denominator.multiply(obj.getDenominator());
+        return new Fraction(numerator, denominator);
+    }
+
+    public Fraction multiply(Fraction obj) {
+        BigInteger numerator   = this.numerator.multiply(obj.getNumerator());
+        BigInteger denominator = this.denominator.multiply(obj.getDenominator());
+        return new Fraction(numerator, denominator);
+    }
+
+    public Fraction divide(Fraction obj) {
+        BigInteger numerator   = this.numerator.multiply(obj.getDenominator());
+        BigInteger denominator = this.denominator.multiply(obj.getNumerator());
+        return new Fraction(numerator, denominator);
     }
 
     private BigInteger getNumerator() {
-        return numerator;
+        return this.numerator;
     }
 
     void setNumerator(BigInteger numerator) {
@@ -68,7 +142,7 @@ class Fraction implements Comparable<Fraction> {
     }
 
     private BigInteger getDenominator() {
-        return denominator;
+        return this.denominator;
     }
 
     void setDenominator(BigInteger denominator) {
@@ -79,9 +153,9 @@ class Fraction implements Comparable<Fraction> {
      * A method to reduce a fraction by its gcd(numerator, denominator).
      */
     private void reduce() {
-        BigInteger gcd = numerator.gcd(denominator);
-        numerator = numerator.divide(gcd);
-        denominator = denominator.divide(gcd);
+        BigInteger gcd = this.numerator.gcd(this.denominator);
+        this.numerator = this.numerator.divide(gcd);
+        this.denominator = this.denominator.divide(gcd);
     }
 
     @Override
@@ -96,23 +170,5 @@ class Fraction implements Comparable<Fraction> {
     public int compareTo(Fraction other) {
         Fraction a = new Fraction(this.subtract(other));
         return Integer.compare(a.getNumerator().compareTo(BigInteger.ZERO), 0);
-    }
-
-    private static final int ARGUMENT_LENGTH = 2;
-
-    public static void main(String[] args) {
-        try {
-            if (args.length != ARGUMENT_LENGTH) {
-                throw new IllegalArgumentException();
-            }
-            BigInteger numerator   = new BigInteger(args[0]);
-            BigInteger denominator = new BigInteger(args[1]);
-            System.out.println(new Fraction(numerator, denominator));
-        } catch (ArithmeticException ae) {
-            ae.printStackTrace();
-        } catch (Exception ex) {
-            System.out.println("Usage: ./Fraction numerator denominator");
-            System.exit(0);
-        }
     }
 }
