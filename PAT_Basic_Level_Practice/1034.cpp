@@ -1,15 +1,12 @@
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;
 
-ll gcd(ll a, ll b) { return (b > 0) ? gcd(b, a % b) : a; }
-
 struct frac {
-    bool isNeg;
-    ll m, n;
-    bool isLegal = true;
+    bool isNeg{};
+    ll m{}, n{};
+    bool isLegal{true};
 };
 
 string repr(frac A) {
@@ -22,24 +19,24 @@ string repr(frac A) {
         res = to_string(A.m);
     } else {
 
-        ll a, tmp;
+        ll a = 0, tmp;
         bool have_a = false;
 
         if (A.m > A.n) {
             a = A.m / A.n;
             A.m = A.m % A.n;
-            tmp = gcd(A.m, A.n);
+            tmp = __gcd(A.m, A.n);
             A.m /= tmp;
             A.n /= tmp;
             have_a = true;
         }
 
         if (have_a) {
-            res = res + to_string(a) + ' ' + to_string(A.m) + '/' + to_string(A.n);
+            res += to_string(a) + ' ' + to_string(A.m) + '/' + to_string(A.n);
         } else if (A.n == 1) {
-            res = res + to_string(A.m);
+            res += to_string(A.m);
         } else {
-            res = res + to_string(A.m) + '/' + to_string(A.n);
+            res += to_string(A.m) + '/' + to_string(A.n);
         }
     }
 
@@ -62,12 +59,12 @@ void parse(const string &s, ll &m, ll &n, bool &isNeg) {
     }
 
     string first, second;
-    bool delimitor = false;
+    bool delimiter = false;
     for (; i < len; ++i) {
-        if (delimitor) {
+        if (delimiter) {
             second += s[i];
         } else if (s[i] == '/') {
-            delimitor = true;
+            delimiter = true;
         } else {
             first += s[i];
         }
@@ -97,7 +94,7 @@ void simplify(frac &A) {
         n = A.n;
     }
 
-    ll tmp = gcd(m, n);
+    ll tmp = __gcd(m, n);
     A.m /= tmp;
     A.n /= tmp;
 
@@ -126,12 +123,7 @@ frac operator+(frac A, frac B) {
 }
 
 frac operator-(frac A, frac B) {
-    if (B.isNeg) {
-        B.isNeg = false;
-    } else {
-        B.isNeg = true;
-    }
-
+    B.isNeg = !B.isNeg;
     frac res = A + B;
     return res;
 }
@@ -141,15 +133,10 @@ frac operator*(frac A, frac B) {
     if (A.isNeg && B.isNeg) {
         res.isNeg = false;
     } else if (!A.isNeg) {
-        if (!B.isNeg) {
-            res.isNeg = false;
-        } else {
-            res.isNeg = true;
-        }
+        res.isNeg = B.isNeg;
     } else {
         res.isNeg = true;
     }
-
     res.m = A.m * B.m;
     res.n = A.n * B.n;
     simplify(res);
@@ -162,22 +149,15 @@ frac operator/(frac A, frac B) {
         res.isLegal = false;
         return res;
     }
-
     if (A.isNeg && B.isNeg) {
         res.isNeg = false;
     } else if (!A.isNeg) {
-        if (!B.isNeg) {
-            res.isNeg = false;
-        } else {
-            res.isNeg = true;
-        }
+        res.isNeg = B.isNeg;
     } else {
         res.isNeg = true;
     }
-
     res.m = A.m * B.n;
     res.n = A.n * B.m;
-
     simplify(res);
     return res;
 }

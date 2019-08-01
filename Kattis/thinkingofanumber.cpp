@@ -1,4 +1,5 @@
 // https://open.kattis.com/problems/thinkingofanumber
+
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -15,12 +16,8 @@ vector<string> split(const string &a) {
     return res;
 }
 
-int gcd(int a, int b) {
-    return (b > 0) ? gcd(b, a % b) : a;
-}
-
 int lcm(int a, int b) {
-    return a * b / gcd(a, b);
+    return a * b / __gcd(a, b);
 }
 
 int multi_lcm(const vector<int> &a) {
@@ -52,8 +49,8 @@ int main() {
             break;
         }
 
-        int lower = MIN;
-        int upper = MAX;
+        int lower, upper;
+        tie(lower, upper) = make_tuple(MIN, MAX);
         vector<int> divisible;
         vector<int> ans;
         isInfinite = false;
@@ -79,7 +76,7 @@ int main() {
         if (upper == MAX) {
             isInfinite = true;
         } else if (lower <= upper) {
-            ans.resize(static_cast<unsigned long>(upper - lower + 1));
+            ans.resize(upper - lower + 1);
             iota(ans.begin(), ans.end(), lower);
         }
 

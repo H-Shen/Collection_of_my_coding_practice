@@ -1,22 +1,16 @@
-#include <cstdio>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int gcd(int a, int b) {
-    return (b > 0) ? gcd(b, a % b) : a;
-}
-
 struct Fraction {
-    int d;
-    int n;
-    bool isSimplify = false;
+    int d{};
+    int n{};
+    bool isSimplify{false};
 
     void Simplify() {
-        int Gcd = gcd(n, d);
-        n = n / Gcd;
-        d = d / Gcd;
-
+        int Gcd = __gcd(n, d);
+        n /= Gcd;
+        d /= Gcd;
         if (Gcd == 1)
             isSimplify = true;
     }
@@ -50,7 +44,7 @@ int main() {
             continue;
         }
         if (tmp > a && b > tmp) {
-            A.push_back(i);
+            A.emplace_back(i);
         }
     }
 
@@ -60,6 +54,5 @@ int main() {
     }
 
     printf("%d/%d\n", A[len - 1], k);
-
     return 0;
 }
