@@ -10,13 +10,7 @@
 // 2019/07/28
 // The reason why (low + high) / 2 was changed to low + (high - low) / 2 is to avoid the overflow.
 
-#include <cassert>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <unordered_set>
-#include <random>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -26,6 +20,8 @@ using namespace std;
 // The function will return an index where A[index] = key.
 // If the key is not in A, -1 will be returned as output.
 
+
+
 template<typename T, typename Comparator>
 int bSearch_recursion(const vector<T> &A, int low, int high, const T &key, const Comparator &comp) {
     if (low > high) {
@@ -34,9 +30,9 @@ int bSearch_recursion(const vector<T> &A, int low, int high, const T &key, const
     int mid = low + (high - low) / 2;
     int compare = comp(key, A[mid]);
     if (compare < 0) {
-        return bSearch_recursion(A, low, mid - 1, key);
+        return bSearch_recursion(A, low, mid - 1, key, comp);
     } else if (compare > 0) {
-        return bSearch_recursion(A, mid + 1, high, key);
+        return bSearch_recursion(A, mid + 1, high, key, comp);
     }
     return mid;
 }
@@ -252,6 +248,23 @@ vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound) {
     return result;
 }
 
+class Widget {
+private:
+    int first;
+    char second;
+public:
+    Widget(int first_, char second_) : first(first_), second(second_) {}
+    auto getFirst() const {
+        return first;
+    }
+    bool operator!=(const Widget &rhs) const {
+        return (second != rhs.second);
+    }
+    explicit operator string() const {
+        return "(" + to_string(first) + ",  )";
+    }
+};
+
 int main() {
 
 #ifdef DEBUG
@@ -350,25 +363,6 @@ int main() {
         cout << "index = " << upperBound(A, val) - 1 << endl;
     }
 
-    class Widget {
-    private:
-        int first;
-        char second;
-    public:
-        Widget(int first_, char second_) : first(first_), second(second_) {}
-
-        auto getFirst() const {
-            return first;
-        }
-
-        bool operator!=(const Widget &rhs) const {
-            return (second != rhs.second);
-        }
-
-        explicit operator string() const {
-            return "(" + to_string(first) + ",  )";
-        }
-    };
     auto objVal{Widget(3, 'a')};
     vector<Widget> B = {Widget(2, 'q'), Widget(3, 'w'), Widget(3, 'w'), Widget(3, 'p'), Widget(4, 'q')};
     auto threeWayComparator = [](const Widget &lhs, const Widget &rhs) {
@@ -385,6 +379,10 @@ int main() {
         cout << "index = " << lowerBound(B, objVal, threeWayComparator) << " to ";
         cout << "index = " << upperBound(B, objVal, threeWayComparator) - 1 << endl;
     }
-
+    if (bSearch_recursion(B, 0, static_cast<int>(B.size()), objVal, threeWayComparator)) {
+        cout << string(objVal) << " is found from ";
+        cout << "index = " << lowerBound(B, objVal, threeWayComparator) << " to ";
+        cout << "index = " << upperBound(B, objVal, threeWayComparator) - 1 << endl;
+    }
     return 0;
 }

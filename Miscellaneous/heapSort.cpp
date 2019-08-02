@@ -15,6 +15,8 @@
  * @date 2019/07/03
  */
 
+#define DEBUG
+
 using namespace std;
 
 namespace HeapSortWithComparator {
@@ -27,8 +29,8 @@ namespace HeapSortWithComparator {
         return (x - 1) / 2;
     };
 
-    auto bubbleUp = [](int x, auto &A) -> void {
-        while (!isRoot(x) && A.at(x) > A.at(parent(x))) {
+    auto bubbleUp = [](int x, auto &A, const auto &comp) -> void {
+        while (!isRoot(x) && comp(A.at(x), A.at(parent(x))) > 0) {
             swap(A.at(x), A.at(parent(x)));
             x = parent(x);
         }
@@ -47,23 +49,23 @@ namespace HeapSortWithComparator {
         }
         throw out_of_range("");
     };
-    auto bubbleDown = [](int x, int heapSize, auto &A) -> void {
+    auto bubbleDown = [](int x, int heapSize, auto &A, const auto &comp) -> void {
         while (hasLeft(x, heapSize)) {
             if (hasRight(x, heapSize)) {
-                if (A.at(left(x, heapSize)) >= A.at(right(x, heapSize))) {
-                    if (A.at(left(x, heapSize)) > A.at(x)) {
+                if (comp(A.at(left(x, heapSize)), A.at(right(x, heapSize))) >= 0) {
+                    if (comp(A.at(left(x, heapSize)), A.at(x)) > 0) {
                         swap(A.at(left(x, heapSize)), A.at(x));
                         x = left(x, heapSize);
                     } else {
                         break;
                     }
-                } else if (A.at(right(x, heapSize)) > A.at(x)) {
+                } else if (comp(A.at(right(x, heapSize)), A.at(x)) > 0) {
                     swap(A.at(right(x, heapSize)), A.at(x));
                     x = right(x, heapSize);
                 } else {
                     break;
                 }
-            } else if (A.at(left(x, heapSize)) > A.at(x)) {
+            } else if (comp(A.at(left(x, heapSize)), A.at(x)) > 0) {
                 swap(A.at(left(x, heapSize)), A.at(x));
                 x = left(x, heapSize);
             } else {
@@ -72,8 +74,8 @@ namespace HeapSortWithComparator {
         }
     };
 
-    template<typename T>
-    void heapSort(vector<T> &A) {
+    template<typename T, typename Comparator>
+    void heapSort(vector<T> &A, const Comparator &comp) {
         try {
 
             int heapSize = 1;
@@ -85,7 +87,7 @@ namespace HeapSortWithComparator {
                     int x = heapSize;
                     A.at(x) = A.at(i);
                     ++heapSize;
-                    bubbleUp(x, A);
+                    bubbleUp(x, A, comp);
                 } else {
                     throw out_of_range("");
                 }
@@ -104,7 +106,7 @@ namespace HeapSortWithComparator {
                     } else {
                         largest = A.at(0);
                         A.at(0) = temp;
-                        bubbleDown(0, heapSize, A);
+                        bubbleDown(0, heapSize, A, comp);
                     }
                 }
                 A.at(i) = largest;
@@ -236,6 +238,7 @@ namespace HeapSort {
 
 int main() {
 
+#ifdef DEBUG
     ios_base::sync_with_stdio(false);
 
     // Initialize a random number generator.
@@ -305,6 +308,39 @@ int main() {
         assert(A == A_copy);
     }
     cout << "Tests passed!" << endl;
+
+    test_time = test_time_dist(random_generator);
+    while (test_time--) {
+        vector<pair<int, int> > A(len_dist(random_generator));
+        for (auto &&i : A) {
+            i = {static_cast<int>(dist(random_generator)), static_cast<int>(dist(random_generator))};
+        }
+        vector<pair<int, int> > A_copy(A.begin(), A.end());
+
+        sort(A_copy.begin(), A_copy.end(), [](const pair<int, int> &lhs, const pair<int, int> &rhs) -> bool {
+            if (lhs.first == rhs.first) {
+                return (lhs.second < rhs.second);
+            }
+            return (lhs.first < rhs.first);
+        });
+        HeapSortWithComparator::heapSort(A, [](const pair<int, int> &lhs, const pair<int, int> &rhs) -> bool {
+            if (lhs.first == rhs.first) {
+                if (lhs.second > rhs.second) {
+                    return 1;
+                } else if (lhs.second < rhs.second) {
+                    return -1;
+                }
+                return 0;
+            } else if (lhs.first > rhs.first) {
+                return 1;
+            }
+            return -1;
+        });
+        assert(A_copy == A);
+    }
+    cout << "Tests passed!" << endl;
+
+#endif
 
     return 0;
 }
