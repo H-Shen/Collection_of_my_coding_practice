@@ -1,10 +1,4 @@
-#include <climits>
-#include <cassert>
-
-#include <iostream>
-#include <vector>
-#include <random>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 /**
  * The heapSort using minHeap for solving the 'Sorting in Place' problem.
@@ -23,14 +17,113 @@
 
 using namespace std;
 
+namespace HeapSortWithComparator {
+
+    auto isRoot = [](const int &x) -> bool { return (x == 0); };
+    auto parent = [](const int &x) -> int {
+        if (x == 0) {
+            throw out_of_range("");
+        }
+        return (x - 1) / 2;
+    };
+
+    auto bubbleUp = [](int x, auto &A) -> void {
+        while (!isRoot(x) && A.at(x) > A.at(parent(x))) {
+            swap(A.at(x), A.at(parent(x)));
+            x = parent(x);
+        }
+    };
+    auto hasLeft = [](const int &x, const int &heapSize) -> bool { return (2 * x + 1 < heapSize); };
+    auto left = [](const int &x, const int &heapSize) -> int {
+        if (hasLeft(x, heapSize)) {
+            return 2 * x + 1;
+        }
+        throw out_of_range("");
+    };
+    auto hasRight = [](const int &x, const int &heapSize) { return (2 * x + 2 < heapSize); };
+    auto right = [](const int &x, const int &heapSize) -> int {
+        if (hasRight(x, heapSize)) {
+            return 2 * x + 2;
+        }
+        throw out_of_range("");
+    };
+    auto bubbleDown = [](int x, int heapSize, auto &A) -> void {
+        while (hasLeft(x, heapSize)) {
+            if (hasRight(x, heapSize)) {
+                if (A.at(left(x, heapSize)) >= A.at(right(x, heapSize))) {
+                    if (A.at(left(x, heapSize)) > A.at(x)) {
+                        swap(A.at(left(x, heapSize)), A.at(x));
+                        x = left(x, heapSize);
+                    } else {
+                        break;
+                    }
+                } else if (A.at(right(x, heapSize)) > A.at(x)) {
+                    swap(A.at(right(x, heapSize)), A.at(x));
+                    x = right(x, heapSize);
+                } else {
+                    break;
+                }
+            } else if (A.at(left(x, heapSize)) > A.at(x)) {
+                swap(A.at(left(x, heapSize)), A.at(x));
+                x = left(x, heapSize);
+            } else {
+                break;
+            }
+        }
+    };
+
+    template<typename T>
+    void heapSort(vector<T> &A) {
+        try {
+
+            int heapSize = 1;
+            int i = 1;
+            int len = static_cast<int>(A.size());
+
+            while (i < len) {
+                if (heapSize < len) {
+                    int x = heapSize;
+                    A.at(x) = A.at(i);
+                    ++heapSize;
+                    bubbleUp(x, A);
+                } else {
+                    throw out_of_range("");
+                }
+                ++i;
+            }
+            i = len - 1;
+            while (i > 0) {
+                T largest;
+                if (heapSize == 0) {
+                    throw out_of_range("");
+                } else {
+                    auto temp = A.at(heapSize - 1);
+                    --heapSize;
+                    if (heapSize == 0) {
+                        largest = temp;
+                    } else {
+                        largest = A.at(0);
+                        A.at(0) = temp;
+                        bubbleDown(0, heapSize, A);
+                    }
+                }
+                A.at(i) = largest;
+                --i;
+            }
+        } catch (...) {
+            return;
+        }
+    }
+}
+
 namespace HeapSort {
 
-    inline
+    inline static
     bool isRoot(const int &x) {
         return (x == 0);
     }
 
-    inline
+    inline static
     int parent(const int &x) {
         if (x == 0) {
             throw out_of_range("");
@@ -46,12 +139,12 @@ namespace HeapSort {
         }
     }
 
-    inline
+    inline static
     bool hasLeft(const int &x, const int &heapSize) {
         return (2 * x + 1 < heapSize);
     }
 
-    inline
+    inline static
     int left(const int &x, const int &heapSize) {
         if (hasLeft(x, heapSize)) {
             return 2 * x + 1;
@@ -59,12 +152,12 @@ namespace HeapSort {
         throw out_of_range("");
     }
 
-    inline
+    inline static
     bool hasRight(const int &x, const int &heapSize) {
         return (2 * x + 2 < heapSize);
     }
 
-    inline
+    inline static
     int right(const int &x, const int &heapSize) {
         if (hasRight(x, heapSize)) {
             return 2 * x + 2;
@@ -118,11 +211,11 @@ namespace HeapSort {
             }
             i = len - 1;
             while (i > 0) {
-                int largest;
+                T largest;
                 if (heapSize == 0) {
                     throw out_of_range("");
                 } else {
-                    int temp = A.at(heapSize - 1);
+                    T temp = A.at(heapSize - 1);
                     --heapSize;
                     if (heapSize == 0) {
                         largest = temp;
@@ -168,5 +261,50 @@ int main() {
         assert(A == A_copy);
     }
     cout << "Tests passed!" << endl;
+
+    class Widget {
+    private:
+        int first;
+        int second;
+    public:
+        Widget() : first(0), second(0) {};
+        Widget(int first_, int second_) : first(first_), second(second_) {}
+        bool operator != (const Widget &rhs) const {
+            return (first != rhs.first);
+        }
+        bool operator < (const Widget &rhs) const {
+            return (first < rhs.first);
+        }
+        bool operator == (const Widget &rhs) const {
+            return (first == rhs.first);
+        }
+        bool operator > (const Widget &rhs) const {
+            return (first > rhs.first);
+        }
+        bool operator >= (const Widget &rhs) const {
+            return (first >= rhs.first);
+        }
+        Widget & operator = (Widget other) {
+            first = other.first;
+            second = other.second;
+            return *this;
+        }
+        explicit operator string() const {
+            return "(" + to_string(first) + ", " + to_string(second) + ")";
+        }
+    };
+    test_time = test_time_dist(random_generator);
+    while (test_time--) {
+        vector<Widget> A(len_dist(random_generator));
+        for (auto &&i : A) {
+            i = Widget(static_cast<int>(dist(random_generator)), static_cast<int>(dist(random_generator)));
+        }
+        vector<Widget> A_copy(A.begin(), A.end());
+        HeapSort::heapSort(A);
+        sort(A_copy.begin(), A_copy.end());
+        assert(A == A_copy);
+    }
+    cout << "Tests passed!" << endl;
+
     return 0;
 }

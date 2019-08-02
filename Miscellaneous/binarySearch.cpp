@@ -20,15 +20,29 @@
 
 using namespace std;
 
+#define DEBUG
+
 // An implementation of binary search using tail recursion.
 // The function will return an index where A[index] = key.
 // If the key is not in A, -1 will be returned as output.
 
-vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound);
-vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound);
+template<typename T, typename Comparator>
+int bSearch_recursion(const vector<T> &A, int low, int high, const T &key, const Comparator &comp) {
+    if (low > high) {
+        return -1;
+    }
+    int mid = low + (high - low) / 2;
+    int compare = comp(key, A[mid]);
+    if (compare < 0) {
+        return bSearch_recursion(A, low, mid - 1, key);
+    } else if (compare > 0) {
+        return bSearch_recursion(A, mid + 1, high, key);
+    }
+    return mid;
+}
 
 template<typename T>
-int bSearch_recursion(const vector<T> &A, int low, int high, T key) {
+int bSearch_recursion(const vector<T> &A, int low, int high, const T &key) {
     if (low > high) {
         return -1;
     }
@@ -41,12 +55,33 @@ int bSearch_recursion(const vector<T> &A, int low, int high, T key) {
     return mid;
 }
 
+
 // An implementation of binary search using 'while' loop.
 // The function will return an index where A[index] = key.
 // If the key is not in A, -1 will be returned as output.
 
+template<typename T, typename Comparator>
+int bSearch(const vector<T> &A, const T &key, const Comparator &comp) {
+    int low = 0;
+    int high = static_cast<int>(A.size()) - 1;
+    while (true) {
+        if (low > high) {
+            return -1;
+        }
+        int mid = low + (high - low) / 2;
+        int compare = comp(key, A[mid]);
+        if (compare < 0) {
+            high = mid - 1;
+        } else if (compare > 0) {
+            low = mid + 1;
+        } else {
+            return mid;
+        }
+    }
+}
+
 template<typename T>
-int bSearch(const vector<T> &A, T key) {
+int bSearch(const vector<T> &A, const T &key) {
     int low = 0;
     int high = static_cast<int>(A.size()) - 1;
     while (true) {
@@ -68,8 +103,25 @@ int bSearch(const vector<T> &A, T key) {
 // where there may be multiple keys.
 // It should be used when the user confirmed that the key is in A.
 
+template<typename T, typename Comparator>
+int lowerBound(const vector<T> &A, const T &key, const Comparator &comp) {
+    int low = 0;
+    int high = static_cast<int>(A.size());
+    while (true) {
+        if (low >= high) {
+            return low;
+        }
+        int mid = low + (high - low) / 2;
+        if (comp(key, A[mid]) <= 0) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+}
+
 template<typename T>
-int lowerBound(const vector<T> &A, T key) {
+int lowerBound(const vector<T> &A, const T &key) {
     int low = 0;
     int high = static_cast<int>(A.size());
     while (true) {
@@ -89,8 +141,25 @@ int lowerBound(const vector<T> &A, T key) {
 // where there may be multiple keys.
 // It should be used when the user confirmed that the key is in A.
 
+template<typename T, typename Comparator>
+int upperBound(const vector<T> &A, const T &key, const Comparator &comp) {
+    int low = 0;
+    int high = static_cast<int>(A.size());
+    while (true) {
+        if (low >= high) {
+            return low;
+        }
+        int mid = low + (high - low) / 2;
+        if (comp(key, A[mid]) >= 0) {
+            low = mid + 1;
+        } else {
+            high = mid;
+        }
+    }
+}
+
 template<typename T>
-int upperBound(const vector<T> &A, T key) {
+int upperBound(const vector<T> &A, const T &key) {
     int low = 0;
     int high = static_cast<int>(A.size());
     while (true) {
@@ -185,6 +254,7 @@ vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound) {
 
 int main() {
 
+#ifdef DEBUG
     // TESTS
     random_device dev;
     mt19937 random_generator(dev());
@@ -198,12 +268,14 @@ int main() {
         sort(A.begin(), A.end());
         assert(bSearch_recursion(A, 0, static_cast<int>(A.size()), A[index(random_generator)]) != -1);
     }
+    cout << "Tests passed!" << endl;
 
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         sort(A.begin(), A.end());
         assert(bSearch_recursion(A, 0, static_cast<int>(A.size()), A[index(random_generator)]) != -1);
     }
+    cout << "Tests passed!" << endl;
 
     // bSearch
     for (int i = 0; i < testTime; ++i) {
@@ -217,6 +289,7 @@ int main() {
         sort(A.begin(), A.end());
         assert(bSearch(A, A[index(random_generator)]) != -1);
     }
+    cout << "Tests passed!" << endl;
 
     // lowerBound
     for (int i = 0; i < testTime; ++i) {
@@ -227,6 +300,7 @@ int main() {
         int index1 = static_cast<int>(lower_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
+    cout << "Tests passed!" << endl;
 
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
@@ -236,6 +310,7 @@ int main() {
         int index1 = static_cast<int>(lower_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
+    cout << "Tests passed!" << endl;
 
     // upperBound
     for (int i = 0; i < testTime; ++i) {
@@ -246,6 +321,7 @@ int main() {
         int index1 = static_cast<int>(upper_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
+    cout << "Tests passed!" << endl;
 
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
@@ -256,6 +332,7 @@ int main() {
         assert(index0 == index1);
     }
     cout << "Tests passed!" << endl;
+#endif
 
     // USAGE
     vector<int> A = {2, 3, 3, 4, 7, 7, 7, 9};
@@ -271,6 +348,42 @@ int main() {
         cout << val << " is found from ";
         cout << "index = " << lowerBound(A, val) << " to ";
         cout << "index = " << upperBound(A, val) - 1 << endl;
+    }
+
+    class Widget {
+    private:
+        int first;
+        char second;
+    public:
+        Widget(int first_, char second_) : first(first_), second(second_) {}
+
+        auto getFirst() const {
+            return first;
+        }
+
+        bool operator!=(const Widget &rhs) const {
+            return (second != rhs.second);
+        }
+
+        explicit operator string() const {
+            return "(" + to_string(first) + ",  )";
+        }
+    };
+    auto objVal{Widget(3, 'a')};
+    vector<Widget> B = {Widget(2, 'q'), Widget(3, 'w'), Widget(3, 'w'), Widget(3, 'p'), Widget(4, 'q')};
+    auto threeWayComparator = [](const Widget &lhs, const Widget &rhs) {
+        // Only compare if the first members of both objects are the same.
+        if (lhs.getFirst() == rhs.getFirst()) {
+            return 0;
+        } else if (lhs.getFirst() > rhs.getFirst()) {
+            return 1;
+        }
+        return -1;
+    };
+    if (bSearch(B, objVal, threeWayComparator)) {
+        cout << string(objVal) << " is found from ";
+        cout << "index = " << lowerBound(B, objVal, threeWayComparator) << " to ";
+        cout << "index = " << upperBound(B, objVal, threeWayComparator) - 1 << endl;
     }
 
     return 0;
