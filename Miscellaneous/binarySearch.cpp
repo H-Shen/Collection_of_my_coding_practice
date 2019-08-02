@@ -255,7 +255,7 @@ private:
     char second;
 public:
     Widget(int first_, char second_) : first(first_), second(second_) {}
-    auto getFirst() const {
+    [[nodiscard]] auto getFirst() const {
         return first;
     }
     bool operator!=(const Widget &rhs) const {
