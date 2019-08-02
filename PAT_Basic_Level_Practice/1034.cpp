@@ -10,7 +10,6 @@ struct frac {
 };
 
 string repr(frac A) {
-
     if (!A.isLegal) {
         return "Inf";
     }
@@ -25,7 +24,9 @@ string repr(frac A) {
         if (A.m > A.n) {
             a = A.m / A.n;
             A.m = A.m % A.n;
+#ifdef __GNUC__
             tmp = __gcd(A.m, A.n);
+#endif
             A.m /= tmp;
             A.n /= tmp;
             have_a = true;

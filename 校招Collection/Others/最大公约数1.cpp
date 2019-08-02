@@ -5,7 +5,7 @@
 using namespace std;
 
 int main() {
-
+#ifdef __GNUC__
     ios_base::sync_with_stdio(false);
     int n;
     while (cin >> n) {
@@ -20,5 +20,6 @@ int main() {
         cout << maxVal << ' ';
         cout << gcdVal << endl;
     }
+#endif
     return 0;
 }

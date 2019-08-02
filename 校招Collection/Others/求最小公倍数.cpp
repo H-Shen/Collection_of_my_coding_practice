@@ -5,8 +5,10 @@
 using namespace std;
 
 int main() {
+#ifdef __GNUC__
     long long a, b;
     cin >> a >> b;
     cout << a * b / __gcd(a, b) << endl;
+#endif
     return 0;
 }

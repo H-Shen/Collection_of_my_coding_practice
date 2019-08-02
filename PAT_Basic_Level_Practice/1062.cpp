@@ -21,6 +21,7 @@ bool operator>(const Fraction &a, const Fraction &b) {
 }
 
 int main() {
+#ifdef __GNUC__
     Fraction a, b, tmp;
     int k, i;
     scanf("%d/%d %d/%d %d", &a.d, &a.n, &b.d, &b.n, &k);
@@ -54,5 +55,6 @@ int main() {
     }
 
     printf("%d/%d\n", A[len - 1], k);
+#endif
     return 0;
 }
