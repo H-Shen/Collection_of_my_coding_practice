@@ -21,152 +21,153 @@ using namespace std;
 // If the key is not in A, -1 will be returned as output.
 
 
-
-template<typename T, typename Comparator>
-int bSearch_recursion(const vector<T> &A, int low, int high, const T &key, const Comparator &comp) {
-    if (low > high) {
-        return -1;
-    }
-    int mid = low + (high - low) / 2;
-    int compare = comp(key, A[mid]);
-    if (compare < 0) {
-        return bSearch_recursion(A, low, mid - 1, key, comp);
-    } else if (compare > 0) {
-        return bSearch_recursion(A, mid + 1, high, key, comp);
-    }
-    return mid;
-}
-
-template<typename T>
-int bSearch_recursion(const vector<T> &A, int low, int high, const T &key) {
-    if (low > high) {
-        return -1;
-    }
-    int mid = low + (high - low) / 2;
-    if (key < A[mid]) {
-        return bSearch_recursion(A, low, mid - 1, key);
-    } else if (key > A[mid]) {
-        return bSearch_recursion(A, mid + 1, high, key);
-    }
-    return mid;
-}
-
-
-// An implementation of binary search using 'while' loop.
-// The function will return an index where A[index] = key.
-// If the key is not in A, -1 will be returned as output.
-
-template<typename T, typename Comparator>
-int bSearch(const vector<T> &A, const T &key, const Comparator &comp) {
-    int low = 0;
-    int high = static_cast<int>(A.size()) - 1;
-    while (true) {
+namespace bSearch {
+    template<typename T, typename Comparator>
+    int bSearch_recursion(const vector<T> &A, int low, int high, const T &key, const Comparator &comp) {
         if (low > high) {
             return -1;
         }
         int mid = low + (high - low) / 2;
         int compare = comp(key, A[mid]);
         if (compare < 0) {
-            high = mid - 1;
+            return bSearch_recursion(A, low, mid - 1, key, comp);
         } else if (compare > 0) {
-            low = mid + 1;
-        } else {
-            return mid;
+            return bSearch_recursion(A, mid + 1, high, key, comp);
         }
+        return mid;
     }
-}
 
-template<typename T>
-int bSearch(const vector<T> &A, const T &key) {
-    int low = 0;
-    int high = static_cast<int>(A.size()) - 1;
-    while (true) {
+    template<typename T>
+    int bSearch_recursion(const vector<T> &A, int low, int high, const T &key) {
         if (low > high) {
             return -1;
         }
         int mid = low + (high - low) / 2;
         if (key < A[mid]) {
-            high = mid - 1;
+            return bSearch_recursion(A, low, mid - 1, key);
         } else if (key > A[mid]) {
-            low = mid + 1;
-        } else {
-            return mid;
+            return bSearch_recursion(A, mid + 1, high, key);
+        }
+        return mid;
+    }
+
+
+// An implementation of binary search using 'while' loop.
+// The function will return an index where A[index] = key.
+// If the key is not in A, -1 will be returned as output.
+
+    template<typename T, typename Comparator>
+    int bSearch(const vector<T> &A, const T &key, const Comparator &comp) {
+        int low = 0;
+        int high = static_cast<int>(A.size()) - 1;
+        while (true) {
+            if (low > high) {
+                return -1;
+            }
+            int mid = low + (high - low) / 2;
+            int compare = comp(key, A[mid]);
+            if (compare < 0) {
+                high = mid - 1;
+            } else if (compare > 0) {
+                low = mid + 1;
+            } else {
+                return mid;
+            }
         }
     }
-}
+
+    template<typename T>
+    int bSearch(const vector<T> &A, const T &key) {
+        int low = 0;
+        int high = static_cast<int>(A.size()) - 1;
+        while (true) {
+            if (low > high) {
+                return -1;
+            }
+            int mid = low + (high - low) / 2;
+            if (key < A[mid]) {
+                high = mid - 1;
+            } else if (key > A[mid]) {
+                low = mid + 1;
+            } else {
+                return mid;
+            }
+        }
+    }
 
 // An implementation of searching for the value with the smallest index by binary search using 'while' loop
 // where there may be multiple keys.
 // It should be used when the user confirmed that the key is in A.
 
-template<typename T, typename Comparator>
-int lowerBound(const vector<T> &A, const T &key, const Comparator &comp) {
-    int low = 0;
-    int high = static_cast<int>(A.size());
-    while (true) {
-        if (low >= high) {
-            return low;
-        }
-        int mid = low + (high - low) / 2;
-        if (comp(key, A[mid]) <= 0) {
-            high = mid;
-        } else {
-            low = mid + 1;
+    template<typename T, typename Comparator>
+    int lowerBound(const vector<T> &A, const T &key, const Comparator &comp) {
+        int low = 0;
+        int high = static_cast<int>(A.size());
+        while (true) {
+            if (low >= high) {
+                return low;
+            }
+            int mid = low + (high - low) / 2;
+            if (comp(key, A[mid]) <= 0) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
         }
     }
-}
 
-template<typename T>
-int lowerBound(const vector<T> &A, const T &key) {
-    int low = 0;
-    int high = static_cast<int>(A.size());
-    while (true) {
-        if (low >= high) {
-            return low;
-        }
-        int mid = low + (high - low) / 2;
-        if (key <= A[mid]) {
-            high = mid;
-        } else {
-            low = mid + 1;
+    template<typename T>
+    int lowerBound(const vector<T> &A, const T &key) {
+        int low = 0;
+        int high = static_cast<int>(A.size());
+        while (true) {
+            if (low >= high) {
+                return low;
+            }
+            int mid = low + (high - low) / 2;
+            if (key <= A[mid]) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
         }
     }
-}
 
 // An implementation of searching for the value with the (largest index + 1) by binary search using 'while' loop
 // where there may be multiple keys.
 // It should be used when the user confirmed that the key is in A.
 
-template<typename T, typename Comparator>
-int upperBound(const vector<T> &A, const T &key, const Comparator &comp) {
-    int low = 0;
-    int high = static_cast<int>(A.size());
-    while (true) {
-        if (low >= high) {
-            return low;
-        }
-        int mid = low + (high - low) / 2;
-        if (comp(key, A[mid]) >= 0) {
-            low = mid + 1;
-        } else {
-            high = mid;
+    template<typename T, typename Comparator>
+    int upperBound(const vector<T> &A, const T &key, const Comparator &comp) {
+        int low = 0;
+        int high = static_cast<int>(A.size());
+        while (true) {
+            if (low >= high) {
+                return low;
+            }
+            int mid = low + (high - low) / 2;
+            if (comp(key, A[mid]) >= 0) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
         }
     }
-}
 
-template<typename T>
-int upperBound(const vector<T> &A, const T &key) {
-    int low = 0;
-    int high = static_cast<int>(A.size());
-    while (true) {
-        if (low >= high) {
-            return low;
-        }
-        int mid = low + (high - low) / 2;
-        if (key >= A[mid]) {
-            low = mid + 1;
-        } else {
-            high = mid;
+    template<typename T>
+    int upperBound(const vector<T> &A, const T &key) {
+        int low = 0;
+        int high = static_cast<int>(A.size());
+        while (true) {
+            if (low >= high) {
+                return low;
+            }
+            int mid = low + (high - low) / 2;
+            if (key >= A[mid]) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
         }
     }
 }
@@ -279,14 +280,14 @@ int main() {
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
         sort(A.begin(), A.end());
-        assert(bSearch_recursion(A, 0, static_cast<int>(A.size()), A[index(random_generator)]) != -1);
+        assert(bSearch::bSearch_recursion(A, 0, static_cast<int>(A.size()), A[index(random_generator)]) != -1);
     }
     cout << "Tests passed!" << endl;
 
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         sort(A.begin(), A.end());
-        assert(bSearch_recursion(A, 0, static_cast<int>(A.size()), A[index(random_generator)]) != -1);
+        assert(bSearch::bSearch_recursion(A, 0, static_cast<int>(A.size()), A[index(random_generator)]) != -1);
     }
     cout << "Tests passed!" << endl;
 
@@ -294,13 +295,13 @@ int main() {
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
         sort(A.begin(), A.end());
-        assert(bSearch(A, A[index(random_generator)]) != -1);
+        assert(bSearch::bSearch(A, A[index(random_generator)]) != -1);
     }
 
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         sort(A.begin(), A.end());
-        assert(bSearch(A, A[index(random_generator)]) != -1);
+        assert(bSearch::bSearch(A, A[index(random_generator)]) != -1);
     }
     cout << "Tests passed!" << endl;
 
@@ -309,7 +310,7 @@ int main() {
         vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         sort(A.begin(), A.end());
         int val = A[index(random_generator)];
-        int index0 = lowerBound(A, val);
+        int index0 = bSearch::lowerBound(A, val);
         int index1 = static_cast<int>(lower_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
@@ -319,7 +320,7 @@ int main() {
         vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
         sort(A.begin(), A.end());
         int val = A[index(random_generator)];
-        int index0 = lowerBound(A, val);
+        int index0 = bSearch::lowerBound(A, val);
         int index1 = static_cast<int>(lower_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
@@ -330,7 +331,7 @@ int main() {
         vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         sort(A.begin(), A.end());
         int val = A[index(random_generator)];
-        int index0 = upperBound(A, val);
+        int index0 = bSearch::upperBound(A, val);
         int index1 = static_cast<int>(upper_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
@@ -340,7 +341,7 @@ int main() {
         vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
         sort(A.begin(), A.end());
         int val = A[index(random_generator)];
-        int index0 = upperBound(A, val);
+        int index0 = bSearch::upperBound(A, val);
         int index1 = static_cast<int>(upper_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
@@ -350,17 +351,17 @@ int main() {
     // USAGE
     vector<int> A = {2, 3, 3, 4, 7, 7, 7, 9};
     int val = 2;
-    if (bSearch(A, val) != -1) {
+    if (bSearch::bSearch(A, val) != -1) {
         cout << val << " is found from ";
-        cout << "index = " << lowerBound(A, val) << " to ";
-        cout << "index = " << upperBound(A, val) - 1 << endl;
+        cout << "index = " << bSearch::lowerBound(A, val) << " to ";
+        cout << "index = " << bSearch::upperBound(A, val) - 1 << endl;
     }
 
     val = 7;
-    if (bSearch(A, val) != -1) {
+    if (bSearch::bSearch(A, val) != -1) {
         cout << val << " is found from ";
-        cout << "index = " << lowerBound(A, val) << " to ";
-        cout << "index = " << upperBound(A, val) - 1 << endl;
+        cout << "index = " << bSearch::lowerBound(A, val) << " to ";
+        cout << "index = " << bSearch::upperBound(A, val) - 1 << endl;
     }
 
     auto objVal{Widget(3, 'a')};
@@ -374,15 +375,15 @@ int main() {
         }
         return -1;
     };
-    if (bSearch(B, objVal, threeWayComparator)) {
+    if (bSearch::bSearch(B, objVal, threeWayComparator)) {
         cout << string(objVal) << " is found from ";
-        cout << "index = " << lowerBound(B, objVal, threeWayComparator) << " to ";
-        cout << "index = " << upperBound(B, objVal, threeWayComparator) - 1 << endl;
+        cout << "index = " << bSearch::lowerBound(B, objVal, threeWayComparator) << " to ";
+        cout << "index = " << bSearch::upperBound(B, objVal, threeWayComparator) - 1 << endl;
     }
-    if (bSearch_recursion(B, 0, static_cast<int>(B.size()), objVal, threeWayComparator)) {
+    if (bSearch::bSearch_recursion(B, 0, static_cast<int>(B.size()), objVal, threeWayComparator)) {
         cout << string(objVal) << " is found from ";
-        cout << "index = " << lowerBound(B, objVal, threeWayComparator) << " to ";
-        cout << "index = " << upperBound(B, objVal, threeWayComparator) - 1 << endl;
+        cout << "index = " << bSearch::lowerBound(B, objVal, threeWayComparator) << " to ";
+        cout << "index = " << bSearch::upperBound(B, objVal, threeWayComparator) - 1 << endl;
     }
     return 0;
 }

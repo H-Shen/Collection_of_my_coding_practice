@@ -8,18 +8,11 @@
  */
 
 
-#include <cassert>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <unordered_set>
-#include <random>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound);
-vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound);
+#define DEBUG
 
 // Precondition
 // 1) A is an array with length n ≥ 1 storing values of some type T that is given as input
@@ -32,9 +25,22 @@ vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound);
 
 template<typename T>
 int linearSearch(const vector<T> &A, T key) {
-    int i = 0;
-    int n = static_cast<int>(A.size());
+    int i{0};
+    int n{static_cast<int>(A.size())};
     while ((i < n) && (A[i] != key)) {
+        ++i;
+    }
+    if (i < n) {
+        return i;
+    }
+    return -1;
+}
+
+template <typename T, typename Comparator>
+int linearSearch(const vector<T> &A, T key, Comparator &comp) {
+    int i{0};
+    int n{static_cast<int>(A.size())};
+    while ((i < n) && !comp(A[i], key)) {
         ++i;
     }
     if (i < n) {
@@ -123,6 +129,7 @@ vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound) {
 
 int main() {
 
+#ifdef DEBUG
     random_device dev;
     mt19937 random_generator(dev());
     int n = 1000;
@@ -135,18 +142,21 @@ int main() {
         int val = A[index(random_generator)];
         assert(find(A.begin(), A.end(), val) - A.begin() == linearSearch(A, val));
     }
+    cout << "Tests passed!" << endl;
 
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         int val = A[index(random_generator)];
         assert(find(A.begin(), A.end(), val) - A.begin() == linearSearch(A, val));
     }
+    cout << "Tests passed!" << endl;
 
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
         int val = *max_element(A.begin(), A.end()) + 1;
         assert(linearSearch(A, val) == -1);
     }
+    cout << "Tests passed!" << endl;
 
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
@@ -155,6 +165,36 @@ int main() {
     }
     cout << "Tests passed!" << endl;
 
+    auto cmp = [](const pair<int, int> &lhs, const pair<int, int> &rhs) -> int {
+        if (lhs.first == rhs.first) {
+            if (lhs.second > rhs.second) {
+                return 1;
+            } else if (lhs.second < rhs.second) {
+                return -1;
+            }
+            return 0;
+        } else if (lhs.first > rhs.first) {
+            return 1;
+        }
+        return 0;
+    };
+    for (int i = 0; i < testTime; ++i) {
+        vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
+        vector<pair<int, int> > A_(A.size());
+        for (size_t j = 0; j != A.size(); ++j) {
+            A_.at(j) = {A.at(j), A.at(j)};
+        }
+        auto val = *max_element(A_.begin(), A_.end(), [](const pair<int, int> &lhs, const pair<int, int> &rhs)->bool
+        {
+           if (lhs.first == rhs.first) {
+               return (lhs.second < rhs.second);
+           }
+        });
+        assert(linearSearch(A_, val, cmp) != -1);
+    }
+    cout << "Tests passed!" << endl;
+
+#endif
     // USAGE
     vector<int> A = {2, 3, 3, 4, 7, 7, 7, 9};
     int val = 2;

@@ -19,7 +19,7 @@
 
 using namespace std;
 
-namespace HeapSortWithComparator {
+namespace HeapSort {
 
     auto isRoot = [](const int &x) -> bool { return (x == 0); };
     auto parent = [](const int &x) -> int {
@@ -27,13 +27,6 @@ namespace HeapSortWithComparator {
             throw out_of_range("");
         }
         return (x - 1) / 2;
-    };
-
-    auto bubbleUp = [](int x, auto &A, const auto &comp) -> void {
-        while (!isRoot(x) && comp(A.at(x), A.at(parent(x))) > 0) {
-            swap(A.at(x), A.at(parent(x)));
-            x = parent(x);
-        }
     };
     auto hasLeft = [](const int &x, const int &heapSize) -> bool { return (2 * x + 1 < heapSize); };
     auto left = [](const int &x, const int &heapSize) -> int {
@@ -49,7 +42,25 @@ namespace HeapSortWithComparator {
         }
         throw out_of_range("");
     };
-    auto bubbleDown = [](int x, int heapSize, auto &A, const auto &comp) -> void {
+
+    template<typename T, typename Comparator>
+    void bubbleUp(int x, vector<T> &A, const Comparator &comp) {
+        while (!isRoot(x) && comp(A.at(x), A.at(parent(x))) > 0) {
+            swap(A.at(x), A.at(parent(x)));
+            x = parent(x);
+        }
+    }
+
+    template<typename T>
+    void bubbleUp(int x, vector<T> &A) {
+        while (!isRoot(x) && A.at(x) > A.at(parent(x))) {
+            swap(A.at(x), A.at(parent(x)));
+            x = parent(x);
+        }
+    }
+
+    template<typename T, typename Comparator>
+    void bubbleDown(int x, int heapSize, vector<T> &A, const Comparator &comp) {
         while (hasLeft(x, heapSize)) {
             if (hasRight(x, heapSize)) {
                 if (comp(A.at(left(x, heapSize)), A.at(right(x, heapSize))) >= 0) {
@@ -72,7 +83,33 @@ namespace HeapSortWithComparator {
                 break;
             }
         }
-    };
+    }
+
+    template<typename T>
+    void bubbleDown(int x, int heapSize, vector<T> &A) {
+        while (hasLeft(x, heapSize)) {
+            if (hasRight(x, heapSize)) {
+                if (A.at(left(x, heapSize)) >= A.at(right(x, heapSize))) {
+                    if (A.at(left(x, heapSize)) > A.at(x)) {
+                        swap(A.at(left(x, heapSize)), A.at(x));
+                        x = left(x, heapSize);
+                    } else {
+                        break;
+                    }
+                } else if (A.at(right(x, heapSize)) > A.at(x)) {
+                    swap(A.at(right(x, heapSize)), A.at(x));
+                    x = right(x, heapSize);
+                } else {
+                    break;
+                }
+            } else if (A.at(left(x, heapSize)) > A.at(x)) {
+                swap(A.at(left(x, heapSize)), A.at(x));
+                x = left(x, heapSize);
+            } else {
+                break;
+            }
+        }
+    }
 
     template<typename T, typename Comparator>
     void heapSort(vector<T> &A, const Comparator &comp) {
@@ -112,85 +149,7 @@ namespace HeapSortWithComparator {
                 A.at(i) = largest;
                 --i;
             }
-        } catch (...) {
-            return;
-        }
-    }
-}
-
-namespace HeapSort {
-
-    inline static
-    bool isRoot(const int &x) {
-        return (x == 0);
-    }
-
-    inline static
-    int parent(const int &x) {
-        if (x == 0) {
-            throw out_of_range("");
-        }
-        return (x - 1) / 2;
-    }
-
-    template<typename T>
-    void bubbleUp(int x, vector<T> &A) {
-        while (!isRoot(x) && A.at(x) > A.at(parent(x))) {
-            swap(A.at(x), A.at(parent(x)));
-            x = parent(x);
-        }
-    }
-
-    inline static
-    bool hasLeft(const int &x, const int &heapSize) {
-        return (2 * x + 1 < heapSize);
-    }
-
-    inline static
-    int left(const int &x, const int &heapSize) {
-        if (hasLeft(x, heapSize)) {
-            return 2 * x + 1;
-        }
-        throw out_of_range("");
-    }
-
-    inline static
-    bool hasRight(const int &x, const int &heapSize) {
-        return (2 * x + 2 < heapSize);
-    }
-
-    inline static
-    int right(const int &x, const int &heapSize) {
-        if (hasRight(x, heapSize)) {
-            return 2 * x + 2;
-        }
-        throw out_of_range("");
-    }
-
-    template<typename T>
-    void bubbleDown(int x, int heapSize, vector<T> &A) {
-        while (hasLeft(x, heapSize)) {
-            if (hasRight(x, heapSize)) {
-                if (A.at(left(x, heapSize)) >= A.at(right(x, heapSize))) {
-                    if (A.at(left(x, heapSize)) > A.at(x)) {
-                        swap(A.at(left(x, heapSize)), A.at(x));
-                        x = left(x, heapSize);
-                    } else {
-                        break;
-                    }
-                } else if (A.at(right(x, heapSize)) > A.at(x)) {
-                    swap(A.at(right(x, heapSize)), A.at(x));
-                    x = right(x, heapSize);
-                } else {
-                    break;
-                }
-            } else if (A.at(left(x, heapSize)) > A.at(x)) {
-                swap(A.at(left(x, heapSize)), A.at(x));
-                x = left(x, heapSize);
-            } else {
-                break;
-            }
-        }
+        } catch (...) {}
     }
 
     template<typename T>
@@ -230,11 +189,10 @@ namespace HeapSort {
                 A.at(i) = largest;
                 --i;
             }
-        } catch (...) {
-            return;
-        }
+        } catch (...) {}
     }
 }
+
 
 int main() {
 
@@ -271,27 +229,35 @@ int main() {
         int second;
     public:
         Widget() : first(0), second(0) {};
+
         Widget(int first_, int second_) : first(first_), second(second_) {}
-        bool operator != (const Widget &rhs) const {
+
+        bool operator!=(const Widget &rhs) const {
             return (first != rhs.first);
         }
-        bool operator < (const Widget &rhs) const {
+
+        bool operator<(const Widget &rhs) const {
             return (first < rhs.first);
         }
-        bool operator == (const Widget &rhs) const {
+
+        bool operator==(const Widget &rhs) const {
             return (first == rhs.first);
         }
-        bool operator > (const Widget &rhs) const {
+
+        bool operator>(const Widget &rhs) const {
             return (first > rhs.first);
         }
-        bool operator >= (const Widget &rhs) const {
+
+        bool operator>=(const Widget &rhs) const {
             return (first >= rhs.first);
         }
-        Widget & operator = (Widget other) {
+
+        Widget &operator=(Widget other) {
             first = other.first;
             second = other.second;
             return *this;
         }
+
         explicit operator string() const {
             return "(" + to_string(first) + ", " + to_string(second) + ")";
         }
@@ -323,7 +289,7 @@ int main() {
             }
             return (lhs.first < rhs.first);
         });
-        HeapSortWithComparator::heapSort(A, [](const pair<int, int> &lhs, const pair<int, int> &rhs) -> bool {
+        HeapSort::heapSort(A, [](const pair<int, int> &lhs, const pair<int, int> &rhs) -> int {
             if (lhs.first == rhs.first) {
                 if (lhs.second > rhs.second) {
                     return 1;
