@@ -7,8 +7,8 @@ from fractions import Fraction
 from random import randint
 
 TEST_TIME = 100
-MIN_VAL = -50
-MAX_VAL = 50
+MIN_VAL = -5000
+MAX_VAL = 5000
 
 try:
     # COMPILE
@@ -24,7 +24,10 @@ try:
         numerator1 = randint(MIN_VAL, MAX_VAL)
         denominator1 = randint(MIN_VAL, MAX_VAL)
 
-        s = "java -Dfile.encoding=UTF8 Fraction " + str(numerator0) + " " + str(denominator0) + " " + str(numerator1) + " " + str(denominator1)
+        numerator2 = randint(MIN_VAL, MAX_VAL)
+        numerator3 = randint(MIN_VAL, MAX_VAL)
+
+        s = "java -Dfile.encoding=UTF8 Fraction " + str(numerator0) + " " + str(denominator0) + " " + str(numerator1) + " " + str(denominator1) + " " + str(numerator2) + " " + str(numerator3)
 
         # handle output from Fraction.java
         output0 = os.popen(s).readlines()
@@ -45,6 +48,11 @@ try:
                 output1.append("java.lang.ArithmeticException: / zero")
             else:
                 output1.append(str(a / b))
+
+            a = Fraction(numerator2, a.denominator)
+            b = Fraction(numerator3, b.denominator)
+            output1.append(str(a))
+            output1.append(str(b))
 
         assert output1 == output0
         print("Test " + str(i + 1) + ":")

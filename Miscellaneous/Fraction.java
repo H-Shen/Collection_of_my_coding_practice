@@ -8,7 +8,7 @@ import java.math.BigInteger;
  */
 class Fraction implements Comparable<Fraction> {
 
-    private static final int        ARGUMENT_LENGTH = 4;
+    private static final int        ARGUMENT_LENGTH = 6;
     /**
      * Fields of a fraction.
      */
@@ -83,9 +83,13 @@ class Fraction implements Comparable<Fraction> {
 
     public static void main(String[] args) {
         try {
-            if (args.length != ARGUMENT_LENGTH || isNotInteger(args[0]) || isNotInteger(args[1]) ||
-                    isNotInteger(args[2]) || isNotInteger(args[3])) {
+            if (args.length != ARGUMENT_LENGTH) {
                 throw new IllegalArgumentException();
+            }
+            for (String arg : args) {
+                if (isNotInteger(arg)) {
+                    throw new IllegalArgumentException();
+                }
             }
             Fraction a = new Fraction(args[0], args[1]);
             Fraction b = new Fraction(args[2], args[3]);
@@ -93,6 +97,12 @@ class Fraction implements Comparable<Fraction> {
             System.out.println(a.subtract(b));
             System.out.println(a.multiply(b));
             System.out.println(a.divide(b));
+
+            a.setNumerator(new BigInteger(args[4]));
+            b.setNumerator(new BigInteger(args[5]));
+            System.out.println(a);
+            System.out.println(b);
+
         } catch (ArithmeticException ae) {
             System.out.println(ae.toString());
         } catch (Exception ex) {
@@ -139,6 +149,7 @@ class Fraction implements Comparable<Fraction> {
 
     void setNumerator(BigInteger numerator) {
         this.numerator = numerator;
+        reduce();
     }
 
     private BigInteger getDenominator() {
@@ -146,7 +157,11 @@ class Fraction implements Comparable<Fraction> {
     }
 
     void setDenominator(BigInteger denominator) {
+        if (denominator.compareTo(BigInteger.ZERO) == 0) {
+            throw new ArithmeticException();
+        }
         this.denominator = denominator;
+        reduce();
     }
 
     /**
