@@ -5,7 +5,7 @@ using namespace std;
 #define DEBUG
 
 /**
- * A method that checks if b is an subarray of a. If a and b are sorted, please use std::includes instead.
+ * A method that checks if b is a subarray of a. If a and b are sorted, please use std::includes instead.
  * @return true if b is an subarray of a, otherwise false
  */
 template<typename T>
