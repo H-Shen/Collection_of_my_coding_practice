@@ -14,10 +14,10 @@ int main() {
     string num = to_string(sum);
     string res;
 
-    for (int i = 0; i < (int) num.size() - 1; ++i) {
+    for (int i = 0; i < static_cast<int>(num.size()) - 1; ++i) {
         res += dict[num[i] - '0'] + ' ';
     }
-    res += dict[num[(int) num.size() - 1] - '0'];
+    res += dict[num[static_cast<int>(num.size()) - 1] - '0'];
     cout << res << endl;
 
     return 0;

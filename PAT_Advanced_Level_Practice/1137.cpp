@@ -63,11 +63,11 @@ int main() {
     for (auto &it : A) {
         if (it.second.mid_score > it.second.final_score) {
             double tmpDouble = it.second.mid_score * 0.4 + it.second.final_score * 0.6;
-            double tmpDD = tmpDouble - (int) tmpDouble;
+            double tmpDD = tmpDouble - static_cast<int>(tmpDouble);
             if (sgn(tmpDD - 0.5) >= 0) {
-                it.second.G = (int) tmpDouble + 1;
+                it.second.G = static_cast<int>(tmpDouble) + 1;
             } else {
-                it.second.G = (int) tmpDouble;
+                it.second.G = static_cast<int>(tmpDouble);
             }
         } else {
             it.second.G = it.second.final_score;

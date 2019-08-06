@@ -25,14 +25,14 @@ int main() {
 
     int i = 0, len = s.size();
     if (s[0] == '-') {
-        res = res + "fu ";
+        res += "fu ";
         ++i;
     }
 
     for (; i < len - 1; ++i) {
-        res = res + A[(int) s[i] - gap] + ' ';
+        res += A[static_cast<int>(s[i]) - gap] + ' ';
     }
-    res = res + A[(int) s[i] - gap];
+    res += A[static_cast<int>(s[i]) - gap];
 
     cout << res << endl;
 

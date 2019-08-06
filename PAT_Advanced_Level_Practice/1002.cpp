@@ -57,9 +57,9 @@ int main() {
         printf("0\n");
     } else {
 
-        printf("%d ", (int) res.size());
+        printf("%d ", static_cast<int>(res.size()));
 
-        for (i = 0; i < (int) res.size() - 1; ++i) {
+        for (i = 0; i < static_cast<int>(res.size()) - 1; ++i) {
             printf("%d %.1lf ", res[i].first, res[i].second);
         }
         printf("%d %.1lf\n", res[i].first, res[i].second);

@@ -32,8 +32,8 @@ vector<item> mulArr(const vector<item> &A, const vector<item> &B) {
         return res;
     }
 
-    int lenA = A.size();
-    int lenB = B.size();
+    int lenA = static_cast<int>(A.size());
+    int lenB = static_cast<int>(B.size());
 
     int i, j;
     item tmp;
@@ -80,8 +80,8 @@ int main() {
         printf("0");
     } else {
         sort(C.begin(), C.end(), cmp);
-        printf("%d", (int) C.size());
-        for (i = 0; i < (int) C.size(); ++i) {
+        printf("%d", static_cast<int>(C.size()));
+        for (i = 0; i < static_cast<int>(C.size()); ++i) {
             printf(" %d %.1lf", C[i].exp, C[i].coeff);
         }
     }

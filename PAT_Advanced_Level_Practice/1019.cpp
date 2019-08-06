@@ -38,9 +38,9 @@ int main() {
         printf("No\n");
     }
 
-    for (i = 0; i < (int) saveMirr.size() - 1; ++i) {
+    for (i = 0; i < static_cast<int>(saveMirr.size()) - 1; ++i) {
         printf("%s ", saveMirr[i].c_str());
     }
-    printf("%s\n", saveMirr[(int) saveMirr.size() - 1].c_str());
+    printf("%s\n", saveMirr[static_cast<int>(saveMirr.size()) - 1].c_str());
     return 0;
 }

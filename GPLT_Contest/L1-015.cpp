@@ -8,7 +8,7 @@ int main() {
     if (N % 2 == 0) {
         M = N / 2;
     } else {
-        M = (int) (N / 2) + 1;
+        M = static_cast<int>(N / 2) + 1;
     }
     int i, j;
     for (i = 1; i <= M; ++i) {
