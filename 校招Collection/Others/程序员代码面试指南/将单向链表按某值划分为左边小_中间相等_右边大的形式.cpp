@@ -13,10 +13,9 @@ int main() {
     for (auto &&i : A) {
         cin >> i;
     }
-    auto it = partition(begin(A), end(A), [&](const int &val) {
+    partition(partition(begin(A), end(A), [&](const int &val) {
         return (val < pivot);
-    });
-    partition(it, end(A), [&](const int &val) {
+    }), end(A), [&](const int &val) {
         return (val == pivot);
     });
     bool firstItem{true};
