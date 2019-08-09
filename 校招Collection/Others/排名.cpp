@@ -44,8 +44,6 @@ bool cmp(const Person &a, const Person &b)
 
 int main()
 {
-    //freopen("C:\\input", "r", stdin);
-
     int n;
     int maxScore2017;
     int maxScore2018_0;
