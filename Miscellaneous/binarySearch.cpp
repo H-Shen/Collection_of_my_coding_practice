@@ -282,14 +282,12 @@ int main() {
         sort(A.begin(), A.end());
         assert(bSearch::bSearch_recursion(A, 0, static_cast<int>(A.size()), A[index(random_generator)]) != -1);
     }
-    cout << "Tests passed!" << endl;
 
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         sort(A.begin(), A.end());
         assert(bSearch::bSearch_recursion(A, 0, static_cast<int>(A.size()), A[index(random_generator)]) != -1);
     }
-    cout << "Tests passed!" << endl;
 
     // bSearch
     for (int i = 0; i < testTime; ++i) {
@@ -303,7 +301,6 @@ int main() {
         sort(A.begin(), A.end());
         assert(bSearch::bSearch(A, A[index(random_generator)]) != -1);
     }
-    cout << "Tests passed!" << endl;
 
     // lowerBound
     for (int i = 0; i < testTime; ++i) {
@@ -314,7 +311,6 @@ int main() {
         int index1 = static_cast<int>(lower_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
-    cout << "Tests passed!" << endl;
 
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
@@ -324,7 +320,6 @@ int main() {
         int index1 = static_cast<int>(lower_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
-    cout << "Tests passed!" << endl;
 
     // upperBound
     for (int i = 0; i < testTime; ++i) {
@@ -335,7 +330,6 @@ int main() {
         int index1 = static_cast<int>(upper_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
-    cout << "Tests passed!" << endl;
 
     for (int i = 0; i < testTime; ++i) {
         vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
@@ -345,7 +339,6 @@ int main() {
         int index1 = static_cast<int>(upper_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
-    cout << "Tests passed!" << endl;
 #endif
 
     // USAGE

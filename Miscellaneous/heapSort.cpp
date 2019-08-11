@@ -221,7 +221,6 @@ int main() {
         sort(A_copy.begin(), A_copy.end());
         assert(A == A_copy);
     }
-    cout << "Tests passed!" << endl;
 
     class Widget {
     private:
@@ -273,7 +272,6 @@ int main() {
         sort(A_copy.begin(), A_copy.end());
         assert(A == A_copy);
     }
-    cout << "Tests passed!" << endl;
 
     test_time = test_time_dist(random_generator);
     while (test_time--) {
@@ -304,7 +302,6 @@ int main() {
         });
         assert(A_copy == A);
     }
-    cout << "Tests passed!" << endl;
 
 #endif
 

@@ -173,7 +173,6 @@ int main() {
     C1.resize(A.size());
     partial_sort_copy(A.begin(), A.end(), C1.begin(), C1.end());
     assert(C0 == C1);
-    cout << "Tests passed!" << endl;
 #endif
 
     return 0;

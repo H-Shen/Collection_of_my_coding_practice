@@ -9,7 +9,7 @@ using namespace std;
  * @return true if b is an subarray of a, otherwise false
  */
 template<typename T>
-bool contains(vector<T> const &a, vector<T> const &b) {
+bool includesWithoutSorting(vector<T> const &a, vector<T> const &b) {
     if (b.empty()) {
         return true;
     }
@@ -34,12 +34,12 @@ int main() {
 
 #ifdef DEBUG
     vector<int> A = {1, 5, 76, 8, 2, 32, 3};
-    assert(contains(A, vector<int>{1, 5, 76}));
-    assert(!contains(A, vector<int>{1, 5, 76, 9}));
-    assert(contains(A, vector<int>{8}));
-    assert(!contains(A, vector<int>{9}));
-    assert(contains(A, vector<int>{}));
-    assert(contains(vector<int>{}, vector<int>{}));
+    assert(includesWithoutSorting(A, vector<int>{1, 5, 76}));
+    assert(!includesWithoutSorting(A, vector<int>{1, 5, 76, 9}));
+    assert(includesWithoutSorting(A, vector<int>{8}));
+    assert(!includesWithoutSorting(A, vector<int>{9}));
+    assert(includesWithoutSorting(A, vector<int>{}));
+    assert(includesWithoutSorting(vector<int>{}, vector<int>{}));
 #endif
 
     return 0;
