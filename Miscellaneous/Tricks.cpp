@@ -9,23 +9,6 @@
 
 using namespace std;
 
-#define joinTest
-
-/**
- * An implementation of join in Cpp.
- */
-inline static
-string join(const vector<string> &v, const string &str) {
-    string s;
-    for (auto p = cbegin(v); p != cend(v); ++p) {
-        s.append(*p);
-        if (p != cend(v) - 1) {
-            s.append(str);
-        }
-    }
-    return s;
-}
-
 /**
  * A demo shows how to detect the failure of memory allocation.
  */
@@ -71,14 +54,6 @@ void showSizeofEmptyStructClassUnion() {
 }
 
 int main() {
-
-#ifdef joinTest
-    assert(join({"ab", "mn","hj", "qw"}, "+-") == "ab+-mn+-hj+-qw");
-    assert(join({"ab", "mn","hj", "qw"}, " t ") == "ab t mn t hj t qw");
-    assert(join({}, "asd").empty());
-    assert(join({"","",""}, "asd") == "asdasd");
-    assert(join({"","",""},"").empty());
-#endif
 
 #ifdef showValueAfterSizeofTest
     showValueAfterSizeof();

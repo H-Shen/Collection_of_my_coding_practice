@@ -12,6 +12,8 @@ using namespace std;
  * Split a string by using single character as the delimiter.
  * @return a vector of strings after splitting.
  */
+
+inline static
 vector<string> splitByChar(string s, const char &delim) {
     vector<string> res;
     istringstream f(s);
@@ -22,6 +24,7 @@ vector<string> splitByChar(string s, const char &delim) {
     return res;
 }
 
+inline static
 vector<string> splitByString(string s, const string &delim) {
 
     vector<string> result;
