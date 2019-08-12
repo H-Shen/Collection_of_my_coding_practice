@@ -6,14 +6,14 @@ using namespace std;
 
 int main() {
 
-    ios_base::sync_with_stdio(false);
     stack<int> start;
     stack<int> helper;
     int n, val;
 
-    cin >> n;
+    // input
+    scanf("%d", &n);
     while (n--) {
-        cin >> val;
+        scanf("%d", &val);
         start.push(val);
     }
     while (!start.empty()) {
@@ -35,11 +35,11 @@ int main() {
         if (firstItem) {
             firstItem = false;
         } else {
-            cout << " ";
+            printf(" ");
         }
-        cout << start.top();
+        printf("%d", start.top());
         start.pop();
     }
-    cout << endl;
+    printf("\n");
     return 0;
 }
