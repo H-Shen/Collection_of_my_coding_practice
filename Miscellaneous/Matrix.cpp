@@ -1,8 +1,11 @@
-#include <bits/stdc++.h>
+#include <cassert>
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <random>
 
 #define DEBUG
-
-using namespace std;
 
 template<typename T>
 class Matrix {
@@ -14,9 +17,11 @@ public:
     size_t getRow() const {
         return row;
     }
+
     size_t getCol() const {
         return col;
     }
+
     // Constructor with the value of rows and columns.
     Matrix(size_t row_, size_t col_) : row(row_), col(col_) {
         try {
@@ -29,7 +34,7 @@ public:
         }
     }
 
-    Matrix(const std::initializer_list<std::initializer_list<T> > & rhs) {
+    Matrix(const std::initializer_list<std::initializer_list<T> > &rhs) {
         // Check if every row in A has the same size
         if (rhs.size() != 0) {
             size_t sizeOfLastRow = 0;
@@ -192,7 +197,7 @@ public:
 
     Matrix operator*(const Matrix &rhs) const {
         if (row == 0 || rhs.row == 0 || col != rhs.row) {
-            throw out_of_range("");
+            throw std::out_of_range("");
         }
         Matrix result(row, rhs.col);
         for (size_t i = 0; i != row; ++i) {
@@ -227,8 +232,8 @@ public:
         }
     }
 
-    string toString() const {
-        string result;
+    std::string toString() const {
+        std::string result;
         bool firstItem;
         for (size_t i = 0; i != row; ++i) {
             firstItem = true;
@@ -238,7 +243,7 @@ public:
                 } else {
                     result.push_back(' ');
                 }
-                result.append(to_string(this->at(i, j)));
+                result.append(std::to_string(this->at(i, j)));
             }
             if (i != row - 1) {
                 result.push_back('\n');
@@ -249,15 +254,16 @@ public:
 };
 
 template<typename T>
-vector<vector<int> > matrixMultiplication(const vector<vector<T> > &A, const vector<vector<T> > &B) {
+std::vector<std::vector<int> >
+matrixMultiplication(const std::vector<std::vector<T> > &A, const std::vector<std::vector<T> > &B) {
     if (A.empty() || B.empty() || A.at(0).empty() || B.at(0).empty() || A.at(0).size() != B.size()) {
-        throw out_of_range("");
+        throw std::out_of_range("");
     }
     int m = static_cast<int>(A.size());
     int n = static_cast<int>(A.at(0).size());
     int q = static_cast<int>(B.at(0).size());
 
-    vector<vector<T> > C(static_cast<unsigned long>(m), vector<T>(static_cast<unsigned long>(q)));
+    std::vector<std::vector<T> > C(static_cast<unsigned long>(m), std::vector<T>(static_cast<unsigned long>(q)));
     for (int i = 0; i < m; ++i) {
         for (int j = 0; j < q; ++j) {
             for (int k = 0; k < n; ++k) {
@@ -269,9 +275,9 @@ vector<vector<int> > matrixMultiplication(const vector<vector<T> > &A, const vec
 }
 
 template<typename T>
-string toString(const vector<vector<T> > &C) {
+auto toString(const std::vector<std::vector<T> > &C) {
 
-    string result;
+    std::string result;
     if (!C.empty()) {
         size_t row = C.size();
         size_t col = C.at(0).size();
@@ -284,7 +290,7 @@ string toString(const vector<vector<T> > &C) {
                 } else {
                     result.push_back(' ');
                 }
-                result.append(to_string(C.at(i).at(j)));
+                result.append(std::to_string(C.at(i).at(j)));
             }
             if (i != row - 1) {
                 result.push_back('\n');
@@ -294,20 +300,20 @@ string toString(const vector<vector<T> > &C) {
     return result;
 }
 
-string exec(const char *cmd) {
+std::string exec(const char *cmd) {
     char buffer[128];
-    string result;
+    std::string result;
     auto pipe = popen(cmd, "r");
     if (!pipe) {
-        throw runtime_error("popen() failed!");
+        throw std::runtime_error("popen() failed!");
     }
     try {
         while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
             result += buffer;
         }
-    } catch (exception &ex) {
+    } catch (std::exception &ex) {
         pclose(pipe);
-        cout << ex.what() << endl;
+        std::cout << ex.what() << std::endl;
         exit(0);
     }
     pclose(pipe);
@@ -318,21 +324,21 @@ int main() {
 
 #ifdef DEBUG
 
-    mt19937 random_generator((random_device()()));
-    uniform_int_distribution<std::mt19937::result_type> random_size_range(1, 15);
-    uniform_int_distribution<std::mt19937::result_type> random_value_range(static_cast<unsigned int>(-500), 500);
+    std::mt19937 random_generator((std::random_device()()));
+    std::uniform_int_distribution<std::mt19937::result_type> random_size_range(1, 15);
+    std::uniform_int_distribution<std::mt19937::result_type> random_value_range(static_cast<unsigned int>(-500), 500);
 
     int m = random_size_range(random_generator);
     int n = random_size_range(random_generator);
     int q = random_size_range(random_generator);
-    vector<vector<int> > A(static_cast<unsigned long>(m), vector<int>(static_cast<unsigned long>(n)));
+    std::vector<std::vector<int> > A(static_cast<unsigned long>(m), std::vector<int>(static_cast<unsigned long>(n)));
     for (auto &&i : A) {
         for (auto &&j : i) {
             j = random_value_range(random_generator);
         }
     }
 
-    vector<vector<int> > B(static_cast<unsigned long>(n), vector<int>(static_cast<unsigned long>(q)));
+    std::vector<std::vector<int> > B(static_cast<unsigned long>(n), std::vector<int>(static_cast<unsigned long>(q)));
     for (auto &&i : B) {
         for (auto &&j : i) {
             j = random_value_range(random_generator);
@@ -341,7 +347,7 @@ int main() {
 
     for (int i = 0; i < 100; ++i) {
         Matrix<int> obj(matrixMultiplication(A, B));
-        vector<vector<int> > obj2(matrixMultiplication(A, B));
+        std::vector<std::vector<int> > obj2(matrixMultiplication(A, B));
         assert(obj.toString() == toString(obj2));
     }
 
