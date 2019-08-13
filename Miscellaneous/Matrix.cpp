@@ -210,6 +210,16 @@ public:
         return result;
     }
 
+    // TODO
+    Matrix power(const T &power) {
+
+    }
+
+    // TODO
+    Matrix power(const T &power, const T &mod) {
+
+    }
+
     // Clear
     void clear() {
         if (row != 0) {
