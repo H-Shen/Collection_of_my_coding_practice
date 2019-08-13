@@ -24,8 +24,8 @@ struct Fib<2> {
 };
 
 int main() {
-    static_assert(Fib<1>::value == 1, "");
-    static_assert(Fib<2>::value == 1, "");
+    static_assert(Fib<1>::value == 1UL, "");
+    static_assert(Fib<2>::value == 1UL, "");
     static_assert(Fib<93>::value == 12200160415121876738UL, "");
     return 0;
 }
