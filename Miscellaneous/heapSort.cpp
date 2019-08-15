@@ -21,22 +21,22 @@ using namespace std;
 
 namespace HeapSort {
 
-    auto isRoot = [](const int &x) -> bool { return (x == 0); };
-    auto parent = [](const int &x) -> int {
+    auto isRoot = [](const int &x) { return (x == 0); };
+    auto parent = [](const int &x) {
         if (x == 0) {
             throw out_of_range("");
         }
         return (x - 1) / 2;
     };
-    auto hasLeft = [](const int &x, const int &heapSize) -> bool { return (2 * x + 1 < heapSize); };
-    auto left = [](const int &x, const int &heapSize) -> int {
+    auto hasLeft = [](const int &x, const int &heapSize) { return (2 * x + 1 < heapSize); };
+    auto left = [](const int &x, const int &heapSize) {
         if (hasLeft(x, heapSize)) {
             return 2 * x + 1;
         }
         throw out_of_range("");
     };
     auto hasRight = [](const int &x, const int &heapSize) { return (2 * x + 2 < heapSize); };
-    auto right = [](const int &x, const int &heapSize) -> int {
+    auto right = [](const int &x, const int &heapSize) {
         if (hasRight(x, heapSize)) {
             return 2 * x + 2;
         }
@@ -227,9 +227,9 @@ int main() {
         int first;
         int second;
     public:
-        Widget() : first(0), second(0) {};
+        Widget() : Widget(0, 0) {};
 
-        Widget(int first_, int second_) : first(first_), second(second_) {}
+        Widget(int first, int second) : first(first), second(second) {}
 
         bool operator!=(const Widget &rhs) const {
             return (first != rhs.first);
