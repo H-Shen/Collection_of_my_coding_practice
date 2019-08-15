@@ -20,9 +20,10 @@ public:
     int denominator = 1;
     bool isNegative = false;
 
-    Fraction(int x, int y, bool z) : numerator(x), denominator(y), isNegative(z) {};
+    Fraction(int numerator, int denominator, bool isNegative) : numerator(numerator), denominator(denominator),
+                                                                isNegative(isNegative) {};
 
-    Fraction() {};
+    Fraction() = default;
 };
 
 int gcd(int a, int b) {
@@ -42,15 +43,11 @@ Fraction Fraction::operator+(const Fraction &f) const {
 
     Fraction res;
 
-    //SAME SIGN
     if (isNegative == f.isNegative) {
         res.isNegative = isNegative;
         res.denominator = denominator * f.denominator;
         res.numerator = numerator * f.denominator + denominator * f.numerator;
-    }
-
-        //DIFFERENT SIGN
-    else {
+    } else {
         res.denominator = denominator * f.denominator;
         if (!isNegative && f.isNegative) {
             res.numerator = numerator * f.denominator - denominator * f.numerator;
@@ -71,11 +68,7 @@ Fraction Fraction::operator+(const Fraction &f) const {
 Fraction Fraction::operator-(const Fraction &f) const {
 
     Fraction f_copy = f;
-    if (!f_copy.isNegative) {
-        f_copy.isNegative = true;
-    } else {
-        f_copy.isNegative = false;
-    }
+    f_copy.isNegative = !f_copy.isNegative;
 
     Fraction res = (*this) + f_copy;
     res.Simplify();
@@ -118,7 +111,7 @@ Fraction generator(string &s) {
         s = s.substr(1);
     }
 
-    size_t pos = s.find("/");
+    size_t pos = s.find('/');
     int numerator = stoi(s.substr(0, pos));
     int denominator = stoi(s.substr(pos + 1));
 
@@ -133,7 +126,7 @@ int main() {
 
     int n, i;
     scanf("%d", &n);
-    vector<Fraction> A(n);
+    vector<Fraction> A(static_cast<unsigned long>(n));
     for (i = 0; i < n; ++i) {
         string f_str;
         scanf("%s", s);

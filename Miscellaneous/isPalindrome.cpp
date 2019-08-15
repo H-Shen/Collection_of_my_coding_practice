@@ -87,7 +87,7 @@ private:
     int first;
     char second;
 public:
-    Widget(int first_, char second_) : first(first_), second(second_) {}
+    Widget(int first, char second) : first(first), second(second) {}
 
     bool operator!=(const Widget &rhs) const {
         return (second != rhs.second);

@@ -10,7 +10,7 @@ public:
     T data;
     SinglyLinkedListNode *next;
 
-    explicit SinglyLinkedListNode(T node_data) : data(node_data), next(nullptr) {}
+    explicit SinglyLinkedListNode(T data) : data(data), next(nullptr) {}
 };
 
 template<typename T>
@@ -20,6 +20,7 @@ public:
     SinglyLinkedListNode<T> *tail;
 
     SinglyLinkedList() : head(nullptr), tail(nullptr) {}
+
     auto insert_node(const T &node_data) {
         auto node{new SinglyLinkedListNode<T>(node_data)};
         if (!head) {
@@ -32,7 +33,7 @@ public:
 };
 
 template<typename T>
-auto print_singly_linked_list(SinglyLinkedListNode<T> *node , const string &sep) {
+auto print_singly_linked_list(SinglyLinkedListNode<T> *node, const string &sep) {
     while (node) {
         cout << node->data;
         node = node->next;
@@ -66,7 +67,7 @@ auto deleteNode(SinglyLinkedListNode<T> *head, size_t position, size_t length) {
         return head;
     }
 
-    // Case 2: tail
+        // Case 2: tail
     else if (position == length - 1) {
         currentNode = head;
         while (currentNode->next->next) {
@@ -76,7 +77,7 @@ auto deleteNode(SinglyLinkedListNode<T> *head, size_t position, size_t length) {
         return head;
     }
 
-    // Case 3: other nodes
+        // Case 3: other nodes
     else {
         currentNode = head;
         for (size_t i = 0; i != position - 1; ++i) {

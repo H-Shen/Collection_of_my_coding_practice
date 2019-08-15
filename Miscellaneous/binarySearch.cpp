@@ -20,7 +20,6 @@ using namespace std;
 // The function will return an index where A[index] = key.
 // If the key is not in A, -1 will be returned as output.
 
-
 namespace bSearch {
     template<typename T, typename Comparator>
     int bSearch_recursion(const vector<T> &A, int low, int high, const T &key, const Comparator &comp) {
@@ -52,9 +51,9 @@ namespace bSearch {
     }
 
 
-// An implementation of binary search using 'while' loop.
-// The function will return an index where A[index] = key.
-// If the key is not in A, -1 will be returned as output.
+    // An implementation of binary search using 'while' loop.
+    // The function will return an index where A[index] = key.
+    // If the key is not in A, -1 will be returned as output.
 
     template<typename T, typename Comparator>
     int bSearch(const vector<T> &A, const T &key, const Comparator &comp) {
@@ -95,9 +94,9 @@ namespace bSearch {
         }
     }
 
-// An implementation of searching for the value with the smallest index by binary search using 'while' loop
-// where there may be multiple keys.
-// It should be used when the user confirmed that the key is in A.
+    // An implementation of searching for the value with the smallest index by binary search using 'while' loop
+    // where there may be multiple keys.
+    // It should be used when the user confirmed that the key is in A.
 
     template<typename T, typename Comparator>
     int lowerBound(const vector<T> &A, const T &key, const Comparator &comp) {
@@ -254,13 +253,16 @@ private:
     int first;
     char second;
 public:
-    Widget(int first_, char second_) : first(first_), second(second_) {}
-    [[nodiscard]] auto getFirst() const {
+    Widget(int first, char second) : first(first), second(second) {}
+
+    auto getFirst() const {
         return first;
     }
+
     bool operator!=(const Widget &rhs) const {
         return (second != rhs.second);
     }
+
     explicit operator string() const {
         return "(" + to_string(first) + ",  )";
     }

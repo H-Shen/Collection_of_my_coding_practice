@@ -23,7 +23,7 @@ public:
     }
 
     // Constructor with the value of rows and columns.
-    Matrix(size_t row_, size_t col_) : row(row_), col(col_) {
+    Matrix(size_t row, size_t col) : row(row), col(col) {
         try {
             matrix = new T *[row];
             for (size_t i = 0; i != row; ++i) {
