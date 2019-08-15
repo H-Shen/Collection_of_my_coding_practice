@@ -11,7 +11,7 @@ private:
     int number;
     string type;
 public:
-    Animal(int number_, string type_) : number(number_), type(move(type_)) {}
+    Animal(int number, string type) : number(number), type(move(type)) {}
     int getNumber() const {
         return number;
     }
@@ -22,12 +22,12 @@ public:
 
 class Cat : public Animal {
 public:
-    explicit Cat(int number_) : Animal(number_, "cat") {}
+    explicit Cat(int number) : Animal(number, "cat") {}
 };
 
 class Dog : public Animal {
 public:
-    explicit Dog(int number_) : Animal(number_, "dog") {}
+    explicit Dog(int number) : Animal(number, "dog") {}
 };
 
 class DogAndCatQueue {

@@ -20,7 +20,6 @@ public:
     SinglyLinkedListNode<T> *tail;
 
     SinglyLinkedList() : head(nullptr), tail(nullptr) {}
-
     auto insert_node(const T &node_data) {
         auto node{new SinglyLinkedListNode<T>(node_data)};
         if (!head) {
@@ -33,7 +32,7 @@ public:
 };
 
 template<typename T>
-auto print_singly_linked_list(SinglyLinkedListNode<T> *node, const string &sep) {
+auto print_singly_linked_list(SinglyLinkedListNode<T> *node , const string &sep) {
     while (node) {
         cout << node->data;
         node = node->next;
