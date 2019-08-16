@@ -1,3 +1,6 @@
+#include <vector>
+#include <numeric>
+#include <cassert>
 
 // Greatest Common Divisor (with recursion)
 long long gcdWithRecursion(long long a, long long b) {
@@ -50,8 +53,13 @@ long long gcd(long long a, long long b) {
     return a;
 }
 
-// Least Common Multiple (may overflow)
-long long lcm(long long a, long long b)  {
+// Greatest Common Divisor of integers in an array
+long long gcdOfAnArray(const std::vector<long long> &A) {
+    return std::accumulate(cbegin(A), cend(A), A.front(), gcd);
+}
+
+// Least Common Multiple
+long long lcm(long long a, long long b) {
 
     // Case 1:
     if (a < 0) {
@@ -69,12 +77,20 @@ long long lcm(long long a, long long b)  {
     }
 
     // Case 4:
-    return a * b / gcd(a, b);
+    return a / gcd(a, b) * b;
+}
+
+// Least Common Multiple of integers in an array
+long long lcmOfAnArray(const std::vector<long long> &A) {
+    return std::accumulate(cbegin(A), cend(A), A.front(), lcm);
 }
 
 int main() {
 
-
+    assert(gcdOfAnArray({1, 2, 3, 4}) == 1);
+    assert(gcdOfAnArray({2, 2, 2, 4}) == 2);
+    assert(lcmOfAnArray({2, 2, 2, 4}) == 4);
+    assert(lcmOfAnArray({2, 2, 2, -2}) == 2);
 
     return 0;
 }
