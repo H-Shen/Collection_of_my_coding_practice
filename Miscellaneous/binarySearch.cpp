@@ -22,6 +22,7 @@ using namespace std;
 
 namespace bSearch {
     template<typename T, typename Comparator>
+    inline static
     int bSearch_recursion(const vector<T> &A, int low, int high, const T &key, const Comparator &comp) {
         if (low > high) {
             return -1;
@@ -37,6 +38,7 @@ namespace bSearch {
     }
 
     template<typename T>
+    inline static
     int bSearch_recursion(const vector<T> &A, int low, int high, const T &key) {
         if (low > high) {
             return -1;
@@ -56,6 +58,7 @@ namespace bSearch {
     // If the key is not in A, -1 will be returned as output.
 
     template<typename T, typename Comparator>
+    inline static
     int bSearch(const vector<T> &A, const T &key, const Comparator &comp) {
         int low = 0;
         int high = static_cast<int>(A.size()) - 1;
@@ -76,6 +79,7 @@ namespace bSearch {
     }
 
     template<typename T>
+    inline static
     int bSearch(const vector<T> &A, const T &key) {
         int low = 0;
         int high = static_cast<int>(A.size()) - 1;
@@ -99,6 +103,7 @@ namespace bSearch {
     // It should be used when the user confirmed that the key is in A.
 
     template<typename T, typename Comparator>
+    inline static
     int lowerBound(const vector<T> &A, const T &key, const Comparator &comp) {
         int low = 0;
         int high = static_cast<int>(A.size());
@@ -116,6 +121,7 @@ namespace bSearch {
     }
 
     template<typename T>
+    inline static
     int lowerBound(const vector<T> &A, const T &key) {
         int low = 0;
         int high = static_cast<int>(A.size());
@@ -137,6 +143,7 @@ namespace bSearch {
 // It should be used when the user confirmed that the key is in A.
 
     template<typename T, typename Comparator>
+    inline static
     int upperBound(const vector<T> &A, const T &key, const Comparator &comp) {
         int low = 0;
         int high = static_cast<int>(A.size());
@@ -154,6 +161,7 @@ namespace bSearch {
     }
 
     template<typename T>
+    inline static
     int upperBound(const vector<T> &A, const T &key) {
         int low = 0;
         int high = static_cast<int>(A.size());
@@ -171,6 +179,7 @@ namespace bSearch {
     }
 }
 
+inline static
 vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound) {
 
     // It is impossible that n is lower than 0 and n == 0 is also not allowed.
@@ -191,8 +200,8 @@ vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound)
 
     random_device dev;
     mt19937 random_generator(dev());
-    uniform_int_distribution<std::mt19937::result_type> dist(static_cast<unsigned int>(lowerbound),
-                                                             static_cast<unsigned int>(upperbound));
+    uniform_int_distribution<int> dist(lowerbound,
+                                       upperbound);
     unordered_set<int> Save;
 
     vector<int> result(static_cast<unsigned long>(n));
@@ -210,12 +219,13 @@ vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound)
     return result;
 }
 
+inline static
 vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound) {
 
     vector<int> result = generateArrayWithoutDuplicate(n, lowerbound, upperbound);
     random_device dev;
-    uniform_int_distribution<std::mt19937::result_type> dist(0, static_cast<unsigned int>(n - 1));
-    uniform_int_distribution<std::mt19937::result_type> leftOrRight(0, 1);
+    uniform_int_distribution<int> dist(0, n - 1);
+    uniform_int_distribution<int> leftOrRight(0, 1);
     mt19937 random_generator(dev());
 
     if (n == 2) {
@@ -271,11 +281,12 @@ public:
 int main() {
 
 #ifdef DEBUG
+
     // TESTS
     random_device dev;
     mt19937 random_generator(dev());
     int n = 1000;
-    uniform_int_distribution<std::mt19937::result_type> index(0, static_cast<unsigned int>(n - 1));
+    uniform_int_distribution<unsigned int> index(0, static_cast<unsigned int>(n - 1));
     int testTime = 300;
 
     // bSearch_recursion

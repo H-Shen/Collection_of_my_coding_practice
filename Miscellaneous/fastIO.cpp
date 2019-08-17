@@ -23,15 +23,14 @@ void readInt(T &x) {
     }
 
     while (isdigit(ch)) {    // go into the loop if ch is a digit
-        x = x * 10 + static_cast<T>(ch - '0');        // append the new value of ch to the end of x
+        x = x * 10 + static_cast<T>(ch ^ 48);        // append the new value of ch to the end of x
         ch = static_cast<char>(getchar());                 // continue to get a character
     }
     x = isNeg ? -x : x;
 }
 
-int main() {
+void testInt(const size_t &length) {
 
-    constexpr size_t length = 5000000;
     auto arr0 = std::make_unique<int[]>(length);
     auto arr1 = std::make_unique<int[]>(length);
     const char *fileName("testData.in");
@@ -41,21 +40,21 @@ int main() {
     // Initialize a random number generator.
     std::random_device dev;
     std::mt19937 random_generator(dev());
-    std::uniform_int_distribution<std::mt19937::result_type> dist(static_cast<unsigned int>(INT_MIN), INT_MAX);
+    std::uniform_int_distribution<int> dist(INT_MIN, INT_MAX);
 
     // Create an empty file
     std::fstream file;
     file.open(fileName, std::ios::out);
     if (!file) {
         std::cerr << "Failed to create the test file!" << std::endl;
-        return 0;
+        exit(-1);
     }
 
     // Write into a file
     std::ofstream myFile;
     myFile.open(fileName);
     for (size_t i = 0; i != length; ++i) {
-        myFile << static_cast<int>(dist(random_generator)) << '\n';
+        myFile << dist(random_generator) << '\n';
     }
     myFile.close();
 
@@ -63,7 +62,7 @@ int main() {
 
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    std::cout << "Test on " << length << " integers..." << std::endl;
+    std::cout << "Test on " << length << " ints..." << std::endl;
 
     // Benchmark on scanf()
     freopen(fileName, "r", stdin);
@@ -95,13 +94,80 @@ int main() {
     /* remove TestData */
     std::remove(fileName);
 
-    return 0;
 }
 
-//Test on 5000000 integers...
-//Scanf: 0.780022 seconds
-//ReadInt: 0.289546 seconds
-//
-//Test on 2000000 integers...
-//Scanf: 0.310085 seconds
-//ReadInt: 0.117024 seconds
+void testLongLong(const size_t &length) {
+
+    auto arr0 = std::make_unique<long long[]>(length);
+    auto arr1 = std::make_unique<long long[]>(length);
+    const char *fileName("testData.in");
+
+    /* createTestData */
+
+    // Initialize a random number generator.
+    std::random_device dev;
+    std::mt19937 random_generator(dev());
+    std::uniform_int_distribution<long long> dist(LONG_LONG_MIN, LONG_LONG_MAX);
+
+    // Create an empty file
+    std::fstream file;
+    file.open(fileName, std::ios::out);
+    if (!file) {
+        std::cerr << "Failed to create the test file!" << std::endl;
+        exit(-1);
+    }
+
+    // Write into a file
+    std::ofstream myFile;
+    myFile.open(fileName);
+    for (size_t i = 0; i != length; ++i) {
+        myFile << dist(random_generator) << '\n';
+    }
+    myFile.close();
+
+    /* Define some variables for the test */
+
+    std::chrono::time_point<std::chrono::steady_clock> start, stop;
+    std::chrono::duration<double> elapsed_in_seconds{};
+    std::cout << "Test on " << length << " long long ints..." << std::endl;
+
+    // Benchmark on scanf()
+    freopen(fileName, "r", stdin);
+    start = std::chrono::steady_clock::now();
+    for (size_t i = 0; i != length; ++i) {
+        scanf("%lld", &arr0[i]);
+    }
+    stop = std::chrono::steady_clock::now();
+    elapsed_in_seconds = stop - start;
+    std::cout << "Scanf: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    fclose(stdin);
+
+    // Benchmark on readInt()
+    freopen(fileName, "r", stdin);
+    start = std::chrono::steady_clock::now();
+    for (size_t i = 0; i != length; ++i) {
+        readInt<long long>(arr1[i]);
+    }
+    stop = std::chrono::steady_clock::now();
+    elapsed_in_seconds = stop - start;
+    std::cout << "ReadInt: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    fclose(stdin);
+
+    // Compare arr0 and arr1 just in case
+    for (size_t i = 0; i != length; ++i) {
+        assert(arr0[i] == arr1[i]);
+    }
+
+    /* remove TestData */
+    std::remove(fileName);
+
+}
+
+int main() {
+
+    constexpr size_t length = 5000000;
+    testInt(length);
+    testLongLong(length);
+
+    return 0;
+}

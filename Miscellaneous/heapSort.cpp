@@ -12,7 +12,7 @@
  * Execute: ./heapSort
  *
  * @author Haohu Shen
- * @date 2019/07/03
+ * @date 2019/08/17
  */
 
 #define DEBUG
@@ -44,6 +44,7 @@ namespace HeapSort {
     };
 
     template<typename T, typename Comparator>
+    inline static
     void bubbleUp(int x, vector<T> &A, const Comparator &comp) {
         while (!isRoot(x) && comp(A.at(x), A.at(parent(x))) > 0) {
             swap(A.at(x), A.at(parent(x)));
@@ -52,6 +53,7 @@ namespace HeapSort {
     }
 
     template<typename T>
+    inline static
     void bubbleUp(int x, vector<T> &A) {
         while (!isRoot(x) && A.at(x) > A.at(parent(x))) {
             swap(A.at(x), A.at(parent(x)));
@@ -60,6 +62,7 @@ namespace HeapSort {
     }
 
     template<typename T, typename Comparator>
+    inline static
     void bubbleDown(int x, int heapSize, vector<T> &A, const Comparator &comp) {
         while (hasLeft(x, heapSize)) {
             if (hasRight(x, heapSize)) {
@@ -86,6 +89,7 @@ namespace HeapSort {
     }
 
     template<typename T>
+    inline static
     void bubbleDown(int x, int heapSize, vector<T> &A) {
         while (hasLeft(x, heapSize)) {
             if (hasRight(x, heapSize)) {
@@ -112,6 +116,7 @@ namespace HeapSort {
     }
 
     template<typename T, typename Comparator>
+    inline static
     void heapSort(vector<T> &A, const Comparator &comp) {
         try {
 
@@ -153,6 +158,7 @@ namespace HeapSort {
     }
 
     template<typename T>
+    inline static
     void heapSort(vector<T> &A) {
         try {
             int heapSize = 1;
@@ -204,16 +210,16 @@ int main() {
     mt19937 random_generator(dev());
 
     // Make every entry of the array, the time of tests and the length of the array to be random.
-    uniform_int_distribution<std::mt19937::result_type> dist(static_cast<unsigned int>(INT_MIN), INT_MAX);
-    uniform_int_distribution<std::mt19937::result_type> test_time_dist(50, 1000);
-    uniform_int_distribution<std::mt19937::result_type> len_dist(500, 1000);
+    uniform_int_distribution<int> dist(INT_MIN, INT_MAX);
+    uniform_int_distribution<int> test_time_dist(50, 1000);
+    uniform_int_distribution<unsigned long> len_dist(500ul, 1000ul);
 
     int test_time = test_time_dist(random_generator);
     while (test_time--) {
 
         vector<int> A(len_dist(random_generator));
         for (auto &&i : A) {
-            i = static_cast<int>(dist(random_generator));
+            i = dist(random_generator);
         }
         vector<int> A_copy(A.begin(), A.end());
 
@@ -265,7 +271,7 @@ int main() {
     while (test_time--) {
         vector<Widget> A(len_dist(random_generator));
         for (auto &&i : A) {
-            i = Widget(static_cast<int>(dist(random_generator)), static_cast<int>(dist(random_generator)));
+            i = Widget(dist(random_generator), dist(random_generator));
         }
         vector<Widget> A_copy(A.begin(), A.end());
         HeapSort::heapSort(A);
@@ -277,7 +283,7 @@ int main() {
     while (test_time--) {
         vector<pair<int, int> > A(len_dist(random_generator));
         for (auto &&i : A) {
-            i = {static_cast<int>(dist(random_generator)), static_cast<int>(dist(random_generator))};
+            i = {dist(random_generator), dist(random_generator)};
         }
         vector<pair<int, int> > A_copy(A.begin(), A.end());
 
