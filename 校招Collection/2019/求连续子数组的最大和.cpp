@@ -1,8 +1,10 @@
+// https://www.nowcoder.com/practice/8705437354604a7cb9ba7bf959e42de6
+
 #include <bits/stdc++.h>
 
 using namespace std;
 
-inline
+inline static
 int maxSubArray(const vector<int> &A) {
 
     if (A.empty()) {

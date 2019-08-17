@@ -1,3 +1,5 @@
+// https://open.kattis.com/problems/sumsets
+//
 #include<bits/stdc++.h>
 
 using namespace std;
