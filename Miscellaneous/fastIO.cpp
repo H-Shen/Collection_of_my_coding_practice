@@ -4,8 +4,62 @@
  * but the strange thing is it is slower than scanf() in my macOS, (homebrew g++-7 -std=c++14 -Wall -O2)
  * So make sure to run the tests before using it.
  */
+
+// Time cost: fread/fwrite < getchar/putchar < scanf/printf < cin/cout(ios::sync_with_stdio(false), cin.tie(nullptr)) < cin/cout
+
+//Test Example
+//Test on reading 5000000 ints...
+//        scanf: 0.786348 seconds
+//        readInt: 0.294532 seconds
+//        fread: 0.180808 seconds
+//Test on reading 5000000 long long ints...
+//        scanf: 1.05226 seconds
+//        readInt: 0.459079 seconds
+//        Test on writing 5000000 ints...
+//        printf  : 0.708537 seconds
+//        writeInt: 0.44798 seconds
+
 #include <bits/stdc++.h>
 #include <unistd.h>
+
+static constexpr int MAXSIZE = 1024 * 1024;
+static char inputBuffer[MAXSIZE];
+static char *ptr1 = inputBuffer + MAXSIZE;
+static char *ptr2 = inputBuffer + MAXSIZE;
+
+inline static
+char getcharUsingFread() {
+    if (ptr1 == ptr2) {
+        ptr1 = inputBuffer;
+        ptr2 = inputBuffer + fread(inputBuffer, 1, MAXSIZE, stdin);
+        if (ptr1 == ptr2) {
+            return EOF;
+        }
+    }
+    return *ptr1++;
+}
+
+template<typename T>
+inline static
+void readIntUsingFread(T &x) {
+    x = 0;
+    bool isNeg = false;
+    char ch = getcharUsingFread();             // Notice ch < '0' since '0' == 48
+
+    // skip all non digit characters
+    while (!isdigit(ch)) {                                  // go into the loop if ch is not a digit
+        if (ch == '-') {
+            isNeg = true;                                   // change isNeg if the number is negative
+        }
+        ch = getcharUsingFread();                 // continue to get a character
+    }
+
+    while (isdigit(ch)) {                       // go into the loop if ch is a digit
+        x = x * 10 + static_cast<T>(ch ^ 48);               // append the new value of ch to the end of x
+        ch = getcharUsingFread();                      // continue to get a character
+    }
+    x = isNeg ? -x : x;
+}
 
 template<typename T>
 inline static
@@ -59,7 +113,7 @@ void testReadInt(const size_t &length) {
     // Initialize a random number generator.
     std::random_device dev;
     std::mt19937 random_generator(dev());
-    std::uniform_int_distribution<int> dist(INT_MIN, INT_MAX);
+    std::uniform_int_distribution<int> dist(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
 
     // Create an empty file
     std::fstream file;
@@ -110,6 +164,26 @@ void testReadInt(const size_t &length) {
         assert(arr0[i] == arr1[i]);
     }
 
+    // Benchmark on readIntUsingFread()
+    freopen(fileName, "r", stdin);
+    start = std::chrono::steady_clock::now();
+    for (size_t i = 0; i != length; ++i) {
+        readIntUsingFread<int>(arr1[i]);
+    }
+    stop = std::chrono::steady_clock::now();
+    elapsed_in_seconds = stop - start;
+    std::cout << "fread: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    fclose(stdin);
+
+    // Compare arr0 and arr1 just in case
+    for (size_t i = 0; i != length; ++i) {
+        assert(arr0[i] == arr1[i]);
+    }
+
+    // cleaning
+    ptr1 = nullptr;
+    ptr2 = nullptr;
+
     /* remove TestData */
     std::remove(fileName);
 
@@ -126,7 +200,8 @@ void testReadLongLong(const size_t &length) {
     // Initialize a random number generator.
     std::random_device dev;
     std::mt19937 random_generator(dev());
-    std::uniform_int_distribution<long long> dist(LONG_LONG_MIN, LONG_LONG_MAX);
+    std::uniform_int_distribution<long long> dist(std::numeric_limits<long long>::min(),
+                                                  std::numeric_limits<long long>::max());
 
     // Create an empty file
     std::fstream file;
@@ -190,7 +265,7 @@ void testWriteInt(const size_t &length) {
     // Initialize a random number generator.
     std::random_device dev;
     std::mt19937 random_generator(dev());
-    std::uniform_int_distribution<int> dist(INT_MIN, INT_MAX);
+    std::uniform_int_distribution<int> dist(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
 
     // Initialize an array with given size of random numbers.
     auto arr = std::make_unique<int[]>(length);
