@@ -8,17 +8,15 @@ char s[maxn], s0[maxn];
 struct Id {
     string s;
     string dateString;
-    int y;
-    int m;
-    int d;
+    int y{};
+    int m{};
+    int d{};
 };
 
 bool validate(int y, int m, int d) {
     if (y > 2014 || (y == 2014 && m > 9) || (y == 2014 && m == 9 && d > 6))
         return false;
-    if (y < 1814 || (y == 1814 && m < 9) || (y == 1814 && m == 9 && d < 6))
-        return false;
-    return true;
+    return !(y < 1814 || (y == 1814 && m < 9) || (y == 1814 && m == 9 && d < 6));
 }
 
 
@@ -38,7 +36,6 @@ int main() {
     int n, y, m, d;
     scanf("%d", &n);
     vector<Id> A;
-
     while (n--) {
         scanf("%s %s", s, s0);
         sscanf(s0, "%d/%d/%d", &y, &m, &d);
@@ -51,13 +48,13 @@ int main() {
         tmp.y = y;
         tmp.m = m;
         tmp.d = d;
-        A.push_back(tmp);
+        A.emplace_back(tmp);
     }
-    if (A.size() == 0) {
+    if (A.empty()) {
         printf("0\n");
     } else {
         auto it = minmax_element(A.begin(), A.end(), cmp);
-        printf("%d %s %s\n", (int) A.size(), it.first->s.c_str(),
+        printf("%lu %s %s\n", A.size(), it.first->s.c_str(),
                it.second->s.c_str());
     }
     return 0;

@@ -4,7 +4,7 @@ using namespace std;
 
 int main() {
     int n, i, a, b, pow;
-    int pow_max = INT_MIN;
+    int pow_max = numeric_limits<int>::min();
     scanf("%d", &n);
     for (i = 0; i < n; i++) {
         scanf("%d %d", &a, &b);

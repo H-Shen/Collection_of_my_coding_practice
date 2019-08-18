@@ -1,7 +1,4 @@
-#include <algorithm>
-#include <iostream>
-#include <unordered_map>
-#include <climits>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -16,13 +13,13 @@ int main() {
         A[id] += score;
     }
 
-    int maxScore = INT_MIN;
+    int maxScore = numeric_limits<int>::min();
     int maxScoreId = 0;
 
-    for (auto it = A.cbegin(); it != A.cend(); ++it) {
-        if (it->second > maxScore) {
-            maxScore = it->second;
-            maxScoreId = it->first;
+    for (const auto it : A) {
+        if (it.second > maxScore) {
+            maxScore = it.second;
+            maxScoreId = it.first;
         }
     }
 

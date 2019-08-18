@@ -3,7 +3,7 @@ public:
     int maxSubArray(vector<int> &A) {
 
         if (A.empty()) {
-            return INT_MIN;
+            return numeric_limits<int>::min();
         }
 
         int currentSum = 0, maxSum = 0, interval = A[0];
@@ -15,14 +15,17 @@ public:
                 interval = A[i];
             }
 
-            if (currentSum > maxSum)
+            if (currentSum > maxSum) {
                 maxSum = currentSum;
-            else if (currentSum < 0)
+            }
+            else if (currentSum < 0) {
                 currentSum = 0;
+            }
         }
 
-        if (maxSum == 0)
+        if (maxSum == 0) {
             return interval;
+        }
         return maxSum;
     }
 };

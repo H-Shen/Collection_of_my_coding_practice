@@ -1,8 +1,6 @@
 // https://www.nowcoder.com/practice/673454422d1b4a168aed31e449d87c00
 
-#include <climits>
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -17,10 +15,10 @@ int main() {
             break;
         }
         cin >> n;
-        A.push_back(n);
+        A.emplace_back(n);
     }
 
-    int firstMax = INT_MIN;
+    int firstMax = numeric_limits<int>::min();
     int firstMaxIdx = -1;
     for (size_t i = 0; i != A.size(); ++i) {
         if (A[i] >= firstMax) {
@@ -29,7 +27,7 @@ int main() {
         }
     }
 
-    int secondMax = INT_MIN;
+    int secondMax = numeric_limits<int>::min();
     int secondMaxIdx = -1;
     for (size_t i = 0; i != A.size(); ++i) {
         if (A[i] <= firstMax && A[i] >= secondMax && firstMaxIdx != static_cast<int>(i)) {
@@ -38,7 +36,7 @@ int main() {
         }
     }
 
-    int thirdMax = INT_MIN;
+    int thirdMax = numeric_limits<int>::min();
     for (size_t i = 0; i != A.size(); ++i) {
         if (A[i] <= secondMax && A[i] >= thirdMax && secondMaxIdx != static_cast<int>(i)) {
             thirdMax = A[i];

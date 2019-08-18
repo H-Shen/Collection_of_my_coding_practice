@@ -1,9 +1,4 @@
-#include <string>
-#include <iostream>
-#include <unordered_map>
-#include <algorithm>
-#include <climits>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -20,17 +15,17 @@ int main() {
             ++A[tmp];
         }
     }
-    int maxVal = INT_MIN;
-    for (auto it = A.begin(); it != A.end(); ++it) {
-        maxVal = max(maxVal, it->second);
+    int maxVal = numeric_limits<int>::min();
+    for (const auto & it : A) {
+        maxVal = max(maxVal, it.second);
     }
     vector<char> List;
-    for (auto it = A.begin(); it != A.end(); ++it) {
-        if (it->second == maxVal) {
-            List.push_back(it->first);
+    for (const auto & it : A) {
+        if (it.second == maxVal) {
+            List.push_back(it.first);
         }
     }
     sort(List.begin(), List.end());
-    cout << List[0] << ' ' << A[List[0]] << endl;
+    cout << List.front() << ' ' << A[List.front()] << endl;
     return 0;
 }

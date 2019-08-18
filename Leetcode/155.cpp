@@ -4,7 +4,7 @@ public:
     MinStack() {
         stack<int>().swap(A);
         stack<int>().swap(minSave);
-        minVal = INT_MAX;
+        minVal = numeric_limits<int>::max();
     }
 
     void push(int x) {
@@ -15,13 +15,13 @@ public:
 
     void pop() {
         if (A.empty()) {
-            minVal = INT_MAX;
+            minVal = numeric_limits<int>::max();
             return;
         }
         A.pop();
         minSave.pop();
         if (minSave.empty()) {
-            minVal = INT_MAX;
+            minVal = numeric_limits<int>::max();
         } else {
             minVal = minSave.top();
         }
@@ -41,7 +41,7 @@ public:
 private:
     stack<int> A;
     stack<int> minSave;
-    int minVal = INT_MAX;
+    int minVal = numeric_limits<int>::max();
 };
 
 /**

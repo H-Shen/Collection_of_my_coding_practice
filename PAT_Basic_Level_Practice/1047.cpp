@@ -1,8 +1,4 @@
-#include <cstdio>
-#include <vector>
-#include <unordered_map>
-#include <numeric>
-#include <climits>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -15,15 +11,15 @@ int main() {
         A[teamId].push_back(grade);
     }
 
-    int maxScore = INT_MIN;
+    int maxScore = numeric_limits<int>::min();
     int teamIdWithMaxScore = -1;
-    int tmpSum = -1;
+    int tmpSum;
 
-    for (auto it = A.begin(); it != A.end(); ++it) {
-        tmpSum = accumulate(it->second.begin(), it->second.end(), 0);
+    for (const auto & it : A) {
+        tmpSum = accumulate(it.second.begin(), it.second.end(), 0);
         if (tmpSum > maxScore) {
             maxScore = tmpSum;
-            teamIdWithMaxScore = it->first;
+            teamIdWithMaxScore = it.first;
         }
     }
 

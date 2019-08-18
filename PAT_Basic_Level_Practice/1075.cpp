@@ -1,9 +1,4 @@
-#include <algorithm>
-#include <vector>
-#include <cstdio>
-#include <iostream>
-#include <unordered_map>
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -77,8 +72,30 @@ int main() {
 
     result[len3 - 1].nextAddress = "-1";
 
-    for (i = 0; i < len3; ++i) {
-        printf("%s %d %s\n", result[i].currentAddress.c_str(), result[i].val, result[i].nextAddress.c_str());
-    }
+    // for loop unrolling
+    try {
+        for (i = 0; i < len3; i += 10) {
+            printf("%s %d %s\n", result.at(i).currentAddress.c_str(), result.at(i).val,
+                   result.at(i).nextAddress.c_str());
+            printf("%s %d %s\n", result.at(i + 1).currentAddress.c_str(), result.at(i + 1).val,
+                   result.at(i + 1).nextAddress.c_str());
+            printf("%s %d %s\n", result.at(i + 2).currentAddress.c_str(), result.at(i + 2).val,
+                   result.at(i + 2).nextAddress.c_str());
+            printf("%s %d %s\n", result.at(i + 3).currentAddress.c_str(), result.at(i + 3).val,
+                   result.at(i + 3).nextAddress.c_str());
+            printf("%s %d %s\n", result.at(i + 4).currentAddress.c_str(), result.at(i + 4).val,
+                   result.at(i + 4).nextAddress.c_str());
+            printf("%s %d %s\n", result.at(i + 5).currentAddress.c_str(), result.at(i + 5).val,
+                   result.at(i + 5).nextAddress.c_str());
+            printf("%s %d %s\n", result.at(i + 6).currentAddress.c_str(), result.at(i + 6).val,
+                   result.at(i + 6).nextAddress.c_str());
+            printf("%s %d %s\n", result.at(i + 7).currentAddress.c_str(), result.at(i + 7).val,
+                   result.at(i + 7).nextAddress.c_str());
+            printf("%s %d %s\n", result.at(i + 8).currentAddress.c_str(), result.at(i + 8).val,
+                   result.at(i + 8).nextAddress.c_str());
+            printf("%s %d %s\n", result.at(i + 9).currentAddress.c_str(), result.at(i + 9).val,
+                   result.at(i + 9).nextAddress.c_str());
+        }
+    } catch (...) {}
     return 0;
 }

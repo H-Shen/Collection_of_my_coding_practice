@@ -8,7 +8,7 @@ inline static
 int maxSubArray(const vector<int> &A) {
 
     if (A.empty()) {
-        return INT_MIN;
+        return numeric_limits<int>::min();
     }
 
     int currentSum = 0, maxSum = 0, interval = A[0];

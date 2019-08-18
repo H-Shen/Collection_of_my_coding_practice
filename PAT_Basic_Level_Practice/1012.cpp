@@ -1,6 +1,4 @@
-#include <cstdio>
-#include <algorithm>
-#include <climits>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -15,7 +13,7 @@ int main() {
     int A2 = 0;
     int A3 = 0, cnt = 0;
     int A4 = 0;
-    int A5 = INT_MIN;
+    int A5 = numeric_limits<int>::min();
 
     int n, tmp;
     scanf("%d", &n);
@@ -60,7 +58,7 @@ int main() {
     printf(!hasA1 ? "N " : "%d ", A1);
     printf(!hasA2 ? "N " : "%d ", A2);
     printf(!hasA3 ? "N " : "%d ", A3);
-    printf(!hasA4 ? "N " : "%.1f ", (double) A4 / cnt);
+    printf(!hasA4 ? "N " : "%.1f ", static_cast<double>(A4) / cnt);
     printf(!hasA5 ? "N\n" : "%d\n", A5);
 
     return 0;

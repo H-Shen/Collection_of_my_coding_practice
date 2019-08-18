@@ -1,18 +1,13 @@
-#include <cmath>
-#include <climits>
-#include <cstdio>
-#include <vector>
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-const int MAX = INT_MAX;
+const int MAX = numeric_limits<int>::max();
 
 int main() {
     int n, i;
     scanf("%d", &n);
-    vector<int> a(n);
+    vector<int> a(static_cast<size_t>(n));
     for (i = 0; i < n; i++)
         scanf("%d", &a[i]);
     sort(a.begin(), a.end());

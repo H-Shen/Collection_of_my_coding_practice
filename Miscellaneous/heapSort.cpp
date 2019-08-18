@@ -210,7 +210,7 @@ int main() {
     mt19937 random_generator(dev());
 
     // Make every entry of the array, the time of tests and the length of the array to be random.
-    uniform_int_distribution<int> dist(INT_MIN, INT_MAX);
+    uniform_int_distribution<int> dist(numeric_limits<int>::min(), numeric_limits<int>::min());
     uniform_int_distribution<int> test_time_dist(50, 1000);
     uniform_int_distribution<unsigned long> len_dist(500ul, 1000ul);
 
