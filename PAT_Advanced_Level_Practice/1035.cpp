@@ -1,7 +1,5 @@
-#include <cstdio>
+#include <bits/stdc++.h>
 
-#include <string>
-#include <vector>
 
 using namespace std;
 const int MAXN = 15;

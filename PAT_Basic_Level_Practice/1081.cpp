@@ -1,7 +1,5 @@
+#include <bits/stdc++.h>
 
-#include <string>
-#include <unordered_set>
-#include <iostream>
 
 using namespace std;
 using ll = long long;

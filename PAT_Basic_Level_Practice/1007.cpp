@@ -1,6 +1,4 @@
-#include <cstdio>
-#include <cmath>
-#include <memory.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 

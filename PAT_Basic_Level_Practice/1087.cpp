@@ -1,5 +1,4 @@
-#include <unordered_set>
-#include <cmath>
+#include <bits/stdc++.h>
 
 using namespace std;
 

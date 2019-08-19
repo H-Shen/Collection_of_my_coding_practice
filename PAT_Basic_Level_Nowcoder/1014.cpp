@@ -1,4 +1,4 @@
-#include <cstdio>
+#include <bits/stdc++.h>
 
 int a(int n) {
     int x = 2;

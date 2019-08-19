@@ -1,4 +1,4 @@
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 const int maxn = 100005, gap = 'a' - 1;

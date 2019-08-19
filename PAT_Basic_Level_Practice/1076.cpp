@@ -1,5 +1,4 @@
-#include <cstdio>
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 const int MAXN = 4, N = 10;

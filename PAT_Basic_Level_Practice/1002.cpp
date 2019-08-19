@@ -1,6 +1,4 @@
-#include <string>
-#include <iostream>
-#include <unordered_map>
+#include <bits/stdc++.h>
 
 typedef long long ll;
 using namespace std;

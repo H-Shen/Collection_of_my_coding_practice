@@ -1,7 +1,5 @@
-#include <cstdio>
+#include <bits/stdc++.h>
 
-#include <string>
-#include <unordered_set>
 
 using namespace std;
 using ll = long long;

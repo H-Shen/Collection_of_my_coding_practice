@@ -1,8 +1,4 @@
-#include <string>
-#include <unordered_set>
-#include <vector>
-#include <algorithm>
-#include <unordered_map>
+#include <bits/stdc++.h>
 
 using namespace std;
 const int MAXN = 10, convert = 32;

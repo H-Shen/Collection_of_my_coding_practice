@@ -1,7 +1,4 @@
-#include <algorithm>
-#include <string>
-#include <vector>
-#include <map>
+#include <bits/stdc++.h>
 
 using namespace std;
 const int MIN_VAL = 10000005;

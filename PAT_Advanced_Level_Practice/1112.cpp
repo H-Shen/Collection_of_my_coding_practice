@@ -1,10 +1,5 @@
-#include <cstdio>
+#include <bits/stdc++.h>
 
-#include <algorithm>
-#include <vector>
-#include <unordered_map>
-#include <unordered_set>
-#include <string>
 
 using namespace std;
 constexpr int MAXN = 1005;

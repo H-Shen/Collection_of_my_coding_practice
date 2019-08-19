@@ -1,4 +1,4 @@
-#include <cstdio>
+#include <bits/stdc++.h>
 
 int gcd(int a, int b) {
     if (a < 0)

@@ -1,6 +1,6 @@
+#include <bits/stdc++.h>
 // Thanks for the original solution provided in https://www.liuchuo.net/archives/2248
 
-#include <cstdio>
 
 using namespace std;
 const int MAXN = 200005;

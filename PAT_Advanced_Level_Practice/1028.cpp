@@ -1,8 +1,5 @@
-#include <cstdio>
+#include <bits/stdc++.h>
 
-#include <string>
-#include <vector>
-#include <algorithm>
 
 using namespace std;
 const int MAXN = 10;

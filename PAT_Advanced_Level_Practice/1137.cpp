@@ -1,9 +1,5 @@
-#include <cstdio>
+#include <bits/stdc++.h>
 
-#include <string>
-#include <unordered_map>
-#include <vector>
-#include <algorithm>
 
 using namespace std;
 

@@ -1,4 +1,4 @@
-#include <cstdio>
+#include <bits/stdc++.h>
 
 int s[] = {1, 2, 0, 2, 2, 1, 0, 1};
 

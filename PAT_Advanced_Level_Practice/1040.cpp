@@ -1,8 +1,6 @@
+#include <bits/stdc++.h>
 // The longest palindrome index and its first instance. (Manacher Algorithm)
 
-#include <string>
-#include <algorithm>
-#include <iostream>
 
 using namespace std;
 

@@ -1,8 +1,4 @@
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 const int maxn = 10;

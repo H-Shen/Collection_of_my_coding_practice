@@ -1,8 +1,5 @@
-#include <cstdio>
-#include <cstring>
+#include <bits/stdc++.h>
 
-#include <map>
-#include <string>
 
 using namespace std;
 

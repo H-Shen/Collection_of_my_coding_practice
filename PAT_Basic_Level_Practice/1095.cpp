@@ -1,7 +1,4 @@
-#include <cstdio>
-#include <vector>
-#include <unordered_map>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 

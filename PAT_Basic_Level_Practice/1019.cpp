@@ -1,8 +1,4 @@
-#include <vector>
-#include <string>
-#include <iostream>
-#include <algorithm>
-#include <unordered_set>
+#include <bits/stdc++.h>
 
 using namespace std;
 
