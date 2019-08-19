@@ -5,7 +5,7 @@ using namespace std;
 
 int hashGet(string s) {
     int sum = 0;
-    if (s.size() == 0) return sum;
+    if (s.empty()) return sum;
     sum = s[0];
     for (size_t i = 1; i < s.size(); ++i) {
         sum = sum ^ s[i];

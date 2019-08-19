@@ -23,7 +23,7 @@ int main() {
         }
         A.push_back(tmp);
     }
-    if (A.size() == 0) {
+    if (A.empty()) {
         printf("0 0\n");
         return 0;
     }

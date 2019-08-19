@@ -73,7 +73,7 @@ int main() {
             }
         }
     }
-    if (res.size() == 0) {
+    if (res.empty()) {
         printf("Not Exist\n");
     } else if (res.size() > 1) {
         printf("Not Unique\n");

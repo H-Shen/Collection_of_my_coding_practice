@@ -5,7 +5,7 @@ public:
         struct Complex {
             long long a, b;
 
-            [[nodiscard]] string toString() const {
+            string toString() const {
                 return to_string(a) + "+" + to_string(b) + "i";
             }
 

@@ -27,7 +27,7 @@ int main()
         auto it = set_intersection(A.begin(), A.end(), B.begin(), B.end(), C.begin());
         C.resize(distance(C.begin(), it));
 
-        if (C.size() == 0) {
+        if (C.empty()) {
             printf("empty\n");
         } else {
             int len = C.size();

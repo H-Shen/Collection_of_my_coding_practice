@@ -27,7 +27,7 @@ int main() {
             k.push_back(Count(i, n));
         }
     }
-    if (k.size() == 0) {
+    if (k.empty()) {
         cout << 1 << endl;
         cout << n << endl;
     } else {

@@ -5,7 +5,7 @@ using namespace std;
 
 inline
 bool isEmpty(const string &s) {
-    if (s.size() == 0) {
+    if (s.empty()) {
         return true;
     }
     for (const auto &ch : s) {

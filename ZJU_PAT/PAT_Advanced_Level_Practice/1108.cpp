@@ -84,7 +84,7 @@ int main() {
         cout << "ERROR: " << p << " is not a legal number" << endl;
     }
 
-    if (A.size() == 0) {
+    if (A.empty()) {
         cout << "The average of 0 numbers is Undefined" << endl;
     } else if (A.size() == 1) {
         cout << "The average of 1 number is ";
