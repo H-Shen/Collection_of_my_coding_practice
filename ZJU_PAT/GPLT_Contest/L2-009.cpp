@@ -1,8 +1,4 @@
-#include <cstdio>
-#include <unordered_map>
-#include <vector>
-#include <algorithm>
-#include <unordered_set>
+#include <bits/stdc++.h>
 
 using namespace std;
 

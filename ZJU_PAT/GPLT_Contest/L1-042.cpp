@@ -1,4 +1,4 @@
-#include <cstdio>
+#include <bits/stdc++.h>
 
 const int maxn = 50;
 char m[maxn], d[maxn], y[maxn];

@@ -1,6 +1,4 @@
-#include <cstdio>
-#include <unordered_map>
-#include <cstring>
+#include <bits/stdc++.h>
 
 const int maxn = 20;
 char idInput[maxn];
