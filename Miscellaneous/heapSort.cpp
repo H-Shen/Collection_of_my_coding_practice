@@ -17,14 +17,12 @@
 
 #define DEBUG
 
-using namespace std;
-
 namespace HeapSort {
 
     auto isRoot = [](const int &x) { return (x == 0); };
     auto parent = [](const int &x) {
         if (x == 0) {
-            throw out_of_range("");
+            throw std::out_of_range("");
         }
         return (x - 1) / 2;
     };
@@ -33,19 +31,19 @@ namespace HeapSort {
         if (hasLeft(x, heapSize)) {
             return 2 * x + 1;
         }
-        throw out_of_range("");
+        throw std::out_of_range("");
     };
     auto hasRight = [](const int &x, const int &heapSize) { return (2 * x + 2 < heapSize); };
     auto right = [](const int &x, const int &heapSize) {
         if (hasRight(x, heapSize)) {
             return 2 * x + 2;
         }
-        throw out_of_range("");
+        throw std::out_of_range("");
     };
 
     template<typename T, typename Comparator>
     inline static
-    void bubbleUp(int x, vector<T> &A, const Comparator &comp) {
+    void bubbleUp(int x, std::vector<T> &A, const Comparator &comp) {
         while (!isRoot(x) && comp(A.at(x), A.at(parent(x))) > 0) {
             swap(A.at(x), A.at(parent(x)));
             x = parent(x);
@@ -54,16 +52,16 @@ namespace HeapSort {
 
     template<typename T>
     inline static
-    void bubbleUp(int x, vector<T> &A) {
+    void bubbleUp(int x, std::vector<T> &A) {
         while (!isRoot(x) && A.at(x) > A.at(parent(x))) {
-            swap(A.at(x), A.at(parent(x)));
+            std::swap(A.at(x), A.at(parent(x)));
             x = parent(x);
         }
     }
 
     template<typename T, typename Comparator>
     inline static
-    void bubbleDown(int x, int heapSize, vector<T> &A, const Comparator &comp) {
+    void bubbleDown(int x, int heapSize, std::vector<T> &A, const Comparator &comp) {
         while (hasLeft(x, heapSize)) {
             if (hasRight(x, heapSize)) {
                 if (comp(A.at(left(x, heapSize)), A.at(right(x, heapSize))) >= 0) {
@@ -90,24 +88,24 @@ namespace HeapSort {
 
     template<typename T>
     inline static
-    void bubbleDown(int x, int heapSize, vector<T> &A) {
+    void bubbleDown(int x, int heapSize, std::vector<T> &A) {
         while (hasLeft(x, heapSize)) {
             if (hasRight(x, heapSize)) {
                 if (A.at(left(x, heapSize)) >= A.at(right(x, heapSize))) {
                     if (A.at(left(x, heapSize)) > A.at(x)) {
-                        swap(A.at(left(x, heapSize)), A.at(x));
+                        std::swap(A.at(left(x, heapSize)), A.at(x));
                         x = left(x, heapSize);
                     } else {
                         break;
                     }
                 } else if (A.at(right(x, heapSize)) > A.at(x)) {
-                    swap(A.at(right(x, heapSize)), A.at(x));
+                    std::swap(A.at(right(x, heapSize)), A.at(x));
                     x = right(x, heapSize);
                 } else {
                     break;
                 }
             } else if (A.at(left(x, heapSize)) > A.at(x)) {
-                swap(A.at(left(x, heapSize)), A.at(x));
+                std::swap(A.at(left(x, heapSize)), A.at(x));
                 x = left(x, heapSize);
             } else {
                 break;
@@ -117,7 +115,7 @@ namespace HeapSort {
 
     template<typename T, typename Comparator>
     inline static
-    void heapSort(vector<T> &A, const Comparator &comp) {
+    void heapSort(std::vector<T> &A, const Comparator &comp) {
         try {
 
             int heapSize = 1;
@@ -131,7 +129,7 @@ namespace HeapSort {
                     ++heapSize;
                     bubbleUp(x, A, comp);
                 } else {
-                    throw out_of_range("");
+                    throw std::out_of_range("");
                 }
                 ++i;
             }
@@ -139,7 +137,7 @@ namespace HeapSort {
             while (i > 0) {
                 T largest;
                 if (heapSize == 0) {
-                    throw out_of_range("");
+                    throw std::out_of_range("");
                 } else {
                     auto temp = A.at(heapSize - 1);
                     --heapSize;
@@ -159,7 +157,7 @@ namespace HeapSort {
 
     template<typename T>
     inline static
-    void heapSort(vector<T> &A) {
+    void heapSort(std::vector<T> &A) {
         try {
             int heapSize = 1;
             int i = 1;
@@ -172,7 +170,7 @@ namespace HeapSort {
                     ++heapSize;
                     bubbleUp(x, A);
                 } else {
-                    throw out_of_range("");
+                    throw std::out_of_range("");
                 }
                 ++i;
             }
@@ -180,7 +178,7 @@ namespace HeapSort {
             while (i > 0) {
                 T largest;
                 if (heapSize == 0) {
-                    throw out_of_range("");
+                    throw std::out_of_range("");
                 } else {
                     T temp = A.at(heapSize - 1);
                     --heapSize;
@@ -203,28 +201,28 @@ namespace HeapSort {
 int main() {
 
 #ifdef DEBUG
-    ios_base::sync_with_stdio(false);
+    std::ios_base::sync_with_stdio(false);
 
     // Initialize a random number generator.
-    random_device dev;
-    mt19937 random_generator(dev());
+    std::random_device dev;
+    std::mt19937 random_generator(dev());
 
     // Make every entry of the array, the time of tests and the length of the array to be random.
-    uniform_int_distribution<int> dist(numeric_limits<int>::min(), numeric_limits<int>::min());
-    uniform_int_distribution<int> test_time_dist(50, 1000);
-    uniform_int_distribution<unsigned long> len_dist(500ul, 1000ul);
+    std::uniform_int_distribution<int> dist(std::numeric_limits<int>::min(), std::numeric_limits<int>::min());
+    std::uniform_int_distribution<int> test_time_dist(50, 1000);
+    std::uniform_int_distribution<unsigned long> len_dist(500ul, 1000ul);
 
     int test_time = test_time_dist(random_generator);
     while (test_time--) {
 
-        vector<int> A(len_dist(random_generator));
+        std::vector<int> A(len_dist(random_generator));
         for (auto &&i : A) {
             i = dist(random_generator);
         }
-        vector<int> A_copy(A.begin(), A.end());
+        std::vector<int> A_copy(A.begin(), A.end());
 
         HeapSort::heapSort(A);
-        sort(A_copy.begin(), A_copy.end());
+        std::sort(A_copy.begin(), A_copy.end());
         assert(A == A_copy);
     }
 
@@ -263,17 +261,17 @@ int main() {
             return *this;
         }
 
-        explicit operator string() const {
-            return "(" + to_string(first) + ", " + to_string(second) + ")";
+        explicit operator std::string() const {
+            return "(" + std::to_string(first) + ", " + std::to_string(second) + ")";
         }
     };
     test_time = test_time_dist(random_generator);
     while (test_time--) {
-        vector<Widget> A(len_dist(random_generator));
+        std::vector<Widget> A(len_dist(random_generator));
         for (auto &&i : A) {
             i = Widget(dist(random_generator), dist(random_generator));
         }
-        vector<Widget> A_copy(A.begin(), A.end());
+        std::vector<Widget> A_copy(A.begin(), A.end());
         HeapSort::heapSort(A);
         sort(A_copy.begin(), A_copy.end());
         assert(A == A_copy);
@@ -281,19 +279,19 @@ int main() {
 
     test_time = test_time_dist(random_generator);
     while (test_time--) {
-        vector<pair<int, int> > A(len_dist(random_generator));
+        std::vector<std::pair<int, int> > A(len_dist(random_generator));
         for (auto &&i : A) {
             i = {dist(random_generator), dist(random_generator)};
         }
-        vector<pair<int, int> > A_copy(A.begin(), A.end());
+        std::vector<std::pair<int, int> > A_copy(A.begin(), A.end());
 
-        sort(A_copy.begin(), A_copy.end(), [](const pair<int, int> &lhs, const pair<int, int> &rhs) -> bool {
+        sort(A_copy.begin(), A_copy.end(), [](const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) -> bool {
             if (lhs.first == rhs.first) {
                 return (lhs.second < rhs.second);
             }
             return (lhs.first < rhs.first);
         });
-        HeapSort::heapSort(A, [](const pair<int, int> &lhs, const pair<int, int> &rhs) -> int {
+        HeapSort::heapSort(A, [](const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) -> int {
             if (lhs.first == rhs.first) {
                 if (lhs.second > rhs.second) {
                     return 1;
