@@ -1,5 +1,5 @@
 /**
- * An implementation of optimization on reading (读入优化) an integer from stdin and writing (输出优化) an integer to stdout.
+ * An implementation of optimization on reading an integer (读入优化) from stdin and writing an integer (输出优化) to stdout.
  * It has been tested in Linux csx.cs.ucalgary.ca (g++ -std=c++14 -Wall -O2),
  * but the strange thing is it is slower than scanf() in my macOS, (homebrew g++-7 -std=c++14 -Wall -O2)
  * So make sure to run the tests before using it.
@@ -7,7 +7,7 @@
 
 //Time used (Smaller is faster):
 //Input : fread < putchar < scanf < cin(without sync, tie(0)) < cin
-//Output: getchar < printf < cout(without sync, tie(0)) < cout
+//Output: fwrite < getchar < printf < cout(without sync, tie(0)) < cout
 
 /**
  * I have packed all the code about reading and writing on namespace fastIO and you can just use it directly.
@@ -41,19 +41,19 @@ namespace FastIO {
     void readIntUsingFread(T &x) {
         x = 0;
         bool isNeg = false;
-        char ch = getcharUsingFread();             // Notice ch < '0' since '0' == 48
+        char ch = getcharUsingFread();
 
         // skip all non digit characters
-        while (!isdigit(ch)) {                                  // go into the loop if ch is not a digit
+        while (!isdigit(ch)) {
             if (ch == '-') {
-                isNeg = true;                                   // change isNeg if the number is negative
+                isNeg = true;
             }
-            ch = getcharUsingFread();                 // continue to get a character
+            ch = getcharUsingFread();
         }
 
-        while (isdigit(ch)) {                       // go into the loop if ch is a digit
-            x = x * 10 + static_cast<T>(ch ^ 48);               // append the new value of ch to the end of x
-            ch = getcharUsingFread();                      // continue to get a character
+        while (isdigit(ch)) {
+            x = x * 10 + static_cast<T>(ch ^ 48);
+            ch = getcharUsingFread();
         }
         x = isNeg ? -x : x;
     }
@@ -64,19 +64,19 @@ namespace FastIO {
 
         x = 0;
         bool isNeg = false;
-        char ch = static_cast<char>(getchar());                // Notice ch < '0' since '0' == 48
+        char ch = static_cast<char>(getchar());
 
         // skip all non digit characters
-        while (!isdigit(ch)) {                                  // go into the loop if ch is not a digit
+        while (!isdigit(ch)) {
             if (ch == '-') {
-                isNeg = true;                                   // change isNeg if the number is negative
+                isNeg = true;
             }
-            ch = static_cast<char>(getchar());                 // continue to get a character
+            ch = static_cast<char>(getchar());
         }
 
-        while (isdigit(ch)) {                       // go into the loop if ch is a digit
-            x = x * 10 + static_cast<T>(ch ^ 48);               // append the new value of ch to the end of x
-            ch = static_cast<char>(getchar());                      // continue to get a character
+        while (isdigit(ch)) {
+            x = x * 10 + static_cast<T>(ch ^ 48);
+            ch = static_cast<char>(getchar());
         }
         x = isNeg ? -x : x;
     }
@@ -86,11 +86,34 @@ namespace FastIO {
 
     inline static
     void putcharWithFwrite(const char &ch) {
-        if (ptr == outputBuffer + MAXSIZE) {
+        if (ptr - outputBuffer == MAXSIZE) {
             fwrite(outputBuffer, 1, MAXSIZE, stdout);
             ptr = outputBuffer;
         }
         *ptr++ = ch;
+    }
+
+    template<class T>
+    inline static
+    void writeIntWithFwrite(T x) {
+        if (x < 0) {
+            x = -x;
+            putcharWithFwrite('-');
+        }
+        static int storeDigits[40];
+        int top = 0;
+        do {
+            storeDigits[top++] = x % 10;
+            x /= 10;
+        } while (x);
+        while (top) {
+            putcharWithFwrite(storeDigits[--top] + 48);
+        }
+    }
+
+    // Execute this function after using writeIntWithFwrite() on all numbers for output.
+    void flushAfterWriteIntWithFwrite() {
+        fwrite(outputBuffer, 1, ptr - outputBuffer, stdout);
     }
 
     template<typename T>
@@ -196,25 +219,6 @@ void readByScanf(const size_t &dataSize, const std::string &fileName) {
 }
 
 inline static
-void readByCin(const size_t &dataSize, const std::string &fileName) {
-
-    // Define some variables for the test
-    std::chrono::time_point<std::chrono::steady_clock> start, stop;
-    std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
-
-    // Use cin read from fileName
-    freopen(fileName.c_str(), "r", stdin);
-    start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
-        std::cin >> arr0[i];
-    }
-    stop = std::chrono::steady_clock::now();
-    elapsed_in_seconds = stop - start;
-    std::cout << "cin: " << elapsed_in_seconds.count() << " seconds" << std::endl;
-}
-
-inline static
 void readByCinWithoutSync(const size_t &dataSize, const std::string &fileName) {
 
     // Define some variables for the test
@@ -237,8 +241,59 @@ void readByCinWithoutSync(const size_t &dataSize, const std::string &fileName) {
 }
 
 inline static
+void readByCin(const size_t &dataSize, const std::string &fileName) {
+
+    // Define some variables for the test
+    std::chrono::time_point<std::chrono::steady_clock> start, stop;
+    std::chrono::duration<double> elapsed_in_seconds{};
+    auto arr0 = std::make_unique<int[]>(dataSize);
+
+    // Use cin read from fileName
+    freopen(fileName.c_str(), "r", stdin);
+    start = std::chrono::steady_clock::now();
+    for (size_t i = 0; i != dataSize; ++i) {
+        std::cin >> arr0[i];
+    }
+    stop = std::chrono::steady_clock::now();
+    elapsed_in_seconds = stop - start;
+    std::cout << "cin: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+}
+
+inline static
 void writeByFwrite(const size_t &dataSize, const std::string &fileName) {
-    // TODO
+
+    // Define some variables for the test
+    std::chrono::time_point<std::chrono::steady_clock> start, stop;
+    std::chrono::duration<double> elapsed_in_seconds{};
+    auto arr0 = std::make_unique<int[]>(dataSize);
+
+    // Fill arr0 with the data from fileName
+    freopen(fileName.c_str(), "r", stdin);
+    for (size_t i = 0; i != dataSize; ++i) {
+        scanf("%d", &arr0[i]);
+    }
+    fclose(stdin);
+
+    // Create an empty file for output
+    const char *outputFile("testData.out");
+
+    // Use FastIO::writeIntWithFwrite to write to outputFile
+    freopen(outputFile, "w", stdout);
+    start = std::chrono::steady_clock::now();
+    for (size_t i = 0; i != dataSize; ++i) {
+        FastIO::writeIntWithFwrite<int>(arr0[i]);
+        FastIO::putcharWithFwrite('\n');
+    }
+    FastIO::flushAfterWriteIntWithFwrite();
+    stop = std::chrono::steady_clock::now();
+    elapsed_in_seconds = stop - start;
+    fclose(stdout);
+
+    // Since stdout is closed, we use stderr to print the result
+    std::cerr << "fwrite: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+
+    // Cleaning
+    std::remove(outputFile);
 }
 
 inline static
@@ -259,11 +314,12 @@ void writeByPutchar(const size_t &dataSize, const std::string &fileName) {
     // Create an empty file for output
     const char *outputFile("testData.out");
 
-    // Use cout write to outputFile
+    // Use FastIO::writeInt write to outputFile
     freopen(outputFile, "w", stdout);
     start = std::chrono::steady_clock::now();
     for (size_t i = 0; i != dataSize; ++i) {
         FastIO::writeInt<int>(arr0[i]);
+        putchar('\n');
     }
     stop = std::chrono::steady_clock::now();
     elapsed_in_seconds = stop - start;
@@ -294,7 +350,7 @@ void writeByPrintf(const size_t &dataSize, const std::string &fileName) {
     // Create an empty file for output
     const char *outputFile("testData.out");
 
-    // Use cout write to outputFile
+    // Use printf to write to outputFile
     freopen(outputFile, "w", stdout);
     start = std::chrono::steady_clock::now();
     for (size_t i = 0; i != dataSize; ++i) {
@@ -306,41 +362,6 @@ void writeByPrintf(const size_t &dataSize, const std::string &fileName) {
 
     // Since stdout is closed, we use stderr to print the result
     std::cerr << "printf: " << elapsed_in_seconds.count() << " seconds" << std::endl;
-
-    // Cleaning
-    std::remove(outputFile);
-}
-
-inline static
-void writeByCout(const size_t &dataSize, const std::string &fileName) {
-
-    // Define some variables for the test
-    std::chrono::time_point<std::chrono::steady_clock> start, stop;
-    std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
-
-    // Fill arr0 with the data from fileName
-    freopen(fileName.c_str(), "r", stdin);
-    for (size_t i = 0; i != dataSize; ++i) {
-        scanf("%d", &arr0[i]);
-    }
-    fclose(stdin);
-
-    // Create an empty file for output
-    const char *outputFile("testData.out");
-
-    // Use cout write to outputFile
-    freopen(outputFile, "w", stdout);
-    start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
-        std::cout << arr0[i] << std::endl;
-    }
-    stop = std::chrono::steady_clock::now();
-    elapsed_in_seconds = stop - start;
-    fclose(stdout);
-
-    // Since stdout is closed, we use stderr to print the result
-    std::cerr << "cout: " << elapsed_in_seconds.count() << " seconds" << std::endl;
 
     // Cleaning
     std::remove(outputFile);
@@ -364,7 +385,7 @@ void writeByCoutWithoutSync(const size_t &dataSize, const std::string &fileName)
     // Create an empty file for output
     const char *outputFile("testData.out");
 
-    // Use cout write to outputFile
+    // Use cout without sync to write to outputFile
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
 
@@ -385,6 +406,41 @@ void writeByCoutWithoutSync(const size_t &dataSize, const std::string &fileName)
 }
 
 inline static
+void writeByCout(const size_t &dataSize, const std::string &fileName) {
+
+    // Define some variables for the test
+    std::chrono::time_point<std::chrono::steady_clock> start, stop;
+    std::chrono::duration<double> elapsed_in_seconds{};
+    auto arr0 = std::make_unique<int[]>(dataSize);
+
+    // Fill arr0 with the data from fileName
+    freopen(fileName.c_str(), "r", stdin);
+    for (size_t i = 0; i != dataSize; ++i) {
+        scanf("%d", &arr0[i]);
+    }
+    fclose(stdin);
+
+    // Create an empty file for output
+    const char *outputFile("testData.out");
+
+    // Use cout to write to to outputFile
+    freopen(outputFile, "w", stdout);
+    start = std::chrono::steady_clock::now();
+    for (size_t i = 0; i != dataSize; ++i) {
+        std::cout << arr0[i] << std::endl;
+    }
+    stop = std::chrono::steady_clock::now();
+    elapsed_in_seconds = stop - start;
+    fclose(stdout);
+
+    // Since stdout is closed, we use stderr to print the result
+    std::cerr << "cout: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+
+    // Cleaning
+    std::remove(outputFile);
+}
+
+inline static
 void checkArguments(int argc, char *argv[]) {
 
     // Show usage if argc or argv are not correct.
@@ -393,14 +449,14 @@ void checkArguments(int argc, char *argv[]) {
                               " 1: fread\n"
                               " 2: getchar\n"
                               " 3: scanf\n"
-                              " 4: cin\n"
-                              " 5: cin + sync(false) + tie(nullptr)\n\n"
+                              " 4: cin + sync(false) + tie(nullptr)\n"
+                              " 5: cin\n\n"
                               "out: print output test\n"
                               " 1: fwrite\n"
                               " 2: putchar\n"
                               " 3: printf\n"
-                              " 4: cout\n"
-                              " 5: cout + sync(false) + tie(nullptr)\n\n"
+                              " 4: cout + sync(false) + tie(nullptr)\n"
+                              " 5: cout\n\n"
                               "* dataSize is the number of integers for the read input test, and it must be >= 1000 and <= 10000000\n\n";
 
     // Parsing
@@ -466,10 +522,10 @@ int main(int argc, char *argv[]) {
                 readByScanf(dataSizeInt, fileName);
                 break;
             case 4:
-                readByCin(dataSizeInt, fileName);
+                readByCinWithoutSync(dataSizeInt, fileName);
                 break;
             default:
-                readByCinWithoutSync(dataSizeInt, fileName);
+                readByCin(dataSizeInt, fileName);
                 break;
         }
     } else {
@@ -484,10 +540,10 @@ int main(int argc, char *argv[]) {
                 writeByPrintf(dataSizeInt, fileName);
                 break;
             case 4:
-                writeByCout(dataSizeInt, fileName);
+                writeByCoutWithoutSync(dataSizeInt, fileName);
                 break;
             default:
-                writeByCoutWithoutSync(dataSizeInt, fileName);
+                writeByCout(dataSizeInt, fileName);
                 break;
         }
     }
