@@ -1,8 +1,6 @@
 #include <string>
 #include <cassert>
 
-using namespace std;
-
 #define DEBUG
 
 /**
@@ -10,7 +8,7 @@ using namespace std;
  * @return -1 if lhs < rhs, 0 if lhs == rhs, 1 if lhs > rhs
  */
 inline static
-int threeWayComparator(const string &lhs, const string &rhs) {
+int threeWayComparator(const std::string &lhs, const std::string &rhs) {
 
     // Case 1: lhs < 0 and rhs >= 0
     if (lhs.front() == '-' && rhs.front() != '-')
@@ -20,7 +18,7 @@ int threeWayComparator(const string &lhs, const string &rhs) {
         return 1;
     // Case 3: lhs < 0 and rhs < 0
     if (lhs.front() == '-' && rhs.front() == '-') {
-        return threeWayComparator(string(rhs, 1), string(lhs, 1));
+        return threeWayComparator(std::string(rhs, 1), std::string(lhs, 1));
     }
 
     // Case 4: lhs >= 0 and rhs >= 0

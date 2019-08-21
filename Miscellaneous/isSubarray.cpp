@@ -1,7 +1,5 @@
 #include <bits/stdc++.h>
 
-using namespace std;
-
 #define DEBUG
 
 /**
@@ -9,7 +7,7 @@ using namespace std;
  * @return true if b is an subarray of a, otherwise false
  */
 template<typename T>
-bool includesWithoutSorting(vector<T> const &a, vector<T> const &b) {
+bool includesWithoutSorting(std::vector<T> const &a, std::vector<T> const &b) {
     if (b.empty()) {
         return true;
     }
@@ -33,13 +31,13 @@ bool includesWithoutSorting(vector<T> const &a, vector<T> const &b) {
 int main() {
 
 #ifdef DEBUG
-    vector<int> A = {1, 5, 76, 8, 2, 32, 3};
-    assert(includesWithoutSorting(A, vector<int>{1, 5, 76}));
-    assert(!includesWithoutSorting(A, vector<int>{1, 5, 76, 9}));
-    assert(includesWithoutSorting(A, vector<int>{8}));
-    assert(!includesWithoutSorting(A, vector<int>{9}));
-    assert(includesWithoutSorting(A, vector<int>{}));
-    assert(includesWithoutSorting(vector<int>{}, vector<int>{}));
+    std::vector<int> A{1, 5, 76, 8, 2, 32, 3};
+    assert(includesWithoutSorting(A, std::vector<int>{1, 5, 76}));
+    assert(!includesWithoutSorting(A, std::vector<int>{1, 5, 76, 9}));
+    assert(includesWithoutSorting(A, std::vector<int>{8}));
+    assert(!includesWithoutSorting(A, std::vector<int>{9}));
+    assert(includesWithoutSorting(A, std::vector<int>{}));
+    assert(includesWithoutSorting(std::vector<int>{}, std::vector<int>{}));
 #endif
 
     return 0;

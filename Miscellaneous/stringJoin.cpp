@@ -1,6 +1,6 @@
-#include <bits/stdc++.h>
-
-using namespace std;
+#include <cassert>
+#include <string>
+#include <vector>
 
 #define DEBUG
 
@@ -8,8 +8,8 @@ using namespace std;
  * An implementation of join in Cpp.
  */
 inline static
-string join(const vector<string> &v, const string &str) {
-    string s;
+std::string join(const std::vector<std::string> &v, const std::string &str) {
+    std::string s;
     for (auto p = cbegin(v); p != cend(v); ++p) {
         s.append(*p);
         if (p != cend(v) - 1) {

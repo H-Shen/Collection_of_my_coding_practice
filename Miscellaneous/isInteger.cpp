@@ -1,7 +1,5 @@
 #include <bits/stdc++.h>
 
-using namespace std;
-
 #define DEBUG
 
 /**
@@ -11,10 +9,10 @@ using namespace std;
  * @return true if s is an integer, false otherwise
  */
 inline static
-bool isInteger(const string &s) {
-    const static string pattern("^(-?[1-9][0-9]*|0)$");
-    const static regex r(pattern);
-    return regex_match(begin(s), end(s), r);
+bool isInteger(const std::string &s) {
+    const static std::string pattern("^(-?[1-9][0-9]*|0)$");
+    const static std::regex r(pattern);
+    return std::regex_match(begin(s), end(s), r);
 }
 
 int main() {
@@ -26,11 +24,12 @@ int main() {
     assert(!isInteger("01"));
     assert(!isInteger("000"));
     assert(!isInteger("-0"));
-    random_device dev;
-    mt19937 random_generator(dev());
-    uniform_int_distribution<std::mt19937::result_type> dist(SHRT_MIN, SHRT_MAX);
-    for (int i = 0; i < 1000; ++i) {
-        assert(isInteger(to_string(dist(random_generator))));
+    std::random_device dev;
+    std::mt19937 random_generator(dev());
+    std::uniform_int_distribution<int> dist(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
+    for (int i = 0; i < 100000; i += 2) {
+        assert(isInteger(std::to_string(dist(random_generator))));
+        assert(isInteger(std::to_string(dist(random_generator))));
     }
 #endif
 

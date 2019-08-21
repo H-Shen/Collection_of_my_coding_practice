@@ -3,8 +3,6 @@
 #define DEBUG
 // Judge if a string/ a vector of custom datatype/built-in type is a palindrome.
 
-using namespace std;
-
 inline static
 bool isPalindrome(long long A) {
     if (A < 0) {
@@ -40,7 +38,7 @@ bool isPalindrome(unsigned long long A) {
 }
 
 inline static
-bool isPalindrome(const string &A) {
+bool isPalindrome(const std::string &A) {
     if (!A.empty()) {
         size_t len = A.size();
         size_t half = (len - 1) / 2;
@@ -54,7 +52,7 @@ bool isPalindrome(const string &A) {
 }
 
 template<typename T>
-bool isPalindrome(const vector<T> &A) {
+bool isPalindrome(const std::vector<T> &A) {
     if (!A.empty()) {
         size_t len = A.size();
         size_t half = (len - 1) / 2;
@@ -68,7 +66,7 @@ bool isPalindrome(const vector<T> &A) {
 }
 
 template<typename T, typename BinaryPredicate>
-bool isPalindrome(const vector<T> &A, const BinaryPredicate &comp) {
+bool isPalindrome(const std::vector<T> &A, const BinaryPredicate &comp) {
     if (!A.empty()) {
         size_t len = A.size();
         size_t half = (len - 1) / 2;
@@ -118,38 +116,38 @@ int main() {
     assert(!isPalindrome("abcda"));
     assert(isPalindrome("abba"));
 
-    assert(isPalindrome(vector<int>{2}));
-    assert(isPalindrome(vector<int>{2, 2}));
-    assert(isPalindrome(vector<int>{2, 3, 2}));
-    assert(!isPalindrome(vector<int>{2, 3, 4, 5, 2}));
-    assert(isPalindrome(vector<int>{}));
+    assert(isPalindrome(std::vector<int>{2}));
+    assert(isPalindrome(std::vector<int>{2, 2}));
+    assert(isPalindrome(std::vector<int>{2, 3, 2}));
+    assert(!isPalindrome(std::vector<int>{2, 3, 4, 5, 2}));
+    assert(isPalindrome(std::vector<int>{}));
 
-    auto cmp = [](const pair<int, int> &lhs, const pair<int, int> &rhs) -> bool {
+    auto cmp = [](const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) -> bool {
         return (lhs.first == rhs.first);
     };
-    assert(!isPalindrome(vector<pair<int, int>>{{1, 0},
+    assert(!isPalindrome(std::vector<std::pair<int, int>>{{1, 0},
                                                 {3, 0}}, cmp));
 
-    assert(!isPalindrome(vector<pair<int, int>>{{1, 0},
+    assert(!isPalindrome(std::vector<std::pair<int, int>>{{1, 0},
                                                 {2, 0},
                                                 {3, 1}}, cmp));
 
-    assert(isPalindrome(vector<pair<int, int>>{{1, 0},
+    assert(isPalindrome(std::vector<std::pair<int, int>>{{1, 0},
                                                {2, 0},
                                                {1, 1}}, cmp));
 
-    assert(isPalindrome(vector<pair<int, int>>{{1, 0},
+    assert(isPalindrome(std::vector<std::pair<int, int>>{{1, 0},
                                                {1, 1}}, cmp));
-    assert(isPalindrome(vector<pair<int, int>>{{1, 0}}, cmp));
+    assert(isPalindrome(std::vector<std::pair<int, int>>{{1, 0}}, cmp));
 
-    assert(isPalindrome(vector<pair<int, int>>{}, cmp));
+    assert(isPalindrome(std::vector<std::pair<int, int>>{}, cmp));
 
-    assert(isPalindrome(vector<Widget>{Widget(12, 'a'), Widget(13, 'a')}));
-    assert(isPalindrome(vector<Widget>{Widget(12, 'a')}));
-    assert(isPalindrome(vector<Widget>{}));
-    assert(isPalindrome(vector<Widget>{Widget(12, 'a'), Widget(13, 'b'), Widget(13, 'a')}));
-    assert(isPalindrome(vector<Widget>{Widget(12, 'a'), Widget(13, 'c'), Widget(13, 'c'), Widget(13, 'a')}));
-    assert(!isPalindrome(vector<Widget>{Widget(12, 'a'), Widget(13, 'C'), Widget(13, 'c'), Widget(13, 'a')}));
+    assert(isPalindrome(std::vector<Widget>{Widget(12, 'a'), Widget(13, 'a')}));
+    assert(isPalindrome(std::vector<Widget>{Widget(12, 'a')}));
+    assert(isPalindrome(std::vector<Widget>{}));
+    assert(isPalindrome(std::vector<Widget>{Widget(12, 'a'), Widget(13, 'b'), Widget(13, 'a')}));
+    assert(isPalindrome(std::vector<Widget>{Widget(12, 'a'), Widget(13, 'c'), Widget(13, 'c'), Widget(13, 'a')}));
+    assert(!isPalindrome(std::vector<Widget>{Widget(12, 'a'), Widget(13, 'C'), Widget(13, 'c'), Widget(13, 'a')}));
 #endif
 
     return 0;

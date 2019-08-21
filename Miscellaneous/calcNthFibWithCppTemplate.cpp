@@ -1,23 +1,23 @@
-#include <bits/stdc++.h>
-
-using namespace std;
 
 template<int N>
-struct Fib {
+class Fib {
+public:
     enum : unsigned long long {
         value = Fib<N - 1>::value + Fib<N - 2>::value
     };
 };
 
 template<>
-struct Fib<1> {
+class Fib<1> {
+public:
     enum : unsigned long long {
         value = 1
     };
 };
 
 template<>
-struct Fib<2> {
+class Fib<2> {
+public:
     enum : unsigned long long {
         value = 1
     };

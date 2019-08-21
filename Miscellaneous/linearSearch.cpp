@@ -9,8 +9,6 @@
 
 #include <bits/stdc++.h>
 
-using namespace std;
-
 #define DEBUG
 
 // Precondition
@@ -24,7 +22,7 @@ using namespace std;
 
 template<typename T>
 inline static
-int linearSearch(const vector<T> &A, T key) {
+int linearSearch(const std::vector<T> &A, T key) {
     int i{0};
     int n{static_cast<int>(A.size())};
     while ((i < n) && (A[i] != key)) {
@@ -38,7 +36,7 @@ int linearSearch(const vector<T> &A, T key) {
 
 template<typename T, typename Comparator>
 inline static
-int linearSearch(const vector<T> &A, T key, Comparator &comp) {
+int linearSearch(const std::vector<T> &A, T key, Comparator &comp) {
     int i{0};
     int n{static_cast<int>(A.size())};
     while ((i < n) && !comp(A[i], key)) {
@@ -50,31 +48,31 @@ int linearSearch(const vector<T> &A, T key, Comparator &comp) {
     return -1;
 }
 
-vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound) {
+std::vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound) {
 
     // It is impossible that n is lower than 0 and n == 0 is also not allowed.
     if (n <= 0) {
-        throw out_of_range("");
+        throw std::out_of_range("");
     }
 
     // It is impossible that lowerbound is greater than upperbound.
     if (lowerbound > upperbound) {
-        throw out_of_range("");
+        throw std::out_of_range("");
     }
 
     // If the number between the lowerbound and the upperbound(all inclusive) are smaller than n,
     // then it is impossible to generate n unique numbers.
     if (upperbound - lowerbound + 1 < n) {
-        throw out_of_range("");
+        throw std::out_of_range("");
     }
 
 
-    random_device dev;
-    mt19937 random_generator(dev());
-    uniform_int_distribution<int> dist(lowerbound, upperbound);
-    unordered_set<int> Save;
+    std::random_device dev;
+    std::mt19937 random_generator(dev());
+    std::uniform_int_distribution<int> dist(lowerbound, upperbound);
+    std::unordered_set<int> Save;
 
-    vector<int> result(static_cast<unsigned long>(n));
+    std::vector<int> result(static_cast<unsigned long>(n));
     int temp;
     for (auto &&i : result) {
         while (true) {
@@ -89,13 +87,13 @@ vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound)
     return result;
 }
 
-vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound) {
+std::vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound) {
 
-    vector<int> result = generateArrayWithoutDuplicate(n, lowerbound, upperbound);
-    random_device dev;
-    uniform_int_distribution<unsigned int> dist(0, static_cast<unsigned int>(n - 1));
-    uniform_int_distribution<int> leftOrRight(0, 1);
-    mt19937 random_generator(dev());
+    std::vector<int> result = generateArrayWithoutDuplicate(n, lowerbound, upperbound);
+    std::random_device dev;
+    std::uniform_int_distribution<unsigned int> dist(0, static_cast<unsigned int>(n - 1));
+    std::uniform_int_distribution<int> leftOrRight(0, 1);
+    std::mt19937 random_generator(dev());
 
     if (n == 2) {
 
@@ -130,38 +128,38 @@ vector<int> generateArrayWithDuplicate(int n, int lowerbound, int upperbound) {
 int main() {
 
 #ifdef DEBUG
-    random_device dev;
-    mt19937 random_generator(dev());
+    std::random_device dev;
+    std::mt19937 random_generator(dev());
     int n = 1000;
-    uniform_int_distribution<unsigned int> index(0, static_cast<unsigned int>(n - 1));
+    std::uniform_int_distribution<unsigned int> index(0, static_cast<unsigned int>(n - 1));
     int testTime = 300;
 
     // TESTS
     for (int i = 0; i < testTime; ++i) {
-        vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
+        std::vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
         int val = A[index(random_generator)];
-        assert(find(A.begin(), A.end(), val) - A.begin() == linearSearch(A, val));
+        assert(std::find(A.begin(), A.end(), val) - A.begin() == linearSearch(A, val));
     }
 
     for (int i = 0; i < testTime; ++i) {
-        vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
+        std::vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         int val = A[index(random_generator)];
-        assert(find(A.begin(), A.end(), val) - A.begin() == linearSearch(A, val));
+        assert(std::find(A.begin(), A.end(), val) - A.begin() == linearSearch(A, val));
     }
 
     for (int i = 0; i < testTime; ++i) {
-        vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
-        int val = *max_element(A.begin(), A.end()) + 1;
+        std::vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
+        int val = *std::max_element(A.begin(), A.end()) + 1;
         assert(linearSearch(A, val) == -1);
     }
 
     for (int i = 0; i < testTime; ++i) {
-        vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
-        int val = *max_element(A.begin(), A.end()) + 1;
+        std::vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
+        int val = *std::max_element(A.begin(), A.end()) + 1;
         assert(linearSearch(A, val) == -1);
     }
 
-    auto cmp = [](const pair<int, int> &lhs, const pair<int, int> &rhs) -> int {
+    auto cmp = [](const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) -> int {
         if (lhs.first == rhs.first) {
             if (lhs.second > rhs.second) {
                 return 1;
@@ -175,12 +173,12 @@ int main() {
         return 0;
     };
     for (int i = 0; i < testTime; ++i) {
-        vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
-        vector<pair<int, int> > A_(A.size());
+        std::vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
+        std::vector<std::pair<int, int> > A_(A.size());
         for (size_t j = 0; j != A.size(); ++j) {
             A_.at(j) = {A.at(j), A.at(j)};
         }
-        auto val = *max_element(A_.begin(), A_.end(), [](const pair<int, int> &lhs, const pair<int, int> &rhs) -> bool {
+        auto val = *std::max_element(A_.begin(), A_.end(), [](const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) -> bool {
             if (lhs.first == rhs.first) {
                 return (lhs.second < rhs.second);
             }
@@ -190,15 +188,15 @@ int main() {
 
 #endif
     // USAGE
-    vector<int> A = {2, 3, 3, 4, 7, 7, 7, 9};
+    std::vector<int> A = {2, 3, 3, 4, 7, 7, 7, 9};
     int val = 2;
-    cout << linearSearch(A, val) << endl;
+    std::cout << linearSearch(A, val) << std::endl;
 
     val = 7;
-    cout << linearSearch(A, val) << endl;
+    std::cout << linearSearch(A, val) << std::endl;
 
     val = 123;
-    cout << linearSearch(A, val) << endl;
+    std::cout << linearSearch(A, val) << std::endl;
 
     return 0;
 }

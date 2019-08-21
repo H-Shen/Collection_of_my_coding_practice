@@ -1,6 +1,4 @@
-#include <bits/stdc++.h>
-
-using namespace std;
+#include <cassert>
 
 // Return 1 if 'y' is leap, otherwise 0.
 inline static

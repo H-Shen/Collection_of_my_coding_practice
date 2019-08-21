@@ -1,7 +1,5 @@
 #include <bits/stdc++.h>
 
-using namespace std;
-
 #define DEBUG
 
 /**
@@ -11,7 +9,7 @@ using namespace std;
  * @return true if 'ending' is in the ending of 'original'
  */
 inline static
-bool endsWith(const string &original, const string &ending) {
+bool endsWith(const std::string &original, const std::string &ending) {
     if (ending.empty()) {
         return true;
     }

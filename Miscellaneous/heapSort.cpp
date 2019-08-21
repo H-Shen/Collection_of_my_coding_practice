@@ -45,7 +45,7 @@ namespace HeapSort {
     inline static
     void bubbleUp(int x, std::vector<T> &A, const Comparator &comp) {
         while (!isRoot(x) && comp(A.at(x), A.at(parent(x))) > 0) {
-            swap(A.at(x), A.at(parent(x)));
+            std::swap(A.at(x), A.at(parent(x)));
             x = parent(x);
         }
     }
@@ -66,19 +66,19 @@ namespace HeapSort {
             if (hasRight(x, heapSize)) {
                 if (comp(A.at(left(x, heapSize)), A.at(right(x, heapSize))) >= 0) {
                     if (comp(A.at(left(x, heapSize)), A.at(x)) > 0) {
-                        swap(A.at(left(x, heapSize)), A.at(x));
+                        std::swap(A.at(left(x, heapSize)), A.at(x));
                         x = left(x, heapSize);
                     } else {
                         break;
                     }
                 } else if (comp(A.at(right(x, heapSize)), A.at(x)) > 0) {
-                    swap(A.at(right(x, heapSize)), A.at(x));
+                    std::swap(A.at(right(x, heapSize)), A.at(x));
                     x = right(x, heapSize);
                 } else {
                     break;
                 }
             } else if (comp(A.at(left(x, heapSize)), A.at(x)) > 0) {
-                swap(A.at(left(x, heapSize)), A.at(x));
+                std::swap(A.at(left(x, heapSize)), A.at(x));
                 x = left(x, heapSize);
             } else {
                 break;
@@ -273,7 +273,7 @@ int main() {
         }
         std::vector<Widget> A_copy(A.begin(), A.end());
         HeapSort::heapSort(A);
-        sort(A_copy.begin(), A_copy.end());
+        std::sort(A_copy.begin(), A_copy.end());
         assert(A == A_copy);
     }
 
@@ -285,7 +285,7 @@ int main() {
         }
         std::vector<std::pair<int, int> > A_copy(A.begin(), A.end());
 
-        sort(A_copy.begin(), A_copy.end(), [](const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) -> bool {
+        std::sort(A_copy.begin(), A_copy.end(), [](const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) -> bool {
             if (lhs.first == rhs.first) {
                 return (lhs.second < rhs.second);
             }

@@ -1,18 +1,16 @@
 #include <bits/stdc++.h>
 
-using namespace std;
-
 #define DEBUG
 
 namespace MergeSort {
 
     // Merge two sorted arrays.
     template<typename T>
-    vector<T> mergeTwoSortedArrays(const vector<T> &C1, const vector<T> &C2) {
+    std::vector<T> mergeTwoSortedArrays(const std::vector<T> &C1, const std::vector<T> &C2) {
 
         int n1 = static_cast<int>(C1.size());
         int n2 = static_cast<int>(C2.size());
-        vector<T> D(C1.size() + C2.size());
+        std::vector<T> D(C1.size() + C2.size());
         int i1 = 0;
         int i2 = 0;
         int j = 0;
@@ -42,11 +40,11 @@ namespace MergeSort {
 
     // Merge two sorted arrays.
     template<typename T, typename Comparator>
-    vector<T> mergeTwoSortedArrays(const vector<T> &C1, const vector<T> &C2, const Comparator &comp) {
+    std::vector<T> mergeTwoSortedArrays(const std::vector<T> &C1, const std::vector<T> &C2, const Comparator &comp) {
 
         int n1 = static_cast<int>(C1.size());
         int n2 = static_cast<int>(C2.size());
-        vector<T> D(C1.size() + C2.size());
+        std::vector<T> D(C1.size() + C2.size());
         int i1 = 0;
         int i2 = 0;
         int j = 0;
@@ -76,7 +74,7 @@ namespace MergeSort {
 
     // MergeSort with comparator
     template<typename T, typename Comparator>
-    vector<T> mergeSort(const vector<T> &A, const Comparator &comp) {
+    std::vector<T> mergeSort(const std::vector<T> &A, const Comparator &comp) {
 
         // Corner cases.
         if (A.size() <= 1) {
@@ -94,8 +92,8 @@ namespace MergeSort {
             n2 = n / 2;
         }
 
-        vector<T> B2(static_cast<unsigned long>(n2));
-        vector<T> B1(static_cast<unsigned long>(n1));
+        std::vector<T> B2(static_cast<unsigned long>(n2));
+        std::vector<T> B1(static_cast<unsigned long>(n1));
         int i = 0;
 
         while (i < n1) {
@@ -107,14 +105,14 @@ namespace MergeSort {
             ++i;
         }
         // Recursively Sort and Merge
-        vector<T> C1 = mergeSort(B1, comp);
-        vector<T> C2 = mergeSort(B2, comp);
+        std::vector<T> C1 = mergeSort(B1, comp);
+        std::vector<T> C2 = mergeSort(B2, comp);
         return mergeTwoSortedArrays(C1, C2, comp);
     }
 
     // MergeSort
     template<typename T>
-    vector<T> mergeSort(const vector<T> &A) {
+    std::vector<T> mergeSort(const std::vector<T> &A) {
 
         // Corner cases.
         if (A.size() <= 1) {
@@ -132,8 +130,8 @@ namespace MergeSort {
             n2 = n / 2;
         }
 
-        vector<T> B2(static_cast<unsigned long>(n2));
-        vector<T> B1(static_cast<unsigned long>(n1));
+        std::vector<T> B2(static_cast<unsigned long>(n2));
+        std::vector<T> B1(static_cast<unsigned long>(n1));
         int i = 0;
 
         while (i < n1) {
@@ -145,8 +143,8 @@ namespace MergeSort {
             ++i;
         }
         // Recursively Sort and Merge
-        vector<T> C1 = mergeSort(B1);
-        vector<T> C2 = mergeSort(B2);
+        std::vector<T> C1 = mergeSort(B1);
+        std::vector<T> C2 = mergeSort(B2);
         return mergeTwoSortedArrays(C1, C2);
     }
 }
@@ -155,20 +153,19 @@ int main() {
 
 #ifdef DEBUG
     // merge test
-    vector<int> A = {1, 2, 2, 2, 3, 4, 99, 99};
-    vector<int> B = {2, 4, 5, 8, 10};
-    vector<int> C0 = MergeSort::mergeTwoSortedArrays(A, B);
-    vector<int> C1;
+    std::vector<int> A = {1, 2, 2, 2, 3, 4, 99, 99};
+    std::vector<int> B = {2, 4, 5, 8, 10};
+    std::vector<int> C0 = MergeSort::mergeTwoSortedArrays(A, B);
+    std::vector<int> C1;
     merge(A.begin(), A.end(), B.begin(), B.end(), back_inserter(C1));
     assert(C0 == C1);
 
     // reset arrays
-    vector<int>().swap(A);
-    vector<int>().swap(C0);
-    vector<int>().swap(C1);
+    std::vector<int>().swap(A);
+    std::vector<int>().swap(C0);
+    std::vector<int>().swap(C1);
 
     // mergeSort test
-    A = {};
     C0 = MergeSort::mergeSort(A);
     C1.resize(A.size());
     partial_sort_copy(A.begin(), A.end(), C1.begin(), C1.end());
