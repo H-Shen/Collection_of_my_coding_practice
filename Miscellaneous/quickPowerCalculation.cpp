@@ -12,7 +12,7 @@ long long quickPower(long long a, long long n) {
         return 1;
     }
     long long res{quickPower(a, n / 2)};
-    if (n % 2) {
+    if (n & 1) {
         return res * res * a;
     }
     return res * res;
@@ -69,6 +69,7 @@ long long quickPowerWithoutRecursion(long long a, long long n, long long m) {
 int main() {
 
 #ifdef DEBUG
+    assert(quickPower(4, 13) == 67108864);
     assert(quickPower(5, 22) == 2384185791015625);
     assert(quickPower(123123, 0) == 1);
     assert(quickPowerWithoutRecursion(5, 22) == 2384185791015625);
