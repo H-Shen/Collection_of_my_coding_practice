@@ -24,16 +24,16 @@ namespace BinarySearch {
 
     template<typename T, typename Comparator>
     inline static
-    int bSearch_recursion(const std::vector<T> &A, int low, int high, const T &key, const Comparator &comp) {
+    int binarySearch_recursion(const std::vector<T> &A, int low, int high, const T &key, const Comparator &comp) {
         if (low > high) {
             return -1;
         }
         int mid = low + (high - low) / 2;
         int compare = comp(key, A[mid]);
         if (compare < 0) {
-            return bSearch_recursion(A, low, mid - 1, key, comp);
+            return binarySearch_recursion(A, low, mid - 1, key, comp);
         } else if (compare > 0) {
-            return bSearch_recursion(A, mid + 1, high, key, comp);
+            return binarySearch_recursion(A, mid + 1, high, key, comp);
         }
         return mid;
     }
@@ -60,7 +60,7 @@ namespace BinarySearch {
 
     template<typename T, typename Comparator>
     inline static
-    int bSearch(const std::vector<T> &A, const T &key, const Comparator &comp) {
+    int binarySearch(const std::vector<T> &A, const T &key, const Comparator &comp) {
         int low = 0;
         int high = static_cast<int>(A.size()) - 1;
         while (true) {
@@ -139,9 +139,9 @@ namespace BinarySearch {
         }
     }
 
-// An implementation of searching for the value with the (largest index + 1) by binary search using 'while' loop
-// where there may be multiple keys.
-// It should be used when the user confirmed that the key is in A.
+    // An implementation of searching for the value with the (largest index + 1) by binary search using 'while' loop
+    // where there may be multiple keys.
+    // It should be used when the user confirmed that the key is in A.
 
     template<typename T, typename Comparator>
     inline static
@@ -381,12 +381,12 @@ int main() {
         }
         return -1;
     };
-    if (BinarySearch::bSearch<Widget>(B, objVal, threeWayComparator)) {
+    if (BinarySearch::binarySearch<Widget>(B, objVal, threeWayComparator)) {
         std::cout << std::string(objVal) << " is found from ";
         std::cout << "index = " << BinarySearch::lowerBound<Widget>(B, objVal, threeWayComparator) << " to ";
         std::cout << "index = " << BinarySearch::upperBound<Widget>(B, objVal, threeWayComparator) - 1 << std::endl;
     }
-    if (BinarySearch::bSearch_recursion<Widget>(B, 0, static_cast<int>(B.size()), objVal, threeWayComparator)) {
+    if (BinarySearch::binarySearch_recursion<Widget>(B, 0, static_cast<int>(B.size()), objVal, threeWayComparator)) {
         std::cout << std::string(objVal) << " is found from ";
         std::cout << "index = " << BinarySearch::lowerBound<Widget>(B, objVal, threeWayComparator) << " to ";
         std::cout << "index = " << BinarySearch::upperBound<Widget>(B, objVal, threeWayComparator) - 1 << std::endl;
