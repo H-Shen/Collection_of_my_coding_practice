@@ -38,7 +38,7 @@ namespace MergeSort {
         return D;
     }
 
-    // Merge two sorted arrays.
+    // Merge two sorted arrays. The three-way comparator is supported.
     template<typename T, typename Comparator>
     std::vector<T> mergeTwoSortedArrays(const std::vector<T> &C1, const std::vector<T> &C2, const Comparator &comp) {
 
@@ -72,15 +72,16 @@ namespace MergeSort {
         return D;
     }
 
-    // MergeSort with comparator
+    // MergeSort. The three-way comparator is supported.
     template<typename T, typename Comparator>
     std::vector<T> mergeSort(const std::vector<T> &A, const Comparator &comp) {
 
-        // Corner cases.
+        // Case 1:
         if (A.size() <= 1) {
             return A;
         }
 
+        // Case 2:
         int n = static_cast<int>(A.size());
         int n1, n2;
 
@@ -105,8 +106,8 @@ namespace MergeSort {
             ++i;
         }
         // Recursively Sort and Merge
-        std::vector<T> C1 = mergeSort(B1, comp);
-        std::vector<T> C2 = mergeSort(B2, comp);
+        auto C1 = mergeSort(B1, comp);
+        auto C2 = mergeSort(B2, comp);
         return mergeTwoSortedArrays(C1, C2, comp);
     }
 
@@ -114,11 +115,12 @@ namespace MergeSort {
     template<typename T>
     std::vector<T> mergeSort(const std::vector<T> &A) {
 
-        // Corner cases.
+        // Case 1:
         if (A.size() <= 1) {
             return A;
         }
 
+        // Case 2:
         int n = static_cast<int>(A.size());
         int n1, n2;
 
@@ -143,8 +145,8 @@ namespace MergeSort {
             ++i;
         }
         // Recursively Sort and Merge
-        std::vector<T> C1 = mergeSort(B1);
-        std::vector<T> C2 = mergeSort(B2);
+        auto C1 = mergeSort(B1);
+        auto C2 = mergeSort(B2);
         return mergeTwoSortedArrays(C1, C2);
     }
 }
@@ -152,24 +154,119 @@ namespace MergeSort {
 int main() {
 
 #ifdef DEBUG
-    // merge test
-    std::vector<int> A = {1, 2, 2, 2, 3, 4, 99, 99};
-    std::vector<int> B = {2, 4, 5, 8, 10};
-    std::vector<int> C0 = MergeSort::mergeTwoSortedArrays(A, B);
-    std::vector<int> C1;
-    merge(A.begin(), A.end(), B.begin(), B.end(), back_inserter(C1));
-    assert(C0 == C1);
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(nullptr);
 
-    // reset arrays
-    std::vector<int>().swap(A);
-    std::vector<int>().swap(C0);
-    std::vector<int>().swap(C1);
+    // Initialize a random number generator.
+    std::random_device dev;
+    std::mt19937 random_generator(dev());
 
-    // mergeSort test
-    C0 = MergeSort::mergeSort(A);
-    C1.resize(A.size());
-    partial_sort_copy(A.begin(), A.end(), C1.begin(), C1.end());
-    assert(C0 == C1);
+    // Make every entry of the array, the time of tests and the length of the array to be random.
+    std::uniform_int_distribution<int> dist(std::numeric_limits<int>::min(), std::numeric_limits<int>::min());
+    std::uniform_int_distribution<int> test_time_dist(50, 500);
+    std::uniform_int_distribution<unsigned long> len_dist(500ul, 1000ul);
+
+    int test_time = test_time_dist(random_generator);
+    while (test_time--) {
+
+        std::vector<int> A(len_dist(random_generator));
+        for (auto &&i : A) {
+            i = dist(random_generator);
+        }
+        std::vector<int> A_copy(A.begin(), A.end());
+
+        MergeSort::mergeSort<int>(A);
+        std::sort(A_copy.begin(), A_copy.end());
+        assert(A == A_copy);
+    }
+
+    class Widget {
+    private:
+        int first;
+        int second;
+    public:
+        Widget() : Widget(0, 0) {};
+
+        Widget(int first, int second) : first(first), second(second) {}
+
+        bool operator!=(const Widget &rhs) const {
+            return (first != rhs.first);
+        }
+
+        bool operator<=(const Widget &rhs) const {
+            return (first <= rhs.first);
+        }
+
+        bool operator<(const Widget &rhs) const {
+            return (first < rhs.first);
+        }
+
+        bool operator==(const Widget &rhs) const {
+            return (first == rhs.first);
+        }
+
+        bool operator>(const Widget &rhs) const {
+            return (first > rhs.first);
+        }
+
+        bool operator>=(const Widget &rhs) const {
+            return (first >= rhs.first);
+        }
+
+        Widget &operator=(Widget other) {
+            first = other.first;
+            second = other.second;
+            return *this;
+        }
+
+        explicit operator std::string() const {
+            return "(" + std::to_string(first) + ", " + std::to_string(second) + ")";
+        }
+    };
+    test_time = test_time_dist(random_generator);
+    while (test_time--) {
+        std::vector<Widget> A(len_dist(random_generator));
+        for (auto &&i : A) {
+            i = Widget(dist(random_generator), dist(random_generator));
+        }
+        std::vector<Widget> A_copy(A.begin(), A.end());
+        MergeSort::mergeSort<Widget>(A);
+        std::sort(A_copy.begin(), A_copy.end());
+        assert(A == A_copy);
+    }
+
+    test_time = test_time_dist(random_generator);
+    while (test_time--) {
+        std::vector<std::pair<int, int> > A(len_dist(random_generator));
+        for (auto &&i : A) {
+            i = {dist(random_generator), dist(random_generator)};
+        }
+        std::vector<std::pair<int, int> > A_copy(A.begin(), A.end());
+
+        std::sort(A_copy.begin(), A_copy.end(),
+                  [](const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) -> bool {
+                      if (lhs.first == rhs.first) {
+                          return (lhs.second < rhs.second);
+                      }
+                      return (lhs.first < rhs.first);
+                  });
+        MergeSort::mergeSort<std::pair<int, int> >(A, [](const std::pair<int, int> &lhs,
+                                                         const std::pair<int, int> &rhs) -> int {
+            if (lhs.first == rhs.first) {
+                if (lhs.second > rhs.second) {
+                    return 1;
+                } else if (lhs.second < rhs.second) {
+                    return -1;
+                }
+                return 0;
+            } else if (lhs.first > rhs.first) {
+                return 1;
+            }
+            return -1;
+        });
+        assert(A_copy == A);
+    }
+
 #endif
 
     return 0;

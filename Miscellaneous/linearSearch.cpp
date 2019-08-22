@@ -20,32 +20,35 @@
 //    otherwise.
 // 2) A and key are not changed.
 
-template<typename T>
-inline static
-int linearSearch(const std::vector<T> &A, T key) {
-    int i{0};
-    int n{static_cast<int>(A.size())};
-    while ((i < n) && (A[i] != key)) {
-        ++i;
-    }
-    if (i < n) {
-        return i;
-    }
-    return -1;
-}
+namespace LinearSearch {
 
-template<typename T, typename Comparator>
-inline static
-int linearSearch(const std::vector<T> &A, T key, Comparator &comp) {
-    int i{0};
-    int n{static_cast<int>(A.size())};
-    while ((i < n) && !comp(A[i], key)) {
-        ++i;
+    template<typename T>
+    inline static
+    int linearSearch(const std::vector<T> &A, T key) {
+        int i{0};
+        int n{static_cast<int>(A.size())};
+        while ((i < n) && (A[i] != key)) {
+            ++i;
+        }
+        if (i < n) {
+            return i;
+        }
+        return -1;
     }
-    if (i < n) {
-        return i;
+
+    template<typename T, typename Comparator>
+    inline static
+    int linearSearch(const std::vector<T> &A, T key, Comparator &comp) {
+        int i{0};
+        int n{static_cast<int>(A.size())};
+        while ((i < n) && !comp(A[i], key)) {
+            ++i;
+        }
+        if (i < n) {
+            return i;
+        }
+        return -1;
     }
-    return -1;
 }
 
 std::vector<int> generateArrayWithoutDuplicate(int n, int lowerbound, int upperbound) {
@@ -138,39 +141,34 @@ int main() {
     for (int i = 0; i < testTime; ++i) {
         std::vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
         int val = A[index(random_generator)];
-        assert(std::find(A.begin(), A.end(), val) - A.begin() == linearSearch(A, val));
+        assert(std::find(A.begin(), A.end(), val) - A.begin() == LinearSearch::linearSearch<int>(A, val));
     }
 
     for (int i = 0; i < testTime; ++i) {
         std::vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         int val = A[index(random_generator)];
-        assert(std::find(A.begin(), A.end(), val) - A.begin() == linearSearch(A, val));
+        assert(std::find(A.begin(), A.end(), val) - A.begin() == LinearSearch::linearSearch<int>(A, val));
     }
 
     for (int i = 0; i < testTime; ++i) {
         std::vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
         int val = *std::max_element(A.begin(), A.end()) + 1;
-        assert(linearSearch(A, val) == -1);
+        assert(LinearSearch::linearSearch<int>(A, val) == -1);
     }
 
     for (int i = 0; i < testTime; ++i) {
         std::vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         int val = *std::max_element(A.begin(), A.end()) + 1;
-        assert(linearSearch(A, val) == -1);
+        assert(LinearSearch::linearSearch<int>(A, val) == -1);
     }
 
     auto cmp = [](const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) -> int {
         if (lhs.first == rhs.first) {
-            if (lhs.second > rhs.second) {
-                return 1;
-            } else if (lhs.second < rhs.second) {
-                return -1;
-            }
             return 0;
         } else if (lhs.first > rhs.first) {
             return 1;
         }
-        return 0;
+        return -1;
     };
     for (int i = 0; i < testTime; ++i) {
         std::vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
@@ -179,24 +177,23 @@ int main() {
             A_.at(j) = {A.at(j), A.at(j)};
         }
         auto val = *std::max_element(A_.begin(), A_.end(), [](const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) -> bool {
-            if (lhs.first == rhs.first) {
-                return (lhs.second < rhs.second);
-            }
+            return (lhs.first < rhs.first);
         });
-        assert(linearSearch(A_, val, cmp) != -1);
+        auto result = LinearSearch::linearSearch<std::pair<int, int> >(A_, val, cmp);
+        assert(result != -1);
     }
 
 #endif
     // USAGE
     std::vector<int> A = {2, 3, 3, 4, 7, 7, 7, 9};
     int val = 2;
-    std::cout << linearSearch(A, val) << std::endl;
+    std::cout << LinearSearch::linearSearch<int>(A, val) << std::endl;
 
     val = 7;
-    std::cout << linearSearch(A, val) << std::endl;
+    std::cout << LinearSearch::linearSearch<int>(A, val) << std::endl;
 
     val = 123;
-    std::cout << linearSearch(A, val) << std::endl;
+    std::cout << LinearSearch::linearSearch<int>(A, val) << std::endl;
 
     return 0;
 }

@@ -1,5 +1,7 @@
 /**
- * An implementation of the algorithm of binary search in Cpp.
+ * An implementation of the algorithm of binary search in Cpp. The three-way comparator is
+ * supported.
+ *
  * Compile: g++-7 -std=c++14 -Wall -O2 binarySearch.cpp -o binarySearch
  * Execute: ./binarySearch
  *
@@ -18,7 +20,8 @@
 // The function will return an index where A[index] = key.
 // If the key is not in A, -1 will be returned as output.
 
-namespace bSearch {
+namespace BinarySearch {
+
     template<typename T, typename Comparator>
     inline static
     int bSearch_recursion(const std::vector<T> &A, int low, int high, const T &key, const Comparator &comp) {
@@ -37,15 +40,15 @@ namespace bSearch {
 
     template<typename T>
     inline static
-    int bSearch_recursion(const std::vector<T> &A, int low, int high, const T &key) {
+    int binarySearch_recursion(const std::vector<T> &A, int low, int high, const T &key) {
         if (low > high) {
             return -1;
         }
         int mid = low + (high - low) / 2;
         if (key < A[mid]) {
-            return bSearch_recursion(A, low, mid - 1, key);
+            return binarySearch_recursion(A, low, mid - 1, key);
         } else if (key > A[mid]) {
-            return bSearch_recursion(A, mid + 1, high, key);
+            return binarySearch_recursion(A, mid + 1, high, key);
         }
         return mid;
     }
@@ -78,7 +81,7 @@ namespace bSearch {
 
     template<typename T>
     inline static
-    int bSearch(const std::vector<T> &A, const T &key) {
+    int binarySearch(const std::vector<T> &A, const T &key) {
         int low = 0;
         int high = static_cast<int>(A.size()) - 1;
         while (true) {
@@ -286,30 +289,30 @@ int main() {
     std::uniform_int_distribution<unsigned int> index(0, static_cast<unsigned int>(n - 1));
     int testTime = 300;
 
-    // bSearch_recursion
+    // binarySearch_recursion
     for (int i = 0; i < testTime; ++i) {
         std::vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
         std::sort(A.begin(), A.end());
-        assert(bSearch::bSearch_recursion(A, 0, static_cast<int>(A.size()), A[index(random_generator)]) != -1);
+        assert(BinarySearch::binarySearch_recursion<int>(A, 0, static_cast<int>(A.size()), A[index(random_generator)]) != -1);
     }
 
     for (int i = 0; i < testTime; ++i) {
         std::vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         std::sort(A.begin(), A.end());
-        assert(bSearch::bSearch_recursion(A, 0, static_cast<int>(A.size()), A[index(random_generator)]) != -1);
+        assert(BinarySearch::binarySearch_recursion<int>(A, 0, static_cast<int>(A.size()), A[index(random_generator)]) != -1);
     }
 
-    // bSearch
+    // BinarySearch
     for (int i = 0; i < testTime; ++i) {
         std::vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
         std::sort(A.begin(), A.end());
-        assert(bSearch::bSearch(A, A[index(random_generator)]) != -1);
+        assert(BinarySearch::binarySearch<int>(A, A[index(random_generator)]) != -1);
     }
 
     for (int i = 0; i < testTime; ++i) {
         std::vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         std::sort(A.begin(), A.end());
-        assert(bSearch::bSearch(A, A[index(random_generator)]) != -1);
+        assert(BinarySearch::binarySearch<int>(A, A[index(random_generator)]) != -1);
     }
 
     // lowerBound
@@ -317,7 +320,7 @@ int main() {
         std::vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         std::sort(A.begin(), A.end());
         int val = A[index(random_generator)];
-        int index0 = bSearch::lowerBound(A, val);
+        int index0 = BinarySearch::lowerBound<int>(A, val);
         int index1 = static_cast<int>(std::lower_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
@@ -326,7 +329,7 @@ int main() {
         std::vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
         std::sort(A.begin(), A.end());
         int val = A[index(random_generator)];
-        int index0 = bSearch::lowerBound(A, val);
+        int index0 = BinarySearch::lowerBound<int>(A, val);
         int index1 = static_cast<int>(std::lower_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
@@ -336,7 +339,7 @@ int main() {
         std::vector<int> A = generateArrayWithDuplicate(n, 0, 5 * n);
         std::sort(A.begin(), A.end());
         int val = A[index(random_generator)];
-        int index0 = bSearch::upperBound(A, val);
+        int index0 = BinarySearch::upperBound<int>(A, val);
         int index1 = static_cast<int>(std::upper_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
@@ -345,7 +348,7 @@ int main() {
         std::vector<int> A = generateArrayWithoutDuplicate(n, 0, 5 * n);
         std::sort(A.begin(), A.end());
         int val = A[index(random_generator)];
-        int index0 = bSearch::upperBound(A, val);
+        int index0 = BinarySearch::upperBound<int>(A, val);
         int index1 = static_cast<int>(std::upper_bound(A.begin(), A.end(), val) - A.begin());
         assert(index0 == index1);
     }
@@ -354,17 +357,17 @@ int main() {
     // USAGE
     std::vector<int> A = {2, 3, 3, 4, 7, 7, 7, 9};
     int val = 2;
-    if (bSearch::bSearch(A, val) != -1) {
+    if (BinarySearch::binarySearch<int>(A, val) != -1) {
         std::cout << val << " is found from ";
-        std::cout << "index = " << bSearch::lowerBound(A, val) << " to ";
-        std::cout << "index = " << bSearch::upperBound(A, val) - 1 << std::endl;
+        std::cout << "index = " << BinarySearch::lowerBound(A, val) << " to ";
+        std::cout << "index = " << BinarySearch::upperBound(A, val) - 1 << std::endl;
     }
 
     val = 7;
-    if (bSearch::bSearch(A, val) != -1) {
+    if (BinarySearch::binarySearch<int>(A, val) != -1) {
         std::cout << val << " is found from ";
-        std::cout << "index = " << bSearch::lowerBound(A, val) << " to ";
-        std::cout << "index = " << bSearch::upperBound(A, val) - 1 << std::endl;
+        std::cout << "index = " << BinarySearch::lowerBound(A, val) << " to ";
+        std::cout << "index = " << BinarySearch::upperBound(A, val) - 1 << std::endl;
     }
 
     auto objVal{Widget(3, 'a')};
@@ -378,15 +381,15 @@ int main() {
         }
         return -1;
     };
-    if (bSearch::bSearch(B, objVal, threeWayComparator)) {
+    if (BinarySearch::bSearch<Widget>(B, objVal, threeWayComparator)) {
         std::cout << std::string(objVal) << " is found from ";
-        std::cout << "index = " << bSearch::lowerBound(B, objVal, threeWayComparator) << " to ";
-        std::cout << "index = " << bSearch::upperBound(B, objVal, threeWayComparator) - 1 << std::endl;
+        std::cout << "index = " << BinarySearch::lowerBound<Widget>(B, objVal, threeWayComparator) << " to ";
+        std::cout << "index = " << BinarySearch::upperBound<Widget>(B, objVal, threeWayComparator) - 1 << std::endl;
     }
-    if (bSearch::bSearch_recursion(B, 0, static_cast<int>(B.size()), objVal, threeWayComparator)) {
+    if (BinarySearch::bSearch_recursion<Widget>(B, 0, static_cast<int>(B.size()), objVal, threeWayComparator)) {
         std::cout << std::string(objVal) << " is found from ";
-        std::cout << "index = " << bSearch::lowerBound(B, objVal, threeWayComparator) << " to ";
-        std::cout << "index = " << bSearch::upperBound(B, objVal, threeWayComparator) - 1 << std::endl;
+        std::cout << "index = " << BinarySearch::lowerBound<Widget>(B, objVal, threeWayComparator) << " to ";
+        std::cout << "index = " << BinarySearch::upperBound<Widget>(B, objVal, threeWayComparator) - 1 << std::endl;
     }
     return 0;
 }

@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 
 /**
- * The heapSort using minHeap for solving the 'Sorting in Place' problem.
- *
+ * The heapSort using minHeap for solving the 'Sorting in Place' problem. The three-way comparator is
+ * supported.
  * <p>
  * Sorting an array in non-decreasing order when array A with length >= 1,
  * storing elements from some ordered type T using heapsort.
@@ -221,7 +221,7 @@ int main() {
         }
         std::vector<int> A_copy(A.begin(), A.end());
 
-        HeapSort::heapSort(A);
+        HeapSort::heapSort<int>(A);
         std::sort(A_copy.begin(), A_copy.end());
         assert(A == A_copy);
     }
@@ -272,7 +272,7 @@ int main() {
             i = Widget(dist(random_generator), dist(random_generator));
         }
         std::vector<Widget> A_copy(A.begin(), A.end());
-        HeapSort::heapSort(A);
+        HeapSort::heapSort<Widget>(A);
         std::sort(A_copy.begin(), A_copy.end());
         assert(A == A_copy);
     }
@@ -291,7 +291,7 @@ int main() {
             }
             return (lhs.first < rhs.first);
         });
-        HeapSort::heapSort(A, [](const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) -> int {
+        HeapSort::heapSort<std::pair<int, int> >(A, [](const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) -> int {
             if (lhs.first == rhs.first) {
                 if (lhs.second > rhs.second) {
                     return 1;
