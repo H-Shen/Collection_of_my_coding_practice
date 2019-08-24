@@ -3,6 +3,31 @@
 #include <stdexcept>
 #include <cassert>
 
+// Extended Euclidean algorithm
+// obtain a pair solution (x0, y0) such that ax0 + by0 = gcd(a, b)
+// gcd(a, b) is returned as output, meanwhile the value of x and y would be changed to x0, y0 respectively.
+
+long long exgcd(long long a, long long b, long long &x, long long &y) {
+
+    // Case 1:
+    if (b == 0) {
+        x = 1;
+        y = 0;
+        return a;
+    }
+
+    // Case 2:
+    long long gcdVal = exgcd(b, a % b, x, y);
+    long long temp = x;
+    x = y;
+    y = temp - a / b * y;
+    return gcdVal;
+}
+
+long long exgcdOneLine(long long a, long long b, long long &Gcd, long long &x, long long &y) {
+    !b ? (x = 1, y = 0, Gcd = a) : (exgcdOneLine(b, a % b, Gcd, y, x), y -= (a / b) * x);
+}
+
 // Greatest Common Divisor (with recursion)
 long long gcdWithRecursion(long long a, long long b) {
 
@@ -111,6 +136,19 @@ long long lcmOfAnArray(const std::vector<long long> &A) {
 }
 
 int main() {
+
+    // 12381x + 18199y = gcd(12381, 18199)
+    long long a(12381);
+    long long b(-18199);
+    long long x, y;
+    long long result (exgcd(a, b, x, y));
+    assert(a*x + b*y == result);
+
+    a = 181811; b = 119012;
+    long long g(-1);
+    exgcdOneLine(a, b, g, x, y);
+    assert(a*x + b*y == g);
+
 
     assert(gcdOfAnArray({1, 2, 3, 4}) == 1);
     assert(gcdOfAnArray({2}) == 2);
