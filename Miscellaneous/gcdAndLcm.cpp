@@ -24,8 +24,9 @@ long long exgcd(long long a, long long b, long long &x, long long &y) {
     return gcdVal;
 }
 
-long long exgcdOneLine(long long a, long long b, long long &Gcd, long long &x, long long &y) {
-    !b ? (x = 1, y = 0, Gcd = a) : (exgcdOneLine(b, a % b, Gcd, y, x), y -= (a / b) * x);
+// g: the value of gcd(a, b)
+long long exgcdInOneLine(long long a, long long b, long long &g, long long &x, long long &y) {
+    (!b) ? (x = 1, y = 0, g = a) : (exgcdInOneLine(b, a % b, g, y, x), y -= a / b * x);
 }
 
 // Greatest Common Divisor (with recursion)
@@ -146,7 +147,7 @@ int main() {
 
     a = 181811; b = 119012;
     long long g(-1);
-    exgcdOneLine(a, b, g, x, y);
+    exgcdInOneLine(a, b, g, x, y);
     assert(a*x + b*y == g);
 
 

@@ -107,7 +107,7 @@ namespace FastIO {
             x /= 10;
         } while (x);
         while (top) {
-            putcharWithFwrite(storeDigits[--top] + 48);
+            putcharWithFwrite(static_cast<T>(storeDigits[--top]) + 48);
         }
     }
 
