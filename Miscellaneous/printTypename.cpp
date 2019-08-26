@@ -9,27 +9,28 @@
 #include <string>
 
 template <typename T>
-std::string printTypename(const T &t) {
+inline static
+std::string getTypename(const T &t) {
 
     int status;
-    const char* mangled(typeid(t).name());
     std::unique_ptr<char[], void (*)(void*)> result(
-            abi::__cxa_demangle(mangled, nullptr, nullptr, &status), std::free);
+            abi::__cxa_demangle(typeid(t).name(), nullptr, nullptr, &status), std::free);
 
     assert(result.get());
     return std::string(result.get());
 }
 
 struct S {};
+inline S o{};
 
 int main() {
 
-    std::tuple A(2, "3", "abcd", std::string("4"), S());
-    const auto& [x, y, z, w, v]{A};
-    std::cout << printTypename(x) << std::endl;
-    std::cout << printTypename(y) << std::endl;
-    std::cout << printTypename(z) << std::endl;
-    std::cout << printTypename(w) << std::endl;
-    std::cout << printTypename(v) << std::endl;
+    std::tuple A(2, "3", "abcd", std::string("4"), o);
+    const auto& [x, y, z, w, v] = A;
+    std::cout << getTypename(x) << std::endl;
+    std::cout << getTypename(y) << std::endl;
+    std::cout << getTypename(z) << std::endl;
+    std::cout << getTypename(w) << std::endl;
+    std::cout << getTypename(v) << std::endl;
     return 0;
 }
