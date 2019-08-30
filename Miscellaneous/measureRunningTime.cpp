@@ -20,8 +20,6 @@ void measureRunningTime() {
 }
 
 int main() {
-
     measureRunningTime();
-
     return 0;
 }
