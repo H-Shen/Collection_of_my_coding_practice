@@ -1,5 +1,7 @@
 // https://open.kattis.com/problems/bing
 //
+// This file is compiled in -std=gnu++17
+//
 #include <bits/stdc++.h>
 
 using namespace std;
