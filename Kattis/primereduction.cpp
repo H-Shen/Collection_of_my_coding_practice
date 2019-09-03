@@ -1,11 +1,56 @@
 // https://open.kattis.com/problems/primereduction
 //
+
 #include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;
 constexpr int N = 100003;
 constexpr int MAX_FACTORS = 1000;
+
+namespace FastIO {
+
+    template<typename T>
+    inline static
+    void readInt(T &x) {
+
+        x = 0;
+        bool isNeg = false;
+        char ch = static_cast<char>(getchar());
+
+        // skip all non digit characters
+        while (!isdigit(ch)) {
+            if (ch == '-') {
+                isNeg = true;
+            }
+            ch = static_cast<char>(getchar());
+        }
+
+        while (isdigit(ch)) {
+            x = x * 10 + static_cast<T>(ch ^ 48);
+            ch = static_cast<char>(getchar());
+        }
+        x = isNeg ? -x : x;
+    }
+
+    template<typename T>
+    inline static
+    void writeInt(T x) {
+        if (x < 0) {
+            x = -x;
+            putchar('-');
+        }
+        static int storeDigits[40];
+        int top = 0;
+        do {
+            storeDigits[top++] = x % 10;
+            x /= 10;
+        } while (x);
+        while (top) {
+            putchar(storeDigits[--top] + 48);
+        }
+    }
+}
 
 namespace Factorization {
 
@@ -70,7 +115,7 @@ namespace Factorization {
     }
 
     bool millerRabinPrimeCheck(ll n) {
-        const int s = 8; // Set s = 8 instead s = 5 in order to avoid the false positive situation.
+        const int s = 8; //
         if (n < 2)
             return false;
         if (n == 2)
@@ -171,20 +216,22 @@ int main() {
     // input
     while (true) {
 
-        scanf("%llu", &n);
+        FastIO::readInt<ll>(n);
         if (n == 4) {
             break;
         }
 
         // Check if it is in the previous answer set
         if (previousAnswer.find(n) != previousAnswer.end()) {
-            printf("%llu %llu\n", previousAnswer[n].first, previousAnswer[n].second);
+            FastIO::writeInt<ll>(previousAnswer[n].first);
+            putchar(' ');
+            FastIO::writeInt<ll>(previousAnswer[n].second);
+            putchar('\n');
             continue;
         }
 
         nCopy = n;
         counter = 0;
-
         while (true) {
             sum = Factorization::getSumOfPrimeFactors(n);
             ++counter;
@@ -198,7 +245,10 @@ int main() {
         // Update the previous answer set
         previousAnswer[nCopy] = {answer, counter};
         // Output
-        printf("%llu %llu\n", answer, counter);
+        FastIO::writeInt<ll>(answer);
+        putchar(' ');
+        FastIO::writeInt<ll>(counter);
+        putchar('\n');
     }
 
     return 0;
