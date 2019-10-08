@@ -18,10 +18,10 @@ Since the earliest code was written in 2016, the requirement of formats, the API
 		* Java HotSpot(TM) 64-Bit Server VM (build 25.191-b12, mixed mode)
 
 	* ***For Cpp***
-		* g++-7 (Homebrew GCC 7.4.0) 7.4.0 (-std=c++17 -Wall -O2)
+		* g++-8 (Homebrew GCC 8.3.0) 8.3.0 (-std=c++17 -Wall -O2)
 
 	* ***For C***
-		* gcc-7 (Homebrew GCC 7.4.0_2) 7.4.0 (-std=c11 -Wall -O2)
+		* gcc-8 (Homebrew GCC 8.3.0) 8.3.0 (-std=c11 -Wall -O2)
 
     * ***For SQL***
         * sqlite 3.7.9
