@@ -8,7 +8,7 @@ Since the earliest code was written in 2016, the requirement of formats, the API
 
 	* ***For Python***
    		* Python 2.7.16 (.py)
-		* Python 3.6.7 (.py3)
+		* Python 3.6.9 (.py3)
         * PyPy 7.1.1-beta0 with GCC 4.2.1 Compatible Apple LLVM 10.0.1 (clang-1001.0.46.4) (.pypy3)
 
 	* ***For Java***
@@ -24,7 +24,7 @@ Since the earliest code was written in 2016, the requirement of formats, the API
 		* gcc-8 (Homebrew GCC 8.3.0) 8.3.0 (-std=c11 -Wall -O2)
 
     * ***For SQL***
-        * sqlite 3.7.9
+        * sqlite 3.29.0
 
     * ***For JavaScript***
         * V8 6.0.0
