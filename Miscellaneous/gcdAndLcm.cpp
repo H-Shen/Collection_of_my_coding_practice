@@ -80,6 +80,45 @@ long long gcd(long long a, long long b) {
     return a;
 }
 
+#ifdef __GNUC__
+
+using ull = unsigned long long;
+
+/**
+ * An implemention of binary GCD Algorithm, refered from
+ * https://lemire.me/blog/2013/12/26/fastest-way-to-compute-the-greatest-common-divisor/
+ *
+ */
+/* GCD(0,v) == v; GCD(u,0) == u, GCD(0,0) == 0 */
+inline static
+ull binary_gcd(ull u, ull v)
+{
+    ull shift;
+    // Case 1:
+    if (u == 0) {
+        return v;
+    }
+    // Case 2:
+    if (v == 0) {
+        return u;
+    }
+    // Case 3:
+    shift = __builtin_ctz(u | v);
+    u >>= __builtin_ctz(u);
+    do {
+        v >>= __builtin_ctz(v);
+        if (u > v) {
+            ull t = v;
+            v = u;
+            u = t;
+        }
+        v = v - u;
+    } while (v);
+    return u << shift;
+}
+
+#endif
+
 // Greatest Common Divisor of integers in an array
 long long gcdOfAnArray(const std::vector<long long> &A) {
 
@@ -150,6 +189,9 @@ int main() {
     exgcdInOneLine(a, b, g, x, y);
     assert(a*x + b*y == g);
 
+#ifdef __GNUC__
+    assert(binary_gcd(4689933,2503455) == 201);
+#endif
 
     assert(gcdOfAnArray({1, 2, 3, 4}) == 1);
     assert(gcdOfAnArray({2}) == 2);
