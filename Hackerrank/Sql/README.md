@@ -1,1 +1,1 @@
-Notice **MySQL**(Ver 8.0.16) is used here instead of **SQLite3**.
+I use **MySQL**(Ver 8.0.18) here*.
