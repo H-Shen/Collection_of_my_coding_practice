@@ -21,7 +21,6 @@ Since the earliest code was written in 2016, the requirement of formats, the API
 	* ***For C/Cpp***
 		* g++-8 (Homebrew GCC 8.3.0_1) 8.3.0 (-std=c++17 -Wall -fopenmp -Ofast -lstdc++fs)
 		* gcc-8 (Homebrew GCC 8.3.0_1) 8.3.0 (-std=c11 -Wall -Ofast)
-		* Apple clang version 11.0.0 (clang-1100.0.33.12)
       * cmake version 3.15.5
 
     * ***For SQL***
