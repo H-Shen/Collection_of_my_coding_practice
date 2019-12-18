@@ -111,7 +111,7 @@ int main() {
     UnionFindSet::Rank.resize(UnionFindSet::MAXN);
     UnionFindSet::reset();
 
-    // Randomly fill A with '#' and '-'
+    // Randomly fill A with '1' and '0'
     std::random_device dev;
     std::mt19937 random_generator(dev());
     std::uniform_int_distribution<int> dist(0, 1);
@@ -128,7 +128,7 @@ int main() {
         }
         putchar('\n');
     }
-    // Print the number of regions of '-'
+    // Print the number of regions of '1'
     printf("Number of regions: %d\n", ConnectedComponentLabeling::twoPass());
 
     return 0;
