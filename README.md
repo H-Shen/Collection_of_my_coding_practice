@@ -10,7 +10,7 @@ Since the earliest code was written in 2016, the requirement of formats, the API
 	* ***For Python***
    		* Python 2.7.17 (.py)
 		* Python 3.6.9 (.py3)
-        * PyPy 7.1.1-beta0 with GCC 4.2.1 Compatible Apple LLVM 10.0.1 (clang-1001.0.46.4) (.pypy3)
+        * [PyPy 7.1.0-alpha0 with GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] (.pypy3)
 
 	* ***For Java***
 		* javac 1.8.0_191
@@ -19,19 +19,19 @@ Since the earliest code was written in 2016, the requirement of formats, the API
 		* Java HotSpot(TM) 64-Bit Server VM (build 25.191-b12, mixed mode)
 
 	* ***For C/Cpp***
-		* g++-8 (Homebrew GCC 8.3.0_1) 8.3.0 (-std=c++17 -Wall -fopenmp -Ofast -lstdc++fs)
-		* gcc-8 (Homebrew GCC 8.3.0_1) 8.3.0 (-std=c11 -Wall -Ofast)
+		* g++-9 (Homebrew GCC 9.2.0_2) 9.2.0 (-std=c++17 -Wall -Ofast)
+		* gcc-9 (Homebrew GCC 9.2.0_2) 9.2.0 (-std=c11 -Wall -Ofast)
       * cmake version 3.15.5
 
     * ***For SQL***
-        * sqlite 3.29.0
+        * sqlite 3.30.1
         * mysql  Ver 8.0.18 for osx10.15 on x86_64 (Homebrew)
 
     * ***For JavaScript***
-        * V8 6.0.0
+        * v8.11.4
 
     * ***For Go***
-        * v1.9.1
+        * go version go1.12.7 darwin/amd64
 
     * ***For Shell***
         * zsh 5.7.1 (x86_64-apple-darwin18.2.0)
