@@ -8,9 +8,9 @@ Since the earliest code was written in 2016, the requirement of formats, the API
 * Unless otherwise stated, the coding environment of my laptop is:
 
 	* ***For Python***
-   		* Python 2.7.17 (.py)
-		* Python 3.6.9 (.py3)
-        * [PyPy 7.1.0-alpha0 with GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] (.pypy3)
+   		* Python 2.7.16 (.py)
+		* Python 3.7.5 (.py3)
+        * [PyPy 7.2.0 with GCC Clang 9.0.0 (tags/RELEASE_900/final)] (.pypy3)
 
 	* ***For Java***
 		* javac 1.8.0_191
