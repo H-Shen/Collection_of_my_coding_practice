@@ -6,7 +6,7 @@ using namespace std;
 using ll = long long;
 
 // https://oeis.org/A006046
-// a(1) = 1, a(n) = 2*a(floor(n/2)) + a*(ceiling(n/2))
+// a(1) = 1, a(n) = 2*a(floor(n/2)) + a(ceiling(n/2))
 ll a(ll n) {
     if (n == 0) {
         return 0;
