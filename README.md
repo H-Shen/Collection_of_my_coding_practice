@@ -19,8 +19,8 @@ Since the earliest code was written in 2016, the requirement of formats, the API
 		* Java HotSpot(TM) 64-Bit Server VM (build 25.191-b12, mixed mode)
 
 	* ***For C/Cpp***
-		* g++-9 (Homebrew GCC 9.2.0_2) 9.2.0 (-std=c++17 -Wall -Ofast)
-		* gcc-9 (Homebrew GCC 9.2.0_2) 9.2.0 (-std=c11 -Wall -Ofast)
+		* g++-9 (Homebrew GCC 9.2.0_2) 9.2.0 (-std=c++17 -Wall -O2)
+		* gcc-9 (Homebrew GCC 9.2.0_2) 9.2.0 (-std=c11 -Wall -O2)
       * cmake version 3.15.5
 
     * ***For SQL***
@@ -38,3 +38,6 @@ Since the earliest code was written in 2016, the requirement of formats, the API
 
     * ***For Php***
         * PHP 7.3.9 (cli) (built: Sep 10 2019 17:45:01) ( NTS )
+
+    *  For Haskell
+        * 8.6.5
