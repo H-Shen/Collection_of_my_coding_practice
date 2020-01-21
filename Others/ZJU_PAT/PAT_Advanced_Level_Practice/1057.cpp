@@ -1,36 +1,33 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/tree_policy.hpp>
-#include <ext/pb_ds/assoc_container.hpp>
+#include <bits/extc++.h>
 
 using namespace std;
 using namespace __gnu_pbds;
 
-const int MAXN = 20;
+constexpr int MAXN = 20;
 char s[MAXN];
 unordered_map<int, int> vis;
 
-struct Node {
-    int first;
-    int second;
-    bool operator < (const Node &other) const
+struct Compare {
+    bool operator()(const pair<int, int> &lhs, const pair<int, int> &rhs)
     {
-        if (first == other.first) {
-            return (second < other.second);
+        if (lhs.first == rhs.first) {
+            return (lhs.second < rhs.second);
         }
-        return (first < other.first);
+        return (lhs.first < rhs.first);
     }
 };
 
-tree <Node,null_type, less<>, rb_tree_tag,
+tree <pair<int, int> ,null_type, Compare, rb_tree_tag,
         tree_order_statistics_node_update> Rbtree;
-vector <Node> A;
+vector <pair<int, int> > A;
 
-int main()
-{
+int main() {
+
     int N;
     scanf("%d", &N);
     int len = 0;
-    Node temp;
+    pair<int, int> temp;
 
     while (N--) {
         scanf("%s", s);
@@ -38,7 +35,7 @@ int main()
             if (len == 0) {
                 printf("Invalid\n");
             } else {
-                temp = A[len - 1];
+                temp = A.at(len - 1);
                 printf("%d\n", temp.first);
                 A.pop_back();
                 --len;
@@ -50,9 +47,9 @@ int main()
                 continue;
             }
             if (len % 2 == 0) {
-                printf("%d\n", (*Rbtree.find_by_order(len / 2 - 1)).first);
+                printf("%d\n", Rbtree.find_by_order(len / 2 - 1)->first);
             } else {
-                printf("%d\n", (*Rbtree.find_by_order((len - 1) / 2)).first);
+                printf("%d\n", Rbtree.find_by_order((len - 1) / 2)->first);
             }
         } else {
             scanf("%d", &temp.first);
