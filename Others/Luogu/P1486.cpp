@@ -41,8 +41,6 @@ ll val;
 
 int main() {
 
-    freopen("/Users/hshen/myCpp/input", "r", stdin);
-
     scanf("%d %lld", &n, &minimal_salary);
     while (n--) {
         scanf("%s %lld", op, &val);
