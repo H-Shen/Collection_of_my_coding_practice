@@ -2,20 +2,18 @@
 #include <ext/pb_ds/tree_policy.hpp>
 #include <ext/pb_ds/assoc_container.hpp>
 
-int main() __attribute__((optimize("O3")));
-
 using namespace std;
 using namespace __gnu_pbds;
 
-const int MAXN = 20, MAXITEM = 100005;
+const int MAXN = 20;
 char s[MAXN];
-int vis[MAXITEM] = {0};
+unordered_map<int, int> vis;
 
 struct Node {
     int first;
     int second;
-
-    bool operator<(const Node &other) const {
+    bool operator < (const Node &other) const
+    {
         if (first == other.first) {
             return (second < other.second);
         }
@@ -23,11 +21,12 @@ struct Node {
     }
 };
 
-tree<Node, null_type, less<Node>, rb_tree_tag,
+tree <Node,null_type, less<>, rb_tree_tag,
         tree_order_statistics_node_update> Rbtree;
-vector<Node> A;
+vector <Node> A;
 
-int main() {
+int main()
+{
     int N;
     scanf("%d", &N);
     int len = 0;
