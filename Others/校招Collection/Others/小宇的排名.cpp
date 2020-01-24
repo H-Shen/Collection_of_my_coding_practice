@@ -1,6 +1,5 @@
 // https://ac.nowcoder.com/acm/problem/24662
 
-#include <bits/stdc++.h>
 #include <bits/extc++.h>
 
 using namespace std;
