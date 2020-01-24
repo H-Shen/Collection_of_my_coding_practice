@@ -1,5 +1,5 @@
 // NOI1997
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
  
 using namespace std;
 constexpr int MAX_SUBJECT = 8;
