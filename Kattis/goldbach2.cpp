@@ -1,5 +1,5 @@
 // https://open.kattis.com/problems/goldbach2
-#include<bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

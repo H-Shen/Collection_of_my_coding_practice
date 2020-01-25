@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/beavergnaw
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 const long double PI = acos(-1.0);

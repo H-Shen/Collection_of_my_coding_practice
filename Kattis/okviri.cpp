@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/okviri
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 constexpr int maxn = 20;

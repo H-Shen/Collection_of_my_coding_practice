@@ -1,5 +1,5 @@
 // https://open.kattis.com/problems/hangman
-#include<bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 const int MAX_CHANCES = 10;

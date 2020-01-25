@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/jabuke
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 constexpr double EP = 1e-8;

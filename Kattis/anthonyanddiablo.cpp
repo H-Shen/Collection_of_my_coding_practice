@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/anthonyanddiablo
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 constexpr double EPS = 1e-6;

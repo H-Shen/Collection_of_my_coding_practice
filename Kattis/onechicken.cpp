@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/onechicken
 
-#include<bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

@@ -1,5 +1,5 @@
 // https://open.kattis.com/problems/cetvrta
-#include<bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 const int maxn = 3;

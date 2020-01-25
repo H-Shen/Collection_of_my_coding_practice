@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/bazen
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

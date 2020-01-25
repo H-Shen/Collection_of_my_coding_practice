@@ -1,7 +1,6 @@
 // https://open.kattis.com/problems/guessinggame
 //
-#include <iostream>
-#include <string>
+#include <bits/extc++.h>
 
 using namespace std;
 

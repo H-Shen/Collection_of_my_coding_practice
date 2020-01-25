@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/snowflakes
 // Longest subarray with unique elements
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

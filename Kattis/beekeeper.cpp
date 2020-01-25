@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/beekeeper
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 constexpr int MAXN = 100;

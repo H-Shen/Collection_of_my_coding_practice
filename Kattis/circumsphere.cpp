@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/circumsphere
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

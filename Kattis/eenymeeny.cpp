@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/eenymeeny
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 vector<string> A;

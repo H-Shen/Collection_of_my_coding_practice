@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/zipfslaw
 
-#include<bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 const regex R("[a-zA-Z]+");

@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/lindenmayorsystem
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 unordered_map<char, string> Table;

@@ -1,7 +1,6 @@
 // https://open.kattis.com/problems/slatkisi
 //
-#include <string>
-#include <iostream>
+#include <bits/extc++.h>
 
 using namespace std;
 using ll = long long;

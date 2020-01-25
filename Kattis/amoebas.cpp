@@ -1,8 +1,6 @@
 // https://open.kattis.com/problems/amoebas
 //
-#include <vector>
-#include <iostream>
-#include <unordered_set>
+#include <bits/extc++.h>
 
 using namespace std;
 

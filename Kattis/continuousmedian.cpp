@@ -1,8 +1,6 @@
 // https://open.kattis.com/problems/continuousmedian
 //
-#include <bits/stdc++.h>
-#include <ext/pb_ds/tree_policy.hpp>
-#include <ext/pb_ds/assoc_container.hpp>
+#include <bits/extc++.h>
 
 using namespace std;
 using namespace __gnu_pbds;

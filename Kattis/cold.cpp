@@ -1,5 +1,5 @@
 // https://open.kattis.com/problems/cold
-#include<bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

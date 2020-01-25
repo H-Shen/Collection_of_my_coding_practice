@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/sidewayssorting
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

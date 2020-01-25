@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/primaryarithmetic
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/lostlineup
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

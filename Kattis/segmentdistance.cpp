@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/segmentdistance
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 const double EP = 1e-9;

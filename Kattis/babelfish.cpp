@@ -1,5 +1,5 @@
 // https://open.kattis.com/problems/babelfish
-#include<bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

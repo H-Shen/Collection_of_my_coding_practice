@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/dst
 //
-#include <iostream>
+#include <bits/extc++.h>
 
 using namespace std;
 

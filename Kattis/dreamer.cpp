@@ -1,7 +1,6 @@
 // https://open.kattis.com/problems/dreamer
 //
-#include <bits/stdc++.h>
-#include <utility>
+#include <bits/extc++.h>
 
 using namespace std;
 

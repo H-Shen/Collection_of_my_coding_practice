@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/pointinpolygon
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 constexpr double EPS = 1e-9;
 

@@ -1,5 +1,5 @@
 // https://open.kattis.com/problems/busnumbers2
-#include<bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 const int MAXN = 74;

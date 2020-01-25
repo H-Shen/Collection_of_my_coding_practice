@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/humancannonball2
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 constexpr double g = 9.81;

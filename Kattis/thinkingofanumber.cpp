@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/thinkingofanumber
 
-#include<bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 const int MAX = 50005;

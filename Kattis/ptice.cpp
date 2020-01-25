@@ -1,5 +1,5 @@
 // https://open.kattis.com/problems/ptice
-#include<bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

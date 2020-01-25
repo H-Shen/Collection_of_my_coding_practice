@@ -2,7 +2,7 @@
 //
 // This file is compiled in -std=gnu++17
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 constexpr int MAXN = 35;

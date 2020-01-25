@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/acm2
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 constexpr int MAX_TIME = 300;

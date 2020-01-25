@@ -1,9 +1,6 @@
 // https://open.kattis.com/problems/phonelist
 
-#include<bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/trie_policy.hpp>
-#include <ext/pb_ds/tag_and_trait.hpp>
+#include <bits/extc++.h>
 
 using namespace std;
 using namespace __gnu_pbds;

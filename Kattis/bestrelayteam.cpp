@@ -1,7 +1,7 @@
 // https://open.kattis.com/problems/bestrelayteam
 //
 
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

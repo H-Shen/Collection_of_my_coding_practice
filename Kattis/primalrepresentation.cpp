@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/primalrepresentation
 // 0.87s, damn, so close
-#include<bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 using ll = long long;

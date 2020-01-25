@@ -2,7 +2,7 @@
 //
 // f(n) = (3 / 2) ^ n * 3 (n >= 0)
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 

@@ -1,6 +1,6 @@
 // https://open.kattis.com/problems/volim
 //
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
 constexpr int maxn = 5;
