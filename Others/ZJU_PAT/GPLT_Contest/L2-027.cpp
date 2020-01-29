@@ -19,7 +19,6 @@ bool cmp(const Stu &a, const Stu &b) {
 }
 
 int main() {
-    //freopen("C:\\input", "r", stdin);
 
     int N, G, K;
     scanf("%d %d %d", &N, &G, &K);

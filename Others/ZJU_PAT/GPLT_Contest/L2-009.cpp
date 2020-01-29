@@ -20,7 +20,6 @@ bool cmp(const Person &a, const Person &b) {
 }
 
 int main() {
-    //freopen("input", "r", stdin);
     unordered_map<int, Person> A;
     int n, i, j, tmp, id, money;
     scanf("%d", &n);

@@ -28,7 +28,6 @@ bool cmp(const A &a, const A &b) {
 }
 
 int main() {
-    //freopen("C:\\input", "r", stdin);
 
     A a("a"), b("b");
     int tmp;

@@ -38,7 +38,6 @@ namespace DSU {
 
 int main() {
 
-    freopen("/Users/hshen/myCpp/input", "r", stdin);
     int n, m, x, y;
     while (~scanf("%d %d", &n, &m)) {
         if (n == 0 && m == 0) {
