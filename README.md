@@ -2,6 +2,8 @@
 
 The collection of my coding practice, will be updated inconsistently.
 
+* [***My Kattis Profile***](https://open.kattis.com/users/haohushen)
+
 * ***Notice*** 
 Since the earliest code was written in 2016, the requirement of formats, the APIs provided or the datasets for some problems could be changed. The old solution will be updated if I am aware that such case happens and I have time to handle.
 
@@ -39,5 +41,5 @@ Since the earliest code was written in 2016, the requirement of formats, the API
     * ***For Php***
         * PHP 7.3.9 (cli) (built: Sep 10 2019 17:45:01) ( NTS )
 
-    *  For Haskell
+    *  ***For Haskell***
         * 8.6.5
