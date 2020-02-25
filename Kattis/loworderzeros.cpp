@@ -1,5 +1,6 @@
 // https://open.kattis.com/problems/loworderzeros
 //
+// The algorithm that obtains the rightmost non-zero digit of n!
 #include <bits/extc++.h>
 
 using namespace std;
