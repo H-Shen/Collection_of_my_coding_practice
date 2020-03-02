@@ -1,5 +1,5 @@
 // https://open.kattis.com/problems/phonelist
-
+//
 #include <bits/extc++.h>
 
 using namespace std;
@@ -8,12 +8,37 @@ using namespace __gnu_pbds;
 const int MAXN = 15;
 char str[MAXN];
 
-typedef trie<string, null_type, trie_string_access_traits<>, pat_trie_tag, trie_prefix_search_node_update> prefix_trie;
+using prefix_trie = trie<string,null_type,trie_string_access_traits<>,pat_trie_tag,trie_prefix_search_node_update>;
+
+template <typename T>
+inline
+void read(T& t) {
+    int n = 0; int c = getchar(); t = 0;
+    while (!isdigit(c)) n |= c == '-', c = getchar();
+    while (isdigit(c)) t = t * 10 + c - 48, c = getchar();
+    if (n) t = -t;
+}
+template <typename T, typename... Args>
+inline
+void read(T& t, Args&... args) {
+    read(t); read(args...);
+}
+template <typename T>
+inline void write(T x) {
+    if (x < 0) x = -x, putchar('-');
+    if (x > 9) write(x / 10);
+    putchar(x % 10 + 48);
+}
+template <typename T>
+inline void writeln(T x) {
+    write(x);
+    puts("");
+}
 
 int main() {
 
     int kase;
-    scanf("%d", &kase);
+    read(kase);
 
     while (kase--) {
 
@@ -21,7 +46,7 @@ int main() {
         vector<string> temp;
         bool haveAns = true;
         int n;
-        scanf("%d", &n);
+        read(n);
         string s;
         while (n--) {
             scanf("%s", str);
@@ -46,9 +71,14 @@ int main() {
         }
 
         if (!haveAns) {
-            printf("NO\n");
+            putchar('N');
+            putchar('O');
+            puts("");
         } else {
-            printf("YES\n");
+            putchar('Y');
+            putchar('E');
+            putchar('S');
+            puts("");
         }
     }
     return 0;
