@@ -78,7 +78,6 @@ namespace SSSP {
 
 int main() {
 
-    //freopen("/Users/hshen/myCpp/input", "r", stdin);
     ll n, m, f, s, t, u, v, w;
     scanf("%lld %lld %lld %lld %lld", &n, &m, &f, &s, &t);
     while (m--) {
