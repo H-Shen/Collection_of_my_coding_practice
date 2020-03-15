@@ -1,4 +1,5 @@
 // https://open.kattis.com/problems/froshweek2
+//
 #include <bits/extc++.h>
 
 using namespace std;
