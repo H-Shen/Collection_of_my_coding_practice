@@ -5,7 +5,8 @@ using namespace __gnu_pbds;
 constexpr int MAX_STR_LENGTH = 1505;
 char cstr[MAX_STR_LENGTH];
 
-// A simple implementation of MPQ hash without compression and encryption
+// A simple implementation of MPQ hash algorithm (Blizzard hash algorithm)
+// without compression and encryption
 // Reference: https://sfsrealm.hopto.org/inside_mopaq/
 namespace MPQ {
     // Constants
@@ -172,6 +173,7 @@ namespace MPQ {
         }
     };
 }
+
 
 int main() {
 
