@@ -15,11 +15,11 @@ namespace MPQ {
     constexpr unsigned long HASH_A = 1;
     constexpr unsigned long HASH_B = 2;
     constexpr unsigned long CRYPT_TABLE_LENGTH = 0x500;
-    // Define the crypt m_Table
+    // Define the cryptTable
     inline static
     array<unsigned long, CRYPT_TABLE_LENGTH> cryptTable;
 
-    // Initialize the crypt m_Table
+    // Initialize the cryptTable
     inline static
     void initializeCryptTable() {
         unsigned long seed = 0x00100001;
