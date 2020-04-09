@@ -1,20 +1,27 @@
-// https://open.kattis.com/submissions/3137308
+// https://open.kattis.com/problems/acm
+//
 #include <bits/extc++.h>
 
 using namespace std;
+using namespace __gnu_pbds;
+using ll = long long;
 
-struct item {
+struct Item {
     int lastTime;
     int totalSubmission = 0;
     bool isSolve = false;
 };
 
 int main() {
+    
     ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    
     int submitTime;
     char number;
     string answer;
-    unordered_map<char, item> A;
+    unordered_map<char, Item> A;
 
     while (true) {
         cin >> submitTime;
@@ -38,6 +45,6 @@ int main() {
             totalTime += it.second.lastTime;
         }
     }
-    cout << solveCnt << ' ' << totalTime << endl;
+    cout << solveCnt << ' ' << totalTime << '\n';
     return 0;
 }

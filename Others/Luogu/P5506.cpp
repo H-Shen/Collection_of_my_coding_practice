@@ -139,7 +139,7 @@ void missile_attack(int id) {
 }
 
 inline static
-void bean_attack(int id) {
+void beam_attack(int id) {
     Drone drone = id2drone[id];
     auto direction = convert[drone.f][drone.h];
     Pos temp = drone.pos;
@@ -268,7 +268,7 @@ int main() {
                         missile_attack(i);
                         break;
                     case 'M':
-                        bean_attack(i);
+                        beam_attack(i);
                         break;
                     default:
                         break;
