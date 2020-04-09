@@ -10,47 +10,6 @@ using RBTree = tree<T, null_type, less<>, rb_tree_tag, tree_order_statistics_nod
 template <typename T>
 using Trie = trie<T, null_type, less<>, pat_trie_tag, trie_prefix_search_node_update>;
 
-template <typename T>
-inline
-void read(T& t) {
-    int n = 0; int c = getchar(); t = 0;
-    while (!isdigit(c)) n |= c == '-', c = getchar();
-    while (isdigit(c)) t = t * 10 + c - 48, c = getchar();
-    if (n) t = -t;
-}
-template <typename T, typename... Args>
-inline
-void read(T& t, Args&... args) {
-    read(t); read(args...);
-}
-template <typename T>
-inline void write(T x) {
-    if (x < 0) x = -x, putchar('-');
-    if (x > 9) write(x / 10);
-    putchar(x % 10 + 48);
-}
-template <typename T>
-inline void writeln(T x) {
-    write(x);
-    puts("");
-}
-// can read EOF
-template <typename T>
-inline
-bool read_(T& t) {
-    int n = 0; int c = getchar(); t = 0;
-    if (c == EOF) return false;
-    while (!isdigit(c)) n |= c == '-', c = getchar();
-    while (isdigit(c)) t = t * 10 + c - 48, c = getchar();
-    if (n) t = -t;
-    return true;
-}
-template <typename T, typename... Args>
-inline
-bool read_(T& t, Args&... args) {
-    return read_(t) && read_(args...);
-}
-
 // DSU: Union_Find_Set
 // Complexity: O (a(n)) per operation. Note: O (log n) if one of
 // union-by-rank or path compression is omitted

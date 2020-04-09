@@ -1,21 +1,49 @@
 /**
- * An implementation of optimization on reading an integer (读入优化) from stdin and writing an integer (输出优化) to stdout.
- * It has been tested in Linux csx.cs.ucalgary.ca (g++ -std=c++14 -Wall -O2),
- * but the strange thing is it is slower than scanf() in my macOS, (homebrew g++-7 -std=c++14 -Wall -O2)
+ * An implementation of optimization on reading an integer
+ * from stdin and writing an integer to stdout.
+ * It has been tested in Linux csx.cs.ucalgary.ca (g++ -std=c++17 -Wall -O2),
+ * but the strange thing is it is slower than scanf() in my macOS, (homebrew g++-9 -std=c++17 -Wall -O2)
  * So make sure to run the tests before using it.
  */
 
 //Time used (Smaller is faster):
-//Input : fread < putchar < scanf < cin(without sync, tie(0)) < cin
-//Output: fwrite < getchar < printf < cout(without sync, tie(0)) < cout
+//Input : fread < putchar_unlocked < (putchar) < scanf < cin(without sync, tie(0)) < cin
+//Output: fwrite < getchar_unlocked < (getchar) < printf < cout(without sync, tie(0)) < cout
 
 /**
- * I have packed all the code about reading and writing on namespace fastIO and you can just use it directly.
+ * I have packed all the code about reading and writing on two separated
+ * namespaces(IO and FastIO) and you can just use it directly.
  * Remaining functions are for benchmark only.
  */
 
-#include <bits/stdc++.h>
-#include <unistd.h>
+#include <bits/extc++.h>
+
+namespace IO {
+    template <typename T>
+    inline
+    void read(T& t) {
+        int n = 0; int c = getchar_unlocked(); t = 0;
+        while (!isdigit(c)) n |= c == '-', c = getchar_unlocked();
+        while (isdigit(c)) t = t * 10 + c - 48, c = getchar_unlocked();
+        if (n) t = -t;
+    }
+    template <typename T, typename... Args>
+    inline
+    void read(T& t, Args&... args) {
+        read(t); read(args...);
+    }
+    template <typename T>
+    inline void write(T x) {
+        if (x < 0) x = -x, putchar_unlocked('-');
+        if (x > 9) write(x / 10);
+        putchar(x % 10 + 48);
+    }
+    template <typename T>
+    inline void writeln(T x) {
+        write(x);
+        putchar_unlocked('\n');
+    }
+}
 
 namespace FastIO {
 
@@ -58,29 +86,6 @@ namespace FastIO {
         x = isNeg ? -x : x;
     }
 
-    template<typename T>
-    inline static
-    void readInt(T &x) {
-
-        x = 0;
-        bool isNeg = false;
-        char ch = static_cast<char>(getchar());
-
-        // skip all non digit characters
-        while (!isdigit(ch)) {
-            if (ch == '-') {
-                isNeg = true;
-            }
-            ch = static_cast<char>(getchar());
-        }
-
-        while (isdigit(ch)) {
-            x = x * 10 + static_cast<T>(ch ^ 48);
-            ch = static_cast<char>(getchar());
-        }
-        x = isNeg ? -x : x;
-    }
-
     static char outputBuffer[MAXSIZE];
     static char *ptr = outputBuffer;
 
@@ -112,26 +117,9 @@ namespace FastIO {
     }
 
     // Execute this function after using writeIntWithFwrite() on all numbers for output.
+    inline
     void flushAfterWriteIntWithFwrite() {
         fwrite(outputBuffer, 1, ptr - outputBuffer, stdout);
-    }
-
-    template<typename T>
-    inline static
-    void writeInt(T x) {
-        if (x < 0) {
-            x = -x;
-            putchar('-');
-        }
-        static int storeDigits[40];
-        int top = 0;
-        do {
-            storeDigits[top++] = x % 10;
-            x /= 10;
-        } while (x);
-        while (top) {
-            putchar(storeDigits[--top] + 48);
-        }
     }
 }
 
@@ -191,7 +179,7 @@ void readByGetchar(const size_t &dataSize, const std::string &fileName) {
     freopen(fileName.c_str(), "r", stdin);
     start = std::chrono::steady_clock::now();
     for (size_t i = 0; i != dataSize; ++i) {
-        FastIO::readInt<int>(arr0[i]);
+        IO::read(arr0[i]);
     }
     stop = std::chrono::steady_clock::now();
     elapsed_in_seconds = stop - start;
@@ -318,7 +306,7 @@ void writeByPutchar(const size_t &dataSize, const std::string &fileName) {
     freopen(outputFile, "w", stdout);
     start = std::chrono::steady_clock::now();
     for (size_t i = 0; i != dataSize; ++i) {
-        FastIO::writeInt<int>(arr0[i]);
+        IO::write(arr0[i]);
         putchar('\n');
     }
     stop = std::chrono::steady_clock::now();

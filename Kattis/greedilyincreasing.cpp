@@ -1,13 +1,14 @@
 // https://open.kattis.com/problems/greedilyincreasing
 //
-#include <bits/extc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 int main() {
 
     ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+    cin.tie(nullptr); cout.tie(nullptr);
+    
     size_t n;
     cin >> n;
     vector<int> A(n);
@@ -22,7 +23,7 @@ int main() {
             result.emplace_back(i);
         }
     }
-    cout << result.size() << endl;
+    cout << result.size() << '\n';
     bool firstItem = true;
     for (const auto &i : result) {
         if (firstItem) {
@@ -32,7 +33,7 @@ int main() {
         }
         cout << i;
     }
-    cout << endl;
+    cout << '\n';
 
     return 0;
 }
