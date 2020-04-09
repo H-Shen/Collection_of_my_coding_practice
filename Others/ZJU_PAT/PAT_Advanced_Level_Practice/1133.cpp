@@ -1,6 +1,7 @@
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
+using namespace __gnu_pbds;
 
 const int MAXN = 20;
 char s[MAXN], s2[MAXN];
@@ -12,11 +13,11 @@ struct Node {
 };
 
 int main() {
+
     int n, k;
     string currentAddress;
-
     scanf("%s %d %d", s, &n, &k);
-    getchar();
+    getchar_unlocked();
 
     if (n == 0) {
         return 0;
@@ -24,7 +25,7 @@ int main() {
 
     currentAddress = s;
     int i;
-    unordered_map<string, Node> save;
+    gp_hash_table<string, Node> save;
     Node tmp;
 
     for (i = 0; i < n; ++i) {
@@ -43,11 +44,11 @@ int main() {
             break;
         }
         if (save[currentAddress].val < 0) {
-            A.push_back(save[currentAddress]);
+            A.emplace_back(save[currentAddress]);
         } else if (save[currentAddress].val <= k) {
-            B.push_back(save[currentAddress]);
+            B.emplace_back(save[currentAddress]);
         } else {
-            C.push_back(save[currentAddress]);
+            C.emplace_back(save[currentAddress]);
         }
         currentAddress = save[currentAddress].nextAddress;
     }
@@ -66,7 +67,8 @@ int main() {
     }
     A[cntA - 1].nextAddress = "-1";
     for (i = 0; i < cntA; ++i) {
-        printf("%s %d %s\n", A[i].currentAddress.c_str(), A[i].val, A[i].nextAddress.c_str());
+        printf("%s %d %s\n", A[i].currentAddress.c_str(), A[i].val,
+               A[i].nextAddress.c_str());
     }
 
     return 0;

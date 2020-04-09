@@ -3,35 +3,6 @@
 using namespace std;
 using namespace __gnu_pbds;
 
-namespace IO {
-    template<typename T>
-    inline
-    void read(T &t) {
-        int c = getchar();
-        t = 0;
-        while (isdigit(c)) t = t * 10 + c - 48, c = getchar();
-    }
-
-    template<typename T, typename... Args>
-    inline
-    void read(T &t, Args &... args) {
-        read(t);
-        read(args...);
-    }
-
-    template<typename T>
-    inline void write(T x) {
-        if (x > 9) write(x / 10);
-        putchar(x % 10 + 48);
-    }
-
-    template<typename T>
-    inline void writeln(T x) {
-        write(x);
-        puts("");
-    }
-}
-
 int main() {
 
     vector<int> A = {2, 3, 5, 7, 23, 29, 31, 37, 53, 59, 71, 73, 79, 233, 239,
