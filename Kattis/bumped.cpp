@@ -5,6 +5,33 @@
 using namespace std;
 using ll = long long;
 
+namespace IO {
+    template <typename T>
+    inline
+    void read(T& t) {
+        int n = 0; int c = getchar_unlocked(); t = 0;
+        while (!isdigit(c)) n |= c == '-', c = getchar_unlocked();
+        while (isdigit(c)) t = t * 10 + c - 48, c = getchar_unlocked();
+        if (n) t = -t;
+    }
+    template <typename T, typename... Args>
+    inline
+    void read(T& t, Args&... args) {
+        read(t); read(args...);
+    }
+    template <typename T>
+    inline void write(T x) {
+        if (x < 0) x = -x, putchar_unlocked('-');
+        if (x > 9) write(x / 10);
+        putchar(x % 10 + 48);
+    }
+    template <typename T>
+    inline void writeln(T x) {
+        write(x);
+        putchar_unlocked('\n');
+    }
+}
+
 namespace SSSP {
     constexpr ll MAX_NODES = 50005;
     constexpr ll MAX_EDGES = 400050;
@@ -75,13 +102,12 @@ namespace SSSP {
     }
 }
 
-
 int main() {
 
     ll n, m, f, s, t, u, v, w;
-    scanf("%lld %lld %lld %lld %lld", &n, &m, &f, &s, &t);
+    IO::read(n, m, f, s, t);
     while (m--) {
-        scanf("%lld %lld %lld", &u, &v, &w);
+        IO::read(u, v, w);
         ++u;
         ++v;
         SSSP::add_edge(u, v, w);
@@ -101,7 +127,7 @@ int main() {
     // Case 2:
     while (f--) {
         SSSP::reset();
-        scanf("%lld %lld", &u, &v); // free cost of the flight
+        IO::read(u, v); // free cost of the flight
         ++u;
         ++v;
         SSSP::add_edge(u, v, 0);
@@ -112,6 +138,6 @@ int main() {
         SSSP::head = head_copy;
         SSSP::counter = counter_copy;
     }
-    printf("%lld\n", min_cost);
+    IO::writeln(min_cost);
     return 0;
 }

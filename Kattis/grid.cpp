@@ -71,18 +71,18 @@ namespace SSSP {
 unordered_map<int, int> conversion;
 
 int main() {
-
+    
     int r, c;
     char ch;
     scanf("%d %d", &r, &c);
     vector<vector<int> > A(r, vector<int>(c));
-    getchar();
+    getchar_unlocked();
     for (int i = 0; i < r; ++i) {
         for (int j = 0; j < c; ++j) {
             scanf("%c", &ch);
             A.at(i).at(j) = ch - '0';
         }
-        getchar();
+        getchar_unlocked();
     }
 
     // indexing
@@ -100,7 +100,6 @@ int main() {
 
 
     int dist;
-    int dest;
     int current_node;
     int new_node;
     for (int i = 0; i < r; ++i) {
@@ -110,22 +109,22 @@ int main() {
                 current_node = conversion[i * c + j];
                 // 4 directions
                 try {
-                    dest = A.at(i).at(j - dist);
+                    A.at(i).at(j - dist);
                     new_node = conversion[i * c + (j - dist)];
                     SSSP::add_edge(current_node, new_node, 1);
                 } catch (...) {}
                 try {
-                    dest = A.at(i).at(j + dist);
+                    A.at(i).at(j + dist);
                     new_node = conversion[i * c + (j + dist)];
                     SSSP::add_edge(current_node, new_node, 1);
                 } catch (...) {}
                 try {
-                    dest = A.at(i - dist).at(j);
+                    A.at(i - dist).at(j);
                     new_node = conversion[(i - dist) * c + j];
                     SSSP::add_edge(current_node, new_node, 1);
                 } catch (...) {}
                 try {
-                    dest = A.at(i + dist).at(j);
+                    A.at(i + dist).at(j);
                     new_node = conversion[(i + dist) * c + j];
                     SSSP::add_edge(current_node, new_node, 1);
                 } catch (...) {}
@@ -142,6 +141,6 @@ int main() {
     } else {
         printf("%d\n", SSSP::dis.at(buttom_right));
     }
-    
+
     return 0;
 }

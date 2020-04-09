@@ -9,33 +9,6 @@ constexpr int MAXN = 5;
 constexpr int MAX_COLUMN_A_LINE = 50;
 char op[MAXN];
 
-namespace IO {
-    template <typename T>
-    inline
-    void read(T& t) {
-        int n = 0; int c = getchar(); t = 0;
-        while (!isdigit(c)) n |= c == '-', c = getchar();
-        while (isdigit(c)) t = t * 10 + c - 48, c = getchar();
-        if (n) t = -t;
-    }
-    template <typename T, typename... Args>
-    inline
-    void read(T& t, Args&... args) {
-        read(t); read(args...);
-    }
-    template <typename T>
-    inline void write(T x) {
-        if (x < 0) x = -x, putchar('-');
-        if (x > 9) write(x / 10);
-        putchar(x % 10 + 48);
-    }
-    template <typename T>
-    inline void writeln(T x) {
-        write(x);
-        puts("");
-    }
-}
-
 struct Node {
     ll val;
     string to_string;
@@ -109,7 +82,5 @@ int main() {
             printf("\n");
         }
     }
-
-
     return 0;
 }
