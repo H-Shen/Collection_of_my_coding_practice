@@ -3,6 +3,14 @@
 using namespace std;
 using namespace __gnu_pbds;
 using ll = long long;
+constexpr int MAXN = 105;
+
+struct Node {
+    int val;
+    int round;
+};
+
+Node A[MAXN][MAXN];
 
 namespace IO {
     template <typename T>
@@ -31,44 +39,31 @@ namespace IO {
     }
 }
 
-constexpr int MAXN = 500005;
-int A[MAXN];
-int temp[MAXN];
-ll counter = 0;
-
-// sort A[l ... r-1]
-void merge(int l, int r) {
-    if (l >= r - 1) {
-        return;
-    }
-    int mid = (l + r) / 2;
-    merge(l, mid);
-    merge(mid, r);
-    int p = l;
-    int q = mid;
-    int s = l;
-    while (s < r) {
-        if (p >= mid || (q < r && A[p] > A[q]) ) {
-            temp[s++] = A[q++];
-            counter += static_cast<ll>(mid - p);
-        } else {
-            temp[s++] = A[p++];
-        }
-    }
-    for (int i = l; i < r; ++i) {
-        A[i] = temp[i];
-    }
-}
-
 int main() {
 
-    int n;
-    IO::read(n);
-    for (int i = 0; i < n; ++i) {
-        IO::read(A[i]);
+    int n, m, x, y, x1, x2, y1, y2;
+    IO::read(n, m, x, y);
+    for (int round = 1; round <= x; ++round) {
+        IO::read(x1, y1, x2, y2);
+        for (int i = x1; i <= x2; ++i) {
+            for (int j = y1; j <= y2; ++j) {
+                ++A[j][i].val;
+                A[j][i].round = round;
+            }
+        }
     }
-    merge(0, n);
-    IO::writeln(counter);
-
+    while (y--) {
+        IO::read(x1, y1);
+        if (A[y1][x1].val == 0) {
+            putchar_unlocked('N');
+        } else {
+            putchar_unlocked('Y');
+            putchar_unlocked(' ');
+            IO::write(A[y1][x1].val);
+            putchar_unlocked(' ');
+            IO::write(A[y1][x1].round);
+        }
+        putchar_unlocked('\n');
+    }
     return 0;
 }

@@ -21,6 +21,29 @@ echo "Output"
 # clean
 rm -rf FastIO
 
+#!/bin/bash
+
+printf "Compiling ..."
+g++ -std=c++17 -Wall -O2 FastIO.cpp -o FastIO
+printf " OK\n"
+
+echo "Test 10000000 integers:"
+echo "Input"
+./FastIO in 1 10000000
+./FastIO in 2 10000000
+./FastIO in 3 10000000
+./FastIO in 4 10000000
+./FastIO in 5 10000000
+echo "Output"
+./FastIO out 1 10000000
+./FastIO out 2 10000000
+./FastIO out 3 10000000
+./FastIO out 4 10000000
+./FastIO out 5 10000000
+
+# clean
+rm -rf FastIO
+
 #   2019-12-24
 #	Compiling ... OK
 #	Test 10000000 integers:
@@ -37,18 +60,18 @@ rm -rf FastIO
 #	cout without sync: 1.38518 seconds
 #	cout: 27.208 seconds
 
-#    2020-04-09
+#    2020-04-10
 #    Compiling ... OK
 #    Test 10000000 integers:
 #    Input
-#    fread: 0.302718 seconds
-#    readInt: 0.662146 seconds
-#    scanf: 1.66886 seconds
-#    cin without sync: 1.4833 seconds
-#    cin: 4.67409 seconds
+#    fread: 0.298954 seconds
+#    getchar_unlocked: 0.419599 seconds
+#    scanf: 1.64546 seconds
+#    cin without sync: 1.49664 seconds
+#    cin: 4.77755 seconds
 #    Output
-#    fwrite: 0.526937 seconds
-#    putchar: 0.780688 seconds
-#    printf: 1.40564 seconds
-#    cout without sync: 1.38764 seconds
-#    cout: 31.078 seconds
+#    fwrite: 0.542893 seconds
+#    putchar_unlocked: 0.632219 seconds
+#    printf: 1.40839 seconds
+#    cout without sync: 1.36093 seconds
+#    cout: 32.9351 seconds

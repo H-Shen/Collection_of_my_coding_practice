@@ -1,6 +1,7 @@
-#include <bits/stdc++.h>
+#include <bits/extc++.h>
 
 using namespace std;
+using namespace __gnu_pbds;
 
 struct Node {
     int val;
@@ -14,7 +15,7 @@ char cstr[maxn], cstr1[maxn];
 int main() {
 
     int n, i;
-    unordered_map<string, Node> allNodeList;
+    gp_hash_table<string, Node> allNodeList;
     scanf("%s %d", cstr, &n);
     string headNodeAddress = cstr;
 
@@ -31,7 +32,7 @@ int main() {
     Node currentNode = allNodeList[headNodeAddress];
 
     while (true) {
-        nodeList.push_back(currentNode);
+        nodeList.emplace_back(currentNode);
         ++nodeListLen;
         if (currentNode.nextAddress == "-1") {
             break;
@@ -46,10 +47,10 @@ int main() {
     for (i = 0; i < nodeListLen; ++i) {
         if (uniqueNumberSet.find(abs(nodeList[i].val)) == uniqueNumberSet.end()) {
             uniqueNumberSet.insert(abs(nodeList[i].val));
-            partition0.push_back(nodeList[i]);
+            partition0.emplace_back(nodeList[i]);
             ++partition0_len;
         } else {
-            partition1.push_back(nodeList[i]);
+            partition1.emplace_back(nodeList[i]);
             ++partition1_len;
         }
     }

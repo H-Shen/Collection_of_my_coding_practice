@@ -23,7 +23,7 @@ namespace IO {
     inline void write(T x) {
         if (x < 0) x = -x, putchar_unlocked('-');
         if (x > 9) write(x / 10);
-        putchar(x % 10 + 48);
+        putchar_unlocked(x % 10 + 48);
     }
     template <typename T>
     inline void writeln(T x) {

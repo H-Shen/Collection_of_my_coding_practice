@@ -9,6 +9,9 @@
 //Time used (Smaller is faster):
 //Input : fread < putchar_unlocked < (putchar) < scanf < cin(without sync, tie(0)) < cin
 //Output: fwrite < getchar_unlocked < (getchar) < printf < cout(without sync, tie(0)) < cout
+//Notice: getchar_unlocked()/putchar_unlocked() is compiler and OS specific and
+// Windows user can replace them with _getchar_nolock()/_putchar_nolock()
+// These two pairs of macros are not thread-safe.
 
 /**
  * I have packed all the code about reading and writing on two separated
@@ -36,7 +39,7 @@ namespace IO {
     inline void write(T x) {
         if (x < 0) x = -x, putchar_unlocked('-');
         if (x > 9) write(x / 10);
-        putchar(x % 10 + 48);
+        putchar_unlocked(x % 10 + 48);
     }
     template <typename T>
     inline void writeln(T x) {
