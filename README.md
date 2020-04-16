@@ -6,7 +6,8 @@ The collection of my coding practice, will be updated inconsistently.
 * [***My Hackerrank Profile***](https://www.hackerrank.com/Harrison_Shen)
 
 * ***Notice*** 
-Since the earliest code was written in 2016, the requirement of formats, the APIs provided or the datasets for some problems could be changed. The old solution will be updated if I am aware that such case happens and I have time to handle.
+	*	Since the earliest code was written in 2016, the requirement of formats, the APIs provided or the datasets for some problems could be changed. The old solution will be updated if I am aware that such case happens and I have time to handle.
+	* 	__float128 can be supported in homebrew g++ after some modification, refer this [float128-is-not-supported-on-this-target](https://stackoverflow.com/questions/43316533/float128-is-not-supported-on-this-target)
 
 * Unless otherwise stated, the coding environment of my laptop is:
 
