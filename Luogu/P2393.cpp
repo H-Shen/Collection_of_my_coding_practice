@@ -7,7 +7,7 @@ using ld = long double;
 int main() {
 
     ld a;
-    __float128 sum = 0.0;   // Not supported in homebrew g++
+    __float128 sum = 0.0;
     while (~scanf("%Lf", &a)) {
         sum += a;
     }
