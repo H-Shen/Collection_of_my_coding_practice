@@ -477,6 +477,21 @@ struct custom_hash {
 };
 gp_hash_table<int, pair<int, int>, custom_hash> my_hash_table;
 
+// Usage:
+// auto dp = MultiDimensionArray::Array<int>(5, 4, 12);
+// auto dp__ = MultiDimensionArray::Array<double>(4, 5, 1, 1.0);
+namespace MultiDimensionArray {
+    template <typename T, typename ... Args>
+    auto Array(std::size_t n, Args && ... args) {
+        if constexpr (1 == sizeof ... (args)) {
+            return std::vector<T>(n, args ...);
+        }
+        else {
+            return std::vector(n, Array<T>(args...));
+        }
+    }
+}
+
 int main() {
 
     //freopen("/home/ugd/haohu.shen/cpsc/in", "r", stdin);
