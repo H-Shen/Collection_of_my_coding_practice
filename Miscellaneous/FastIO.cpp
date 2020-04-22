@@ -1,14 +1,14 @@
 /**
  * An implementation of optimization on reading an integer
  * from stdin and writing an integer to stdout.
- * It has been tested in Linux csx.cs.ucalgary.ca (g++ -std=c++17 -Wall -O2),
- * but the strange thing is it is slower than scanf() in my macOS, (homebrew g++-9 -std=c++17 -Wall -O2)
- * So make sure to run the tests before using it.
+ * It has been tested in Linux csx.cs.ucalgary.ca (g++ -std=c++17 -Wall -O2).
+ * Make sure to run the test before using it.
  */
 
 //Time used (Smaller is faster):
-//Input : fread < putchar_unlocked < (putchar) < scanf < cin(without sync, tie(0)) < cin
-//Output: fwrite < getchar_unlocked < (getchar) < printf < cout(without sync, tie(0)) < cout
+//Input : mmap < fread < putchar_unlocked < putchar < scanf < cin(without sync, tie(0)) < cin
+//Output: fwrite < getchar_unlocked < getchar < printf < cout(without sync, tie(0)) < cout
+
 //Notice: getchar_unlocked()/putchar_unlocked() is compiler and OS specific and
 // Windows user can replace them with _getchar_nolock()/_putchar_nolock()
 // These two pairs of macros are not thread-safe.
@@ -20,6 +20,10 @@
  */
 
 #include <bits/extc++.h>
+
+// For FasterIO, Linux/Unix specific
+#include <sys/mman.h>
+#include <sys/stat.h>
 
 namespace IO {
     template <typename T>
@@ -97,26 +101,13 @@ namespace FastIO {
         }
         return *ptr1++;
     }
-    template<typename T>
-    inline static
-    void read(T &t) {
-        t = 0;
-        bool isNeg = false;
-        char ch = getcharUsingFread();
-
-        // skip all non digit characters
-        while (!isdigit(ch)) {
-            if (ch == '-') {
-                isNeg = true;
-            }
-            ch = getcharUsingFread();
-        }
-
-        while (isdigit(ch)) {
-            t = t * 10 + static_cast<T>(ch ^ 48);
-            ch = getcharUsingFread();
-        }
-        t = isNeg ? -t : t;
+    template <typename T>
+    inline
+    void read(T& t) {
+        int n = 0; int c = getcharUsingFread(); t = 0;
+        while (!isdigit(c)) n |= c == '-', c = getcharUsingFread();
+        while (isdigit(c)) t = t * 10 + c - 48, c = getchar();
+        if (n) t = -t;
     }
     template <typename T, typename... Args>
     inline
@@ -131,22 +122,11 @@ namespace FastIO {
         }
         *ptr++ = ch;
     }
-    template<typename T>
-    inline static
-    void write(T x) {
-        if (x < 0) {
-            x = -x;
-            putcharWithFwrite('-');
-        }
-        static int storeDigits[40];
-        int top = 0;
-        do {
-            storeDigits[top++] = x % 10;
-            x /= 10;
-        } while (x);
-        while (top) {
-            putcharWithFwrite(static_cast<T>(storeDigits[--top]) + 48);
-        }
+    template <typename T>
+    inline void write(T x) {
+        if (x < 0) x = -x, putcharWithFwrite('-');
+        if (x > 9) write(x / 10);
+        putcharWithFwrite(x % 10 + 48);
     }
     template<typename T>
     inline static void writeln(T x) {
@@ -154,6 +134,69 @@ namespace FastIO {
         putcharWithFwrite('\n');
     }
     // Execute this function after using write() on all numbers for output.
+    inline
+    void flush() {
+        fwrite(outputBuffer, 1, ptr - outputBuffer, stdout);
+    }
+}
+
+// Usage: freopen(); FasterIO::init(); ...; FastIO::flush();
+// Notice: freopen() must be executed as the first step!
+namespace FasterIO {
+
+    static constexpr int MAXSIZE = 1024 * 1024;
+    static char* inputBuffer = nullptr;
+    static char* ptr0;
+    static char outputBuffer[MAXSIZE];
+    static char *ptr = outputBuffer;
+
+    int Size;
+    inline static
+    void init() {
+        int fd = fileno(stdin);
+        struct stat sb; // not initialize it to save time
+        fstat(fd, &sb);
+        Size = sb.st_size;
+        inputBuffer = reinterpret_cast<char *>(mmap(nullptr, Size, PROT_READ, MAP_PRIVATE, fileno(stdin), 0));
+        ptr0 = inputBuffer;
+    }
+    inline static
+    char getcharUsingMmap() {
+        if (ptr0 == inputBuffer + Size || *ptr0 == EOF) return EOF;
+        return *ptr0++;
+    }
+    template<typename T>
+    inline static
+    void read(T& t) {
+        int n = 0; int c = getcharUsingMmap(); t = 0;
+        while (!isdigit(c)) n |= c == '-', c = getcharUsingMmap();
+        while (isdigit(c)) t = t * 10 + c - 48, c = getcharUsingMmap();
+        if (n) t = -t;
+    }
+    template <typename T, typename... Args>
+    inline
+    void read(T& t, Args&... args) {
+        read(t); read(args...);
+    }
+    inline static
+    void putcharWithFwrite(const char &ch) {
+        if (ptr - outputBuffer == MAXSIZE) {
+            fwrite(outputBuffer, 1, MAXSIZE, stdout);
+            ptr = outputBuffer;
+        }
+        *ptr++ = ch;
+    }
+    template <typename T>
+    inline void write(T x) {
+        if (x < 0) x = -x, putcharWithFwrite('-');
+        if (x > 9) write(x / 10);
+        putcharWithFwrite(x % 10 + 48);
+    }
+    template <typename T>
+    inline void writeln(T x) {
+        write(x);
+        putcharWithFwrite('\n');
+    }
     inline
     void flush() {
         fwrite(outputBuffer, 1, ptr - outputBuffer, stdout);
@@ -202,6 +245,26 @@ void readByFread(const size_t &dataSize, const std::string &fileName) {
     stop = std::chrono::steady_clock::now();
     elapsed_in_seconds = stop - start;
     std::cout << "fread: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+}
+
+inline static
+void readByMmap(const size_t &dataSize, const std::string &fileName) {
+
+    // Define some variables for the test
+    std::chrono::time_point<std::chrono::steady_clock> start, stop;
+    std::chrono::duration<double> elapsed_in_seconds{};
+    auto arr0 = std::make_unique<int[]>(dataSize);
+
+    // Use mmap read from fileName
+    freopen(fileName.c_str(), "r", stdin);
+    FasterIO::init();
+    start = std::chrono::steady_clock::now();
+    for (size_t i = 0; i != dataSize; ++i) {
+        FasterIO::read<int>(arr0[i]);
+    }
+    stop = std::chrono::steady_clock::now();
+    elapsed_in_seconds = stop - start;
+    std::cout << "mmap: " << elapsed_in_seconds.count() << " seconds" << std::endl;
 }
 
 inline static
@@ -522,8 +585,9 @@ inline static
 void checkArguments(int argc, char *argv[]) {
 
     // Show usage if argc or argv are not correct.
-    const std::string usage = "\nUsage: ./FastIO in/out 1/2/3/4/5 dataSize\n\n"
+    const std::string usage = "\nUsage: ./FastIO in/out 0/1/2/3/4/5 dataSize\n\n"
                               "in: read input test\n"
+                              " 0: mmap"
                               " 1: fread\n"
                               " 2: getchar unlocked\n"
                               " 3: scanf\n"
@@ -531,6 +595,7 @@ void checkArguments(int argc, char *argv[]) {
                               " 5: cin\n"
                               " 6: getchar\n\n"
                               "out: print output test\n"
+                              " 0: fwrite for mmap"
                               " 1: fwrite\n"
                               " 2: putchar unlocked\n"
                               " 3: printf\n"
@@ -552,7 +617,7 @@ void checkArguments(int argc, char *argv[]) {
     }
     // The third option is invalid.
     bool thirdOptionIsValid = false;
-    for (int i = 1; i <= 5; ++i) {
+    for (int i = 0; i <= 6; ++i) {
         if (strcmp(argv[2], std::to_string(i).c_str()) == 0) {
             thirdOptionIsValid = true;
             break;
@@ -592,6 +657,9 @@ int main(int argc, char *argv[]) {
     createData(dataSizeInt, fileName);
     if (strcmp(argv[1], "in") == 0) {
         switch (choiceNumber) {
+            case 0:
+                readByMmap(dataSizeInt, fileName);
+                break;
             case 1:
                 readByFread(dataSizeInt, fileName);
                 break;
@@ -630,6 +698,7 @@ int main(int argc, char *argv[]) {
                 break;
             default:
                 writeByPutchar(dataSizeInt, fileName);
+                break;
         }
     }
     std::remove(fileName.c_str());
