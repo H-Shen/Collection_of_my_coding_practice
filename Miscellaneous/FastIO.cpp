@@ -91,7 +91,7 @@ namespace FastIO {
     static char *ptr = outputBuffer;
 
     inline static
-    char getcharUsingFread() {
+    char getchar() {
         if (ptr1 == ptr2) {
             ptr1 = inputBuffer;
             ptr2 = inputBuffer + fread(inputBuffer, 1, MAXSIZE, stdin);
@@ -104,8 +104,8 @@ namespace FastIO {
     template <typename T>
     inline
     void read(T& t) {
-        int n = 0; int c = getcharUsingFread(); t = 0;
-        while (!isdigit(c)) n |= c == '-', c = getcharUsingFread();
+        int n = 0; int c = getchar(); t = 0;
+        while (!isdigit(c)) n |= c == '-', c = getchar();
         while (isdigit(c)) t = t * 10 + c - 48, c = getchar();
         if (n) t = -t;
     }
@@ -115,7 +115,7 @@ namespace FastIO {
         read(t); read(args...);
     }
     inline static
-    void putcharWithFwrite(const char &ch) {
+    void putchar(const char &ch) {
         if (ptr - outputBuffer == MAXSIZE) {
             fwrite(outputBuffer, 1, MAXSIZE, stdout);
             ptr = outputBuffer;
@@ -124,14 +124,14 @@ namespace FastIO {
     }
     template <typename T>
     inline void write(T x) {
-        if (x < 0) x = -x, putcharWithFwrite('-');
+        if (x < 0) x = -x, putchar('-');
         if (x > 9) write(x / 10);
-        putcharWithFwrite(x % 10 + 48);
+        putchar(x % 10 + 48);
     }
     template<typename T>
     inline static void writeln(T x) {
         write(x);
-        putcharWithFwrite('\n');
+        putchar('\n');
     }
     // Execute this function after using write() on all numbers for output.
     inline
@@ -149,8 +149,8 @@ namespace FasterIO {
     static char* ptr0;
     static char outputBuffer[MAXSIZE];
     static char *ptr = outputBuffer;
-
     int Size;
+
     inline static
     void init() {
         int fd = fileno(stdin);
@@ -161,16 +161,16 @@ namespace FasterIO {
         ptr0 = inputBuffer;
     }
     inline static
-    char getcharUsingMmap() {
+    char getchar() {
         if (ptr0 == inputBuffer + Size || *ptr0 == EOF) return EOF;
         return *ptr0++;
     }
     template<typename T>
     inline static
     void read(T& t) {
-        int n = 0; int c = getcharUsingMmap(); t = 0;
-        while (!isdigit(c)) n |= c == '-', c = getcharUsingMmap();
-        while (isdigit(c)) t = t * 10 + c - 48, c = getcharUsingMmap();
+        int n = 0; int c = getchar(); t = 0;
+        while (!isdigit(c)) n |= c == '-', c = getchar();
+        while (isdigit(c)) t = t * 10 + c - 48, c = getchar();
         if (n) t = -t;
     }
     template <typename T, typename... Args>
@@ -179,7 +179,7 @@ namespace FasterIO {
         read(t); read(args...);
     }
     inline static
-    void putcharWithFwrite(const char &ch) {
+    void putchar(const char &ch) {
         if (ptr - outputBuffer == MAXSIZE) {
             fwrite(outputBuffer, 1, MAXSIZE, stdout);
             ptr = outputBuffer;
@@ -188,14 +188,14 @@ namespace FasterIO {
     }
     template <typename T>
     inline void write(T x) {
-        if (x < 0) x = -x, putcharWithFwrite('-');
+        if (x < 0) x = -x, putchar('-');
         if (x > 9) write(x / 10);
-        putcharWithFwrite(x % 10 + 48);
+        putchar(x % 10 + 48);
     }
     template <typename T>
     inline void writeln(T x) {
         write(x);
-        putcharWithFwrite('\n');
+        putchar('\n');
     }
     inline
     void flush() {
@@ -595,7 +595,6 @@ void checkArguments(int argc, char *argv[]) {
                               " 5: cin\n"
                               " 6: getchar\n\n"
                               "out: print output test\n"
-                              " 0: fwrite for mmap"
                               " 1: fwrite\n"
                               " 2: putchar unlocked\n"
                               " 3: printf\n"
@@ -681,6 +680,8 @@ int main(int argc, char *argv[]) {
         }
     } else {
         switch (choiceNumber) {
+            case 0:
+                [[fallthrough]];
             case 1:
                 writeByFwrite(dataSizeInt, fileName);
                 break;

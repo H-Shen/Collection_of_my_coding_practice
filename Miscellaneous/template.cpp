@@ -7,6 +7,7 @@ using ll = long long;
 
 template <typename T>
 using RBTree = tree<T, null_type, less<>, rb_tree_tag, tree_order_statistics_node_update>;
+
 template <typename T>
 using Trie = trie<T, null_type, less<>, pat_trie_tag, trie_prefix_search_node_update>;
 
@@ -155,15 +156,11 @@ void merge_pq(std::priority_queue<T> &dest, std::priority_queue<T> &src) {
     }
 }
 // Floyd_Warshall Algorithm O(n^3)
-// Pre-condition: The graph has no negative weight cycles
 namespace Floyd {
     constexpr int INF = 0x3f3f3f3f;
-    vector<vector<int> > d; // adjacency matrix
-    void init(int n) {  // initialize with k nodes
-        d.resize(n);
-        for (auto &i : d) {
-            i.resize(n);
-        }
+    constexpr int MAXN = 155;
+    int d[MAXN][MAXN];
+    void init(int n) {
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
                 if (i == j) {
@@ -174,23 +171,28 @@ namespace Floyd {
             }
         }
     }
-    void input(const vector<tuple<int, int, int> > &edges) {
-        for (const auto &[k, v, dist] : edges) {
-            d.at(k).at(v) = dist;
-            d.at(v).at(k) = dist;   // no directed graph
-        }
-    }
-    void process() {
-        int n = static_cast<int>(d.size());
+    void process(int n) {
         for (int k = 0; k < n; ++k) {
             for (int i = 0; i < n; ++i) {
                 for (int j = 0; j < n; ++j) {
-                    d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+                    if (d[i][k] < INF && d[k][j] < INF) {
+                        d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                for (int t = 0; t < n; ++t) {
+                    if (d[i][t] < INF && d[t][t] < 0 && d[t][j] < INF)
+                        d[i][j] = -INF;
                 }
             }
         }
     }
-    // get the minimal distance between i and j: d[i][j];
+    int query(int u, int v) {
+        return d[u][v];  // INF: cant reach -INF: in a negative cycle
+    }
 }
 
 // Implementation of next_combination, duplicated values will be shown once
