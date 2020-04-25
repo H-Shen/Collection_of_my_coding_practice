@@ -2,7 +2,6 @@
 
 using namespace std;
 using namespace __gnu_pbds;
-using ll = long long;
 
 namespace IO {
     template<typename T>
@@ -37,24 +36,39 @@ namespace IO {
     }
 }
 
+struct Node {
+    explicit Node(int val, int id) : val(val), id(id) {}
+    bool operator<(const Node &rhs) const {
+        if (val == rhs.val) {
+            return id < rhs.id;
+        }
+        return val > rhs.val;
+    }
+    int val;
+    int id;
+};
+
+using Rbtree = tree<Node, null_type, less<>, rb_tree_tag, tree_order_statistics_node_update>;
+Rbtree T;
+int id = 1;
+
 int main() {
 
-    int n;
-    IO::read(n);
-    vector<int> A(n);
-    for (auto &i : A) {
-        IO::read(i);
+    int m, q, c, v;
+    IO::read(m, q);
+    while (m--) {
+        IO::read(v);
+        T.insert(Node(v, id));
+        ++id;
     }
-    sort(A.begin(), A.end());
-    bool firstItem = true;
-    for (const auto &i : A) {
-        if (firstItem) {
-            firstItem = false;
+    while (q--) {
+        IO::read(c, v);
+        if (c == 1) {
+            IO::writeln(T.find_by_order(v - 1)->val);
         } else {
-            putchar_unlocked(' ');
+            T.insert(Node(v, id));
+            ++id;
         }
-        IO::write(i);
     }
-    putchar_unlocked('\n');
     return 0;
 }
