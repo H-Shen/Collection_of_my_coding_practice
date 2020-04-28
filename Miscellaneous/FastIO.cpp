@@ -14,8 +14,8 @@
 // These two pairs of macros are not thread-safe.
 
 /**
- * I have packed all the code about reading and writing on two separated
- * namespaces(IO and FastIO) and you can just use it directly.
+ * All the code about reading and writing have been packed separately in
+ * namespaces(IO/FastIO/FasterIO).
  * Remaining functions are for benchmark only.
  */
 
@@ -153,11 +153,10 @@ namespace FasterIO {
 
     inline static
     void init() {
-        int fd = fileno(stdin);
         struct stat sb; // not initialize it to save time
-        fstat(fd, &sb);
+        fstat(fileno_unlocked(stdin), &sb);
         Size = sb.st_size;
-        inputBuffer = reinterpret_cast<char *>(mmap(nullptr, Size, PROT_READ, MAP_PRIVATE, fileno(stdin), 0));
+        inputBuffer = reinterpret_cast<char *>(mmap(nullptr, Size, PROT_READ, MAP_PRIVATE, fileno_unlocked(stdin), 0));
         ptr0 = inputBuffer;
     }
     inline static
@@ -181,7 +180,11 @@ namespace FasterIO {
     inline static
     void putchar(const char &ch) {
         if (ptr - outputBuffer == MAXSIZE) {
+#ifdef __linux__
+            fwrite_unlocked(outputBuffer, 1, MAXSIZE, stdout);
+#else
             fwrite(outputBuffer, 1, MAXSIZE, stdout);
+#endif
             ptr = outputBuffer;
         }
         *ptr++ = ch;
@@ -199,7 +202,11 @@ namespace FasterIO {
     }
     inline
     void flush() {
+#ifdef __linux__
+        fwrite_unlocked(outputBuffer, 1, ptr - outputBuffer, stdout);
+#else
         fwrite(outputBuffer, 1, ptr - outputBuffer, stdout);
+#endif
     }
 }
 
@@ -365,6 +372,43 @@ void readByCin(const size_t &dataSize, const std::string &fileName) {
     stop = std::chrono::steady_clock::now();
     elapsed_in_seconds = stop - start;
     std::cout << "cin: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+}
+
+inline static
+void writeByFwriteUnlocked
+(const size_t &dataSize, const std::string &fileName) {
+
+    // Define some variables for the test
+    std::chrono::time_point<std::chrono::steady_clock> start, stop;
+    std::chrono::duration<double> elapsed_in_seconds{};
+    auto arr0 = std::make_unique<int[]>(dataSize);
+
+    // Fill arr0 with the data from fileName
+    freopen(fileName.c_str(), "r", stdin);
+    for (size_t i = 0; i != dataSize; ++i) {
+        scanf("%d", &arr0[i]);
+    }
+    fclose(stdin);
+
+    // Create an empty file for output
+    const char *outputFile("testData.out");
+
+    // Use FasterIO::write to write to outputFile
+    freopen(outputFile, "w", stdout);
+    start = std::chrono::steady_clock::now();
+    for (size_t i = 0; i != dataSize; ++i) {
+        FasterIO::writeln(arr0[i]);
+    }
+    FasterIO::flush();
+    stop = std::chrono::steady_clock::now();
+    elapsed_in_seconds = stop - start;
+    fclose(stdout);
+
+    // Since stdout is closed, we use stderr to print the result
+    std::cerr << "fwrite unlocked: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+
+    // Cleaning
+    std::remove(outputFile);
 }
 
 inline static
@@ -681,7 +725,8 @@ int main(int argc, char *argv[]) {
     } else {
         switch (choiceNumber) {
             case 0:
-                [[fallthrough]];
+                writeByFwriteUnlocked(dataSizeInt, fileName);
+                break;
             case 1:
                 writeByFwrite(dataSizeInt, fileName);
                 break;
@@ -705,3 +750,4 @@ int main(int argc, char *argv[]) {
     std::remove(fileName.c_str());
     return 0;
 }
+
