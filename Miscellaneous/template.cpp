@@ -450,6 +450,16 @@ ll quickPower(ll a, ll n, ll m) {
     return res;
 }
 
+// A better version
+inline static
+ll modpow(ll a, ll p, ll M) {
+    if (M == 1) return 0;
+    ll r;
+    for (r = 1, a %= M; p; a = (a * a) % M, p >>= 1) if (p % 2) r = (r * a) % M;
+    return r;
+}
+
+
 // A way to hash fixed length array
 constexpr int MAXLENGTH = 26;
 struct myHashFunc {
@@ -492,6 +502,29 @@ namespace MultiDimensionArray {
             return std::vector(n, Array<T>(args...));
         }
     }
+}
+
+// max and min with unknown number of arguments(at least 2)
+// Usage: cout << my_max(1, 1, 2, 3, 1);
+template<typename T>
+inline constexpr static
+T my_max(const T& x, const T& y) {
+    return (x > y) ? x : y;
+}
+template<typename T, typename ... Args>
+inline constexpr static
+T my_max(const T& x, const Args& ... args) {
+    return my_max(x, my_max(args...));
+}
+template<typename T>
+inline constexpr static
+T my_min(const T& x, const T& y) {
+    return (x < y) ? x : y;
+}
+template<typename T, typename ... Args>
+inline constexpr static
+T my_min(const T& x, const Args& ... args) {
+    return my_min(x, my_min(args...));
 }
 
 int main() {
