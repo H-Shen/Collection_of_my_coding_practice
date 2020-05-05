@@ -80,7 +80,7 @@ namespace ChthollyTree {
 
     // Definition of a node in the tree
     struct Node {
-        int left;   // each Node in the set s has unique left values
+        int left;
         int right;
         mutable ll weight;
 
@@ -97,7 +97,7 @@ namespace ChthollyTree {
 
     // Define the tree
     set<Node> A;
-    // Operations associated the tree
+    // Operations associated with the tree
 
     // Split: split the interval [l, r] to [l, position-1] and [position, r]
     // Precondition: the tree is not empty

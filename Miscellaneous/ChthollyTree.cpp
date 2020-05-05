@@ -45,11 +45,12 @@ ll mod_pow(ll a, ll p, ll m) {
 }
 
 namespace ChthollyTree {
+
     constexpr ll NOT_FOUND = numeric_limits<ll>::min();
 
     // Definition of a node in the tree
     struct Node {
-        int left;   // each Node in the set s has unique left values
+        int left;   // each Node in the set A has unique 'left'
         int right;
         mutable ll weight;
 
@@ -66,7 +67,7 @@ namespace ChthollyTree {
 
     // Define the tree
     set<Node> A;
-    // Operations associated the tree
+    // Operations associated with the tree
 
     // Split: split the interval [l, r] to [l, position-1] and [position, r]
     // Precondition: the tree is not empty
@@ -119,6 +120,19 @@ namespace ChthollyTree {
         return result;
     }
 
+    // Sum: Range-sum the weight of all nodes that cover the interal [l, r]
+    ll sum(int left, int right) {
+        ll result = 0;
+        auto iter_right = split(right + 1);
+        auto iter_left = split(left);
+        ll freq;
+        for (; iter_left != iter_right; ++iter_left) {
+            freq = iter_left->right - iter_left->left + 1;
+            result += freq * iter_left->weight;
+        }
+        return result;
+    }
+
     ll pow_sum(int left, int right, ll pow, ll mod) {
         ll result = 0;
         auto iter_right = split(right + 1);
@@ -161,6 +175,20 @@ namespace ChthollyTree {
             }
         }
         return NOT_FOUND;
+    }
+
+    // Check if the interval [left, right] has unique weights
+    bool unique_check(int left, int right) {
+        auto iter_right = split(right + 1);
+        auto iter_left = split(left);
+        unordered_set<ll> temp_unset;
+        for (; iter_left != iter_right; ++iter_left) {
+            temp_unset.insert(iter_left->weight);
+            if (temp_unset.size() > 1) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
