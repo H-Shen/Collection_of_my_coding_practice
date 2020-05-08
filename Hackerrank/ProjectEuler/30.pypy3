@@ -1,4 +1,0 @@
-# Enter your code here. Read input from STDIN. Print output to STDOUT
-
-res = {4: 19316, 3: 1301 , 5: 443839, 6: 548834}
-print(res[int(input())])

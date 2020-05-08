@@ -1,5 +1,0 @@
-a = input()
-n = set(map(int,input().strip().split()))
-a = input()
-b = set(map(int,input().strip().split()))
-print(len(n | b))
