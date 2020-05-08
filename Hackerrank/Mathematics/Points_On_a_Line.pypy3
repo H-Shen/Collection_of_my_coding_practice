@@ -1,0 +1,7 @@
+def a(L):
+    return (len(set([L[x][0] for x in range(len(L))])) == 1 or len(set([L[x][1] for x in range(len(L))])) == 1)
+
+result = []
+for i in range(int(input())):
+    result.append(list(map(int,input().split())))
+print('YES') if a(result) else print('NO')

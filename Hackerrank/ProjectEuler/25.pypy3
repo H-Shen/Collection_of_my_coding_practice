@@ -1,0 +1,21 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+def fib():
+    yield [1, 1]
+    yield [1, 1]
+    a, b, item = 1, 1, 2
+    while 1:
+        item += 1
+        a, b = b, a + b
+        yield [len(str(b)), item]
+        
+table = {}
+gen = fib()
+while not 5000 in table:
+    current = next(gen)
+    k = current[0]
+    if not k in table:
+        table[k] = current[1]
+        
+for i in range(int(input())):
+    print(table[int(input())])

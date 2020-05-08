@@ -1,0 +1,10 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+MOD = 10000000000
+s = 0
+
+N = int(input())
+for i in range(1, N + 1):
+    s += pow(i, i, MOD)
+    
+print(s % MOD)

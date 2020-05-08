@@ -1,0 +1,60 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+from functools import reduce
+
+def multiMul(L):
+    return reduce(lambda x, y: x * y, L)
+
+def arrayPrint(arr, MAX, flag=True):
+    
+    newMax = MAX
+    n = 20
+    result = []
+    a = [['a'] * (n * 2 - 1) for i in range(n * 2 - 1)]
+
+    if flag == False:
+        arr = [i[::-1] for i in arr]
+    
+    for i in range(n):
+        for j in range(n):
+            a[i][i + j] = arr[i][j]
+
+
+    for i in range(3, n * 2 - 1 - 3):
+        L = []
+        for j in range(n * 2 - 1):
+            current = a[j][i]
+            if current != 'a':
+                L.append(current)
+        result.append(L)
+
+    for i in range(33):
+        current_len = len(result[i])
+        current = max([multiMul(result[i][j: j + 4]) for j in range(current_len)])
+        if newMax < current:
+            newMax = current
+            
+    return newMax
+
+
+import sys
+grid = []
+for grid_i in range(20):
+   grid_t = [int(grid_temp) for grid_temp in input().strip().split(' ')]
+   grid.append(grid_t)
+   
+MAX = 0
+for i in range(20):
+    current = max([multiMul(grid[i][j: j + 4]) for j in range(17)])
+    if MAX < current:
+        MAX = current
+        
+mirrorGrid = list(zip(*grid))
+for i in range(20):
+    current = max([multiMul(mirrorGrid[i][j: j + 4]) for j in range(17)])
+    if MAX < current:
+        MAX = current
+        
+MAX = arrayPrint(grid, MAX, flag=True)
+MAX = arrayPrint(grid, MAX, flag=False)
+print(MAX)

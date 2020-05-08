@@ -1,0 +1,5 @@
+result = list()
+for i in range(int(input())):
+    result.append(input())
+for j in range(int(input())):
+    print(result.count(input()))

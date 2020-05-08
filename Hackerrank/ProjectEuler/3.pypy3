@@ -1,0 +1,34 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+result = list()
+
+t = int(input().strip())
+for a0 in range(t):
+    n = int(input().strip())
+    if n % 2 == 0:
+        lastFactor = 2
+        n = n // 2
+        while n % 2 == 0:
+            n = n // 2
+    
+    else:
+        lastFactor = 1
+    
+    factor = 3
+    maxFactor = int(n ** (1 / 2))
+    while n > 1 and factor <= maxFactor:
+        if n % factor == 0:
+            n = n // factor
+            lastFactor = factor
+            while n % factor == 0:
+                n = n // factor
+            maxFactor = int(n ** (1 / 2))
+        factor += 2
+    
+    if n == 1:
+        result.append(lastFactor)
+    else:
+        result.append(n)
+    
+for i in range(len(result)):
+    print(result[i])

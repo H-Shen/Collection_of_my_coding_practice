@@ -1,0 +1,14 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+t = int(input().strip())
+for a0 in range(t):
+    n = int(input().strip())
+    a,b,S = 1,2,2
+    while 1:
+        c =  b * 3 + 2 * a
+        if c >= n:
+            break
+        S += c        
+        a = b * 2 + a
+        b = c
+    print(S)
