@@ -163,12 +163,11 @@ namespace Floyd {
     void init(int n) {
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
-                if (i == j) {
-                    d[i][j] = 0;
-                } else {
-                    d[i][j] = INF;
-                }
+                d[i][j] = INF;
             }
+        }
+        for (int i = 0; i < n; ++i) {
+            d[i][i] = 0;
         }
     }
     void process(int n) {
@@ -485,6 +484,12 @@ struct custom_hash {
     size_t operator()(uint64_t x) const {
         static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
         return splitmix64(x + FIXED_RANDOM);
+    }
+    // For a pair of integers
+    size_t operator()(pair<uint64_t, uint64_t> x) const {
+        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+        return splitmix64(x.first + FIXED_RANDOM) ^
+               (splitmix64(x.second + FIXED_RANDOM) >> 1);
     }
 };
 gp_hash_table<int, pair<int, int>, custom_hash> my_hash_table;
