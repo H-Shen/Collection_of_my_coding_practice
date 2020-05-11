@@ -458,6 +458,14 @@ ll modpow(ll a, ll p, ll M) {
     return r;
 }
 
+// O(1) modulo mul
+inline static 
+ll modmul(ll a, ll b, ll m) {
+    a = (a % m + m) % m;
+    b = (b % m + m) % m;
+    return ((a * b - static_cast<ll>(static_cast<long double>(a) / m * b) * m) %
+            m + m) % m;
+}
 
 // A way to hash fixed length array
 constexpr int MAXLENGTH = 26;
@@ -530,6 +538,27 @@ template<typename T, typename ... Args>
 inline constexpr static
 T my_min(const T& x, const Args& ... args) {
     return my_min(x, my_min(args...));
+}
+
+// Reference:
+// https://cs.uwaterloo.ca/~m32rober/rsqrt.pdf
+// http://www.lomont.org/papers/2003/InvSqrt.pdf
+//
+// FAST INVERSE SQUARE ROOT in long double
+inline static
+double inv_sqrt64(double n) {
+    double x2 = n * 0.5;
+    double y = n;
+    uint64_t i = *(uint64_t *)&y;
+    i = 0x5fe6eb50c7b537a9 - (i >> 1);
+    y = *(double *) &i;
+
+    // add more Newton iterations if you wanna improve the accuracy
+    y = y * (1.5 - (x2 * y * y));
+    y = y * (1.5 - (x2 * y * y));
+    //y = y * (1.5 - (x2 * y * y));
+    //y = y * (1.5 - (x2 * y * y));
+    return y;
 }
 
 int main() {
