@@ -385,11 +385,9 @@ quickMatrixPower(std::vector<std::vector<T> > A, T power, T m) {
     }
     // log(n)
     while (power > 0) {
-        // If n is odd.
         if (power & 1) {
             res = matrixMul(res, A, m);
         }
-        // If n is even.
         A = matrixMul(A, A, m);
         power >>= 1;
     }
@@ -466,6 +464,11 @@ ll modmul(ll a, ll b, ll m) {
     return ((a * b - static_cast<ll>(static_cast<long double>(a) / m * b) * m) %
             m + m) % m;
 }
+
+// a % p = a - floor(a / p) * p
+// For a^b % p:
+// If p is prime: a^b % p = a^(b % (p-1)) % p
+// Otherwise: a^b % p = a^(b % phi(p) + phi(p)) % p
 
 // A way to hash fixed length array
 constexpr int MAXLENGTH = 26;
