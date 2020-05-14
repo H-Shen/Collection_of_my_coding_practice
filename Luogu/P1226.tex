@@ -1,0 +1,211 @@
+\documentclass[11pt, letterpaper]{article}
+\usepackage{amsmath,amsfonts}
+\usepackage{mathtools}
+\usepackage{fullpage}
+\usepackage{tikz,graphicx}
+\usetikzlibrary{automata, positioning, arrows, shapes}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+
+% Use listings to insert the cpp code
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+     language=C++,
+     aboveskip=3mm,
+     belowskip=3mm,
+     showstringspaces=false,
+     columns=flexible,
+     basicstyle = \ttfamily\small,
+     numbers=left,
+     numberstyle=\tiny\color{gray},
+     keywordstyle=\color{blue},
+     commentstyle=\color{dkgreen},
+     stringstyle=\color{mauve},
+     breaklines=true,
+     breakatwhitespace=true,
+     tabsize=3
+}
+
+
+\begin{document}
+
+\title{Luogu P1226 \\ Solution}
+\date{}
+
+\maketitle
+
+% Put the problem here
+\textbf{Problem. }Given three integers $b, p, k$, query $b^{p}\bmod k$, where $0 \leq b, p < 2^{32}$ and $1 \leq k \leq 2^{32}$.\\\\
+% Put the solution here
+\textbf{Solution. }Since there is only one case, just use quick modular power to obtain the answer in $\mathcal{O}(\log k)$. But here we are going to talk about another technique. That is, suppose there are $5 \times 10^{7}$ cases to test with different values of $p$ and we also suppose $k$ is a constant prime, while other restrictions are not changed. \\In that case, we are going to use modular power to obtain $a^{n}\bmod{m}$ with $\Theta(\lceil \sqrt{m} \rceil)$
+pre-process and $\mathcal{O}(1)$ query for different $n$.\\\\
+\emph{Precondition: }
+\begin{itemize}
+\item $a$ and $m$ are constants.
+\item $m$ is a prime.
+\end{itemize}
+\emph{Descriptions: }We let $k = \lceil \sqrt{m} \rceil$, then we can pre-calculate all values below in $\Theta(k)$
+time:
+\begin{align*}
+p_{0}   &=  1 \bmod m \\
+p_{1}   &=  a \bmod m\\
+p_{2}   &= a^{2} \bmod m\\
+& \vdots \\
+p_{k-1} &= a^{k-1} \bmod m\\
+p_{k}   &= a^{k} \bmod m
+\end{align*}
+And
+\begin{align*}
+q_{0}   &=  1 \bmod m\\
+q_{1}   &= a^{k} \bmod m\\
+q_{2}   &= a^{2k} \bmod m\\
+& \vdots \\
+q_{k-1} &= a^{(k-1)k} \bmod m\\
+q_{k}   &= a^{k \cdot k} \bmod m
+\end{align*}
+Where we can obtain $p_{0}, p_{1}, \cdots , p_{k-1}, p_{k}$ and $q_{0}, q_{1}, \cdots , q_{k-1}, q_{k}$ by using recurrence relations:
+
+\[
+p_{i} =
+\begin{cases}
+    ap_{i-1} \bmod m & \text{if $i > 0$} \\
+    1 \bmod m & \text{if $i = 0$}
+\end{cases}
+\]
+
+\[
+q_{i} =
+\begin{cases}
+    a^{k}q_{i-1} \bmod m & \text{if $i > 0$} \\
+    1 \bmod m & \text{if $i = 0$}
+\end{cases}
+\]
+
+Since $m$ is a prime, $a^{n}\bmod{m} = a^{n \bmod (m-1)}\bmod{m}$ due to Fermat's little theorem. Thus for each $n$ given, we suppose $n^{\prime}$ is the result of  $n \bmod (m-1)$, and we can also suppose that $n^{\prime}=xk+y$, then $x=n^{\prime} / k$ and $y=n^{\prime} \bmod k$, And we have
+
+
+\begin{equation}\label{eq1}
+\begin{split}
+a^{n}\bmod{m}      & = a^{n \bmod (m-1)}\bmod{m} \\
+                  & = a^{n^{\prime}}\bmod{m} \\
+                  & = a^{xk+y}\bmod{m} \\
+                  & = a^{xk}a^{y}\bmod{m} \\
+                  & = (a^{xk} \bmod m)(a^{y} \bmod m) \bmod m \\
+                  & = q_{x}p_{y}\bmod{m} \\
+\end{split}
+\end{equation}
+Since we can do $q_{x}p_{y}\bmod{m}$ in $\mathcal{O}(1)$, we can solve the problem with the time complexity of $\mathcal{O}(\sqrt{m} + n)$.
+Notice that if $m$ is not a prime, we can also use the conclusion below to process $n$:
+
+\[
+a^n\equiv
+\begin{cases}
+a^{n\bmod\varphi(m)},\,&\gcd(a,\,m)=1\\
+a^n,&\gcd(a,\,m)\ne1,\,n<\varphi(m)\\
+a^{n\bmod\varphi(m)+\varphi(m)},&\gcd(a,\,m)\ne1,\,n\ge\varphi(m)
+\end{cases}
+\pmod m
+\]
+Thus we can use $n \bmod \varphi(m)$ instead of $n$.
+Now we wrap the algorithm with a tester in \emph{Cpp} as below:
+
+\begin{lstlisting}[language=C++]
+#include <bits/extc++.h>
+
+using namespace std;
+using namespace __gnu_pbds;
+using ll = long long;
+
+constexpr ll MOD = 1000000007;
+
+namespace QuickModularPowerWithPreprocess {
+    // all variables
+    ll k;
+    vector<ll> p;
+    vector<ll> q;
+
+    // O(1) modulo mul to calculate a^b mod m
+    inline static
+    ll modmul(ll a, ll b, ll m) {
+        a = (a % m + m) % m;
+        b = (b % m + m) % m;
+        return ((a * b -
+                 static_cast<ll>(static_cast<long double>(a) / m * b) * m) %
+                m + m) % m;
+    }
+
+    // Preprocess
+    inline static
+    void init(ll a, ll m) {
+        k = ceil(sqrt(static_cast<double>(m)));
+        vector<ll>().swap(p);
+        vector<ll>().swap(q);
+
+        p.resize(k + 1);
+        p.at(0) = 1 % m;
+        for (int i = 1; i <= k; ++i) {
+            p.at(i) = modmul(a, p.at(i - 1), m);
+        }
+        q.resize(k + 1);
+        q.at(0) = 1 % m;
+        for (int i = 1; i <= k; ++i) {
+            // q[i] = a^k * q_{i-1} mod m = p.at(k) * q_{i-1} mod m
+            q.at(i) = modmul(p.at(k), q.at(i - 1), m);
+        }
+    }
+
+    // Query in O(1)
+    inline static
+    ll query(ll n) {
+        ll n_prime = n % (MOD - 1);
+        ll x = n_prime / k;
+        ll y = n_prime % k;
+        return modmul(q.at(x), p.at(y), MOD);
+    }
+}
+
+namespace Tester {
+    inline static
+    ll modpow(ll a, ll n, ll M = MOD) {
+        if (M == 1) return 0;
+        ll r;
+        for (r = 1, a %= M; n; a = (a * a) % M, n >>= 1)
+            if (n % 2)
+                r = (r * a) % M;
+        return r;
+    }
+
+    auto get_random_n = []() {
+        static ll lower_bound = 1;
+        static ll upper_bound = 1000000000000000000;
+        static random_device dev;
+        static mt19937 random_generator(dev());
+        static uniform_int_distribution dist(lower_bound, upper_bound);
+        return dist(random_generator);
+    };
+}
+
+int main() {
+
+    int t = 10000000;
+    ll a = 1147483648;
+    ll b;
+    // init
+    QuickModularPowerWithPreprocess::init(a, MOD);
+    while (t--) {
+        b = Tester::get_random_n();
+        assert(QuickModularPowerWithPreprocess::query(b) ==
+               Tester::modpow(a, b, MOD));
+    }
+    return 0;
+}
+\end{lstlisting}
+
+\end{document}
