@@ -13,11 +13,11 @@ using Trie = trie<T, null_type, less<>, pat_trie_tag, trie_prefix_search_node_up
 
 // DSU: Union_Find_Set
 // Complexity: O (a(n)) per operation. Note: O (log n) if one of
-// union-by-rank or path compression is omitted
+// union-by-size or path compression is omitted
 // a(n) is reverse Ackermann function
 namespace DSU {
-    // father[x] is the father of x
-    // Size[x] os the rank, rank is the height of tree without path compression
+    // father[x]: the father of x
+    // Size[x]:  the rank, rank is the size of the tree whose root is x
     vector<int> father;
     vector<int> Size;
     // iniitalization
