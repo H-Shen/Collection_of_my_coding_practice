@@ -1,0 +1,289 @@
+\documentclass[11pt,
+solution
+]{ucalgaryassignment}
+
+\usepackage[american]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{xspace,enumerate}
+\usepackage{privmath}
+\usepackage{theorem}
+\usepackage{graphicx}
+\usepackage{srcltx}
+\usepackage{algpseudocode}
+\usepackage{fancyvrb}
+
+\course{CPSC 413}
+\hwno{2}
+\hwdate{\today}
+\duedate{5.~June 2020, \textbf{11:59pm}}
+%\worth{15\%}
+
+
+\usepackage{mdwlist}
+\newlength{\prblmwdth}\settowidth{\prblmwdth}{\textbf{Output:}{\ }}
+\newenvironment{problemdescript}{%
+\begin{basedescript}{\def\makelabel##1{\textbf{##1}}\desclabelwidth{\prblmwdth}\desclabelstyle{\pushlabel}}}{%
+\end{basedescript}}
+
+
+\def\bef{\mathrm{before}}
+\def\aft{\mathrm{after}}
+
+\def\sequence#1#2{\dsequence{#1}{1}{#2}}
+\def\dsequence#1#2#3{#1_{#2}, \ldots, #1_{#3}}
+\newtheorem{fact}{Fact}
+\def\imax{$\texttt{S}_{\max}$}
+\def\iprevmax{previous\_$\texttt{S}_{\max}$}
+\def\deleted{\texttt{covered}}
+\def\infinity{$\infty$}
+
+
+\newcommand{\markingnotes}[1]{}
+
+\begin{document}
+
+
+
+\section{Safe by Committee [6 marks]}
+
+In the Safety Committee Problem we have a bunch of shifts $SHIFTS$. Each shift $S \in SHIFTS$ is worked by a unique employee and has a start time $s(S)$ [also known as a left endpoint] and an end time $f(S)$ [also known as a right endpoint] ($s(S) < f(S)$) which often overlaps with other employees working at the same time. We want to designate a subset $SHIFTS_{comm} \subseteq SHIFTS$ of those shifts to be part of a safety committee. The goal is to minimize the honorarium we pay to every employee in the committee. So we want to select a committee that is as small as possible yet still covers our butt while ensuring that at all times one of the committee shifts overlaps every shift of an employee not on the committee.
+
+Below is pseudo-code for a correct  greedy algorithm that solves the Safety Committee Problem. The main idea of the pseudo-code is to work its way through the day from earlier to later finding one committee member at a time. This committee member will be $S_{max}$. Once a committee member is identified all shifts covered by it are marked covered. The goal to determine a committee member is to find a shift which ends as late as possible while still adding safety coverage to the earliest shifts not yet covered. Once we reach the limit in our exploration we choose this shift to be on the committee and mark everything it covers as covered and continue on the next one (Note, if while looping on the next one we run into shifts that will be covered by the last committee member completely we automatically note them as covered and skip consideration of them as a committee member).
+
+\begin{Verbatim}[commandchars=\\\{\}]  
+  define produce_safety_committee(array_of_shifts):
+      \imax = none           # where s(none) = f(none) = -\infinity
+      \iprevmax = none
+      
+      list_current = empty list
+      all_endpoints = all shift (left/right) endpoints, sorted in increasing order 
+      
+      for endpoint p in all_endpoints:
+          let S be the shift to which p belongs
+          if p is a left endpoint:
+              if f(S) > f(\imax)
+                  set \imax to S 
+              #
+              # Shifts starting before f(\iprevmax) are already covered.
+              # so we don't need to worry about covering them.
+              #  
+              if p < f(\iprevmax):
+                  mark S as \deleted
+              else:
+                  add S to list_current
+          
+          else if p is a right end point and not marked as \deleted:
+              \iprevmax = \imax
+              add \imax to the committee
+              mark all shifts from list_current as \deleted
+              list_current = empty list
+\end{Verbatim}
+
+In this question you will complete a proof of correctness of this algorithm.
+
+\subsection{Part 1 [2 marks of 6]}
+
+Let $\sequence Sk$ be the set  of shifts returned by our algorithm. Assume
+without  loss of  generality that  $\sequence Sk$  is sorted  by finishing
+times. We will  denote the starting and finishing times  of shift $S_j$ by
+$s(S_j)$ and $f(S_j)$ respectively. We  first prove that $\sequence Sk$ is
+a valid safety committee, by proving that:
+
+\begin{fact}
+If $S$ is  a shift such that  $s(S) \le f(S_j)$, then $S$  is overlapped by one of
+$\sequence Sj$.
+\end{fact}
+
+\textbf{Proof}: The proof is by induction on $j$. 
+
+Base Case: For $j = 1$, observe that \dots
+\textbf{FILL IN THIS PART}.
+
+
+Inductive Hypothesis:  Suppose now that every shift $S$ whose starting point is $s(S) \le f(S_j)$ is overlapped by  $\sequence  Sj$.  
+
+Consider  a  shift  $S$  such  that  $s(S)  \le   f(S_{j+1})$.
+\begin{itemize}
+\item If $s(S) \le f(S_j)$ then  \dots
+
+\textbf{FILL IN THIS PART}.
+
+\item Otherwise,  $S$ is a shift $f(S_j) < s(S) \leq f(S_{j+1})$ such that $\sequence  Sj$ does not overlap it. We need to show that $S_{j+1}$ overlaps $S$ to complete our proof. \dots
+
+\textbf{FILL IN THIS PART}.  
+
+\end{itemize}
+
+We have shown though induction that if $S$ is  a shift such that  $s(S) \le f(S_j)$, then $S$  overlaps one of
+$\sequence Sj$.
+
+\textbf{End Proof}
+
+\subsection{Part 2 [2 marks of 6]}
+
+ Let $\sequence Tm$ be the shifts in a smallest safety committee, sorted by
+increasing finishing time. Our algorithm returns a complete safety
+committee $k \ge m$, as we could have the smallest solution or it is bigger.
+
+Next we will establish that
+
+\begin{fact}
+For $j =  1, \ldots, m$, $f(T_j) \le f(S_j)$.
+\end{fact}
+
+\textbf{Proof}: The proof is by induction on $j$. 
+
+Base Case: This is clear  for $j = 1$, because  \dots
+
+\textbf{FILL IN THIS PART}
+
+Inductive Hypothesis: Suppose now  that the statement is true  for $S_j$ and $T_j$. 
+
+Consider $S_{j+1}$ and  $T_{j+1}$. Let  $S$ be  the shift  with the  earliest finishing  time
+amongst those that start after $f(S_j)$.
+
+\dots
+\textbf{FILL IN THIS PART}
+
+
+
+Hence $f(T_{j+1}) \le f(S_{j+1})$.
+
+\textbf{End Proof}
+
+
+\subsection{Part 3 [2 marks of 6]}
+
+ In order to prove that $k \le m$ we only need  to prove that every shift overlaps  an element of $\sequence
+   Sm$. Proof by contradiction: Indeed, if there were a shift  $S$ that does not overlap any of them, then \dots
+
+\textbf{FILL IN THIS PART}
+
+This is  clearly impossible,  since in  that case  none of  $\sequence Tm$ would overlap with $S$. By contradiction then there is no shift $s(S) > f(S_m)$ that isn't overlapped which means  $k \le m$. Combined with earlier we can now say $k==m$, AKA our algorithm finds a minimal size committee.
+
+
+
+\section{Recurrently [6 marks]}
+
+\subsection{Sort Of [3 marks of 6]} 
+
+Consider the following sorting algorithm:
+
+\begin{Verbatim}[commandchars=\\\{\}]  
+define meh_sort(A, first, last):
+  if A[first] < A[last]:
+      exchange A[first] and A[last]
+
+  if (first + 1 < last):
+    mid = (last - first + 1) // 3     # integer division
+    meh_sort(A, first + mid, last)  # sort last two-thirds
+    meh_sort(A, first, last - mid)  # sort first two-thirds
+    meh_sort(A, first + mid, last)  # sort last two-thirds again
+\end{Verbatim}
+
+Write a recurrence relation  that describes the worst-case running time
+   of function  \verb~meh_sort~ in terms of  $n$, where $n =  \texttt{last} -
+      \texttt{first} + 1$. You can ignore floors and ceilings.
+
+
+\subsection{Not At All [3 marks of 6]} 
+
+Consider now this even less useful algorithm:
+
+\begin{Verbatim}[commandchars=\\\{\}]  
+define not_useful(A, first, last):
+  if last < first + 4:
+      x = A[last] - A[first]
+  else:
+    x = not_useful(A, first+1, last-1) - not_useful(A, first+2, last-2)
+  return x
+\end{Verbatim}
+
+Write a recurrence  relation that describes the worst-case  running time of
+function  \verb~not_useful~  in  terms  of  $n$, where  $n  =  \texttt{last}  -
+   \texttt{first} + 1$.
+
+
+
+\section{Test Test Testing [6 marks]}
+
+Consider a sequence $A[1..n]$ of integers.
+An \emph{equivalence test} is an operation that takes as input two indices $i,j\in\{1,\dots,n\}$ and returns ``EQUAL'' if $A[i]=A[j]$, and ``NOT EQUAL'', otherwise.
+
+A \emph{majority element} in $A$ is an index $i$ such that the value of $A[i]$ appears more than $n/2$ times in $A$.
+Using only equivalence tests, we want to find out, whether there is a majority element $A[i]$, and if yes, determine its index $i$. Using only equivalence tests means you cannot sort the input as you can't do a comparison or order, just equivalence. You can access the size of input of course.
+
+Design a Divide and Conquer algorithm that solves this problem.
+Specifically, for any array $A[]$ of $n$ integers, if there is an integer $a$ and a set $I\subseteq\{1,\dots,n\}$, $|I|>n/2$, s.t.\ $A[i]=a$ for all $i\in I$, then your algorithm should output an arbitrary index $i\in I$. 
+If there is no such set $I$, the algorithm should output $\infty$.
+
+Your algorithm can access the input only through equivalence tests, and it must use $o(n^2)$ of them.
+For full marks, your algorithm should need at most $O(n\log n)$ equivalence tests.
+
+
+Describe your Divide and Conquer algorithm, argue why it is correct and analyze its running time.
+For your analysis, you are allowed to use without proof the result of the ``general recurrence" from class (Section 5.3).
+Describe in detail which data structures you are using to achieve the claimed running time.
+Provide pseudo-code for your algorithm in addition to a high level plain text explanation.
+
+\emph{Hint:} 
+Consider the following, simpler \emph{majority verification problem}.
+The input is an array $A[]$ and an index $i$, and the output is ``yes'', if $A[i]$ is a majority element, and ``no'' if it is not.
+Design a simple algorithm that solves the majority verification problem using $O(n)$ equivalence tests.
+Use this algorithm as a sub-routine in your Divide and Conquer algorithm for the majority element problem, to determine which of the solutions for the sub-problems is also a solution for the original problem.
+
+
+
+\section{Got Stones [6 marks]}
+
+Recently, we've researched a new currency, based on grouping various numbers of stones together.
+Each number $k$ of stones is assigned a value $val(k)$, for some non-decreasing function $val$.
+The researchers realized, that by splitting a fixed number of stones into smaller groups, one can obtain different sums of values for all groups combined. 
+For example, consider the value-function in the table below.
+If we split 8 stones into three groups of 1, 3, and 4 stones, respectively, then the total value is $val(1)+val(3)+val(4)=1+8+9=18$.
+On the other hand, splitting the 8 stones into two groups of 2 and 6 stones, respectively, yields a total value of $val(2)+val(6)=5+17=22$.
+
+\begin{center}
+  \begin{tabular}{l||c|c|c|c|c|c|c|c}
+    number of stones & 1 & 2  & 3  & 4  & 5 & 6 & 7 & 8 \\ 
+    \hline 
+    value           & 1  & 5 & 8  & 9 & 10 & 17 & 17 & 20 \\ 
+  \end{tabular} 
+\end{center}
+
+The researchers are interested in finding an efficient method of grouping a given number of stones, so that the total value of all groups combined is as large as possible.
+Can you help them?
+
+The input for the Stone Grouping Problem is a positive integer $n$ and an array $val[]$ of length $n$ that assigns each number $i$ of stones a value $val[i]$ such that $val[i+1]\geq val[i]$, for $i\in\set{1,\dots,n-1}$.
+A solution for this problem is a sequence $s_1,\dots,s_k$ of positive integers, such that $s_1+\dots+s_k=n$.
+The value of this solution is $val[s_1]+\dots+val[s_k]$.
+An optimal solution is one of maximal value.
+
+\subsection{Riddles me Stones [1 mark of 6]}
+  For the input below, give an optimal solution and its value.
+  \begin{center}
+    $n=7$; \quad
+    \begin{tabular}{l||c|c|c|c|c|c|c|c}
+      $i$ & 1 & 2  & 3  & 4  & 5 & 6 & 7 \\ 
+      \hline 
+      $val[i]$ & 3  & 6 & 8  & 9 & 10 & 17 & 18 \\ 
+    \end{tabular} 
+  \end{center}
+\subsection{The Bell Stone [1 mark of 6]}
+  Give a Bellman Equation that describes the value of the optimal solution for any input to the Stone Grouping Problem.
+  Briefly explain why the Bellman Equation is correct.
+\subsection{42 Stones [2 marks of 6]}
+  Give a Dynamic Programming algorithm in pseudo-code that computes the \emph{value} of an optimal solution to the Stone Grouping Problem.
+  Your algorithm must be based on the Bellman Equation you designed in Part~(b), and have polynomial running time.  
+  For full marks its running time should be $O(n^2)$.
+  State the running time of your algorithm and briefly explain why your statement is correct.
+\subsection{Stone Tablets [2 marks of 6]}
+  Give an algorithm in pseudo-code that computes the optimal \emph{solution} to the Stone Grouping Problem.
+  Your algorithm can use as a sub-routine your algorithm from Part~(c).
+  It must have polynomial running time, and for full marks its running time should be $O(n^2)$.
+  State the running time of your algorithm and briefly explain why your statement is correct.
+  
+
+
+\end{document}
