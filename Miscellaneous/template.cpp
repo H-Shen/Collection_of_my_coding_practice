@@ -564,6 +564,186 @@ double inv_sqrt64(double n) {
     return y;
 }
 
+// A collection of containers and procedures that implements Tarjan's strongly
+// connected components algorithm. Assume that the node id starts from 1 and the
+// index of a strongly connected component (SCC) also starts from 1 Reference:
+// https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm#The_algorithm_in_pseudocode
+namespace SCC {
+
+    // adjacency list of the graph
+    unordered_map<int, unordered_set<int> > G;
+
+    int number_of_nodes; // number of nodes in the graph
+    int number_of_scc;            // number of strongly connected components
+    int current_timestamp;     // current timestamp
+    stack<int> s;   // A stack is used to store all nodes that may form a
+    // strongly connected component
+    vector<bool>
+            vis; // vis.at(id) flags if the node id is in the stack
+    vector<int> dfs_rank; // dfs_rank.at(id) numbers the nodes consecutively in
+    // the order in which they are discovered by DFS
+    vector<int> low_link; // low_link.at(id) represents the smallest node id of
+    // any node known to be reachable from id through
+    // id's DFS subtree, including id itself
+    vector<int> scc;      // scc.at(id) is the index of the strongly connected
+    // component that the node id belongs to
+    vector<int> size_of_scc; // size_of_scc.at(id) is the size of the strongly
+    // connected component whose index is id
+
+    // reset all containers
+    inline
+    void reset() {
+        G.clear();
+        stack<int>().swap(s);
+        vector<bool>().swap(vis);
+        vector<int>().swap(dfs_rank);
+        vector<int>().swap(low_link);
+        vector<int>().swap(scc);
+        vector<int>().swap(size_of_scc);
+    }
+
+    // Initialize all global variables in the namespace
+    inline
+    void init(int n) {
+        number_of_nodes = n;
+        number_of_scc = 0;
+        current_timestamp = 0;
+        // Give some flexibility of size of our containers since
+        // the node id/SCC id may not strictly start from 1, since the
+        // number of nodes in the assignment will not exceed 10001,
+        // the space complexity will not be a bottle-neck
+        int offset = 5;
+        vis.resize(number_of_nodes + offset, false);
+        dfs_rank.resize(number_of_nodes + offset, 0);
+        low_link.resize(number_of_nodes + offset, 0);
+        scc.resize(number_of_nodes + offset, 0);
+        size_of_scc.resize(number_of_nodes + offset, 0);
+    }
+
+    inline
+    void Tarjan(int u) { // u: the node id being processed
+        dfs_rank.at(u) = current_timestamp;
+        low_link.at(u) = current_timestamp;
+        ++current_timestamp;
+        s.push(u);
+        vis.at(u) = true;
+        for (const auto &v : G[u]) {
+            if (!dfs_rank[v]) {
+                Tarjan(v);
+                low_link.at(u) = min(low_link.at(u), low_link.at(v));
+            } else if (vis.at(v)) {
+                low_link.at(u) = min(low_link.at(u), dfs_rank.at(v));
+            }
+        }
+        if (low_link.at(u) == dfs_rank.at(u)) {
+            ++number_of_scc;
+            while (s.top() != u) {
+                int top_id = s.top();
+                // Paint top_id
+                s.pop();
+                scc.at(top_id) = number_of_scc;
+                ++size_of_scc.at(number_of_scc);
+                vis.at(top_id) = false;
+            }
+            // Paint u
+            s.pop();
+            scc.at(u) = number_of_scc;
+            ++size_of_scc.at(number_of_scc);
+            vis.at(u) = false;
+        }
+    }
+}
+
+// A collection of containers and procedures that implements the topological
+// sort using Kahn's algorithm
+namespace Toposort {
+    // adjacency list of the graph
+    unordered_map<int, unordered_set<int, custom_hash>, custom_hash> G;
+    int number_of_nodes;    // assume that the node id starts from 1
+    // the number of incoming edges of each node, should be calculated during
+    // the construction of the graph, not forget that the node id starts from 1
+    vector<int> in_degree;
+    vector<int> result; // store the result after toposort
+    void reset() {
+        G.clear();
+        vector<int>().swap(in_degree);
+        number_of_nodes = 0;
+        vector<int>().swap(result);
+    }
+
+    void init(int n) {
+        number_of_nodes = n;
+        in_degree.resize(n + 5);
+    }
+
+    // Main logic of Kahn's algorithm: O(|V|+|E|), return true if it does not
+    // have a cycle, otherwise false
+    bool Kahn() {
+        queue<int> q;
+        for (int i = 1; i <= number_of_nodes; ++i) {
+            if (in_degree.at(i) == 0) {
+                q.push(i);
+            }
+        }
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            result.emplace_back(u);
+            for (const auto &adj_v : G[u]) {
+                --in_degree.at(adj_v);
+                if (in_degree.at(adj_v) == 0) {
+                    q.push(adj_v);
+                }
+            }
+        }
+        return (static_cast<int>(result.size()) == number_of_nodes);
+    }
+
+    // Main logic of Kahn's algorithm but the output should be lexicographically
+    // smallest among all possible results after toposort: O(|V|log|V|+|E|)
+    bool Kahn_with_lexicographically_smallest() {
+        std::priority_queue<int, vector<int>, greater<> > q;
+        for (int i = 1; i <= number_of_nodes; ++i) {
+            if (in_degree.at(i) == 0) {
+                q.push(i);
+            }
+        }
+        while (!q.empty()) {
+            int u = q.top();
+            q.pop();
+            result.emplace_back(u);
+            for (const auto &adj_v : G[u]) {
+                --in_degree.at(adj_v);
+                if (in_degree.at(adj_v) == 0) {
+                    q.push(adj_v);
+                }
+            }
+        }
+        return (static_cast<int>(result.size()) == number_of_nodes);
+    }
+}
+
+void construct_the_graph() {
+    Toposort::init(6);
+    Toposort::G[6].insert(3);   ++Toposort::in_degree.at(3);
+    Toposort::G[6].insert(1);   ++Toposort::in_degree.at(1);
+    Toposort::G[5].insert(1);   ++Toposort::in_degree.at(1);
+    Toposort::G[5].insert(2);   ++Toposort::in_degree.at(2);
+    Toposort::G[3].insert(4);   ++Toposort::in_degree.at(4);
+    Toposort::G[4].insert(2);   ++Toposort::in_degree.at(2);
+}
+
+
+void test_for_toposort() {
+    construct_the_graph();
+    assert(Toposort::Kahn());
+    Toposort::reset();
+    construct_the_graph();
+    assert(Toposort::Kahn_with_lexicographically_smallest());
+    vector<int> result = {5,6,1,3,4,2};
+    assert(Toposort::result == result);
+}
+
 int main() {
 
     //freopen("/home/ugd/haohu.shen/cpsc/in", "r", stdin);
