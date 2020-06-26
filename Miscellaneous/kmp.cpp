@@ -10,7 +10,7 @@
 using namespace std;
 
 template<class T>
-vector<int> KMP(T const &Text, T const &Pattern) {
+vector<int> kmp(T const &Text, T const &Pattern) {
 
     vector<int> b(Pattern.size() + 1, -1);
     vector<int> matches;
@@ -45,7 +45,7 @@ char B[MAXN];
 int main() {
     scanf("%s", A);
     scanf("%s", B);
-    auto res = KMP(string(A), string(B));
+    auto res = kmp(string(A), string(B));
     if (res.empty()) {
         printf("-1");
     } else {
