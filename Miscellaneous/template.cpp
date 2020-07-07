@@ -744,6 +744,34 @@ void test_for_toposort() {
     assert(Toposort::result == result);
 }
 
+// Construction of a random antimagic-square from 1 to N * N
+vector<vector<int> > antimagic_square(int n) {
+    vector<vector<int> > res(n, vector<int>(n));
+    int end_value = n * n - n + 1;
+    int current_value = 1;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n - 1; ++j) {
+            res.at(i).at(j) = current_value;
+            ++current_value;
+        }
+        res.at(i).at(n - 1) = end_value;
+        ++end_value;
+    }
+    return res;
+}
+
+// Pre-calculate the sum of factors of each number from 1 to n
+vector<int> sum_of_factors(int n) {
+    int length = n + 5;
+    vector<int> result(length);  // result[k] = sum of factors of k
+    for (int i = 1; i < length; ++i) {
+        for (int j = 1; i * j < length; ++j) {
+            result.at(i * j) += i;  // add the factor i
+        }
+    }
+    return result;
+}
+
 int main() {
 
     //freopen("/home/ugd/haohu.shen/cpsc/in", "r", stdin);

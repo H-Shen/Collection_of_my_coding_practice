@@ -26,26 +26,32 @@
 #include <sys/stat.h>
 
 namespace IO {
-    template <typename T>
+    template<typename T>
     inline
-    void read(T& t) {
-        int n = 0; int c = getchar_unlocked(); t = 0;
+    void read(T &t) {
+        int n = 0;
+        int c = getchar_unlocked();
+        t = 0;
         while (!isdigit(c)) n |= c == '-', c = getchar_unlocked();
         while (isdigit(c)) t = t * 10 + c - 48, c = getchar_unlocked();
         if (n) t = -t;
     }
-    template <typename T, typename... Args>
+
+    template<typename T, typename... Args>
     inline
-    void read(T& t, Args&... args) {
-        read(t); read(args...);
+    void read(T &t, Args &... args) {
+        read(t);
+        read(args...);
     }
-    template <typename T>
+
+    template<typename T>
     inline void write(T x) {
         if (x < 0) x = -x, putchar_unlocked('-');
         if (x > 9) write(x / 10);
         putchar_unlocked(x % 10 + 48);
     }
-    template <typename T>
+
+    template<typename T>
     inline void writeln(T x) {
         write(x);
         putchar_unlocked('\n');
@@ -55,26 +61,32 @@ namespace IO {
 // Use getchar()/putchar() instead
 // For test only
 namespace Temp {
-    template <typename T>
+    template<typename T>
     inline
-    void read(T& t) {
-        int n = 0; int c = getchar(); t = 0;
+    void read(T &t) {
+        int n = 0;
+        int c = getchar();
+        t = 0;
         while (!isdigit(c)) n |= c == '-', c = getchar();
         while (isdigit(c)) t = t * 10 + c - 48, c = getchar();
         if (n) t = -t;
     }
-    template <typename T, typename... Args>
+
+    template<typename T, typename... Args>
     inline
-    void read(T& t, Args&... args) {
-        read(t); read(args...);
+    void read(T &t, Args &... args) {
+        read(t);
+        read(args...);
     }
-    template <typename T>
+
+    template<typename T>
     inline void write(T x) {
         if (x < 0) x = -x, putchar('-');
         if (x > 9) write(x / 10);
         putchar(x % 10 + 48);
     }
-    template <typename T>
+
+    template<typename T>
     inline void writeln(T x) {
         write(x);
         putchar('\n');
@@ -84,59 +96,68 @@ namespace Temp {
 namespace FastIO {
 
     static constexpr int MAXSIZE = 1024 * 1024;
-    static char inputBuffer[MAXSIZE];
-    static char *ptr1 = inputBuffer + MAXSIZE;
-    static char *ptr2 = inputBuffer + MAXSIZE;
-    static char outputBuffer[MAXSIZE];
-    static char *ptr = outputBuffer;
+    static char input_buffer[MAXSIZE];
+    static char *ptr1 = input_buffer + MAXSIZE;
+    static char *ptr2 = input_buffer + MAXSIZE;
+    static char output_buffer[MAXSIZE];
+    static char *ptr = output_buffer;
 
     inline static
     char getchar() {
         if (ptr1 == ptr2) {
-            ptr1 = inputBuffer;
-            ptr2 = inputBuffer + fread(inputBuffer, 1, MAXSIZE, stdin);
+            ptr1 = input_buffer;
+            ptr2 = input_buffer + fread(input_buffer, 1, MAXSIZE, stdin);
             if (ptr1 == ptr2) {
                 return EOF;
             }
         }
         return *ptr1++;
     }
-    template <typename T>
+
+    template<typename T>
     inline
-    void read(T& t) {
-        int n = 0; int c = getchar(); t = 0;
+    void read(T &t) {
+        int n = 0;
+        int c = getchar();
+        t = 0;
         while (!isdigit(c)) n |= c == '-', c = getchar();
         while (isdigit(c)) t = t * 10 + c - 48, c = getchar();
         if (n) t = -t;
     }
-    template <typename T, typename... Args>
+
+    template<typename T, typename... Args>
     inline
-    void read(T& t, Args&... args) {
-        read(t); read(args...);
+    void read(T &t, Args &... args) {
+        read(t);
+        read(args...);
     }
+
     inline static
     void putchar(const char &ch) {
-        if (ptr - outputBuffer == MAXSIZE) {
-            fwrite(outputBuffer, 1, MAXSIZE, stdout);
-            ptr = outputBuffer;
+        if (ptr - output_buffer == MAXSIZE) {
+            fwrite(output_buffer, 1, MAXSIZE, stdout);
+            ptr = output_buffer;
         }
         *ptr++ = ch;
     }
-    template <typename T>
+
+    template<typename T>
     inline void write(T x) {
         if (x < 0) x = -x, putchar('-');
         if (x > 9) write(x / 10);
         putchar(x % 10 + 48);
     }
+
     template<typename T>
     inline static void writeln(T x) {
         write(x);
         putchar('\n');
     }
+
     // Execute this function after using write() on all numbers for output.
     inline
     void flush() {
-        fwrite(outputBuffer, 1, ptr - outputBuffer, stdout);
+        fwrite(output_buffer, 1, ptr - output_buffer, stdout);
     }
 }
 
@@ -145,82 +166,96 @@ namespace FastIO {
 namespace FasterIO {
 
     static constexpr int MAXSIZE = 1024 * 1024;
-    static char* inputBuffer = nullptr;
-    static char* ptr0;
-    static char outputBuffer[MAXSIZE];
-    static char *ptr = outputBuffer;
-    int Size;
+    static char *input_buffer = nullptr;
+    static char *ptr0;
+    static char output_buffer[MAXSIZE];
+    static char *ptr = output_buffer;
+    int total_size;
 
     inline static
     void init() {
-        struct stat sb; // not initialize it to save time
+        struct stat sb; // dont initialize it in order to save time
         fstat(fileno_unlocked(stdin), &sb);
-        Size = sb.st_size;
-        inputBuffer = reinterpret_cast<char *>(mmap(nullptr, Size, PROT_READ, MAP_PRIVATE, fileno_unlocked(stdin), 0));
-        ptr0 = inputBuffer;
+        total_size = sb.st_size;
+        input_buffer = reinterpret_cast<char *>(mmap(nullptr, total_size,
+                                                     PROT_READ, MAP_PRIVATE,
+                                                     fileno_unlocked(stdin),
+                                                     0));
+        ptr0 = input_buffer;
     }
+
     inline static
     char getchar() {
-        if (ptr0 == inputBuffer + Size || *ptr0 == EOF) return EOF;
+        if (ptr0 == input_buffer + total_size || *ptr0 == EOF) return EOF;
         return *ptr0++;
     }
+
     template<typename T>
     inline static
-    void read(T& t) {
-        int n = 0; int c = getchar(); t = 0;
+    void read(T &t) {
+        int n = 0;
+        int c = getchar();
+        t = 0;
         while (!isdigit(c)) n |= c == '-', c = getchar();
         while (isdigit(c)) t = t * 10 + c - 48, c = getchar();
         if (n) t = -t;
     }
-    template <typename T, typename... Args>
+
+    template<typename T, typename... Args>
     inline
-    void read(T& t, Args&... args) {
-        read(t); read(args...);
+    void read(T &t, Args &... args) {
+        read(t);
+        read(args...);
     }
+
     inline static
     void putchar(const char &ch) {
-        if (ptr - outputBuffer == MAXSIZE) {
+        if (ptr - output_buffer == MAXSIZE) {
 #ifdef __linux__
-            fwrite_unlocked(outputBuffer, 1, MAXSIZE, stdout);
+            fwrite_unlocked(output_buffer, 1, MAXSIZE, stdout);
 #else
-            fwrite(outputBuffer, 1, MAXSIZE, stdout);
+            fwrite(output_buffer, 1, MAXSIZE, stdout);
 #endif
-            ptr = outputBuffer;
+            ptr = output_buffer;
         }
         *ptr++ = ch;
     }
-    template <typename T>
+
+    template<typename T>
     inline void write(T x) {
         if (x < 0) x = -x, putchar('-');
         if (x > 9) write(x / 10);
         putchar(x % 10 + 48);
     }
-    template <typename T>
+
+    template<typename T>
     inline void writeln(T x) {
         write(x);
         putchar('\n');
     }
+
     inline
     void flush() {
 #ifdef __linux__
-        fwrite_unlocked(outputBuffer, 1, ptr - outputBuffer, stdout);
+        fwrite_unlocked(output_buffer, 1, ptr - output_buffer, stdout);
 #else
-        fwrite(outputBuffer, 1, ptr - outputBuffer, stdout);
+        fwrite(output_buffer, 1, ptr - output_buffer, stdout);
 #endif
     }
 }
 
 inline static
-void createData(const size_t &dataSize, const std::string &fileName) {
+void create_data(const size_t &data_size, const std::string &file_name) {
 
     // Initialize a random number generator.
     std::random_device dev;
     std::mt19937 random_generator(dev());
-    std::uniform_int_distribution<int> dist(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
+    std::uniform_int_distribution<int> dist(std::numeric_limits<int>::min(),
+                                            std::numeric_limits<int>::max());
 
     // Create an empty file
     std::fstream file;
-    file.open(fileName, std::ios::out);
+    file.open(file_name, std::ios::out);
     if (!file) {
         std::cerr << "Failed to create the test file!" << std::endl;
         exit(-1);
@@ -228,175 +263,184 @@ void createData(const size_t &dataSize, const std::string &fileName) {
 
     // Write into a file
     std::ofstream myFile;
-    myFile.open(fileName);
-    for (size_t i = 0; i != dataSize; ++i) {
+    myFile.open(file_name);
+    for (size_t i = 0; i != data_size; ++i) {
         myFile << dist(random_generator) << '\n';
     }
     myFile.close();
 }
 
 inline static
-void readByFread(const size_t &dataSize, const std::string &fileName) {
+void read_by_fread(const size_t &data_size, const std::string &file_name) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
-    // Use getchar read from fileName
-    freopen(fileName.c_str(), "r", stdin);
+    // Use getchar read from file_name
+    freopen(file_name.c_str(), "r", stdin);
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         FastIO::read<int>(arr0[i]);
     }
     stop = std::chrono::steady_clock::now();
     elapsed_in_seconds = stop - start;
-    std::cout << "fread: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cout << "fread: " << elapsed_in_seconds.count() << " seconds"
+              << std::endl;
 }
 
 inline static
-void readByMmap(const size_t &dataSize, const std::string &fileName) {
+void read_by_mmap(const size_t &data_size, const std::string &file_name) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
-    // Use mmap read from fileName
-    freopen(fileName.c_str(), "r", stdin);
+    // Use mmap read from file_name
+    freopen(file_name.c_str(), "r", stdin);
     FasterIO::init();
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         FasterIO::read<int>(arr0[i]);
     }
     stop = std::chrono::steady_clock::now();
     elapsed_in_seconds = stop - start;
-    std::cout << "mmap: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cout << "mmap: " << elapsed_in_seconds.count() << " seconds"
+              << std::endl;
 }
 
 inline static
-void readByGetcharUnlocked(const size_t &dataSize, const std::string &fileName) {
+void
+read_by_getchar_unlocked(const size_t &data_size, const std::string &filename) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
-    // Use getchar read from fileName
-    freopen(fileName.c_str(), "r", stdin);
+    // Use getchar read from filename
+    freopen(filename.c_str(), "r", stdin);
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         IO::read(arr0[i]);
     }
     stop = std::chrono::steady_clock::now();
     elapsed_in_seconds = stop - start;
-    std::cout << "getchar unlocked: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cout << "getchar unlocked: " << elapsed_in_seconds.count()
+              << " seconds" << std::endl;
 
 }
 
 inline static
-void readByGetchar(const size_t &dataSize, const std::string &fileName) {
+void read_by_getchar(const size_t &data_size, const std::string &file_name) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
-    // Use getchar read from fileName
-    freopen(fileName.c_str(), "r", stdin);
+    // Use getchar read from file_name
+    freopen(file_name.c_str(), "r", stdin);
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         Temp::read(arr0[i]);
     }
     stop = std::chrono::steady_clock::now();
     elapsed_in_seconds = stop - start;
-    std::cout << "getchar: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cout << "getchar: " << elapsed_in_seconds.count() << " seconds"
+              << std::endl;
 
 }
 
 inline static
-void readByScanf(const size_t &dataSize, const std::string &fileName) {
+void read_by_scanf(const size_t &data_size, const std::string &file_name) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
-    // Use scanf read from fileName
-    freopen(fileName.c_str(), "r", stdin);
+    // Use scanf read from file_name
+    freopen(file_name.c_str(), "r", stdin);
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         scanf("%d", &arr0[i]);
     }
     stop = std::chrono::steady_clock::now();
     elapsed_in_seconds = stop - start;
-    std::cout << "scanf: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cout << "scanf: " << elapsed_in_seconds.count() << " seconds"
+              << std::endl;
 }
 
 inline static
-void readByCinWithoutSync(const size_t &dataSize, const std::string &fileName) {
+void read_by_cin_without_sync(const size_t &data_size,
+                              const std::string &file_name) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
-    // Use cin without sync read from fileName
+    // Use cin without sync read from file_name
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
 
-    freopen(fileName.c_str(), "r", stdin);
+    freopen(file_name.c_str(), "r", stdin);
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         std::cin >> arr0[i];
     }
     stop = std::chrono::steady_clock::now();
     elapsed_in_seconds = stop - start;
-    std::cout << "cin without sync: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cout << "cin without sync: " << elapsed_in_seconds.count()
+              << " seconds" << std::endl;
 }
 
 inline static
-void readByCin(const size_t &dataSize, const std::string &fileName) {
+void read_by_cin(const size_t &data_size, const std::string &file_name) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
-    // Use cin read from fileName
-    freopen(fileName.c_str(), "r", stdin);
+    // Use cin read from file_name
+    freopen(file_name.c_str(), "r", stdin);
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         std::cin >> arr0[i];
     }
     stop = std::chrono::steady_clock::now();
     elapsed_in_seconds = stop - start;
-    std::cout << "cin: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cout << "cin: " << elapsed_in_seconds.count() << " seconds"
+              << std::endl;
 }
 
 inline static
-void writeByFwriteUnlocked
-(const size_t &dataSize, const std::string &fileName) {
+void write_by_fwrite_unlocked
+        (const size_t &data_size, const std::string &file_name) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
-    // Fill arr0 with the data from fileName
-    freopen(fileName.c_str(), "r", stdin);
-    for (size_t i = 0; i != dataSize; ++i) {
+    // Fill arr0 with the data from file_name
+    freopen(file_name.c_str(), "r", stdin);
+    for (size_t i = 0; i != data_size; ++i) {
         scanf("%d", &arr0[i]);
     }
     fclose(stdin);
 
     // Create an empty file for output
-    const char *outputFile("testData.out");
+    const char *output_file("testData.out");
 
-    // Use FasterIO::write to write to outputFile
-    freopen(outputFile, "w", stdout);
+    // Use FasterIO::write to write to output_file
+    freopen(output_file, "w", stdout);
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         FasterIO::writeln(arr0[i]);
     }
     FasterIO::flush();
@@ -405,34 +449,35 @@ void writeByFwriteUnlocked
     fclose(stdout);
 
     // Since stdout is closed, we use stderr to print the result
-    std::cerr << "fwrite unlocked: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cerr << "fwrite unlocked: " << elapsed_in_seconds.count() << " seconds"
+              << std::endl;
 
     // Cleaning
-    std::remove(outputFile);
+    std::remove(output_file);
 }
 
 inline static
-void writeByFwrite(const size_t &dataSize, const std::string &fileName) {
+void write_by_fwrite(const size_t &data_size, const std::string &file_name) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
-    // Fill arr0 with the data from fileName
-    freopen(fileName.c_str(), "r", stdin);
-    for (size_t i = 0; i != dataSize; ++i) {
+    // Fill arr0 with the data from file_name
+    freopen(file_name.c_str(), "r", stdin);
+    for (size_t i = 0; i != data_size; ++i) {
         scanf("%d", &arr0[i]);
     }
     fclose(stdin);
 
     // Create an empty file for output
-    const char *outputFile("testData.out");
+    const char *output_file("testData.out");
 
-    // Use FastIO::write to write to outputFile
-    freopen(outputFile, "w", stdout);
+    // Use FastIO::write to write to output_file
+    freopen(output_file, "w", stdout);
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         FastIO::writeln(arr0[i]);
     }
     FastIO::flush();
@@ -441,34 +486,36 @@ void writeByFwrite(const size_t &dataSize, const std::string &fileName) {
     fclose(stdout);
 
     // Since stdout is closed, we use stderr to print the result
-    std::cerr << "fwrite: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cerr << "fwrite: " << elapsed_in_seconds.count() << " seconds"
+              << std::endl;
 
     // Cleaning
-    std::remove(outputFile);
+    std::remove(output_file);
 }
 
 inline static
-void writeByPutcharUnlocked(const size_t &dataSize, const std::string &fileName) {
+void write_by_putchar_unlocked(const size_t &data_size,
+                               const std::string &file_name) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
-    // Fill arr0 with the data from fileName
-    freopen(fileName.c_str(), "r", stdin);
-    for (size_t i = 0; i != dataSize; ++i) {
+    // Fill arr0 with the data from file_name
+    freopen(file_name.c_str(), "r", stdin);
+    for (size_t i = 0; i != data_size; ++i) {
         scanf("%d", &arr0[i]);
     }
     fclose(stdin);
 
     // Create an empty file for output
-    const char *outputFile("testData.out");
+    const char *output_file("testData.out");
 
-    // Use FastIO::writeInt write to outputFile
-    freopen(outputFile, "w", stdout);
+    // Use FastIO::writeInt write to output_file
+    freopen(output_file, "w", stdout);
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         IO::writeln(arr0[i]);
     }
     stop = std::chrono::steady_clock::now();
@@ -476,23 +523,24 @@ void writeByPutcharUnlocked(const size_t &dataSize, const std::string &fileName)
     fclose(stdout);
 
     // Since stdout is closed, we use stderr to print the result
-    std::cerr << "putchar unlocked: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cerr << "putchar unlocked: " << elapsed_in_seconds.count()
+              << " seconds" << std::endl;
 
     // Cleaning
-    std::remove(outputFile);
+    std::remove(output_file);
 }
 
 inline static
-void writeByPutchar(const size_t &dataSize, const std::string &fileName) {
+void write_by_putchar(const size_t &data_size, const std::string &file_name) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
-    // Fill arr0 with the data from fileName
-    freopen(fileName.c_str(), "r", stdin);
-    for (size_t i = 0; i != dataSize; ++i) {
+    // Fill arr0 with the data from file_name
+    freopen(file_name.c_str(), "r", stdin);
+    for (size_t i = 0; i != data_size; ++i) {
         scanf("%d", &arr0[i]);
     }
     fclose(stdin);
@@ -503,7 +551,7 @@ void writeByPutchar(const size_t &dataSize, const std::string &fileName) {
     // Use FastIO::writeInt write to outputFile
     freopen(outputFile, "w", stdout);
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         Temp::writeln(arr0[i]);
     }
     stop = std::chrono::steady_clock::now();
@@ -511,14 +559,15 @@ void writeByPutchar(const size_t &dataSize, const std::string &fileName) {
     fclose(stdout);
 
     // Since stdout is closed, we use stderr to print the result
-    std::cerr << "putchar: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cerr << "putchar: " << elapsed_in_seconds.count() << " seconds"
+              << std::endl;
 
     // Cleaning
     std::remove(outputFile);
 }
 
 inline static
-void writeByPrintf(const size_t &dataSize, const std::string &fileName) {
+void write_by_printf(const size_t &dataSize, const std::string &fileName) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
@@ -546,37 +595,39 @@ void writeByPrintf(const size_t &dataSize, const std::string &fileName) {
     fclose(stdout);
 
     // Since stdout is closed, we use stderr to print the result
-    std::cerr << "printf: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cerr << "printf: " << elapsed_in_seconds.count() << " seconds"
+              << std::endl;
 
     // Cleaning
     std::remove(outputFile);
 }
 
 inline static
-void writeByCoutWithoutSync(const size_t &dataSize, const std::string &fileName) {
+void write_by_cout_without_sync(const size_t &data_size,
+                                const std::string &file_name) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
-    // Fill arr0 with the data from fileName
-    freopen(fileName.c_str(), "r", stdin);
-    for (size_t i = 0; i != dataSize; ++i) {
+    // Fill arr0 with the data from file_name
+    freopen(file_name.c_str(), "r", stdin);
+    for (size_t i = 0; i != data_size; ++i) {
         scanf("%d", &arr0[i]);
     }
     fclose(stdin);
 
     // Create an empty file for output
-    const char *outputFile("testData.out");
+    const char *output_file("testData.out");
 
-    // Use cout without sync to write to outputFile
+    // Use cout without sync to write to output_file
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
 
-    freopen(outputFile, "w", stdout);
+    freopen(output_file, "w", stdout);
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         std::cout << arr0[i] << '\n';
     }
     stop = std::chrono::steady_clock::now();
@@ -584,34 +635,35 @@ void writeByCoutWithoutSync(const size_t &dataSize, const std::string &fileName)
     fclose(stdout);
 
     // Since stdout is closed, we use stderr to print the result
-    std::cerr << "cout without sync: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cerr << "cout without sync: " << elapsed_in_seconds.count()
+              << " seconds" << std::endl;
 
     // Cleaning
-    std::remove(outputFile);
+    std::remove(output_file);
 }
 
 inline static
-void writeByCout(const size_t &dataSize, const std::string &fileName) {
+void write_by_cout(const size_t &data_size, const std::string &file_name) {
 
     // Define some variables for the test
     std::chrono::time_point<std::chrono::steady_clock> start, stop;
     std::chrono::duration<double> elapsed_in_seconds{};
-    auto arr0 = std::make_unique<int[]>(dataSize);
+    auto arr0 = std::make_unique<int[]>(data_size);
 
     // Fill arr0 with the data from fileName
-    freopen(fileName.c_str(), "r", stdin);
-    for (size_t i = 0; i != dataSize; ++i) {
+    freopen(file_name.c_str(), "r", stdin);
+    for (size_t i = 0; i != data_size; ++i) {
         scanf("%d", &arr0[i]);
     }
     fclose(stdin);
 
     // Create an empty file for output
-    const char *outputFile("testData.out");
+    const char *output_file("testData.out");
 
-    // Use cout to write to to outputFile
-    freopen(outputFile, "w", stdout);
+    // Use cout to write to to output_file
+    freopen(output_file, "w", stdout);
     start = std::chrono::steady_clock::now();
-    for (size_t i = 0; i != dataSize; ++i) {
+    for (size_t i = 0; i != data_size; ++i) {
         std::cout << arr0[i] << std::endl;
     }
     stop = std::chrono::steady_clock::now();
@@ -619,17 +671,18 @@ void writeByCout(const size_t &dataSize, const std::string &fileName) {
     fclose(stdout);
 
     // Since stdout is closed, we use stderr to print the result
-    std::cerr << "cout: " << elapsed_in_seconds.count() << " seconds" << std::endl;
+    std::cerr << "cout: " << elapsed_in_seconds.count() << " seconds"
+              << std::endl;
 
     // Cleaning
-    std::remove(outputFile);
+    std::remove(output_file);
 }
 
 inline static
-void checkArguments(int argc, char *argv[]) {
+void check_arguments(int argc, char **argv) {
 
     // Show usage if argc or argv are not correct.
-    const std::string usage = "\nUsage: ./FastIO in/out 0/1/2/3/4/5 dataSize\n\n"
+    const std::string usage = "\nUsage: ./FastIO in/out 0/1/2/3/4/5 data_size\n\n"
                               "in: read input test\n"
                               " 0: mmap"
                               " 1: fread\n"
@@ -645,7 +698,7 @@ void checkArguments(int argc, char *argv[]) {
                               " 4: cout + sync(false) + tie(nullptr)\n"
                               " 5: cout\n"
                               " 6: putchar\n"
-                              "* dataSize is the number of integers for the read input test, and it must be >= 1000 and <= 10000000\n\n";
+                              "* data_size is the number of integers for the read input test, and it must be >= 1000 and <= 10000000\n\n";
 
     // Parsing
     // Incorrect number of arguments.
@@ -659,28 +712,28 @@ void checkArguments(int argc, char *argv[]) {
         exit(-1);
     }
     // The third option is invalid.
-    bool thirdOptionIsValid = false;
+    bool third_option_is_valid = false;
     for (int i = 0; i <= 6; ++i) {
         if (strcmp(argv[2], std::to_string(i).c_str()) == 0) {
-            thirdOptionIsValid = true;
+            third_option_is_valid = true;
             break;
         }
     }
-    if (!thirdOptionIsValid) {
+    if (!third_option_is_valid) {
         std::cout << usage;
         exit(-1);
     }
     // The fourth option is invalid.
-    std::string dataSize = argv[3];
+    std::string data_size = argv[3];
     std::string pattern("^(-?[1-9][0-9]*|0)$");
     std::regex r(pattern);
-    if (!std::regex_match(begin(dataSize), end(dataSize), r)) {
+    if (!std::regex_match(begin(data_size), end(data_size), r)) {
         // Case 1: The fourth option is not an integer.
         std::cout << usage;
         exit(-1);
     }
-    auto dataSizeInt = static_cast<size_t>(stoi(dataSize));
-    if (dataSizeInt < 10000 || dataSizeInt > 10000000) {
+    auto data_size_int = static_cast<size_t>(stoi(data_size));
+    if (data_size_int < 10000 || data_size_int > 10000000) {
         // Case 1: The size of data is out of valid range.
         std::cout << usage;
         exit(-1);
@@ -690,64 +743,65 @@ void checkArguments(int argc, char *argv[]) {
 int main(int argc, char *argv[]) {
 
     // Check arguments, exit if any argument is invalid.
-    checkArguments(argc, argv);
+    check_arguments(argc, argv);
 
     // Initialization
-    int choiceNumber = stoi(std::string(argv[2]));
-    const size_t dataSizeInt = static_cast<size_t>(stoi(std::string(argv[3])));
-    const std::string fileName = "testData.in";
+    int choice_number = stoi(std::string(argv[2]));
+    const size_t data_size_int = static_cast<size_t>(stoi(
+            std::string(argv[3])));
+    const std::string file_name = "testData.in";
 
-    createData(dataSizeInt, fileName);
+    create_data(data_size_int, file_name);
     if (strcmp(argv[1], "in") == 0) {
-        switch (choiceNumber) {
+        switch (choice_number) {
             case 0:
-                readByMmap(dataSizeInt, fileName);
+                read_by_mmap(data_size_int, file_name);
                 break;
             case 1:
-                readByFread(dataSizeInt, fileName);
+                read_by_fread(data_size_int, file_name);
                 break;
             case 2:
-                readByGetcharUnlocked(dataSizeInt, fileName);
+                read_by_getchar_unlocked(data_size_int, file_name);
                 break;
             case 3:
-                readByScanf(dataSizeInt, fileName);
+                read_by_scanf(data_size_int, file_name);
                 break;
             case 4:
-                readByCinWithoutSync(dataSizeInt, fileName);
+                read_by_cin_without_sync(data_size_int, file_name);
                 break;
             case 5:
-                readByCin(dataSizeInt, fileName);
+                read_by_cin(data_size_int, file_name);
                 break;
             default:
-                readByGetchar(dataSizeInt, fileName);
+                read_by_getchar(data_size_int, file_name);
                 break;
         }
     } else {
-        switch (choiceNumber) {
+        switch (choice_number) {
             case 0:
-                writeByFwriteUnlocked(dataSizeInt, fileName);
+                write_by_fwrite_unlocked(data_size_int, file_name);
                 break;
             case 1:
-                writeByFwrite(dataSizeInt, fileName);
+                write_by_fwrite(data_size_int, file_name);
                 break;
             case 2:
-                writeByPutcharUnlocked(dataSizeInt, fileName);
+                write_by_putchar_unlocked(data_size_int, file_name);
                 break;
             case 3:
-                writeByPrintf(dataSizeInt, fileName);
+                write_by_printf(data_size_int, file_name);
                 break;
             case 4:
-                writeByCoutWithoutSync(dataSizeInt, fileName);
+                write_by_cout_without_sync(data_size_int, file_name);
                 break;
             case 5:
-                writeByCout(dataSizeInt, fileName);
+                write_by_cout(data_size_int, file_name);
                 break;
             default:
-                writeByPutchar(dataSizeInt, fileName);
+                write_by_putchar(data_size_int, file_name);
                 break;
         }
     }
-    std::remove(fileName.c_str());
+    std::remove(file_name.c_str());
     return 0;
 }
 
