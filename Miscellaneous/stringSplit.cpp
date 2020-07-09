@@ -8,7 +8,6 @@ inline static
 std::vector<std::string> splitByChar(std::string s, const char &delim) {
     std::vector<std::string> res;
     std::istringstream f(s);
-    std::string temp;
     while (getline(f, s, delim)) {
         res.emplace_back(s);
     }
