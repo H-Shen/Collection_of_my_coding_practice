@@ -744,6 +744,52 @@ void test_for_toposort() {
     assert(Toposort::result == result);
 }
 
+// A collection of containers and procedures that implements the topological
+// sort using DFS
+namespace ToposortByDfs {
+    // adjacency list of the graph
+    unordered_map<int, unordered_set<int, custom_hash>, custom_hash> G;
+    vector<bool> vis;
+    vector<int> result;
+    void dfs(int u) {
+        vis.at(u) = true;
+        for (const auto &v : G[u]) {
+            if (!vis.at(v)) {
+                dfs(v);
+            }
+        }
+        result.emplace_back(u);
+    }
+    bool init(int number_of_nodes) {
+        // reset
+        vector<bool>().swap(vis);
+        vector<int>().swap(result);
+        vis.resize(number_of_nodes, false);
+        // start DFS from 0
+        for (int i = 0; i < number_of_nodes; ++i) {
+            if (!vis.at(i)) {
+                dfs(i);
+            }
+        }
+        reverse(result.begin(), result.end());
+        return (static_cast<int>(result.size()) == number_of_nodes);
+    }
+}
+
+void construct_the_graph_() {
+    ToposortByDfs::G[5].insert(2);
+    ToposortByDfs::G[5].insert(0);
+    ToposortByDfs::G[4].insert(0);
+    ToposortByDfs::G[4].insert(1);
+    ToposortByDfs::G[2].insert(3);
+    ToposortByDfs::G[3].insert(1);
+}
+
+void test_for_toposort_by_dfs() {
+    construct_the_graph_();
+    assert(ToposortByDfs::init(6));
+}
+
 // Construction of a random antimagic-square from 1 to N * N
 vector<vector<int> > antimagic_square(int n) {
     vector<vector<int> > res(n, vector<int>(n));

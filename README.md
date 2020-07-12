@@ -14,7 +14,7 @@ The collection of my coding practice, will be updated inconsistently.
 
 	* ***For Python***
    		* Python 2.7.16 (.py)
-		* Python 3.7.6 (.py3)
+		* Python 3.8.3 (.py3)
         * [PyPy 7.2.0 with GCC Clang 9.0.0 (tags/RELEASE_900/final)] (.pypy3)
 
 	* ***For Java***
@@ -24,9 +24,9 @@ The collection of my coding practice, will be updated inconsistently.
 		* Java HotSpot(TM) 64-Bit Server VM (build 25.191-b12, mixed mode)
 
 	* ***For C/Cpp***
-		* g++-9 (Homebrew GCC 9.2.0_3) 9.2.0 (-std=c++17 -Wall -O2)
-		* gcc-9 (Homebrew GCC 9.2.0_3) 9.2.0 (-std=c11 -Wall -O2)
-      * cmake version 3.16.3
+		* g++-10 (Homebrew GCC 10.1.0) 10.1.0 (-std=c++17 -Wall -O2)
+		* gcc-10 (Homebrew GCC 10.1.0) 10.1.0 (-std=c11 -Wall -O2)
+      * cmake version 3.17.3
 
     * ***For SQL***
         * sqlite 3.30.1

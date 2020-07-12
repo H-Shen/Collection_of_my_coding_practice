@@ -1,2 +1,3 @@
 ###Notice
-*	For C/C++, All code here are compiled with C++17 standard and -O2 optimization, except those being judged in other platforms.
+
+*	For C/C++, All code in Luogu are compiled with the newest  standard and -O2 optimization, except those judged in other OJ platforms.
