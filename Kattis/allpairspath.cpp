@@ -38,74 +38,100 @@ namespace IO {
     }
 }
 
-namespace Floyd {
+// An implementation of Floyd_Warshall Algorithm O(n^3) for finding
+// all pairs of shortest path in a graph
+namespace APSP0 {
+
     constexpr int INF = 0x3f3f3f3f;
-    constexpr int MAXN = 155;
-    int d[MAXN][MAXN];
+
+    vector<vector<int> > adj_matrix; // adjacency matrix
+    int number_of_nodes;
+
+    inline
     void init(int n) {
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < n; ++j) {
-                if (i == j) {
-                    d[i][j] = 0;
-                } else {
-                    d[i][j] = INF;
-                }
+        // reset
+        vector<vector<int> >().swap(adj_matrix);
+        number_of_nodes = n;
+        adj_matrix.resize(number_of_nodes, vector<int>(number_of_nodes));
+        for (int i = 0; i < number_of_nodes; ++i) {
+            for (int j = 0; j < number_of_nodes; ++j) {
+                adj_matrix.at(i).at(j) = INF;
             }
         }
+        for (int i = 0; i < number_of_nodes; ++i) {
+            adj_matrix.at(i).at(i) = 0;
+        }
     }
-    void process(int n) {
-        for (int k = 0; k < n; ++k) {
-            for (int i = 0; i < n; ++i) {
-                for (int j = 0; j < n; ++j) {
-                    if (d[i][k] < INF && d[k][j] < INF) {
-                        d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+
+    inline
+    void floyd_warshall() {
+        for (int k = 0; k < number_of_nodes; ++k) {
+            for (int i = 0; i < number_of_nodes; ++i) {
+                for (int j = 0; j < number_of_nodes; ++j) {
+                    if (adj_matrix.at(i).at(k) < INF &&
+                        adj_matrix.at(k).at(j) < INF) {
+                        adj_matrix.at(i).at(j) = min(adj_matrix.at(i).at(j),
+                                                     adj_matrix.at(i).at(k) +
+                                                     adj_matrix.at(k).at(j));
                     }
                 }
             }
         }
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < n; ++j) {
-                for (int t = 0; t < n; ++t) {
-                    if (d[i][t] < INF && d[t][t] < 0 && d[t][j] < INF)
-                        d[i][j] = -INF;
+        for (int i = 0; i < number_of_nodes; ++i) {
+            for (int j = 0; j < number_of_nodes; ++j) {
+                for (int t = 0; t < number_of_nodes; ++t) {
+                    if (adj_matrix.at(i).at(t) < INF &&
+                        adj_matrix.at(t).at(t) < 0 &&
+                        adj_matrix.at(t).at(j) < INF) {
+                        adj_matrix.at(i).at(j) = -INF;
+                    }
                 }
             }
         }
     }
+
+    // Query the shortest distance from node u to node v
+    inline
+    int dist(const int &u, const int &v) {
+        return adj_matrix.at(u).at(
+                v);  // INF: cant reach -INF: in a negative cycle
+    }
 }
 
-int n, m, q, u, v, w;
+int n, m, q, u, v, w, ans;
 
 int main() {
 
-    bool firstCase = true;
+    bool first_case = true;
     while (true) {
         IO::read(n, m, q);
         if (n == 0 && m == 0 && q == 0) {
             break;
         }
-        Floyd::init(n);
+        APSP0::init(n);
         while (m--) {
             IO::read(u, v, w);
-            Floyd::d[u][v] = min(Floyd::d[u][v], w);
+            // Update the shortest weight between u and v
+            APSP0::adj_matrix.at(u).at(v) = min(APSP0::adj_matrix.at(u).at(v),
+                                                w);
         }
-        Floyd::process(n);
-        if (firstCase) {
-            firstCase = false;
+        APSP0::floyd_warshall();
+        if (first_case) {
+            first_case = false;
         } else {
             putchar_unlocked('\n');
         }
         while (q--) {
             IO::read(u, v);
-            if (Floyd::d[u][v] == Floyd::INF) {
-                puts("Impossible");
-            } else if (Floyd::d[u][v] == -Floyd::INF) {
-                puts("-Infinity");
+            ans = APSP0::dist(u, v);
+            if (ans == APSP0::INF) {
+                fputs_unlocked("Impossible\n", stdout);
+            } else if (ans == -APSP0::INF) {
+                fputs_unlocked("-Infinity\n", stdout);
             } else {
-                IO::writeln(Floyd::d[u][v]);
+                IO::writeln(ans);
             }
         }
     }
-
     return 0;
 }

@@ -26,6 +26,26 @@
 #include <sys/stat.h>
 
 namespace IO {
+      // Read and return false if EOF is encountered, otherwise return true
+    template<typename T>
+    inline
+    bool can_read(T &t) {
+        int n = 0;
+        int ch = getchar_unlocked();
+        while (!isdigit(ch)) {
+            if (ch == EOF) return false;
+            n |= ch == '-';
+            ch = getchar_unlocked();
+        }
+        t = 0;
+        while (isdigit(ch)) {
+            t = t * 10 + ch - 48;
+            ch = getchar_unlocked();
+        }
+        if (n) t = -t;
+        return true;
+    }
+
     template<typename T>
     inline
     void read(T &t) {

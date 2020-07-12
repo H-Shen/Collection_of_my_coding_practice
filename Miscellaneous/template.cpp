@@ -14,13 +14,14 @@ using Trie = trie<T, null_type, less<>, pat_trie_tag, trie_prefix_search_node_up
 // DSU: Union_Find_Set
 // Complexity: O (a(n)) per operation. Note: O (log n) if one of
 // union-by-size or path compression is omitted
-// a(n) is reverse Ackermann function
+// a(n) is the inverse Ackermann function
 namespace DSU {
     // father[x]: the father of x
     // Size[x]:  the rank, rank is the size of the tree whose root is x
     vector<int> father;
     vector<int> Size;
     // iniitalization
+    inline
     void init(int n) {
         // reset
         vector<int>().swap(father);
@@ -31,6 +32,7 @@ namespace DSU {
         Size.resize(n + 5, 1);
     }
     // find the ancestor of i with path compression
+    inline
     int find(int x) {
         if (x != father[x]) {
             father[x] = find(father[x]);
@@ -38,6 +40,7 @@ namespace DSU {
         return father[x];
     }
     // merge x and y
+    inline
     void merge(int x, int y) {
         x = find(x); y = find(y);
         if (x == y) {
@@ -49,7 +52,8 @@ namespace DSU {
         father[x] = y;
         Size[y] += Size[x];
     }
-    // check if x and y are in the same Set
+    // check if x and y are in the same set
+    inline
     bool is_same_group(int i, int j) {
         return find(i) == find(j);
     }
@@ -85,29 +89,44 @@ namespace Catalan {
     }
 }
 
-// The collection of methods and data structures for Kruskal's algorithm
-// Usage: vector<Edge> A(n), .... , Kruskal::init(A, n);
-namespace Kruskal {
+// The collection of methods and data structures are used to obtain an MST of a
+// undirected-graph using Kruskal's algorithm with Disjoint Set
+// Usage: vector<Edge> A(n), .... , MST0::kruskal(A, n);
+namespace MST0 {
+    struct custom_hash {
+        static uint64_t splitmix64(uint64_t x) {
+            // http://xorshift.di.unimi.it/splitmix64.c
+            x += 0x9e3779b97f4a7c15;
+            x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+            x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+            return x ^ (x >> 31);
+        }
+
+        // For a pair of integers
+        size_t operator()(pair<uint64_t, uint64_t> x) const {
+            static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+            return splitmix64(x.first + FIXED_RANDOM) ^
+                   (splitmix64(x.second + FIXED_RANDOM) >> 1);
+        }
+    };
+
     struct Edge {
         int u, v;
         int w;
-        Edge(int u, int v, int w) : u(u), v(v), w(w) {}
+
+        explicit Edge(int u, int v, int w) : u(u), v(v), w(w) {}
+
         Edge() = default;
     };
-    bool cmp0(const Edge &lhs, const Edge &rhs) {
-        return (lhs.w < rhs.w);
-    }
-    struct my_hash_func {
-        size_t operator ()(const pair<int, int> &obj) const {
-            return hash<int>()(obj.first) ^ hash<int>()(obj.second);
-        }
-    };
-    vector<Edge> init(const vector<Edge> &E, int number_of_nodes) {
-        // init a DSU
+
+    inline
+    vector<Edge> kruskal(const vector<Edge> &E, int number_of_nodes) {
+        // initialize a DSU
         DSU::init(number_of_nodes);
-        // We use a hashmap to store the minimal weight between a pair of nodes
-        unordered_map<pair<int, int>, int, my_hash_func> temp_unmap;
+        // We use a hash-map to store the minimal weight between a pair of nodes
+        unordered_map<pair<int, int>, int, custom_hash> unmap;
         pair<int, int> temp_pair;
+        decltype(unmap)::iterator temp_iter;
         for (const auto &[u, v, w] : E) {
             if (u > v) {
                 temp_pair.first = v;
@@ -116,31 +135,37 @@ namespace Kruskal {
                 temp_pair.first = u;
                 temp_pair.second = v;
             }
-            if (temp_unmap.find(temp_pair) == temp_unmap.end()) {
-                temp_unmap[temp_pair] = w;
+            temp_iter = unmap.find(temp_pair);
+            if (temp_iter == unmap.end()) {
+                unmap[temp_pair] = w;
             } else {
-                temp_unmap[temp_pair] = min(w, temp_unmap[temp_pair]);
+                temp_iter->second = min(w, temp_iter->second);
             }
         }
-        vector<Edge> E_filter(temp_unmap.size());
+        vector<Edge> E_filter(unmap.size());
         int index = 0;
-        for (const auto &[nodes, w] : temp_unmap) {
+        for (const auto &[nodes, w] : unmap) {
             E_filter.at(index).u = nodes.first;
             E_filter.at(index).v = nodes.second;
             E_filter.at(index).w = w;
             ++index;
         }
-        sort(E_filter.begin(), E_filter.end(), cmp0);
-        vector<Edge> MST;
-        // int cost = 0;
+        // sort by the edge's weight in increasing order
+        sort(E_filter.begin(), E_filter.end(),
+             [](const Edge &lhs, const Edge &rhs) {
+                 return (lhs.w < rhs.w);
+             });
+
+        vector<Edge> minimum_spanning_tree;
+        // int cost = 0;    // to calculate the total weight of the MST
         for (const auto &[u, v, w] : E_filter) {
             if (!DSU::is_same_group(u, v)) {
                 DSU::merge(u, v);
-                MST.emplace_back(Edge(u, v, w));
+                minimum_spanning_tree.emplace_back(Edge(u, v, w));
                 // cost += w;
             }
         }
-        return MST;
+        return minimum_spanning_tree;
     }
 }
 
@@ -155,42 +180,64 @@ void merge_pq(std::priority_queue<T> &dest, std::priority_queue<T> &src) {
         src.pop();
     }
 }
-// Floyd_Warshall Algorithm O(n^3)
-namespace Floyd {
+
+// An implementation of Floyd_Warshall Algorithm O(n^3) for finding
+// all pairs of shortest path in a graph
+namespace APSP0 {
+
     constexpr int INF = 0x3f3f3f3f;
-    constexpr int MAXN = 155;
-    int d[MAXN][MAXN];
+
+    vector<vector<int> > adj_matrix; // adjacency matrix
+    int number_of_nodes;
+
+    inline
     void init(int n) {
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < n; ++j) {
-                d[i][j] = INF;
+        // reset
+        vector<vector<int> >().swap(adj_matrix);
+        number_of_nodes = n;
+        adj_matrix.resize(number_of_nodes, vector<int>(number_of_nodes));
+        for (int i = 0; i < number_of_nodes; ++i) {
+            for (int j = 0; j < number_of_nodes; ++j) {
+                adj_matrix.at(i).at(j) = INF;
             }
         }
-        for (int i = 0; i < n; ++i) {
-            d[i][i] = 0;
+        for (int i = 0; i < number_of_nodes; ++i) {
+            adj_matrix.at(i).at(i) = 0;
         }
     }
-    void process(int n) {
-        for (int k = 0; k < n; ++k) {
-            for (int i = 0; i < n; ++i) {
-                for (int j = 0; j < n; ++j) {
-                    if (d[i][k] < INF && d[k][j] < INF) {
-                        d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+
+    inline
+    void floyd_warshall() {
+        for (int k = 0; k < number_of_nodes; ++k) {
+            for (int i = 0; i < number_of_nodes; ++i) {
+                for (int j = 0; j < number_of_nodes; ++j) {
+                    if (adj_matrix.at(i).at(k) < INF &&
+                        adj_matrix.at(k).at(j) < INF) {
+                        adj_matrix.at(i).at(j) = min(adj_matrix.at(i).at(j),
+                                                     adj_matrix.at(i).at(k) +
+                                                     adj_matrix.at(k).at(j));
                     }
                 }
             }
         }
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < n; ++j) {
-                for (int t = 0; t < n; ++t) {
-                    if (d[i][t] < INF && d[t][t] < 0 && d[t][j] < INF)
-                        d[i][j] = -INF;
+        for (int i = 0; i < number_of_nodes; ++i) {
+            for (int j = 0; j < number_of_nodes; ++j) {
+                for (int t = 0; t < number_of_nodes; ++t) {
+                    if (adj_matrix.at(i).at(t) < INF &&
+                        adj_matrix.at(t).at(t) < 0 &&
+                        adj_matrix.at(t).at(j) < INF) {
+                        adj_matrix.at(i).at(j) = -INF;
+                    }
                 }
             }
         }
     }
-    int query(int u, int v) {
-        return d[u][v];  // INF: cant reach -INF: in a negative cycle
+
+    // Query the shortest distance from node u to node v
+    inline
+    int dist(const int &u, const int &v) {
+        return adj_matrix.at(u).at(
+                v);  // INF: cant reach -INF: in a negative cycle
     }
 }
 
@@ -788,6 +835,183 @@ void construct_the_graph_() {
 void test_for_toposort_by_dfs() {
     construct_the_graph_();
     assert(ToposortByDfs::init(6));
+}
+
+// The implementation of Dijkstra using adjacency list (based on the index)
+namespace SSSP0 {
+    constexpr int INF = 0x3f3f3f3f; //  A weight indicates two nodes have no paths between them
+    struct Edge {
+        int to, distance, next;
+
+        bool operator==(const Edge &other) const {
+            return to == other.to && distance == other.distance &&
+                   next == other.next;
+        }
+    };
+
+    struct Node {
+        int distance, position;
+
+        explicit Node(int distance, int position) : distance(distance),
+                                                    position(position) {}
+
+        bool operator<(const Node &other) const {
+            return (other.distance < distance);
+        }
+    };
+
+    // Containers to store the graph
+    vector<Edge> E;
+    vector<int> head;
+    int counter;
+    int number_of_nodes;
+    int number_of_edges;
+
+    vector<int> dis;    // dis.at(n) = the shortest distance from source to n
+    vector<bool> vis;
+    int source;         // the node id of the source
+    vector<int> prev;   // an auxiliary container to store the path
+    std::priority_queue<Node> pq;
+
+    inline void
+    init(int n, int e, bool store_path = false) {
+        number_of_nodes = n;
+        number_of_edges = e;
+        // initialize the containers
+        E.resize(number_of_edges + 5);
+        head.resize(number_of_nodes + 5);
+        dis.resize(number_of_nodes + 5, INF);
+        vis.resize(number_of_nodes + 5);
+        if (store_path) {
+            prev.resize(number_of_nodes, -1);
+        }
+    }
+
+    inline void
+    reset(bool store_path = false) {
+        fill(dis.begin(), dis.end(), INF);
+        fill(vis.begin(), vis.end(), false);
+        pq = std::priority_queue<Node>();
+        if (store_path) {
+            fill(prev.begin(), prev.end(), -1);
+        }
+    }
+
+    inline void
+    add_edge(int u, int v, int w) {
+        ++counter;
+        E.at(counter).distance = w;
+        E.at(counter).to = v;
+        E.at(counter).next = head.at(u);
+        head.at(u) = counter;
+    }
+
+    inline void
+    dijkstra(bool store_path = false) {
+        dis.at(source) = 0;
+        pq.push(Node(0, source));
+        while (!pq.empty()) {
+            Node temp_node = pq.top();
+            pq.pop();
+            int x = temp_node.position;
+            // Base case
+            if (vis.at(x)) {
+                continue;
+            }
+            vis.at(x) = true;
+            for (int i = head.at(x); i; i = E.at(i).next) {
+                int y = E.at(i).to;
+                if (dis.at(y) > dis.at(x) + E.at(i).distance) {
+                    dis.at(y) = dis.at(x) + E.at(i).distance;
+                    if (store_path) {
+                        prev.at(y) = x;
+                    }
+                    if (!vis.at(y)) {
+                        pq.push(Node(dis.at(y), y));
+                    }
+                }
+            }
+        }
+    }
+    inline vector<int>
+    get_path(int destination) {
+        vector<int> path;
+        for (; destination != -1; destination = prev.at(destination)) {
+            path.emplace_back(destination);
+        }
+        reverse(path.begin(), path.end());
+        return path;
+    }
+}
+
+// The implementation of Dijkstra using adjacency list
+namespace SSSP1 {
+
+    constexpr int INF = 0x3f3f3f3f; //  A weight indicates two nodes have no paths between them
+    vector<vector<pair<int, int> > > adj; // The adjacency list of the graph
+    int number_of_nodes;
+
+    vector<int> dis;    // dis.at(n) = the shortest distance from source to n
+    int source;         // the node id of the source
+    vector<int> prev;   // an auxiliary container to store the path
+    std::priority_queue<pair<int, int>, vector<pair<int, int> >, greater<> > pq;
+
+    inline void
+    init(int n, bool store_path = false) {
+        number_of_nodes = n;
+        // initialize the containers
+        adj.resize(number_of_nodes + 5);
+        dis.resize(number_of_nodes + 5, INF);
+        if (store_path) {
+            prev.resize(number_of_nodes, -1);
+        }
+    }
+
+    inline void
+    reset(bool store_path = false) {
+        fill(dis.begin(), dis.end(), INF);
+        pq = decltype(pq)();
+        if (store_path) {
+            fill(prev.begin(), prev.end(), -1);
+        }
+    }
+
+    inline void
+    add_edge(int u, int v, int w) {
+        adj.at(u).emplace_back(make_pair(v, w));
+    }
+
+    inline void
+    dijkstra(bool store_path = false) {
+        dis.at(source) = 0;
+        pq.push(make_pair(0, source));
+        while (!pq.empty()) {
+            int d_v = pq.top().first;
+            int v = pq.top().second;
+            pq.pop();
+            if (d_v != dis.at(v)) {
+                continue;
+            }
+            for (const auto &[to, weight] : adj.at(v)) {
+                if (dis.at(to) > dis.at(v) + weight) {
+                    dis.at(to) = dis.at(v) + weight;
+                    if (store_path) {
+                        prev.at(to) = v;
+                    }
+                    pq.push(make_pair(dis.at(to), to));
+                }
+            }
+        }
+    }
+    inline vector<int>
+    get_path(int destination) {
+        vector<int> path;
+        for (; destination != -1; destination = prev.at(destination)) {
+            path.emplace_back(destination);
+        }
+        reverse(path.begin(), path.end());
+        return path;
+    }
 }
 
 // Construction of a random antimagic-square from 1 to N * N

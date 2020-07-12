@@ -16,14 +16,11 @@ inline const vector<pair<int, int> > steps = {
         {1,  1}
 };
 
-namespace SSSP {
-
-    constexpr int INF = 0x3f3f3f3f;
-
+// The implementation of Dijkstra using adjacency list (based on the index)
+namespace SSSP0 {
+    constexpr int INF = 0x3f3f3f3f; //  A weight indicates two nodes have no paths between them
     struct Edge {
-        int to;
-        int distance;
-        int next;
+        int to, distance, next;
 
         bool operator==(const Edge &other) const {
             return to == other.to && distance == other.distance &&
@@ -32,55 +29,72 @@ namespace SSSP {
     };
 
     struct Node {
-        int distance;
-        int position;
+        int distance, position;
 
-        explicit Node(int distance, int pos) : distance(distance),
-                                               position(pos) {}
+        explicit Node(int distance, int position) : distance(distance),
+                                                    position(position) {}
 
-        bool operator<(const Node &x) const {
-            return (x.distance < distance);
+        bool operator<(const Node &other) const {
+            return (other.distance < distance);
         }
     };
 
+    // Containers to store the graph
     vector<Edge> E;
     vector<int> head;
     int counter;
-    vector<int> dis;
-    vector<bool> vis;
-    std::priority_queue<Node> q;
-    int source;
-    vector<int> prev;
+    int number_of_nodes;
+    int number_of_edges;
 
-    void init(int number_of_nodes, int number_of_edges) {
+    vector<int> dis;    // dis.at(n) = the shortest distance from source to n
+    vector<bool> vis;
+    int source;         // the node id of the source
+    vector<int> prev;   // an auxiliary container to store the path
+    std::priority_queue<Node> pq;
+
+    inline void
+    init(int n, int e, bool store_path = false) {
+        number_of_nodes = n;
+        number_of_edges = e;
+        // initialize the containers
         E.resize(number_of_edges + 5);
         head.resize(number_of_nodes + 5);
         dis.resize(number_of_nodes + 5, INF);
         vis.resize(number_of_nodes + 5);
-        prev.resize(number_of_nodes, -1);
+        if (store_path) {
+            prev.resize(number_of_nodes, -1);
+        }
     }
 
     inline void
-    add_edge(int u, int v, int d) {
+    reset() {
+        fill(dis.begin(), dis.end(), INF);
+        fill(vis.begin(), vis.end(), false);
+        pq = std::priority_queue<Node>();
+    }
+
+    inline void
+    add_edge(int u, int v, int w) {
         ++counter;
-        E.at(counter).distance = d;
+        E.at(counter).distance = w;
         E.at(counter).to = v;
         E.at(counter).next = head.at(u);
         head.at(u) = counter;
     }
 
-    inline void dijkstra(bool store_path = false) {
+    inline void
+    dijkstra(bool store_path = false) {
         dis.at(source) = 0;
-        q.push(Node(0, source));
-        while (!q.empty()) {
-            Node tmp = q.top();
-            q.pop();
-            int x = tmp.position;
+        pq.push(Node(0, source));
+        while (!pq.empty()) {
+            Node temp_node = pq.top();
+            pq.pop();
+            int x = temp_node.position;
             // Base case
-            if (vis[x]) {
+            if (vis.at(x)) {
                 continue;
             }
-            vis[x] = true;
+            vis.at(x) = true;
             for (int i = head.at(x); i; i = E.at(i).next) {
                 int y = E.at(i).to;
                 if (dis.at(y) > dis.at(x) + E.at(i).distance) {
@@ -88,18 +102,19 @@ namespace SSSP {
                     if (store_path) {
                         prev.at(y) = x;
                     }
-                    if (!vis[y]) {
-                        q.push(Node(dis.at(y), y));
+                    if (!vis.at(y)) {
+                        pq.push(Node(dis.at(y), y));
                     }
                 }
             }
         }
     }
-
-    vector<int> get_path(int t) {
+    inline vector<int>
+    get_path(int destination) {
         vector<int> path;
-        for (; t != -1; t = prev.at(t))
-            path.push_back(t);
+        for (; destination != -1; destination = prev.at(destination)) {
+            path.emplace_back(destination);
+        }
         reverse(path.begin(), path.end());
         return path;
     }
@@ -212,18 +227,18 @@ int main(int argc, char *argv[]) {
     for (const auto &[k, v_list] : G) {
         total_edges += static_cast<int>(v_list.size());
     }
-    SSSP::init(MAXN * MAXN, total_edges);
+    SSSP0::init(MAXN * MAXN, total_edges, true);
     for (const auto &[k, v_list] : G) {
         for (const auto &v : v_list) {
-            SSSP::add_edge(k, v, 1);
+            SSSP0::add_edge(k, v, 1);
         }
     }
-    SSSP::source = origin_i * MAXN + origin_j;
-    SSSP::dijkstra(true);
+    SSSP0::source = origin_i * MAXN + origin_j;
+    SSSP0::dijkstra(true);
 
     // output
-    cout << SSSP::dis.at(dest_i * MAXN + dest_j) << '\n';
-    vector<int> path = SSSP::get_path(dest_i * MAXN + dest_j);
+    cout << SSSP0::dis.at(dest_i * MAXN + dest_j) << '\n';
+    vector<int> path = SSSP0::get_path(dest_i * MAXN + dest_j);
     int length = static_cast<int>(path.size());
     for (int i = 1; i < length; ++i) {
         cout << get_direction(convert(path.at(i - 1)), convert(path.at(i)))
