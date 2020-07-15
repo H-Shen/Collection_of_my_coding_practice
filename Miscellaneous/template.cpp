@@ -241,6 +241,51 @@ namespace APSP0 {
     }
 }
 
+// An implementation of Floyd Warshall Algorithm to obtain the transitive closure of a directed-graph in O(N^3)
+inline vector<vector<bool> >
+floyd_warshall(int n, const vector<vector<bool> > &adjacency_matrix) {
+    vector<vector<bool> > reach(n, vector<bool>(n));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            // If there is an edge between i and j, that is, adjacency_matrix[i][j] is true, then we make its weight as 1 in 'reach'
+            if (adjacency_matrix.at(i).at(j)) {
+                reach.at(i).at(j) = true;
+            }
+        }
+    }
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                // If vertex k is on a path from i to j,
+                // then make sure that the value of reach[i][j] is true
+                reach.at(i).at(j) = reach.at(i).at(j) ||
+                                    (reach.at(i).at(k) && reach.at(k).at(j));
+            }
+        }
+    }
+    return reach;
+}
+
+// An implementation of Floyd Warshall Algorithm to obtain the transitive closure of a directed-graph in O(N^3 / w) with bitset optimized
+template<size_t N>
+struct TransitiveClosure {
+    bitset<N> reach[N];
+    void floyd_warshall(int n) {
+        for (int k = 0; k < n; ++k) {
+            for (int i = 0; i < n; ++i) {
+                if (reach[i][k]) {
+                    reach[i] |= reach[k];    // reach[i] = reach[i] | reach[k];
+                }
+            }
+        }
+    }
+    void reset() {
+        for (int i = 0; i < N; ++i) {
+            reach[i].reset();
+        }
+    }
+};
+
 // Implementation of next_combination, duplicated values will be shown once
 template<typename Itr>
 inline static
