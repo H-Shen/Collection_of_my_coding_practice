@@ -1,14 +1,35 @@
-// https://open.kattis.com/problems/loopycabdrivers
-//
 #include <bits/extc++.h>
 
 using namespace std;
 using namespace __gnu_pbds;
 using ll = long long;
 
-constexpr int MAXN = 30;
-char a[MAXN];
-char b[MAXN];
+namespace IO {
+    template <typename T>
+    inline
+    void read(T& t) {
+        int n = 0; int c = getchar_unlocked(); t = 0;
+        while (!isdigit(c)) n |= c == '-', c = getchar_unlocked();
+        while (isdigit(c)) t = t * 10 + c - 48, c = getchar_unlocked();
+        if (n) t = -t;
+    }
+    template <typename T, typename... Args>
+    inline
+    void read(T& t, Args&... args) {
+        read(t); read(args...);
+    }
+    template <typename T>
+    inline void write(T x) {
+        if (x < 0) x = -x, putchar_unlocked('-');
+        if (x > 9) write(x / 10);
+        putchar_unlocked(x % 10 + 48);
+    }
+    template <typename T>
+    inline void writeln(T x) {
+        write(x);
+        putchar_unlocked('\n');
+    }
+}
 
 struct custom_hash {
     static uint64_t splitmix64(uint64_t x) {
@@ -111,93 +132,51 @@ namespace SCC {
     }
 }
 
-unordered_map<string, int> node_2_id;
-unordered_map<int, string, custom_hash> node_2_id_rev;
-int node_id_counter = 1;
+int n, m, u, v;
 
-int main() {
+int main(int argc, char *argv[]) {
 
-    int n;
-    scanf("%d", &n);
-    while (n--) {
-        scanf("%s %s", a, b);
-        if (node_2_id.find(a) == node_2_id.end()) {
-            node_2_id[a] = node_id_counter;
-            node_2_id_rev[node_id_counter] = a;
-            ++node_id_counter;
-        }
-        if (node_2_id.find(b) == node_2_id.end()) {
-            node_2_id[b] = node_id_counter;
-            node_2_id_rev[node_id_counter] = b;
-            ++node_id_counter;
-        }
-        // add an edge
-        SCC::G[node_2_id[a]].insert(node_2_id[b]);
+    IO::read(n, m);
+    while (m--) {
+        IO::read(u, v);
+        SCC::G[u].insert(v);
     }
-    SCC::init(node_id_counter);
-    for (int i = 1; i < node_id_counter; ++i) {
+    // Self loop
+    for (int i = 1; i <= n; ++i) {
+        SCC::G[i].insert(i);
+    }
+    // Running Tarjan
+    SCC::init(n);
+    for (int i = 1; i <= n; ++i) {
         if (!SCC::dfs_rank.at(i)) {
             SCC::Tarjan(i);
         }
     }
-    unordered_set<int, custom_hash> all_SCCs_with_size_of_one;
-    unordered_map<int, vector<int>, custom_hash> all_SCCs_with_size_larger_than_one;
+    vector<int> scc_out_degree(SCC::number_of_scc + 1);
+    // Contract
+    for (const auto &[i, v_] : SCC::G) {
+        int scc_i = SCC::scc.at(i);
+        for (const auto &j : v_) {
+            int scc_j = SCC::scc.at(j);
+            if (scc_i != scc_j) {
+                ++scc_out_degree.at(scc_i);
+            }
+        }
+    }
+    // Check the super node(scc after contract) whose out-coming degree is 0
+    int answer;
+    vector<int> super_nodes;
     for (int i = 1; i <= SCC::number_of_scc; ++i) {
-        if (SCC::size_of_scc.at(i) == 1) {
-            all_SCCs_with_size_of_one.insert(i);
-        } else if (SCC::size_of_scc.at(i) > 1) {
-            all_SCCs_with_size_larger_than_one[i];
+        if (scc_out_degree.at(i) == 0) {
+            super_nodes.emplace_back(i);
         }
     }
-    for (int i = 1; i < node_id_counter; ++i) {
-        if (all_SCCs_with_size_larger_than_one.find(SCC::scc.at(i)) !=
-            all_SCCs_with_size_larger_than_one.end()) {
-            all_SCCs_with_size_larger_than_one[SCC::scc.at(i)].emplace_back(i);
-        }
+    if (super_nodes.size() != 1) {
+        answer = 0;
+    } else {
+        answer = SCC::size_of_scc.at(super_nodes.front());
     }
-    vector<string> avoid;
-    for (int i = 1; i < node_id_counter; ++i) {
-        if (all_SCCs_with_size_of_one.find(SCC::scc.at(i)) !=
-            all_SCCs_with_size_of_one.end()) {
-            avoid.emplace_back(node_2_id_rev[i]);
-        }
-    }
-    // output
-    vector<vector<string> > group_can_be_visited;
-    for (const auto &[k, v] : all_SCCs_with_size_larger_than_one) {
-        vector<string> temp_vec;
-        for (const auto &store_id : v) {
-            temp_vec.emplace_back(node_2_id_rev[store_id]);
-        }
-        if (!temp_vec.empty()) {
-            group_can_be_visited.emplace_back(temp_vec);
-        }
-    }
-    // sort each group
-    for (auto &i : group_can_be_visited) {
-        sort(i.begin(), i.end());
-    }
-    // sort the whole array
-    sort(group_can_be_visited.begin(), group_can_be_visited.end(),
-         [](const auto &lhs, const auto &rhs) {
-             return (lhs.front() < rhs.front());
-         });
-    // output
-    for (const auto &i : group_can_be_visited) {
-        printf("okay");
-        for (const auto &j : i) {
-            printf(" %s", j.c_str());
-        }
-        printf("\n");
-    }
-    if (!avoid.empty()) {
-        printf("avoid");
-        sort(avoid.begin(), avoid.end());
-        for (const auto &i : avoid) {
-            printf(" %s", i.c_str());
-        }
-        printf("\n");
-    }
+    IO::writeln(answer);
 
     return 0;
 }
