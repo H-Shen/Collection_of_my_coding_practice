@@ -684,7 +684,7 @@ namespace SCC {
 
     // reset all containers
     inline
-    void reset() {
+    void reset_all_containers() {
         G.clear();
         stack<int>().swap(s);
         vector<bool>().swap(vis);

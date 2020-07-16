@@ -1,3 +1,5 @@
+// Deprecated in C++2a, overload <=> in C++2a instead
+//
 #include <bits/stdc++.h>
 
 using namespace std;
