@@ -64,9 +64,7 @@ namespace SCC {
         number_of_scc = 0;
         current_timestamp = 1;
         // Give some flexibility of size of our containers since
-        // the node id/SCC id may not strictly start from 1, since the
-        // number of nodes in the assignment will not exceed 10001,
-        // the space complexity will not be a bottle-neck
+        // the node id/SCC id may not strictly start from 1
         int offset = 5;
         vis.resize(number_of_nodes + offset, false);
         dfs_rank.resize(number_of_nodes + offset, 0);
