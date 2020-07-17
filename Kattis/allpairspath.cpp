@@ -124,7 +124,7 @@ int main() {
         while (q--) {
             IO::read(u, v);
             ans = APSP0::dist(u, v);
-            if (ans == APSP0::INF) {
+            if (u < 0 || u >= n || v < 0 || v >= n || ans == APSP0::INF) {
                 fputs_unlocked("Impossible\n", stdout);
             } else if (ans == -APSP0::INF) {
                 fputs_unlocked("-Infinity\n", stdout);

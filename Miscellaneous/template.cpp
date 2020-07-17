@@ -1057,7 +1057,68 @@ namespace SSSP1 {
     }
 }
 
-// An implementation of Shortest Path Faster Algorithm
+// An implementation of Bellman-Ford's algorithm
+namespace SSSP2 {
+    constexpr int INF = 0x3f3f3f3f;
+    struct Edge {
+        int u, v;
+        int w;
+        explicit Edge(int u, int v, int w) : u(u), v(v), w(w) {}
+    };
+    // After running the algorithm, dis[t] = INF indicates there is no path
+    // from source to t, dis[t] = -INF indicates if there are arbitrarily 
+    // short paths from source to t
+    vector<int> dis;
+    vector<Edge> edges;
+    int number_of_nodes;
+    int source;
+
+    inline void
+    reset() {
+        vector<int>().swap(dis);
+        vector<Edge>().swap(edges);
+        number_of_nodes = 0;
+        source = 0;
+    }
+
+    inline void
+    init(int n, int s) {
+        number_of_nodes = n;
+        source = s;
+        dis.resize(n + 5, INF);
+        dis.at(source) = 0;
+    }
+
+    inline void
+    relax(const Edge &e) {
+        if (dis.at(e.v) > dis.at(e.u) + e.w) {
+            dis.at(e.v) = dis.at(e.u) + e.w;
+        }
+    }
+
+    // The main logic of the algorithm
+    inline void
+    bellman_ford() {
+        for (int i = 1; i <= number_of_nodes - 1; ++i) {
+            for (const auto &e : edges) {
+                if (dis.at(e.u) < INF) {
+                    relax(e);
+                }
+            }
+        }
+        for (int i = 1; i <= number_of_nodes - 1; ++i) {
+            for (auto &e : edges) {
+                if (dis.at(e.u) == -INF) {
+                    dis.at(e.v) = -INF;
+                } else if (dis.at(e.u) < INF && dis.at(e.v) > dis.at(e.u) + e.w) {
+                    dis.at(e.v) = -INF;
+                }
+            }
+        }
+    }
+}
+
+// An implementation of Shortest Path Faster Algorithm (Bellman-Ford's algorithm with queue optimized)
 namespace SSSP3 {
     constexpr int INF = 0x3f3f3f3f;
     vector<vector<pair<int, int> > > adj; // The adjacency list of the graph
