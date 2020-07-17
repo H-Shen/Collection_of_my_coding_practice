@@ -1057,6 +1057,62 @@ namespace SSSP1 {
     }
 }
 
+// An implementation of Shortest Path Faster Algorithm
+namespace SSSP3 {
+    constexpr int INF = 0x3f3f3f3f;
+    vector<vector<pair<int, int> > > adj; // The adjacency list of the graph
+    int source;
+    int number_of_nodes;
+    vector<int> dis;
+
+    inline void
+    reset() {
+        vector<vector<pair<int, int> > >().swap(adj);
+        vector<int>().swap(dis);
+        number_of_nodes = 0;
+        source = 0;
+    }
+
+    inline void
+    init(int n, int s) {
+        vector<vector<pair<int, int> > >().swap(adj);
+        source = s;
+        number_of_nodes = n;
+        dis.resize(number_of_nodes + 5, INF);
+        adj.resize(number_of_nodes + 5);
+        dis.at(source) = 0;
+    }
+
+    // O(mn)
+    inline bool
+    spfa() {
+        vector<int> cnt(number_of_nodes + 5);
+        vector<bool> in_queue(number_of_nodes + 5, false);
+        queue<int> q;
+        q.push(source);
+        in_queue.at(source) = true;
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            in_queue.at(u) = false;
+            for (const auto &[v, w] : adj.at(u)) {
+                if (dis.at(v) > dis.at(u) + w) {
+                    dis.at(v) = dis.at(u) + w;
+                    if (!in_queue.at(v)) {
+                        q.push(v);
+                        in_queue.at(v) = true;
+                        ++cnt.at(v);
+                        if (cnt.at(v) > number_of_nodes) {
+                            return false;   // a negative cycle exists
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}
+
 // Construction of a random antimagic-square from 1 to N * N
 vector<vector<int> > antimagic_square(int n) {
     vector<vector<int> > res(n, vector<int>(n));
