@@ -181,7 +181,7 @@ int main() {
             FastIO::readIntUsingFread(dest);
             ++dest;
             SSSP::dijkstra();
-            if (SSSP::dis.at(dest) == SSSP::INF) {
+            if (dest == 0 || dest > n || SSSP::dis.at(dest) == SSSP::INF) {
                 FastIO::putcharWithFwrite('I');
                 FastIO::putcharWithFwrite('m');
                 FastIO::putcharWithFwrite('p');
