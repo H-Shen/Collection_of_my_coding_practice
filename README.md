@@ -2,6 +2,9 @@
 
 The collection of my coding practice, will be updated inconsistently.
 
+* [***My Kattis Profile***](https://open.kattis.com/users/haohushen)
+* [***My Hackerrank Profile***](https://www.hackerrank.com/Harrison_Shen)
+
 * ***Notice*** 
 	*	Since the earliest code was written in 2016, the requirement of formats, the APIs provided or the datasets for some problems could be changed. The old solution will be updated if I am aware that such case happens and I have time to handle.
 	* 	Refer [float128-is-not-supported-on-this-target](https://stackoverflow.com/questions/43316533/float128-is-not-supported-on-this-target) if **__float128** is not supported in g++. 
