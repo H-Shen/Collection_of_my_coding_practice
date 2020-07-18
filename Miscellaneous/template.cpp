@@ -11,6 +11,33 @@ using RBTree = tree<T, null_type, less<>, rb_tree_tag, tree_order_statistics_nod
 template <typename T>
 using Trie = trie<T, null_type, less<>, pat_trie_tag, trie_prefix_search_node_update>;
 
+namespace IO {
+    template <typename T>
+    inline
+    void read(T& t) {
+        int n = 0; int c = getchar_unlocked(); t = 0;
+        while (!isdigit(c)) n |= c == '-', c = getchar_unlocked();
+        while (isdigit(c)) t = t * 10 + c - 48, c = getchar_unlocked();
+        if (n) t = -t;
+    }
+    template <typename T, typename... Args>
+    inline
+    void read(T& t, Args&... args) {
+        read(t); read(args...);
+    }
+    template <typename T>
+    inline void write(T x) {
+        if (x < 0) x = -x, putchar_unlocked('-');
+        if (x > 9) write(x / 10);
+        putchar_unlocked(x % 10 + 48);
+    }
+    template <typename T>
+    inline void writeln(T x) {
+        write(x);
+        putchar_unlocked('\n');
+    }
+}
+
 // DSU: Union_Find_Set
 // Complexity: O (a(n)) per operation. Note: O (log n) if one of
 // union-by-size or path compression is omitted
@@ -549,7 +576,7 @@ ll modpow(ll a, ll p, ll M) {
 }
 
 // O(1) modulo mul
-inline static 
+inline static
 ll modmul(ll a, ll b, ll m) {
     a = (a % m + m) % m;
     b = (b % m + m) % m;
@@ -660,7 +687,7 @@ double inv_sqrt64(double n) {
 // connected components algorithm. Assume that the node id starts from 1 and the
 // index of a strongly connected component (SCC) also starts from 1 Reference:
 // https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm#The_algorithm_in_pseudocode
-namespace SCC {
+namespace SCC_Tarjan {
 
     // adjacency list of the graph
     unordered_map<int, unordered_set<int> > G;
@@ -684,7 +711,7 @@ namespace SCC {
 
     // reset all containers
     inline
-    void reset_all_containers() {
+    void reset() {
         G.clear();
         stack<int>().swap(s);
         vector<bool>().swap(vis);
@@ -746,7 +773,7 @@ namespace SCC {
 
 // A collection of containers and procedures that implements the topological
 // sort using Kahn's algorithm
-namespace Toposort {
+namespace Toposort_Kahn {
     // adjacency list of the graph
     unordered_map<int, unordered_set<int, custom_hash>, custom_hash> G;
     int number_of_nodes;    // assume that the node id starts from 1
@@ -754,6 +781,8 @@ namespace Toposort {
     // the construction of the graph, not forget that the node id starts from 1
     vector<int> in_degree;
     vector<int> result; // store the result after toposort
+
+    inline
     void reset() {
         G.clear();
         vector<int>().swap(in_degree);
@@ -761,6 +790,7 @@ namespace Toposort {
         vector<int>().swap(result);
     }
 
+    inline
     void init(int n) {
         number_of_nodes = n;
         in_degree.resize(n + 5);
@@ -768,7 +798,8 @@ namespace Toposort {
 
     // Main logic of Kahn's algorithm: O(|V|+|E|), return true if it does not
     // have a cycle, otherwise false
-    bool Kahn() {
+    inline
+    bool kahn() {
         queue<int> q;
         for (int i = 1; i <= number_of_nodes; ++i) {
             if (in_degree.at(i) == 0) {
@@ -791,7 +822,8 @@ namespace Toposort {
 
     // Main logic of Kahn's algorithm but the output should be lexicographically
     // smallest among all possible results after toposort: O(|V|log|V|+|E|)
-    bool Kahn_with_lexicographically_smallest() {
+    inline
+    bool kahn_with_lexicographically_smallest() {
         std::priority_queue<int, vector<int>, greater<> > q;
         for (int i = 1; i <= number_of_nodes; ++i) {
             if (in_degree.at(i) == 0) {
@@ -814,33 +846,35 @@ namespace Toposort {
 }
 
 void construct_the_graph() {
-    Toposort::init(6);
-    Toposort::G[6].insert(3);   ++Toposort::in_degree.at(3);
-    Toposort::G[6].insert(1);   ++Toposort::in_degree.at(1);
-    Toposort::G[5].insert(1);   ++Toposort::in_degree.at(1);
-    Toposort::G[5].insert(2);   ++Toposort::in_degree.at(2);
-    Toposort::G[3].insert(4);   ++Toposort::in_degree.at(4);
-    Toposort::G[4].insert(2);   ++Toposort::in_degree.at(2);
+    Toposort_Kahn::init(6);
+    Toposort_Kahn::G[6].insert(3);   ++Toposort_Kahn::in_degree.at(3);
+    Toposort_Kahn::G[6].insert(1);   ++Toposort_Kahn::in_degree.at(1);
+    Toposort_Kahn::G[5].insert(1);   ++Toposort_Kahn::in_degree.at(1);
+    Toposort_Kahn::G[5].insert(2);   ++Toposort_Kahn::in_degree.at(2);
+    Toposort_Kahn::G[3].insert(4);   ++Toposort_Kahn::in_degree.at(4);
+    Toposort_Kahn::G[4].insert(2);   ++Toposort_Kahn::in_degree.at(2);
 }
 
 
 void test_for_toposort() {
     construct_the_graph();
-    assert(Toposort::Kahn());
-    Toposort::reset();
+    assert(Toposort_Kahn::kahn());
+    Toposort_Kahn::reset();
     construct_the_graph();
-    assert(Toposort::Kahn_with_lexicographically_smallest());
+    assert(Toposort_Kahn::kahn_with_lexicographically_smallest());
     vector<int> result = {5,6,1,3,4,2};
-    assert(Toposort::result == result);
+    assert(Toposort_Kahn::result == result);
 }
 
 // A collection of containers and procedures that implements the topological
 // sort using DFS
-namespace ToposortByDfs {
+namespace Toposort_Dfs {
     // adjacency list of the graph
     unordered_map<int, unordered_set<int, custom_hash>, custom_hash> G;
     vector<bool> vis;
     vector<int> result;
+
+    inline
     void dfs(int u) {
         vis.at(u) = true;
         for (const auto &v : G[u]) {
@@ -850,6 +884,8 @@ namespace ToposortByDfs {
         }
         result.emplace_back(u);
     }
+
+    inline
     bool init(int number_of_nodes) {
         // reset
         vector<bool>().swap(vis);
@@ -867,21 +903,21 @@ namespace ToposortByDfs {
 }
 
 void construct_the_graph_() {
-    ToposortByDfs::G[5].insert(2);
-    ToposortByDfs::G[5].insert(0);
-    ToposortByDfs::G[4].insert(0);
-    ToposortByDfs::G[4].insert(1);
-    ToposortByDfs::G[2].insert(3);
-    ToposortByDfs::G[3].insert(1);
+    Toposort_Dfs::G[5].insert(2);
+    Toposort_Dfs::G[5].insert(0);
+    Toposort_Dfs::G[4].insert(0);
+    Toposort_Dfs::G[4].insert(1);
+    Toposort_Dfs::G[2].insert(3);
+    Toposort_Dfs::G[3].insert(1);
 }
 
 void test_for_toposort_by_dfs() {
     construct_the_graph_();
-    assert(ToposortByDfs::init(6));
+    assert(Toposort_Dfs::init(6));
 }
 
 // The implementation of Dijkstra using adjacency list (based on the index)
-namespace SSSP0 {
+namespace SSSP_Dijkstra_0 {
     constexpr int INF = 0x3f3f3f3f; //  A weight indicates two nodes have no paths between them
     struct Edge {
         int to, distance, next;
@@ -988,7 +1024,7 @@ namespace SSSP0 {
 }
 
 // The implementation of Dijkstra using adjacency list
-namespace SSSP1 {
+namespace SSSP_Dijkstra_1 {
 
     constexpr int INF = 0x3f3f3f3f; //  A weight indicates two nodes have no paths between them
     vector<vector<pair<int, int> > > adj; // The adjacency list of the graph
@@ -1058,7 +1094,7 @@ namespace SSSP1 {
 }
 
 // An implementation of Bellman-Ford's algorithm
-namespace SSSP2 {
+namespace SSSP_Bellman_Ford {
     constexpr int INF = 0x3f3f3f3f;
     struct Edge {
         int u, v;
@@ -1066,7 +1102,7 @@ namespace SSSP2 {
         explicit Edge(int u, int v, int w) : u(u), v(v), w(w) {}
     };
     // After running the algorithm, dis[t] = INF indicates there is no path
-    // from source to t, dis[t] = -INF indicates if there are arbitrarily 
+    // from source to t, dis[t] = -INF indicates if there are arbitrarily
     // short paths from source to t
     vector<int> dis;
     vector<Edge> edges;
@@ -1119,7 +1155,7 @@ namespace SSSP2 {
 }
 
 // An implementation of Shortest Path Faster Algorithm (Bellman-Ford's algorithm with queue optimized)
-namespace SSSP3 {
+namespace SSSP_SPFA {
     constexpr int INF = 0x3f3f3f3f;
     vector<vector<pair<int, int> > > adj; // The adjacency list of the graph
     int source;
@@ -1204,7 +1240,8 @@ vector<int> sum_of_factors(int n) {
 
 int main() {
 
-    //freopen("/home/ugd/haohu.shen/cpsc/in", "r", stdin);
+    //freopen("in", "r", stdin);
+    //freopen("out", "w", stdout);
 
     return 0;
 }
