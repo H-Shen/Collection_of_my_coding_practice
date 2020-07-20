@@ -222,12 +222,7 @@ namespace APSP_Floyd_Warshall {
         // reset
         vector<vector<int> >().swap(adj_matrix);
         number_of_nodes = n;
-        adj_matrix.resize(number_of_nodes, vector<int>(number_of_nodes));
-        for (int i = 0; i < number_of_nodes; ++i) {
-            for (int j = 0; j < number_of_nodes; ++j) {
-                adj_matrix.at(i).at(j) = INF;
-            }
-        }
+        adj_matrix.resize(number_of_nodes, vector<int>(number_of_nodes, INF));
         for (int i = 0; i < number_of_nodes; ++i) {
             adj_matrix.at(i).at(i) = 0;
         }
