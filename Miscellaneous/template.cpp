@@ -1362,6 +1362,11 @@ namespace SSSP_SPFA {
         dis.at(source) = 0;
     }
 
+    inline void
+    add_edge(int u, int v, int w) {
+        adj.at(u).emplace_back(make_pair(v, w));
+    }
+
     // O(mn)
     inline bool
     spfa() {
@@ -1389,6 +1394,51 @@ namespace SSSP_SPFA {
             }
         }
         return true;
+    }
+}
+
+// An implementation of Shortest Path Faster Algorithm (dfs optimized)
+namespace SSSP_SPFA_DFS {
+    constexpr int INF = 0x3f3f3f3f;
+    constexpr int MAX_NODES = 2005;
+    vector<vector<pair<int, int> > > adj; // The adjacency list of the graph
+    int source;
+    int number_of_nodes;
+    vector<int> dis;
+    bitset<MAX_NODES> vis;
+
+    inline void
+    reset() {
+        vector<vector<pair<int, int> > >().swap(adj);
+        vector<int>().swap(dis);
+        number_of_nodes = 0;
+        source = 0;
+        vis.reset();
+    }
+
+    inline void
+    init(int n, int s) {
+        vector<vector<pair<int, int> > >().swap(adj);
+        source = s;
+        number_of_nodes = n;
+        dis.resize(number_of_nodes + 5, INF);
+        adj.resize(number_of_nodes + 5);
+        dis.at(source) = 0;
+    }
+
+    inline bool
+    spfa_dfs(int u) {
+        vis[u] = true;
+        for (const auto &[v, w] : adj.at(u)) {
+            if (dis.at(v) > dis.at(u) + w) {
+                dis.at(v) = dis.at(u) + w;
+                if (vis[v] || spfa_dfs(v)) {
+                    return true; // return true if a negative cycle exists
+                }
+            }
+        }
+        vis[u] = false;
+        return false;
     }
 }
 
