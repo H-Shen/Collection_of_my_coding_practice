@@ -45,6 +45,11 @@ namespace IO {
         if (n) t = -t;
         return true;
     }
+    template<typename T, typename... Args>
+    inline
+    bool can_read(T& t, Args&... args) {
+        return can_read(t) && can_read(args...);
+    }
 
     template<typename T>
     inline
@@ -75,6 +80,10 @@ namespace IO {
     inline void writeln(T x) {
         write(x);
         putchar_unlocked('\n');
+    }
+    template<typename T, typename... Args>
+    inline void writeln(T t, Args... args) {
+        writeln(t); writeln(args...);
     }
 }
 

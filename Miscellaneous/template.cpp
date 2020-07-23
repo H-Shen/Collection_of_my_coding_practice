@@ -86,6 +86,61 @@ namespace DSU {
     }
 }
 
+// Modified DSU, supports move p from its set to the set contains q
+// Reference: UVA11987
+namespace DSU_Modified {
+    vector<int> father;
+    vector<int> Size;
+
+    void init(int n) {
+        vector<int>().swap(father);
+        vector<int>().swap(Size);
+        father.resize(2 * n + 5);
+        Size.resize(2 * n + 5);
+        for (int i = 1; i <= n; ++i) {
+            father.at(i) = i + n;
+            father.at(i + n) = father.at(i);
+            Size.at(i + n) = 1;
+        }
+    }
+
+    int find(int x) {
+        if (x != father[x]) {
+            father[x] = find(father[x]);
+        }
+        return father[x];
+    }
+
+    void merge(int x, int y) {
+        x = find(x);
+        y = find(y);
+        if (x == y) {
+            return;
+        }
+        if (Size[x] > Size[y]) {
+            swap(x, y);
+        }
+        father[x] = y;
+        Size[y] += Size[x];
+    }
+
+    // move x_ from its set to the set contains y_
+    void move_to(int x_, int y_) {
+        int x = find(x_);
+        int y = find(y_);
+        if (x == y) {
+            return;
+        }
+        --Size[x];
+        ++Size[y];
+        father[x_] = y;
+    }
+
+    bool is_same_group(int x, int y) {
+        return find(x) == find(y);
+    }
+}
+
 /*
 Catalan[0] = 1, Catalan[2] = 1
 Catalan[n] = (4n-2)/(n+1) * Catalan[n-1]
@@ -1132,6 +1187,8 @@ namespace SSSP_Dijkstra_0 {
     vector<bool> vis;
     int source;         // the node id of the source
     vector<int> prev;   // an auxiliary container to store the path
+
+    // __gnu_pbds::priority_queue<Node, less<>, pairing_heap_tag> pq; // Alternative option if you want to use pairing heap
     std::priority_queue<Node> pq;
 
     inline void
