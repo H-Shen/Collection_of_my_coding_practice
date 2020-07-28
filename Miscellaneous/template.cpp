@@ -251,6 +251,60 @@ namespace MST_Kruskal {
     }
 }
 
+
+// The collection of methods and data structures are used to obtain an MST of a
+// undirected-graph using Prim's algorithm with a priority queue optimized
+// O(mlogn)
+namespace MST_Prim {
+    constexpr int INF = 0x3f3f3f3f;
+    vector<vector<pair<int, int> > > adj; // adjacency list
+    vector<int> dis;
+    vector<bool> vis;
+    int number_of_nodes;
+    void reset() {
+        number_of_nodes = 0;
+        vector<int>().swap(dis);
+        vector<bool>().swap(vis);
+        vector<vector<pair<int, int> > >().swap(adj);
+    }
+    void init(int n) {
+        number_of_nodes = n;
+        dis.resize(n + 5, INF);
+        adj.resize(n + 5);
+        vis.resize(n + 5, false);
+    }
+    void add_edge(int u, int v, int w) {
+        adj.at(u).emplace_back(make_pair(v, w));
+        adj.at(v).emplace_back(make_pair(u, w));
+    }
+    // Return false if the MST does not exist
+    bool prim(ll &sum_of_weights) {
+        std::priority_queue<pair<int, int>, vector<pair<int, int> >, greater<> > pq;
+        dis.at(1) = 0;  // the MST starts from node id: 1
+        pq.push({dis.at(1), 1}); // add {dist.at(node_id), node_id} to pq
+        int counter = 0;
+        int u, w;
+        while (!pq.empty() && counter < number_of_nodes) {
+            w = pq.top().first;
+            u = pq.top().second;
+            pq.pop();
+            if (vis.at(u)) {
+                continue;
+            }
+            ++counter;
+            sum_of_weights += w;
+            vis.at(u) = true;
+            for (const auto &[to, weight] : adj.at(u)) {
+                if (dis.at(to) > weight) {
+                    dis.at(to) = weight;
+                    pq.push({dis.at(to), to});
+                }
+            }
+        }
+        return counter == number_of_nodes;
+    }
+}
+
 // Merge two std::priority_queue efficiently (combine the heap with less nodes to the heap with more nodes)
 template<typename T>  // O(n)
 void merge_pq(std::priority_queue<T> &dest, std::priority_queue<T> &src) {
