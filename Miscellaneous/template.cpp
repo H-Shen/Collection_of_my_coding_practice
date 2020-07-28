@@ -586,6 +586,50 @@ namespace APSP_Johnson {
     }
 }
 
+// An example that does graph traversal with BFS from 's'
+namespace BFS_Example {
+    constexpr int INF = 0x3f3f3f3f;
+    vector<vector<pair<int, int> > > adj;   // adjacency list
+    int s;
+    vector<int> prev; // an auxiliary container to store the path
+    vector<bool> vis; // flag if any node is visited
+    vector<int> dis; // dis.at(n) = the distance of shortest path from 's' to n
+    void init(int number_of_nodes, bool store_path = false) {
+        dis.resize(number_of_nodes + 5, INF);
+        if (store_path) {
+            prev.resize(number_of_nodes + 5, -1);
+        }
+    }
+    void bfs(bool store_path = false) {
+        queue<int> q;
+        q.push(s);
+        vis.at(s) = true;
+        dis.at(s) = 0;
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            for (const auto &[to, weight] : adj.at(u)) {
+                if (!vis.at(to)) {
+                    q.push(to);
+                    vis.at(to) = true;
+                    dis.at(to) = dis.at(u) + weight;
+                    if (store_path) {
+                        prev.at(to) = u;
+                    }
+                }
+            }
+        }
+    }
+    vector<int> get_path(int destination) {
+        vector<int> result;
+        for (int i = destination; i != -1; i = prev.at(i)) {
+            result.emplace_back(i);
+        }
+        reverse(result.begin(), result.end());
+        return result;
+    }
+}
+
 // Implementation of next_combination, duplicated values will be shown once
 template<typename Itr>
 inline static
