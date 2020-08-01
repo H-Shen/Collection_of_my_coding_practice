@@ -11,6 +11,8 @@ using RBTree = tree<T, null_type, less<>, rb_tree_tag, tree_order_statistics_nod
 template <typename T>
 using Trie = trie<T, null_type, less<>, pat_trie_tag, trie_prefix_search_node_update>;
 
+void fast_io() { ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); }
+
 namespace IO {
     template <typename T>
     inline
