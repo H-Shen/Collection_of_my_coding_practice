@@ -64,7 +64,9 @@ namespace SCC {
         number_of_scc = 0;
         current_timestamp = 1;
         // Give some flexibility of size of our containers since
-        // the node id/SCC id may not strictly start from 1
+        // the node id/SCC id may not strictly start from 1, since the
+        // number of nodes in the assignment will not exceed 10001,
+        // the space complexity will not be a bottle-neck
         int offset = 5;
         vis.resize(number_of_nodes + offset, false);
         dfs_rank.resize(number_of_nodes + offset, 0);
@@ -115,12 +117,12 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
-    
+
     bool first_case = true;
     bool first_item;
     int n;
     while (true) {
-        scanf("%d", &n);
+        cin >> n;
         if (n == 0) {
             break;
         }
@@ -129,17 +131,17 @@ int main() {
         unordered_map<int, char> node_to_id_rev;
         int node_id_counter = 1;
         for (int i = 1; i <= n; ++i) {
-            scanf("%s", s);
+            cin >> s;
             temp_array[1] = s[0];
-            scanf("%s", s);
+            cin >> s;
             temp_array[2] = s[0];
-            scanf("%s", s);
+            cin >> s;
             temp_array[3] = s[0];
-            scanf("%s", s);
+            cin >> s;
             temp_array[4] = s[0];
-            scanf("%s", s);
+            cin >> s;
             temp_array[5] = s[0];
-            scanf("%s", s);
+            cin >> s;
             temp_array[6] = s[0];
             for (int j = 1; j <= 5; ++j) {
                 if (node_to_id.find(temp_array[j]) == node_to_id.end()) {
