@@ -4,6 +4,8 @@ using namespace std;
 using namespace __gnu_pbds;
 using namespace __gnu_cxx;
 using ll = long long;
+using int128 = __int128;
+using pii = pair<int, int>;
 
 template <typename T>
 using RBTree = tree<T, null_type, less<>, rb_tree_tag, tree_order_statistics_node_update>;
