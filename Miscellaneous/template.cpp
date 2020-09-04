@@ -1620,6 +1620,67 @@ vector<int> sum_of_factors(int n) {
     return result;
 }
 
+enum class SparseTableType {
+    MAX, MIN, GCD, OR
+};
+template <typename T, int MAXN, int LOGN, SparseTableType TYPE>   // LOGN = static_cast<int>(floor(log2(MAXN))+2)
+struct SparseTable {
+    array<array<T, LOGN>, MAXN + 5> spt;
+    array<T, MAXN + 5> Log2;
+    constexpr SparseTable() {
+        // init Log2[] in O(log n)
+        Log2.at(1) = 0;
+        Log2.at(2) = 1;
+        for (int i = 3; i < MAXN + 5; ++i) {
+            Log2.at(i) = Log2.at(i / 2) + 1;
+        }
+    }
+    constexpr void init() {
+        for (int j = 1; j <= LOGN; ++j) {
+            for (int i = 1; i + (1 << j) - 1 <= MAXN; ++i) {
+                if constexpr (TYPE == SparseTableType::MAX) {
+                    spt.at(i).at(j) = max(spt.at(i).at(j - 1),
+                                          spt.at(i + (1 << (j - 1))).at(j - 1));
+                }
+                if constexpr (TYPE == SparseTableType::MIN) {
+                    spt.at(i).at(j) = min(spt.at(i).at(j - 1),
+                                          spt.at(i + (1 << (j - 1))).at(j - 1));
+                }
+                if constexpr (TYPE == SparseTableType::GCD) {
+                    spt.at(i).at(j) = gcd(spt.at(i).at(j - 1),
+                                          spt.at(i + (1 << (j - 1))).at(j - 1));
+                }
+                if constexpr (TYPE == SparseTableType::OR) {
+                    spt.at(i).at(j) = spt.at(i).at(j - 1) &
+                                          spt.at(i + (1 << (j - 1))).at(j - 1);
+                }
+            }
+        }
+    }
+
+    T query(int x, int y) {
+        int s = Log2.at(y - x + 1);
+        T ans;
+        if constexpr (TYPE == SparseTableType::MAX) {
+            ans = max(spt.at(x).at(s),
+                           spt.at(y - (1 << s) + 1).at(s));
+        }
+        if constexpr (TYPE == SparseTableType::MIN) {
+            ans = min(spt.at(x).at(s),
+                      spt.at(y - (1 << s) + 1).at(s));
+        }
+        if constexpr (TYPE == SparseTableType::GCD) {
+            ans = gcd(spt.at(x).at(s),
+                      spt.at(y - (1 << s) + 1).at(s));
+        }
+        if constexpr (TYPE == SparseTableType::OR) {
+            ans = spt.at(x).at(s) &
+                      spt.at(y - (1 << s) + 1).at(s);
+        }
+        return ans;
+    }
+};
+
 int main() {
 
     //freopen("in", "r", stdin);
