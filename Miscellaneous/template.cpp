@@ -4,39 +4,73 @@ using namespace std;
 using namespace __gnu_pbds;
 using namespace __gnu_cxx;
 using ll = long long;
-using int128 = __int128;
-using pii = pair<int, int>;
 
-template <typename T>
-using RBTree = tree<T, null_type, less<>, rb_tree_tag, tree_order_statistics_node_update>;
-
-template <typename T>
-using Trie = trie<T, null_type, less<>, pat_trie_tag, trie_prefix_search_node_update>;
+#ifdef __SIZEOF_INT128__
+using int128 = __int128_t;
+using uint128 = __uint128_t;
 
 inline
-void fast_io() { ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); }
+string print_int128(int128 a) {
+    if (!a) {
+        return "0";
+    }
+    string s;
+    while (a) {
+        s = char(llabs((long long)(a % 10)) + '0') + s;
+        if (a < 0 && a > -10) {
+            s = '-' + s;
+        }
+        a /= 10;
+    }
+    return s;
+}
+#endif
+
+#if defined(__SIZEOF_FLOAT128__) && defined(__linux__)
+using float128 = __float128;
+#endif
+
+using pii = pair<int, int>;
+
+template<typename T>
+using RBTree = tree<T, null_type, less<>, rb_tree_tag, tree_order_statistics_node_update>;
+
+template<typename T>
+using Trie = trie<T, null_type, less<>, pat_trie_tag, trie_prefix_search_node_update>;
+
+auto fast_io = []() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+};
 
 namespace IO {
-    template <typename T>
+    template<typename T>
     inline
-    void read(T& t) {
-        int n = 0; int c = getchar_unlocked(); t = 0;
+    void read(T &t) {
+        int n = 0;
+        int c = getchar_unlocked();
+        t = 0;
         while (!isdigit(c)) n |= c == '-', c = getchar_unlocked();
         while (isdigit(c)) t = t * 10 + c - 48, c = getchar_unlocked();
         if (n) t = -t;
     }
-    template <typename T, typename... Args>
+
+    template<typename T, typename... Args>
     inline
-    void read(T& t, Args&... args) {
-        read(t); read(args...);
+    void read(T &t, Args &... args) {
+        read(t);
+        read(args...);
     }
-    template <typename T>
+
+    template<typename T>
     inline void write(T x) {
         if (x < 0) x = -x, putchar_unlocked('-');
         if (x > 9) write(x / 10);
         putchar_unlocked(x % 10 + 48);
     }
-    template <typename T>
+
+    template<typename T>
     inline void writeln(T x) {
         write(x);
         putchar_unlocked('\n');
@@ -52,6 +86,7 @@ namespace DSU {
     // Size[x]:  the rank, rank is the size of the tree whose root is x
     vector<int> father;
     vector<int> Size;
+
     // iniitalization
     inline
     void init(int n) {
@@ -63,6 +98,7 @@ namespace DSU {
         iota(father.begin(), father.end(), 0);
         Size.resize(n + 5, 1);
     }
+
     // find the ancestor of i with path compression
     inline
     int find(int x) {
@@ -71,19 +107,23 @@ namespace DSU {
         }
         return father[x];
     }
+
     // merge x and y
     inline
     void merge(int x, int y) {
-        x = find(x); y = find(y);
+        x = find(x);
+        y = find(y);
         if (x == y) {
             return;
         }
-        if (Size[x] > Size[y]) {  // Make sure the tree with less nodes combines to the tree with more nodes
+        if (Size[x] >
+            Size[y]) {  // Make sure the tree with less nodes combines to the tree with more nodes
             swap(x, y);
         }
         father[x] = y;
         Size[y] += Size[x];
     }
+
     // check if x and y are in the same set
     inline
     bool is_same_group(int i, int j) {
@@ -155,9 +195,10 @@ Catalan[n] % p
 */
 namespace Catalan {
     constexpr ll MOD = 1000000007;
-    constexpr ll MAXN =1005;
+    constexpr ll MAXN = 1005;
     ll inv[MAXN + 5];
     ll catalan[MAXN + 5];
+
     void init() {
         // Obtain inverse of MOD from 1 to MAXN
         inv[1] = 1;
@@ -168,9 +209,12 @@ namespace Catalan {
         catalan[0] = 1;
         catalan[1] = 1;
         for (ll i = 2; i <= MAXN; ++i) {
-            catalan[i] = ((4*i-2)*catalan[i-1] % MOD * inv[i+1] % MOD) % MOD;
+            catalan[i] =
+                    ((4 * i - 2) * catalan[i - 1] % MOD * inv[i + 1] % MOD) %
+                    MOD;
         }
     }
+
     ll query(ll n) {
         return catalan[n];
     }
@@ -266,22 +310,26 @@ namespace MST_Prim {
     vector<int> dis;
     vector<bool> vis;
     int number_of_nodes;
+
     void reset() {
         number_of_nodes = 0;
         vector<int>().swap(dis);
         vector<bool>().swap(vis);
         vector<vector<pair<int, int> > >().swap(adj);
     }
+
     void init(int n) {
         number_of_nodes = n;
         dis.resize(n + 5, INF);
         adj.resize(n + 5);
         vis.resize(n + 5, false);
     }
+
     void add_edge(int u, int v, int w) {
         adj.at(u).emplace_back(make_pair(v, w));
         adj.at(v).emplace_back(make_pair(u, w));
     }
+
     // Return false if the MST does not exist
     bool prim(ll &sum_of_weights) {
         std::priority_queue<pair<int, int>, vector<pair<int, int> >, greater<> > pq;
@@ -311,7 +359,8 @@ namespace MST_Prim {
 }
 
 // Merge two std::priority_queue efficiently (combine the heap with less nodes to the heap with more nodes)
-template<typename T>  // O(n)
+template<typename T>
+// O(n)
 void merge_pq(std::priority_queue<T> &dest, std::priority_queue<T> &src) {
     if (dest.size() < src.size()) {
         swap(dest, src);
@@ -406,6 +455,7 @@ floyd_warshall(int n, const vector<vector<bool> > &adjacency_matrix) {
 template<size_t N>
 struct TransitiveClosure {
     bitset<N> reach[N];
+
     void floyd_warshall(int n) {
         for (int k = 0; k < n; ++k) {
             for (int i = 0; i < n; ++i) {
@@ -415,6 +465,7 @@ struct TransitiveClosure {
             }
         }
     }
+
     void reset() {
         for (int i = 0; i < N; ++i) {
             reach[i].reset();
@@ -427,17 +478,21 @@ namespace MinimumWeightCycle {
     constexpr int INF = 0x3f3f3f3f;
     vector<vector<int> > adj_matrix;
     int number_of_nodes;
+
     void init(int n) {
         number_of_nodes = n;
-        adj_matrix.resize(number_of_nodes + 5, vector<int>(number_of_nodes + 5, INF));
+        adj_matrix.resize(number_of_nodes + 5,
+                          vector<int>(number_of_nodes + 5, INF));
         for (int i = 1; i <= number_of_nodes; ++i) {
             adj_matrix.at(i).at(i) = 0;
         }
     }
+
     void add_edge(int u, int v, int w) {
         adj_matrix.at(u).at(v) = w;
         adj_matrix.at(v).at(u) = w;
     }
+
     // Obtain the summation of weights in the minimum weight cycle,
     // return false if no such cycle exists
     bool floyd(ll &answer) {
@@ -446,12 +501,15 @@ namespace MinimumWeightCycle {
         for (int k = 1; k <= number_of_nodes; ++k) {
             for (int i = 1; i < k; ++i) {
                 for (int j = 1; j < i; ++j) {
-                    answer = min(answer, dis.at(i).at(j) * 1LL + adj_matrix.at(i).at(k) + adj_matrix.at(k).at(j));
+                    answer = min(answer, dis.at(i).at(j) * 1LL +
+                                         adj_matrix.at(i).at(k) +
+                                         adj_matrix.at(k).at(j));
                 }
             }
             for (int i = 1; i <= number_of_nodes; ++i) {
                 for (int j = 1; j <= number_of_nodes; ++j) {
-                    dis.at(i).at(j) = min(dis.at(i).at(j), dis.at(i).at(k) + dis.at(k).at(j));
+                    dis.at(i).at(j) = min(dis.at(i).at(j),
+                                          dis.at(i).at(k) + dis.at(k).at(j));
                 }
             }
         }
@@ -467,6 +525,7 @@ namespace APSP_Johnson {
     struct Edge {
         int u, v;
         int w;
+
         explicit Edge(int u, int v, int w) : u(u), v(v), w(w) {}
     };
 
@@ -515,19 +574,24 @@ namespace APSP_Johnson {
     namespace SSSP_Dijkstra {
         struct Edge {
             int to, distance, next;
+
             bool operator==(const Edge &other) const {
                 return to == other.to && distance == other.distance &&
                        next == other.next;
             }
         };
+
         struct Node {
             int distance, position;
+
             explicit Node(int distance, int position) : distance(distance),
                                                         position(position) {}
+
             bool operator<(const Node &other) const {
                 return (other.distance < distance);
             }
         };
+
         // Containers to store the graph
         vector<Edge> E;
         vector<int> head;
@@ -659,6 +723,7 @@ namespace BFS_Example {
             prev.resize(number_of_nodes + 5, -1);
         }
     }
+
     void bfs(bool store_path = false) {
         queue<int> q;
         q.push(s);
@@ -679,6 +744,7 @@ namespace BFS_Example {
             }
         }
     }
+
     vector<int> get_path(int destination) {
         vector<int> result;
         for (int i = destination; i != -1; i = prev.at(i)) {
@@ -746,7 +812,7 @@ void next_combination_usage() {
 
 // Longest Common Subsequence: O(A.size()*B.size())
 // assert( LCS("abcde", "bcef") == 3 );
-auto LCS = [](const auto & A, const auto & B) {
+auto LCS = [](const auto &A, const auto &B) {
 
     int len_A = static_cast<int>(A.size());
     int len_B = static_cast<int>(B.size());
@@ -756,10 +822,10 @@ auto LCS = [](const auto & A, const auto & B) {
     vector<vector<int> > dp(len_A, vector<int>(len_B));
     for (int a = 0; a < len_A; a++) {
         for (int b = 0; b < len_B; b++) {
-            if (a) dp[a][b] = max(dp[a][b], dp[a-1][b]);
-            if (b) dp[a][b] = max(dp[a][b], dp[a][b-1]);
+            if (a) dp[a][b] = max(dp[a][b], dp[a - 1][b]);
+            if (b) dp[a][b] = max(dp[a][b], dp[a][b - 1]);
             if (A[a] == B[b])
-                dp[a][b] = max(dp[a][b], ((a && b) ? dp[a-1][b-1] : 0) + 1);
+                dp[a][b] = max(dp[a][b], ((a && b) ? dp[a - 1][b - 1] : 0) + 1);
         }
     }
     int ret = dp[len_A - 1][len_B - 1];
@@ -967,11 +1033,12 @@ ll modmul(ll a, ll b, ll m) {
 
 // A way to hash fixed length array
 constexpr int MAXLENGTH = 26;
+
 struct myHashFunc {
-    std::size_t operator()(const array<int, MAXLENGTH>& A) const {
+    std::size_t operator()(const array<int, MAXLENGTH> &A) const {
         std::size_t h = 0;
         for (const auto &i : A) {
-            h ^= std::hash<int>{}(i)  + 0x9e3779b9 + (h << 6) + (h >> 2);
+            h ^= std::hash<int>{}(i) + 0x9e3779b9 + (h << 6) + (h >> 2);
         }
         return h;
     }
@@ -991,6 +1058,7 @@ struct custom_hash {
         static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
         return splitmix64(x + FIXED_RANDOM);
     }
+
     // For a pair of integers
     size_t operator()(pair<uint64_t, uint64_t> x) const {
         static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
@@ -998,18 +1066,18 @@ struct custom_hash {
                (splitmix64(x.second + FIXED_RANDOM) >> 1);
     }
 };
+
 gp_hash_table<int, pair<int, int>, custom_hash> my_hash_table;
 
 // Usage:
 // auto dp = MultiDimensionArray::Array<int>(5, 4, 12);
 // auto dp__ = MultiDimensionArray::Array<double>(4, 5, 1, 1.0);
 namespace MultiDimensionArray {
-    template <typename T, typename ... Args>
-    auto Array(std::size_t n, Args && ... args) {
+    template<typename T, typename ... Args>
+    auto Array(std::size_t n, Args &&... args) {
         if constexpr (1 == sizeof ... (args)) {
             return std::vector<T>(n, args ...);
-        }
-        else {
+        } else {
             return std::vector(n, Array<T>(args...));
         }
     }
@@ -1019,22 +1087,25 @@ namespace MultiDimensionArray {
 // Usage: cout << my_max(1, 1, 2, 3, 1);
 template<typename T>
 inline constexpr static
-T my_max(const T& x, const T& y) {
+T my_max(const T &x, const T &y) {
     return (x > y) ? x : y;
 }
+
 template<typename T, typename ... Args>
 inline constexpr static
-T my_max(const T& x, const Args& ... args) {
+T my_max(const T &x, const Args &... args) {
     return my_max(x, my_max(args...));
 }
+
 template<typename T>
 inline constexpr static
-T my_min(const T& x, const T& y) {
+T my_min(const T &x, const T &y) {
     return (x < y) ? x : y;
 }
+
 template<typename T, typename ... Args>
 inline constexpr static
-T my_min(const T& x, const Args& ... args) {
+T my_min(const T &x, const Args &... args) {
     return my_min(x, my_min(args...));
 }
 
@@ -1047,7 +1118,7 @@ inline static
 double inv_sqrt64(double n) {
     double x2 = n * 0.5;
     double y = n;
-    uint64_t i = *(uint64_t *)&y;
+    uint64_t i = *(uint64_t *) &y;
     i = 0x5fe6eb50c7b537a9 - (i >> 1);
     y = *(double *) &i;
 
@@ -1223,12 +1294,18 @@ namespace Toposort_Kahn {
 
 void construct_the_graph() {
     Toposort_Kahn::init(6);
-    Toposort_Kahn::G[6].insert(3);   ++Toposort_Kahn::in_degree.at(3);
-    Toposort_Kahn::G[6].insert(1);   ++Toposort_Kahn::in_degree.at(1);
-    Toposort_Kahn::G[5].insert(1);   ++Toposort_Kahn::in_degree.at(1);
-    Toposort_Kahn::G[5].insert(2);   ++Toposort_Kahn::in_degree.at(2);
-    Toposort_Kahn::G[3].insert(4);   ++Toposort_Kahn::in_degree.at(4);
-    Toposort_Kahn::G[4].insert(2);   ++Toposort_Kahn::in_degree.at(2);
+    Toposort_Kahn::G[6].insert(3);
+    ++Toposort_Kahn::in_degree.at(3);
+    Toposort_Kahn::G[6].insert(1);
+    ++Toposort_Kahn::in_degree.at(1);
+    Toposort_Kahn::G[5].insert(1);
+    ++Toposort_Kahn::in_degree.at(1);
+    Toposort_Kahn::G[5].insert(2);
+    ++Toposort_Kahn::in_degree.at(2);
+    Toposort_Kahn::G[3].insert(4);
+    ++Toposort_Kahn::in_degree.at(4);
+    Toposort_Kahn::G[4].insert(2);
+    ++Toposort_Kahn::in_degree.at(2);
 }
 
 
@@ -1238,7 +1315,7 @@ void test_for_toposort() {
     Toposort_Kahn::reset();
     construct_the_graph();
     assert(Toposort_Kahn::kahn_with_lexicographically_smallest());
-    vector<int> result = {5,6,1,3,4,2};
+    vector<int> result = {5, 6, 1, 3, 4, 2};
     assert(Toposort_Kahn::result == result);
 }
 
@@ -1389,6 +1466,7 @@ namespace SSSP_Dijkstra_0 {
             }
         }
     }
+
     inline vector<int>
     get_path(int destination) {
         vector<int> path;
@@ -1459,6 +1537,7 @@ namespace SSSP_Dijkstra_1 {
             }
         }
     }
+
     inline vector<int>
     get_path(int destination) {
         vector<int> path;
@@ -1473,11 +1552,14 @@ namespace SSSP_Dijkstra_1 {
 // An implementation of Bellman-Ford's algorithm
 namespace SSSP_Bellman_Ford {
     constexpr int INF = 0x3f3f3f3f;
+
     struct Edge {
         int u, v;
         int w;
+
         explicit Edge(int u, int v, int w) : u(u), v(v), w(w) {}
     };
+
     // After running the algorithm, dis[t] = INF indicates there is no path
     // from source to t, dis[t] = -INF indicates if there are arbitrarily
     // short paths from source to t
@@ -1523,7 +1605,8 @@ namespace SSSP_Bellman_Ford {
             for (auto &e : edges) {
                 if (dis.at(e.u) == -INF) {
                     dis.at(e.v) = -INF;
-                } else if (dis.at(e.u) < INF && dis.at(e.v) > dis.at(e.u) + e.w) {
+                } else if (dis.at(e.u) < INF &&
+                           dis.at(e.v) > dis.at(e.u) + e.w) {
                     dis.at(e.v) = -INF;
                 }
             }
@@ -1623,10 +1706,12 @@ vector<int> sum_of_factors(int n) {
 enum class SparseTableType {
     MAX, MIN, GCD, OR
 };
-template <typename T, int MAXN, int LOGN, SparseTableType TYPE>   // LOGN = static_cast<int>(floor(log2(MAXN))+2)
+
+template<typename T, int MAXN, int LOGN, SparseTableType TYPE>   // LOGN = static_cast<int>(floor(log2(MAXN))+2)
 struct SparseTable {
     array<array<T, LOGN>, MAXN + 5> spt;
     array<T, MAXN + 5> Log2;
+
     constexpr SparseTable() {
         // init Log2[] in O(log n)
         Log2.at(1) = 0;
@@ -1635,6 +1720,7 @@ struct SparseTable {
             Log2.at(i) = Log2.at(i / 2) + 1;
         }
     }
+
     constexpr void init() {
         for (int j = 1; j <= LOGN; ++j) {
             for (int i = 1; i + (1 << j) - 1 <= MAXN; ++i) {
@@ -1652,7 +1738,7 @@ struct SparseTable {
                 }
                 if constexpr (TYPE == SparseTableType::OR) {
                     spt.at(i).at(j) = spt.at(i).at(j - 1) &
-                                          spt.at(i + (1 << (j - 1))).at(j - 1);
+                                      spt.at(i + (1 << (j - 1))).at(j - 1);
                 }
             }
         }
@@ -1663,7 +1749,7 @@ struct SparseTable {
         T ans;
         if constexpr (TYPE == SparseTableType::MAX) {
             ans = max(spt.at(x).at(s),
-                           spt.at(y - (1 << s) + 1).at(s));
+                      spt.at(y - (1 << s) + 1).at(s));
         }
         if constexpr (TYPE == SparseTableType::MIN) {
             ans = min(spt.at(x).at(s),
@@ -1675,7 +1761,7 @@ struct SparseTable {
         }
         if constexpr (TYPE == SparseTableType::OR) {
             ans = spt.at(x).at(s) &
-                      spt.at(y - (1 << s) + 1).at(s);
+                  spt.at(y - (1 << s) + 1).at(s);
         }
         return ans;
     }
