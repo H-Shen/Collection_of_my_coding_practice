@@ -1767,6 +1767,22 @@ struct SparseTable {
     }
 };
 
+// Generate fixed-size array in compile-time
+template<int N>
+struct FibStruct {
+    array<unsigned int, N> A;
+    constexpr FibStruct() : A() {
+        A.at(0) = 0;
+        A.at(1) = 1;
+        for (int i = 2; i < N; ++i) {
+            A.at(i) = A.at(i - 1) + A.at(i - 2);
+        }
+    }
+};
+constexpr int MAXN = 30;
+constexpr FibStruct<MAXN> s = FibStruct<MAXN>();
+static_assert(s.A.at(MAXN - 1) == 514229);
+
 int main() {
 
     //freopen("in", "r", stdin);
