@@ -24,25 +24,25 @@ The collection of my coding practice, will be updated inconsistently.
 		* Java HotSpot(TM) 64-Bit Server VM (build 25.191-b12, mixed mode)
 
 	* ***For C/Cpp***
-		* g++-10 (Homebrew GCC 10.1.0) 10.1.0 (-std=c++17 -Wall -O2)
-		* gcc-10 (Homebrew GCC 10.1.0) 10.1.0 (-std=c11 -Wall -O2)
-      * cmake version 3.17.3
+		* g++-10 (Homebrew GCC 10.2.0) 10.1.0 (-std=c++17 -Wall -O2)
+		* gcc-10 (Homebrew GCC 10.2.0) 10.1.0 (-std=c11 -Wall -O2)
+      * cmake version 3.18.2
 
     * ***For SQL***
-        * sqlite 3.30.1
-        * mysql  Ver 8.0.19 for osx10.15 on x86_64 (Homebrew)
+        * sqlite 3.33.0
+        * mysql  Ver 8.0.21 for osx10.15 on x86_64 (Homebrew)
 
     * ***For JavaScript***
-        * v8.11.4
+        * v14.10.0
 
     * ***For Go***
-        * go version go1.13.6 darwin/amd64
+        * go version go1.15.1 darwin/amd64
 
     * ***For Shell***
-        * zsh 5.7.1 (x86_64-apple-darwin19.0.0)
+        * zsh 5.8 (x86_64-apple-darwin19.3.0)
 
     * ***For Php***
-        * PHP 7.4.2 (cli) (built: Jan 22 2020 06:30:58) ( NTS )
+        * PHP 7.4.10 (cli) (built: Sep  3 2020 18:21:42) ( NTS )
 
     *  ***For Haskell***
         * The Glorious Glasgow Haskell Compilation System, version 8.6.5
