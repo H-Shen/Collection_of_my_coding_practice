@@ -4,6 +4,7 @@ using namespace std;
 using namespace __gnu_pbds;
 using namespace __gnu_cxx;
 using ll = long long;
+using pii = pair<int, int>;
 
 #ifdef __SIZEOF_INT128__
 using int128 = __int128_t;
@@ -29,8 +30,6 @@ string print_int128(int128 a) {
 #if defined(__SIZEOF_FLOAT128__) && defined(__linux__)
 using float128 = __float128;
 #endif
-
-using pii = pair<int, int>;
 
 template<typename T>
 using RBTree = tree<T, null_type, less<>, rb_tree_tag, tree_order_statistics_node_update>;
@@ -1782,6 +1781,60 @@ struct FibStruct {
 constexpr int MAXN = 30;
 constexpr FibStruct<MAXN> s = FibStruct<MAXN>();
 static_assert(s.A.at(MAXN - 1) == 514229);
+
+
+// Twice DFS to query the diameter of a tree with different weight on each edge : O(n) 
+namespace TreeDiameter {
+    vector<vector<pii> > adj;
+    vector<int> d;
+    int c = 0;
+
+    void dfs(int u) {
+        int v, w;
+        for (const auto &i : adj.at(u)) {
+            v = i.first;
+            w = i.second;
+            if (d.at(v) == 0) {
+                d.at(v) = d.at(u) + w;
+                if (d.at(v) > d.at(c)) {
+                    c = v;
+                }
+                dfs(v);
+            }
+        }
+    }
+
+    int diameter() {
+        d.at(0) = 1;    // node id starts from 0
+        dfs(0);
+        fill(d.begin(), d.end(), 0);
+        d.at(c) = 1;
+        dfs(c);
+        return d.at(c) - 1;
+    }
+
+    void init(int n) {
+        adj.resize(n + 5);
+        d.resize(n + 5);
+    }
+}
+struct Interval {
+    int start;
+    int end;
+};
+int solve(int n, vector<Interval>& Tree_edge, vector<int>& Edge_value) {
+    // write code here
+    TreeDiameter::init(n);
+    int u, v, w;
+    for (int i = 0; i < n - 1; ++i) {
+        u = Tree_edge.at(i).start;
+        v = Tree_edge.at(i).end;
+        w = Edge_value.at(i);
+        TreeDiameter::adj.at(u).emplace_back(make_pair(v, w));
+        TreeDiameter::adj.at(v).emplace_back(make_pair(u, w));
+    }
+    return TreeDiameter::diameter();
+}
 
 int main() {
 
