@@ -36,7 +36,7 @@ The collection of my coding practice, will be updated inconsistently.
         * v14.10.0
 
     * ***For Go***
-        * go version go1.15.1 darwin/amd64
+        * go version go1.15.2 darwin/amd64
 
     * ***For Shell***
         * zsh 5.8 (x86_64-apple-darwin19.3.0)
