@@ -45,4 +45,4 @@ The collection of my coding practice, will be updated inconsistently.
         * PHP 7.4.10 (cli) (built: Sep  3 2020 18:21:42) ( NTS )
 
     *  ***For Haskell***
-        * The Glorious Glasgow Haskell Compilation System, version 8.6.5
+        * The Glorious Glasgow Haskell Compilation System, version 8.10.1
