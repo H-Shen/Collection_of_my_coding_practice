@@ -36,7 +36,7 @@ The collection of my coding practice, will be updated inconsistently.
         * v14.10.0
 
     * ***For Go***
-        * go version go1.15.1 darwin/amd64
+        * go version go1.15.2 darwin/amd64
 
     * ***For Shell***
         * zsh 5.8 (x86_64-apple-darwin19.3.0)
@@ -45,4 +45,4 @@ The collection of my coding practice, will be updated inconsistently.
         * PHP 7.4.10 (cli) (built: Sep  3 2020 18:21:42) ( NTS )
 
     *  ***For Haskell***
-        * The Glorious Glasgow Haskell Compilation System, version 8.6.5
+        * The Glorious Glasgow Haskell Compilation System, version 8.10.1
