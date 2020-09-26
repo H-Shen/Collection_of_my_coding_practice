@@ -1836,6 +1836,24 @@ int solve(int n, vector<Interval>& Tree_edge, vector<int>& Edge_value) {
     return TreeDiameter::diameter();
 }
 
+// Fib(2k) = Fib(k) * (2Fib(k+1) - Fib(k))
+// Fib(2k+1) = Fib(k+1) * Fib(k+1) + F(k) * F(k)
+template <typename T>
+constexpr pair<T, T> fibInLog(int n) {
+    assert(n >= 0);
+    if (n == 0) {
+        return {0, 1};
+    }
+    auto p = fibInLog<T>(n / 2);
+    auto a = p.first * (2 * p.second - p.first);
+    auto b = p.first * p.first + p.second * p.second;
+    if (n % 2 != 0) {
+        return {b, a + b};
+    }
+    return {a, b};
+}
+static_assert(fibInLog<ll>(80).first == 23416728348467685);
+
 int main() {
 
     //freopen("in", "r", stdin);
