@@ -1,12 +1,14 @@
-#include <bits/extc++.h>
+#include <iostream>
 
-using namespace std;
-using namespace __gnu_pbds;
-using ll = long long;
-
+// 1. A simple implementation of matrix whose size is fixed
+// 2. Using long long or __int128 as type T is recommended
+// 3. Use on coding competitions only
+// 4. Arguments are not checked for validity, make sure the validity before using
+// 5. All data members are exposed, no things like OOP, just some operators are overloaded
+// 6. Remove MOD if you dont need it
 template<typename T, int size>
 struct Mat {
-    T A[size][size]{0};
+    T A[size][size]{};
     T mod;
 
     explicit Mat(const T &mod) : mod(mod) {}
@@ -66,65 +68,22 @@ struct Mat {
     }
 };
 
-namespace IO {
-    template<typename T>
-    inline
-    void read(T &t) {
-        int n = 0;
-        int c = getchar_unlocked();
-        t = 0;
-        while (!isdigit(c)) n |= c == '-', c = getchar_unlocked();
-        while (isdigit(c)) t = t * 10 + c - 48, c = getchar_unlocked();
-        if (n) t = -t;
-    }
-
-    template<typename T, typename... Args>
-    inline
-    void read(T &t, Args &... args) {
-        read(t);
-        read(args...);
-    }
-
-    template<typename T>
-    inline void write(T x) {
-        if (x < 0) x = -x, putchar_unlocked('-');
-        if (x > 9) write(x / 10);
-        putchar_unlocked(x % 10 + 48);
-    }
-
-    template<typename T>
-    inline void writeln(T x) {
-        write(x);
-        putchar_unlocked('\n');
+template<typename T, int size>
+void debug_print(const Mat<T, size> &m) {
+    std::cout << typeid(T).name() << ' ' << size << ' ' << m.mod << std::endl;
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            std::cout << m.A[i][j] << ' ';
+        }
+        std::cout << '\n';
     }
 }
 
 int main() {
 
-    ll a_1, a_2, p, q, n, mod;
-    IO::read(p, q, a_1, a_2, n, mod);
+    Mat<long long, 5> m(123);
+    debug_print(m);
 
-    if (n == 1) {
-        IO::writeln(a_1 % mod);
-    } else if (n == 2) {
-        IO::writeln(a_2 % mod);
-    } else {
-
-        Mat<ll, 2> mat(mod);
-        mat.A[0][0] = p;
-        mat.A[0][1] = q;
-        mat.A[1][0] = 1;
-        mat.A[1][1] = 0;
-        mat = mat ^ (n - 2);
-
-        Mat<ll, 2> result(mod);
-        result.A[0][0] = a_2;
-        result.A[0][1] = 1;
-        result.A[1][0] = a_1;
-        result.A[1][1] = 1;
-
-        result = mat * result;
-        IO::writeln(result.A[0][0]);
-    }
     return 0;
 }
+

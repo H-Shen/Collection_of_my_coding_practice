@@ -3,65 +3,102 @@
 using namespace std;
 using namespace __gnu_pbds;
 using ll = long long;
+
 constexpr ll MOD = 1000000007;
 
-// matrixMul % m
-template<typename T>
-inline static
-std::vector<std::vector<T> >
-matrixMul(const std::vector<std::vector<T> > &A, const std::vector<std::vector<T> > &B, const T &mod) {
+template<typename T, int size>
+struct Mat {
+    T A[size][size]{};
+    T mod;
 
-    // Case 1:
-    if (A.empty() || B.empty() || A.at(0).empty() || B.at(0).empty() || A.at(0).size() != B.size()) {
-        throw std::out_of_range("");
-    }
+    explicit Mat(const T &mod) : mod(mod) {}
 
-    // Case 2:
-    std::vector<std::vector<T> > C(A.size(), std::vector<T>(B.at(0).size()));
-    for (size_t i = 0; i != A.size(); ++i) {
-        for (size_t j = 0; j != B.at(0).size(); ++j) {
-            for (size_t k = 0; k != A.at(0).size(); ++k) {
-                C.at(i).at(j) = C.at(i).at(j) + A.at(i).at(k) * B.at(k).at(j) % mod;
+    Mat operator+(const Mat &lhs) const {
+        Mat res;
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                res.A[i][j] = (A[i][j] + lhs.A[i][j]) % mod;
             }
-            C.at(i).at(j) %= mod;
         }
-    }
-    return C;
-}
-
-
-template<typename T>
-inline static
-std::vector<std::vector<T> > quickMatrixPower(std::vector<std::vector<T> > A, T n, T m) {
-
-    // Case 1:
-    if (A.empty() || A.front().empty() || A.size() != A.front().size()) {
-        throw std::out_of_range("");
+        return res;
     }
 
-    // Case 2:
-    // A = A % m;
-    for (size_t i = 0; i != A.size(); ++i) {
-        for (size_t j = 0; j != A.at(0).size(); ++j) {
-            A.at(i).at(j) %= m;
+    Mat operator-(const Mat &lhs) const {
+        Mat res;
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                res.A[i][j] = (A[i][j] - lhs.A[i][j]) % mod;
+            }
         }
+        return res;
     }
-    // Initialize res as an identity matrix;
-    std::vector<std::vector<T> > res(A.size(), std::vector<T>(A.size()));
-    T initialValue{1};
-    for (size_t i = 0; i != res.size(); ++i) {
-        res.at(i).at(i) = initialValue;
-    }
-    while (n > 0) {
-        // If n is odd.
-        if (n & 1) {
-            res = matrixMul(res, A, m);
+
+    Mat operator*(const Mat &lhs) const {
+        Mat res(mod);
+        T temp;
+        for (int i = 0; i < size; ++i) {
+            for (int k = 0; k < size; ++k) {
+                temp = A[i][k];
+                for (int j = 0; j < size; ++j) {
+                    res.A[i][j] = (res.A[i][j] + lhs.A[k][j] * temp) % mod;
+                }
+            }
         }
-        // If n is even.
-        A = matrixMul(A, A, m);
-        n >>= 1;
+        return res;
     }
-    return res;
+
+    Mat operator^(T n) const {
+        Mat res(mod), base(mod);
+        for (int i = 0; i < size; ++i) {
+            res.A[i][i] = 1;
+        }
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                base.A[i][j] = A[i][j] % mod;
+            }
+        }
+        while (n) {
+            if (n & 1) {
+                res = res * base;
+            }
+            base = base * base;
+            n >>= 1;
+        }
+        return res;
+    }
+};
+
+namespace IO {
+    template<typename T>
+    inline
+    void read(T &t) {
+        int n = 0;
+        int c = getchar_unlocked();
+        t = 0;
+        while (!isdigit(c)) n |= c == '-', c = getchar_unlocked();
+        while (isdigit(c)) t = t * 10 + c - 48, c = getchar_unlocked();
+        if (n) t = -t;
+    }
+
+    template<typename T, typename... Args>
+    inline
+    void read(T &t, Args &... args) {
+        read(t);
+        read(args...);
+    }
+
+    template<typename T>
+    inline void write(T x) {
+        if (x < 0) x = -x, putchar_unlocked('-');
+        if (x > 9) write(x / 10);
+        putchar_unlocked(x % 10 + 48);
+    }
+
+    template<typename T>
+    inline void writeln(T x) {
+        write(x);
+        putchar_unlocked('\n');
+    }
 }
 
 int main() {
@@ -71,18 +108,29 @@ int main() {
     ll a = 1;
     ll b = 1;
     ll item;
-    scanf("%lld", &item);
+    IO::read(item);
 
     if (item == 0) {
-        printf("0\n");
+        IO::writeln(0);
     } else if (item <= 2) {
-        printf("%lld\n", term1 % MOD);
+        IO::writeln(term1 % MOD);
     } else {
-        auto tempVec0 = quickMatrixPower<ll>({{a, b},
-                                                     {1, 0}}, item - 2, MOD);
-        auto tempVec1 = matrixMul(tempVec0, {{term1, 1},
-                                             {term0, 1}}, MOD);
-        printf("%lld\n", tempVec1.front().front());
+
+        Mat<ll, 2> mat(MOD);
+        mat.A[0][0] = a;
+        mat.A[0][1] = b;
+        mat.A[1][0] = 1;
+        mat.A[1][1] = 0;
+        mat = mat ^ (item - 2);
+
+        Mat<ll, 2> result(MOD);
+        result.A[0][0] = term1;
+        result.A[0][1] = 1;
+        result.A[1][0] = term0;
+        result.A[1][1] = 1;
+
+        result = mat * result;
+        IO::writeln(result.A[0][0]);
     }
     return 0;
 }
