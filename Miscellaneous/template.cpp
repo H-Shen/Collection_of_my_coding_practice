@@ -82,9 +82,10 @@ namespace IO {
 // a(n) is the inverse Ackermann function
 namespace DSU {
     // father[x]: the father of x
-    // Size[x]:  the rank, rank is the size of the tree whose root is x
+    // Size[x]:  the size of tree/disjoint set whose ancestor is 'x'
     vector<int> father;
     vector<int> Size;
+    int number_of_sets;      // the number of disjoint sets
 
     // iniitalization
     inline
@@ -96,6 +97,7 @@ namespace DSU {
         father.resize(n + 5);
         iota(father.begin(), father.end(), 0);
         Size.resize(n + 5, 1);
+        number_of_sets = n;
     }
 
     // find the ancestor of i with path compression
@@ -121,12 +123,25 @@ namespace DSU {
         }
         father[x] = y;
         Size[y] += Size[x];
+        --number_of_sets;
     }
 
     // check if x and y are in the same set
     inline
     bool is_same_group(int i, int j) {
         return find(i) == find(j);
+    }
+
+    // check the size of set where 'x' is
+    inline
+    int check_set_size(int x) {
+        return Size[find(x)];
+    }
+
+    // check the number of disjoint sets
+    inline
+    int number_of_disjoint_sets() {
+        return number_of_sets;
     }
 }
 

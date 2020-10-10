@@ -42,3 +42,49 @@ public class Batmanacci {
         out.flush();
     }
 }
+/* Haskell Code:
+
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FunctionalDependencies #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# OPTIONS_GHC -O2 #-}
+
+import Data.Char (ord)
+import qualified Data.Text as T
+import qualified Data.Text.IO as I
+import qualified Data.Vector as V
+
+offset :: Integer
+offset = 5
+
+lowerBound :: Integer
+lowerBound = 2
+
+fib :: Integer -> [Integer]
+fib 0 = [0]
+fib 1 = [1, 0]
+fib i = new_item : previous
+  where
+    previous = fib (i - 1)
+    new_item = previous !! 0 + previous !! 1
+
+whileLoop :: Integer -> Integer -> V.Vector Integer -> IO ()
+whileLoop n k fibList
+  | n > lowerBound = case () of
+    () | k <= (fibList V.! fromIntegral (n - lowerBound)) ->  ($!) whileLoop (n - lowerBound) k fibList
+    () | otherwise -> ($!) whileLoop (n - 1) (k - (fibList V.! fromIntegral (n - lowerBound))) fibList
+  | n == 1 = putChar 'N'
+  | otherwise = putChar 'A'
+
+stoi :: String -> Integer
+stoi s = stoi' s 0
+  where
+    stoi' [] n = n
+    stoi' (c : cs) n = stoi' cs $ n * 10 + toInteger (ord c - ord '0')
+
+main :: IO ()
+main = do
+  [n, k] <- map (stoi . T.unpack) . T.words <$> I.getLine
+  ($!) whileLoop n k (V.fromList (reverse (fib (n + offset))))
+
+*/
