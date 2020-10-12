@@ -1035,30 +1035,43 @@ namespace MultiDimensionArray {
     }
 }
 
-// max and min with unknown number of arguments(at least 2)
-// Usage: cout << my_max(1, 1, 2, 3, 1);
-template<typename T>
+// max and min in double type with unknown number of arguments(at least 2)
+constexpr double EPS = 1e-6;
 inline constexpr static
-T my_max(const T &x, const T &y) {
-    return (x > y) ? x : y;
+int sgn(const double &x) {
+    if (x > EPS) return 1;
+    if (x > -EPS) return 0;
+    return -1;
 }
-
-template<typename T, typename ... Args>
-inline constexpr static
-T my_max(const T &x, const Args &... args) {
-    return my_max(x, my_max(args...));
+template <typename T = double>
+inline const static
+T & doubleMax(const T &a) {
+    return a;
 }
-
-template<typename T>
-inline constexpr static
-T my_min(const T &x, const T &y) {
-    return (x < y) ? x : y;
+template<typename T = double>
+inline const static
+T & doubleMax(const T &l, const T &r) {
+    return sgn(l - r) >= 0 ? l : r;
 }
-
-template<typename T, typename ... Args>
-inline constexpr static
-T my_min(const T &x, const Args &... args) {
-    return my_min(x, my_min(args...));
+template<typename T = double, typename ... Args>
+inline const static
+T & doubleMax(const T &l, const Args &... args) {
+    return doubleMax(l, doubleMax(args ...));
+}
+template <typename T = double>
+inline const static
+T & doubleMin(const T &a) {
+    return a;
+}
+template<typename T = double>
+inline const static
+T & doubleMin(const T &l, const T &r) {
+    return sgn(l - r) >= 0 ? r : l;
+}
+template<typename T = double, typename ... Args>
+inline const static
+T & doubleMin(const T &l, const Args &... args) {
+    return doubleMin(l, doubleMin(args ...));
 }
 
 // Reference:
