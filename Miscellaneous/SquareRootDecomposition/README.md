@@ -1,1 +1,1 @@
-9 problems about square root decomposition in LOJ  
+9 classic problems about square root decomposition in LOJ  
