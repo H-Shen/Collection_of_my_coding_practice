@@ -1,5 +1,3 @@
-// Find the smallest order of an Eulerian cycle/path using Hierholzer
-//
 #include <bits/extc++.h>
 
 using namespace std;
@@ -69,10 +67,10 @@ int main() {
     cin >> n;
 
     vector<deque<int> > adj(LETTERS);
-    deque<string> dict[LETTERS][LETTERS];
+    deque<string> dict[LETTERS][LETTERS]{};
     DSU::init(LETTERS);
-    int in_deg[LETTERS];
-    int out_deg[LETTERS];
+    int in_deg[LETTERS]{};
+    int out_deg[LETTERS]{};
     bitset<LETTERS> has;
 
     vector<string> L(n);
