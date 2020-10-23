@@ -25,6 +25,16 @@ string print_int128(int128 a) {
     }
     return s;
 }
+
+inline
+int128 stoint128(const string &s) {
+    int128 a = 0, sgn = 1;
+    for (const char &ch : s) {
+        if (ch == '-') sgn *= -1;
+        else a = a * 10 + sgn * (ch - '0');
+    }
+    return a;
+}
 #endif
 
 #if defined(__SIZEOF_FLOAT128__) && defined(__linux__)
