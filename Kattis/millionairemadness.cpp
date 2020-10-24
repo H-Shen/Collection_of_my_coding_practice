@@ -2,9 +2,6 @@
 //
 #include <bits/extc++.h>
 
-#include <sys/mman.h>
-#include <sys/stat.h>
-
 using namespace std;
 using ll = long long;
 using int128 = __int128;
@@ -15,84 +12,30 @@ constexpr int STEPS = 4;
 const int dx[] = {0, 0, -1, 1};
 const int dy[] = {1, -1, 0, 0};
 
-namespace FasterIO {
-
-    static constexpr int MAXSIZE = 1024 * 1024;
-    static char *input_buffer = nullptr;
-    static char *ptr0;
-    static char output_buffer[MAXSIZE];
-    static char *ptr = output_buffer;
-    int total_size;
-
-    inline static
-    void init() {
-        struct stat sb; // dont initialize it in order to save time
-        fstat(fileno_unlocked(stdin), &sb);
-        total_size = sb.st_size;
-        input_buffer = reinterpret_cast<char *>(mmap(nullptr, total_size,
-                                                     PROT_READ, MAP_PRIVATE,
-                                                     fileno_unlocked(stdin),
-                                                     0));
-        ptr0 = input_buffer;
-    }
-
-    inline static
-    char getchar() {
-        if (ptr0 == input_buffer + total_size || *ptr0 == EOF) return EOF;
-        return *ptr0++;
-    }
-
-    template<typename T>
-    inline static
-    void read(T &t) {
-        int n = 0;
-        int c = getchar();
-        t = 0;
-        while (!isdigit(c)) n |= c == '-', c = getchar();
-        while (isdigit(c)) t = t * 10 + c - 48, c = getchar();
+namespace IO {
+    template <typename T>
+    inline
+    void read(T& t) {
+        int n = 0; int c = getchar_unlocked(); t = 0;
+        while (!isdigit(c)) n |= c == '-', c = getchar_unlocked();
+        while (isdigit(c)) t = t * 10 + c - 48, c = getchar_unlocked();
         if (n) t = -t;
     }
-
-    template<typename T, typename... Args>
+    template <typename T, typename... Args>
     inline
-    void read(T &t, Args &... args) {
-        read(t);
-        read(args...);
+    void read(T& t, Args&... args) {
+        read(t); read(args...);
     }
-
-    inline static
-    void putchar(const char &ch) {
-        if (ptr - output_buffer == MAXSIZE) {
-#ifdef __linux__
-            fwrite_unlocked(output_buffer, 1, MAXSIZE, stdout);
-#else
-            fwrite(output_buffer, 1, MAXSIZE, stdout);
-#endif
-            ptr = output_buffer;
-        }
-        *ptr++ = ch;
-    }
-
-    template<typename T>
+    template <typename T>
     inline void write(T x) {
-        if (x < 0) x = -x, putchar('-');
+        if (x < 0) x = -x, putchar_unlocked('-');
         if (x > 9) write(x / 10);
-        putchar(x % 10 + 48);
+        putchar_unlocked(x % 10 + 48);
     }
-
-    template<typename T>
+    template <typename T>
     inline void writeln(T x) {
         write(x);
-        putchar('\n');
-    }
-
-    inline
-    void flush() {
-#ifdef __linux__
-        fwrite_unlocked(output_buffer, 1, ptr - output_buffer, stdout);
-#else
-        fwrite(output_buffer, 1, ptr - output_buffer, stdout);
-#endif
+        putchar_unlocked('\n');
     }
 }
 
@@ -142,17 +85,15 @@ ll bfs(Node u) {
 
 int main() {
 
-    FasterIO::init();
-    FasterIO::read(n, m);
+    IO::read(n, m);
     M.resize(n, vector<int>(m));
     for (auto &i : M) {
         for (auto &j : i) {
-            FasterIO::read(j);
+            IO::read(j);
         }
     }
     dest_i = n - 1;
     dest_j = m - 1;
-    FasterIO::writeln(bfs(Node(0, 0, 0)));
-    FasterIO::flush();
+    IO::writeln(bfs(Node(0, 0, 0)));
     return 0;
 }
