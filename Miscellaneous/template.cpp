@@ -1590,6 +1590,7 @@ namespace SSSP_Bellman_Ford {
 }
 
 // An implementation of Shortest Path Faster Algorithm (Bellman-Ford's algorithm with queue optimized)
+// If you want to query the longest path from a single source, change INF to -INF and change the condition of relaxing from > to <
 namespace SSSP_SPFA {
     constexpr int INF = 0x3f3f3f3f;
     vector<vector<pair<int, int> > > adj; // The adjacency list of the graph
@@ -1837,3 +1838,12 @@ int main() {
 
     return 0;
 }
+
+// How to check if an edge E is on the shortest path from u to v
+// 1. Get dis1.at(i) = the shortest path from u to i by Dij
+// 2. Get dis2.at(i) = the shortest path from v to i by Dij
+// 3. For each edge E:(a, b) -> w, if
+// dis1.at(a) + w + dis2.at(b) = shortest path from u to v
+// OR
+// dis2.at(a) + w + dis1.at(b) = shortest path from u to v
+// the E:(a, b) -> w is on the shortest path from u to v
