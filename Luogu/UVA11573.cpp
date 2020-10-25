@@ -31,7 +31,7 @@ void dequeBfs(const pii &source, const pii &dest) {
         for (int step = 0; step < STEPS; ++step) {
             new_i = u.first + di[step];
             new_j = u.second + dj[step];
-            if (new_i >= 0 && new_i < r && new_j >= 0 && new_j < c) {
+            if (new_i >= 1 && new_i <= r && new_j >= 1 && new_j <= c) {
                 if (step == M.at(u.first).at(u.second) - '0') {
                     w = 0;
                 } else {

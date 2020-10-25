@@ -491,7 +491,7 @@ struct TransitiveClosure {
     }
 
     void reset() {
-        for (int i = 0; i < N; ++i) {
+        for (size_t i = 0; i < N; ++i) {
             reach[i].reset();
         }
     }
