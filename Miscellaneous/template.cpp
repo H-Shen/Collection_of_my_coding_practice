@@ -1831,6 +1831,435 @@ constexpr pair<T, T> fibInLog(int n) {
 }
 static_assert(fibInLog<ll>(80).first == 23416728348467685);
 
+// Get the minimal rotation of the string
+// Booth's algorithm : O(s.size())
+int minimalRotation(string s) {
+    s += s; // Concatenate string to it self to avoid modular arithmetic
+    int length = (int)s.size();
+    vector<int> f(length, -1);    // Failure function
+    int k = 0;  // Least rotation of string found so far
+    for (int j = 1, i; j < length; ++j) {
+        char sj = s.at(j);
+        i = f.at(j - k - 1);
+        while (i != -1 && sj != s.at(k + i + 1)) {
+            if (sj < s.at(k + i + 1)) {
+                k = j - i - 1;
+            }
+            i = f.at(i);
+        }
+        if (sj != s.at(k + i + 1)) {
+            if (sj < s.at(k)) {
+                k = j;
+            }
+            f.at(j - k) = -1;
+        } else {
+            f.at(j - k) = i + 1;
+        }
+    }
+    return k;
+}
+// Check if two strings are rotated
+bool rotateString(string A, string B) {
+    if (A.size() != B.size()) return false;
+    rotate(A.begin(), A.begin() + minimalRotation(A), A.end());
+    rotate(B.begin(), B.begin() + minimalRotation(B), B.end());
+    return A == B;
+}
+
+// Stable Matching Problem
+// Gale Shapley's algorithm
+// O(mw)
+namespace SMP {
+    vector<queue<int> > m_pref;
+    vector<vector<int> > w_pref;
+    vector<int> engaged;    // w to m
+    queue<int> free_man;
+    vector<bool> is_woman_free;
+
+    void reset() {
+        vector<queue<int> >().swap(m_pref);
+        vector<vector<int> >().swap(w_pref);
+        vector<int>().swap(engaged);
+        queue<int>().swap(free_man);
+        vector<bool>().swap(is_woman_free);
+    }
+
+    void init(int n) {
+        m_pref.resize(n + 1);   // man/woman's id starts from 1
+        w_pref.resize(n + 1, vector<int>(n + 1));
+        engaged.resize(n + 1);
+        for (int i = 1; i <= n; ++i) {
+            free_man.push(i);
+        }
+        is_woman_free.resize(n + 1, true);
+    }
+
+    void GaleShapley() {
+        while (!free_man.empty()) {
+            int m = free_man.front();
+            if (m_pref.at(m).empty()) {
+                free_man.pop();
+                continue;
+            }
+            int w = m_pref.at(
+                    m).front();   // first woman on m's list to whom m has not yet proposed
+            if (is_woman_free.at(w)) {
+                engaged.at(w) = m;
+                m_pref.at(m).pop();
+                free_man.pop();
+                is_woman_free.at(w) = false;
+            } else {
+                int m_ = engaged.at(w);
+                if (w_pref.at(w).at(m) >
+                    w_pref.at(w).at(m_)) { // w prefers m to m'
+                    free_man.push(m_);
+                    engaged.at(w) = m;
+                    free_man.pop();
+                }
+                m_pref.at(m).pop();
+            }
+        }
+    }
+
+    // n women, n men
+    // men invite women
+    // preferences of men to women will be given first, then the preferences of women to men
+    // print the result of men to women
+    int main() {
+        int n, val;
+        IO::read(n);
+        SMP::init(n);
+        // men
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                IO::read(val);
+                SMP::m_pref.at(i).push(val);
+            }
+        }
+        // women
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                IO::read(val);
+                SMP::w_pref.at(i).at(val) =
+                        n + 1 - j;   // notice here
+            }
+        }
+        SMP::GaleShapley();
+        // print result: m to w
+        vector<pair<int, int> > result(n);
+        for (int i = 1; i <= n; ++i) {
+            result.at(i - 1).first = i;
+            result.at(i - 1).second = SMP::engaged.at(i);
+            swap(result.at(i - 1).first, result.at(i - 1).second);
+        }
+        sort(result.begin(), result.end());
+        IO::write(result.at(0).second);
+        for (int i = 1; i < n; ++i) {
+            putchar_unlocked(' ');
+            IO::write(result.at(i).second);
+        }
+        putchar_unlocked('\n');
+        return 0;
+    }
+}
+
+// Lucas's theorem
+namespace Lucas {
+    vector<ll> fac;
+    // preprocess
+    inline
+    void init(ll p) {
+        // reset
+        vector<ll>().swap(fac);
+        fac.emplace_back(1);
+        for (ll i = 1; i <= p; ++i) {
+            fac.emplace_back(fac.back() * i % p);
+        }
+    }
+    inline static
+    ll modpow(ll a, ll p, ll M) {
+        if (M == 1) return 0;
+        ll r;
+        for (r = 1, a %= M; p; a = (a * a) % M, p >>= 1)
+            if (p % 2)
+                r = (r * a) % M;
+        return r;
+    }
+    inline static
+    ll C(ll n, ll m, ll p) {
+        if (m > n) {
+            return 0;
+        }
+        return fac[n] * modpow(fac[m] * fac[n - m], p - 2, p) % p;
+    }
+    // C(n, m) % p
+    inline static
+    ll Lucas(ll n, ll m, ll p) {
+        if (m == 0) return 1;
+        return (C(n % p, m % p, p) * Lucas(n / p, m / p, p)) % p;
+    }
+    // Given n, m, p such that p is a prime, calculate C(n+m,n) mod p
+    int main() {
+        int t;
+        IO::read(t);
+        ll n, m, p;
+        while (t--) {
+            IO::read(n, m, p);
+            Lucas::init(p);
+            IO::writeln(Lucas::Lucas(n + m, n, p));
+        }
+        return 0;
+    }
+}
+
+// Lowest Common Ancestor - Tarjan's off-line algorithm
+// O(n + m) for m queries
+namespace LCA0 {
+    
+    vector<vector<int> > adj;
+    vector<int> ancestor;
+    vector<bool> vis;
+    vector<vector<int> > queries;
+    unordered_map<pii, int, custom_hash> unmap;
+
+    void Tarjan(int u) {
+        vis.at(u) = true;
+        ancestor.at(u) = u;
+        for (const auto &v : adj.at(u)) {
+            if (!vis.at(v)) {
+                Tarjan(v);
+                DSU::merge(u, v);
+                ancestor.at(DSU::find(u)) = u;
+            }
+        }
+        for (const auto v : queries.at(u)) {
+            if (vis.at(v)) {
+                unmap[{u, v}] = ancestor.at(DSU::find(v));
+                unmap[{v, u}] = ancestor.at(DSU::find(v));
+            }
+        }
+    }
+
+    void init(int n) {
+        DSU::init(n);
+        ancestor.resize(n + 5);
+        vis.resize(n + 5, false);
+        adj.resize(n + 5);
+        queries.resize(n + 5);
+    }
+
+    // n nodes, (n - 1) edges, the root is s, m queries,
+    // for each query, u and v are given, print lca of u and v
+    int main() {
+
+        int n, m, s, u, v;
+        IO::read(n, m, s);
+        LCA0::init(n);
+        for (int i = 1; i <= n - 1; ++i) {
+            IO::read(u, v);
+            LCA0::adj.at(u).emplace_back(v);
+            LCA0::adj.at(v).emplace_back(u);
+        }
+        vector<pair<int, int> > query_list;
+        for (int i = 1; i <= m; ++i) {
+            IO::read(u, v);
+            query_list.emplace_back(make_pair(u, v));
+            LCA0::queries.at(u).emplace_back(v);
+            LCA0::queries.at(v).emplace_back(u);
+        }
+        LCA0::Tarjan(s);    // Run Tarjan from root
+        // output
+        for (const auto &[u, v] : query_list) {
+            IO::writeln(LCA0::unmap[{u, v}]);
+        }
+        return 0;
+    }
+}
+
+// Factorization of an integer using Miller Rabin Prime Check + Pollard Rho
+namespace Factorization {
+
+    ll factor[1000];    // Save the result of factorizations
+    int tol;    //Count of every prime
+
+    ll mult_mod(ll a, ll b, ll c) { // a * b % c
+        a %= c;
+        b %= c;
+        ll result = 0;
+        while (b > 0) {
+            if (b & 1) {
+                result += a;
+                result %= c;
+            }
+            a <<= 1;
+            if (a >= c)
+                a %= c;
+            b >>= 1;
+        }
+        return result;
+    }
+
+    ll pow_mod(ll x, ll n, ll mod) {  // x^n % c
+        if (n == 1)
+            return x % mod;
+        x %= mod;
+        ll tmp = x;
+        ll result = 1;
+        while (n > 0) {
+            if ((n & 1) > 0)
+                result = mult_mod(result, tmp, mod);
+            tmp = mult_mod(tmp, tmp, mod);
+            n >>= 1;
+        }
+        return result;
+    }
+
+    bool millerRabinPrimeCheckHelper(ll a, ll n, ll x, ll t) {
+        ll result = pow_mod(a, x, n);
+        ll last = result;
+        for (int i = 1; i <= t; i++) {
+            result = mult_mod(result, result, n);
+            if (result == 1 && last != 1 && last != n - 1)
+                return true;
+            last = result;
+        }
+        return result != 1;
+    }
+
+    // Miller Rabin's algo: check if the given number is a prime
+    // return False if n is not a prime
+    // return True if n could have a chance to be a prime
+    bool millerRabinPrimeCheck(ll n) {
+        const int s = 5;
+        if (n < 2)
+            return false;
+        if (n == 2)
+            return true;
+        if ((n & 1) == 0)
+            return false;
+        ll x = n - 1;
+        ll t = 0;
+        while ((x & 1) == 0) {
+            x >>= 1;
+            t++;
+        }
+        for (int i = 0; i < s; i++) {
+            ll a = rand() % (n - 1) + 1;
+            if (millerRabinPrimeCheckHelper(a, n, x, t))
+                return false;
+        }
+        return true;
+    }
+
+    ll gcd(ll a, ll b) { //A gcd func which considers the negative nums
+        if (a == 0)
+            return 1;
+        if (a < 0)
+            return gcd(-a, b);
+        while (b > 0) {
+            ll t;
+            t = a % b;
+            a = b;
+            b = t;
+        }
+        return a;
+    }
+
+    ll Pollard_rho(ll x, ll c) {
+        ll i = 1, k = 2;
+        ll x0 = rand() % x;
+        ll y = x0;
+        while (true) {
+            i++;
+            x0 = (mult_mod(x0, x0, x) + c) % x;
+            ll d = gcd(y - x0, x);
+            if (d != 1 && d != x)
+                return d;
+            if (y == x0)
+                return x;
+            if (i == k) {
+                y = x0;
+                k += k;
+            }
+        }
+    }
+
+    void findfac(ll n) {
+        if (millerRabinPrimeCheck(n)) {
+            factor[tol++] = n;
+            return;
+        }
+        ll p = n;
+        while (p >= n)
+            p = Pollard_rho(p, rand() % (n - 1) + 1);
+        findfac(p);
+        findfac(n / p);
+    }
+}
+
+// Given a string s of length n, consisting only of lowercase English letters,
+// find the number of different substrings in this string
+int count_unique_substrings(string const &s) {
+
+    /** This part can be done in compile-time **/
+    int n = s.size();
+    const int p = 31;
+    const int m = 1e9 + 9;
+    vector<ll> p_pow(n);
+    p_pow[0] = 1;
+    for (int i = 1; i < n; i++) {
+        p_pow[i] = (p_pow[i - 1] * p) % m;
+    }
+    /*********************************/
+
+    vector<ll> h(n + 1, 0);
+    for (int i = 0; i < n; i++)
+        h[i + 1] = (h[i] + (s[i] - 'a' + 1) * p_pow[i]) % m;
+
+    int cnt = 0;
+    for (int l = 1; l <= n; l++) {
+        set<ll> hs;
+        for (int i = 0; i <= n - l; i++) {
+            ll cur_h = (h[i + l] + m - h[i]) % m;
+            cur_h = (cur_h * p_pow[n - i - 1]) % m;
+            hs.insert(cur_h);
+        }
+        cnt += hs.size();
+    }
+    return cnt;
+}
+
+// Given two strings - a pattern s and a text t, determine if the pattern
+// appears in the text and if it does, enumerate all its occurrences in
+// O(|s|+|t|) time
+vector<int> rabin_karp(string const &s, string const &t) {
+
+    /** Can be done in compile-time **/
+    const int p = 31;
+    const int m = 1e9 + 9;
+    int S = s.size(), T = t.size();
+    vector<long long> p_pow(max(S, T));
+    p_pow[0] = 1;
+    for (int i = 1; i < (int) p_pow.size(); i++)
+        p_pow[i] = (p_pow[i - 1] * p) % m;
+    /*********************************/
+
+    vector<long long> h(T + 1, 0);
+    for (int i = 0; i < T; i++)
+        h[i + 1] = (h[i] + (t[i] - 'a' + 1) * p_pow[i]) % m;
+    long long h_s = 0;
+    for (int i = 0; i < S; i++)
+        h_s = (h_s + (s[i] - 'a' + 1) * p_pow[i]) % m;
+
+    vector<int> occurrences;
+    for (int i = 0; i + S - 1 < T; i++) {
+        long long cur_h = (h[i + S] + m - h[i]) % m;
+        if (cur_h == h_s * p_pow[i] % m)
+            occurrences.push_back(i);
+    }
+    return occurrences;
+}
+
 int main() {
 
     //freopen("in", "r", stdin);
