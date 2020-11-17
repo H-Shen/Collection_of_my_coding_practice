@@ -382,6 +382,29 @@ namespace MST_Prim {
     }
 }
 
+// Negative all weights + Kruskal for Minimum Spanning Tree
+namespace MaximumSpanningTree {
+    struct Edge {
+        int u, v, w, neg_w;
+        explicit Edge(int u, int v, int w) : u(u), v(v), w(w), neg_w(-w) {}
+        Edge() = default;
+    };
+    inline
+    vector<Edge> kruskal(vector<Edge> &E) {
+        sort(E.begin(), E.end(), [](const Edge &l, const Edge &r) {
+            return (l.neg_w < r.neg_w);
+        });
+        vector<Edge> result;
+        for (const auto &e : E) {
+            if (!DSU::is_same_group(e.u, e.v)) {
+                DSU::merge(e.u, e.v);
+                result.emplace_back(e);
+            }
+        }
+        return result;
+    }
+}
+
 // Merge two std::priority_queue efficiently (combine the heap with less nodes to the heap with more nodes)
 template<typename T>
 // O(n)
