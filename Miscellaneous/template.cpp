@@ -2324,6 +2324,48 @@ vector<int> rabin_karp(string const &s, string const &t) {
     return occurrences;
 }
 
+// Check whether an undirected graph is bipartite
+// Principle: a graph is bipartite if and only if it is two-colorable (0/1)
+namespace BipartiteCheck {
+    constexpr int INF = 0x3f3f3f3f;
+    vector<vector<int> > adj;
+    vector<int> color;
+    int n;
+    void init(int number_of_nodes) {
+        n = number_of_nodes;
+        vector<int>().swap(color);
+        color.resize(n + 5, INF);
+    }
+    bool bfs() {
+        bool result = true;
+        // bfs from every node id, which will cover different CCs
+        queue<int> q;
+        for (int s = 0; s < n; ++s) {
+            if (color.at(s) == INF) {
+                color.at(s) = 0;
+                q.push(s);
+            }
+            while (!q.empty()) {
+                int u = q.front();
+                q.pop();
+                for (const auto &v : adj.at(u)) {
+                    if (color.at(v) == INF) {
+                        // if color[u] = 1, then color[v] = 0
+                        // if color[u] = 0, then color[v] = 1
+                        color.at(v) = 1 - color.at(u);
+                        q.push(v);
+                    } else if (color.at(v) == color.at(u)) {
+                        // Coloring conflict found, exit
+                        result = false;
+                        return result;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+}
+
 int main() {
 
     //freopen("in", "r", stdin);
