@@ -2336,9 +2336,8 @@ namespace BipartiteCheck {
         vector<int>().swap(color);
         color.resize(n + 5, INF);
     }
+    // bfs from every node id, which will cover different CCs
     bool bfs() {
-        bool result = true;
-        // bfs from every node id, which will cover different CCs
         queue<int> q;
         for (int s = 0; s < n; ++s) {
             if (color.at(s) == INF) {
@@ -2356,13 +2355,36 @@ namespace BipartiteCheck {
                         q.push(v);
                     } else if (color.at(v) == color.at(u)) {
                         // Coloring conflict found, exit
-                        result = false;
-                        return result;
+                        return false;
                     }
                 }
             }
         }
-        return result;
+        return true;
+    }
+    // Another version that bfs from 's', which means we only consider if the CC that contains 's' is bipartite
+    bool bfs(int s) {
+        bool isBipartite = true;
+        queue<int> q;
+        color.at(s) = 0;
+        q.push(s);
+        while (!q.empty() && isBipartite) {
+            int u = q.front();
+            q.pop();
+            for (const auto &v : adj.at(u)) {
+                if (color.at(v) == INF) {
+                    // if color[u] = 1, then color[v] = 0
+                    // if color[u] = 0, then color[v] = 1
+                    color.at(v) = 1 - color.at(u);
+                    q.push(v);
+                } else if (color.at(v) == color.at(u)) {
+                    // Coloring conflict found
+                    isBipartite = false;
+                    break;
+                }
+            }
+        }
+        return isBipartite;
     }
 }
 
