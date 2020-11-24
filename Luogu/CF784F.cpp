@@ -47,6 +47,12 @@ namespace IO {
     }
 }
 
+void mySleep(float seconds) {
+    clock_t startClock = clock();
+    float secondsAhead = seconds * CLOCKS_PER_SEC;
+    while (clock() < startClock + secondsAhead);
+}
+
 int main() {
 
     int n;
@@ -55,12 +61,11 @@ int main() {
     for (auto &i : A) IO::read(i);
     sort(A.begin(), A.end());
     for (int i = 0; i < n; ++i) {
-        if (i != 0) {
-            putchar(' ');
-        }
         IO::write(A.at(i));
+        putchar(' ');
     }
     putchar('\n');
+    mySleep(1.1);
 
     return 0;
 }
