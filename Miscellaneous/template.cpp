@@ -402,6 +402,43 @@ namespace MST_Prim {
     }
 }
 
+// the Prim's algorithm with adjacency matrix
+namespace MST_Prim_ {
+    constexpr int INF = 0x3f3f3f3f;
+    constexpr int MAXN = 1005;
+    struct Edge {
+        int w = INF;
+        int to = -1;
+    };
+    vector<vector<int> > adj; // adjacency matrix
+    bool prim(int &total_weight) {
+        total_weight = 0;
+        bitset<MAXN> vis;
+        int n = (int)adj.size();
+        vector<Edge> minE(n);
+        minE.at(0).w = 0;
+        for (int i = 0; i < n; ++i) {
+            int v = -1;
+            for (int j = 0; j < n; ++j) {
+                if (!vis[j] && (v == -1 || minE.at(j).w < minE.at(v).w)) {
+                    v = j;
+                }
+            }
+            if (minE.at(v).w == INF) {
+                return false;   // No MST exists
+            }
+            vis[v] = true;
+            total_weight += minE.at(v).w;
+            for (int to = 0; to < n; ++to) {
+                if (adj.at(v).at(to) < minE.at(to).w) {
+                    minE.at(to) = {adj.at(v).at(to), v};
+                }
+            }
+        }
+        return true;
+    }
+}
+
 // Negative all weights + Kruskal for Minimum Spanning Tree
 namespace MaximumSpanningTree {
     struct Edge {
