@@ -2425,6 +2425,90 @@ namespace BipartiteCheck {
     }
 }
 
+// Static rmq in O(n) preprocess, O(1) each query
+// Reference: https://codeforces.com/blog/entry/78931
+template<typename T>
+struct Rmq {
+    vector<T> v;
+    int n;
+    static constexpr int BLOCK_SIZE = 30; // block size
+    vector<int> mask, t; // mask and sparse table
+
+    int op(int x, int y) {
+        return v[x] < v[y] ? x : y; // for range maximum query: v[x] < v[y] ? y : x
+    }
+
+    // least significant set bit
+    int lsb(int x) {
+        return x & -x;
+    }
+
+    // index of the most significant set bit
+    int msb_index(int x) {
+        return __builtin_clz(1) - __builtin_clz(x);
+    }
+
+    // answer query of v[r-size+1..r] using the masks, given size <= BLOCK_SIZE
+    int small(int r, int size = BLOCK_SIZE) {
+        // get only 'size' least significant bits of the mask
+        // and then get the index of the msb of that
+        int dist_from_r = msb_index(mask[r] & ((1 << size) - 1));
+
+        return r - dist_from_r;
+    }
+
+    explicit Rmq(const vector<T> &v_) : v(v_), n(v.size()), mask(n), t(n) {
+        int curr_mask = 0;
+        for (int i = 0; i < n; i++) {
+
+            // shift mask by 1, keeping only the 'BLOCK_SIZE' least significant bits
+            curr_mask = (curr_mask << 1) & ((1 << BLOCK_SIZE) - 1);
+
+            while (curr_mask > 0 and
+                   op(i, i - msb_index(lsb(curr_mask))) == i) {
+                // current value is smaller than the value represented by the
+                // last 1 in curr_mask, so we need to turn off that bit
+                curr_mask ^= lsb(curr_mask);
+            }
+            // append extra 1 to the mask
+            curr_mask |= 1;
+
+            mask[i] = curr_mask;
+        }
+
+        // build sparse table over the n/BLOCK_SIZE blocks
+        // the sparse table is linearized, so what would be at
+        // table[j][i] is stored in table[(n/BLOCK_SIZE)*j + i]
+        for (int i = 0; i < n / BLOCK_SIZE; i++) t[i] = small(BLOCK_SIZE * i + BLOCK_SIZE - 1);
+        for (int j = 1; (1 << j) <= n / BLOCK_SIZE; j++)
+            for (int i = 0; i + (1 << j) <= n / BLOCK_SIZE; i++)
+                t[n / BLOCK_SIZE * j + i] = op(t[n / BLOCK_SIZE * (j - 1) + i],
+                                               t[n / BLOCK_SIZE * (j - 1) + i + (1 << (j - 1))]);
+    }
+
+    // query(l, r) returns the actual minimum of v[l..r]
+    // to get the index, just change the first and last lines of the function
+    T query(int l, int r) {
+        // query too small
+        if (r - l + 1 <= BLOCK_SIZE) return v[small(r, r - l + 1)];
+
+        // get the minimum of the endpoints
+        // (there is no problem if the ranges overlap with the sparse table query)
+        int ans = op(small(l + BLOCK_SIZE - 1), small(r));
+
+        // 'x' and 'y' are the blocks we need to query over
+        int x = l / BLOCK_SIZE + 1, y = r / BLOCK_SIZE - 1;
+
+        if (x <= y) {
+            int j = msb_index(y - x + 1);
+            ans = op(ans,
+                     op(t[n / BLOCK_SIZE * j + x], t[n / BLOCK_SIZE * j + y - (1 << j) + 1]));
+        }
+
+        return v[ans];
+    }
+};
+
 int main() {
 
     //freopen("in", "r", stdin);
