@@ -4,7 +4,10 @@ using namespace std;
 using namespace __gnu_pbds;
 using namespace __gnu_cxx;
 using ll = long long;
+using ld = long double;
+using ull = unsigned long long;
 using pii = pair<int, int>;
+using pll = pair<ll, ll>;
 
 #ifdef __SIZEOF_INT128__
 using int128 = __int128_t;
@@ -1071,22 +1074,21 @@ ll quickPower(ll a, ll n, ll m) {
     return res;
 }
 
-// A better version
-inline static
-ll modpow(ll a, ll p, ll M) {
-    if (M == 1) return 0;
-    ll r;
-    for (r = 1, a %= M; p; a = (a * a) % M, p >>= 1) if (p % 2) r = (r * a) % M;
-    return r;
-}
-
 // O(1) modulo mul
-inline static
-ll modmul(ll a, ll b, ll m) {
+ll multmod(ll a, ll b, ll m) {
     a = (a % m + m) % m;
     b = (b % m + m) % m;
-    return ((a * b - static_cast<ll>(static_cast<long double>(a) / m * b) * m) %
+    return ((a * b - static_cast<ll>(static_cast<ld>(a) / m * b) * m) %
             m + m) % m;
+}
+
+// O(logb), better version
+ll powmod(ll a, ll b, ll m) {
+    if (m == 1) return 0;
+    ll r;
+    for (r = 1, a %= m; b; a = multmod(a, a, m), b >>= 1)
+        if (b % 2) r = multmod(r, a, m);
+    return r;
 }
 
 // a % p = a - floor(a / p) * p
@@ -2180,46 +2182,45 @@ namespace LCA0 {
 // Factorization of an integer using Miller Rabin Prime Check + Pollard Rho
 namespace Factorization {
 
-    ll factor[1000];    // Save the result of factorizations
-    int tol;    //Count of every prime
+    constexpr int MAX_PRIME_FACTORS = 1000;
+    ll factor[MAX_PRIME_FACTORS];    // Save the result of the factorization
+    int tol;    // Count of prime factors
 
-    ll mult_mod(ll a, ll b, ll c) { // a * b % c
-        a %= c;
-        b %= c;
-        ll result = 0;
-        while (b > 0) {
-            if (b & 1) {
-                result += a;
-                result %= c;
-            }
-            a <<= 1;
-            if (a >= c)
-                a %= c;
-            b >>= 1;
-        }
-        return result;
+    // O(1)
+    ll multmod(ll a, ll b, ll m) {
+        a = (a % m + m) % m;
+        b = (b % m + m) % m;
+        return ((a * b - (ll) ((ld) a / m * b) * m) % m + m) % m;
     }
 
-    ll pow_mod(ll x, ll n, ll mod) {  // x^n % c
-        if (n == 1)
-            return x % mod;
-        x %= mod;
-        ll tmp = x;
-        ll result = 1;
-        while (n > 0) {
-            if ((n & 1) > 0)
-                result = mult_mod(result, tmp, mod);
-            tmp = mult_mod(tmp, tmp, mod);
-            n >>= 1;
-        }
-        return result;
+    // O(logb)
+    ll powmod(ll a, ll b, ll m) {
+        if (m == 1) return 0;
+        ll r;
+        for (r = 1, a %= m; b; a = multmod(a, a, m), b >>= 1)
+            if (b % 2) r = multmod(r, a, m);
+        return r;
     }
 
-    bool millerRabinPrimeCheckHelper(ll a, ll n, ll x, ll t) {
-        ll result = pow_mod(a, x, n);
+    // Runtime: O(logalogb)
+    ll bingcd(ll a, ll b) {
+        if (a < 0 || b < 0) return bingcd(abs(a), abs(b));
+        if (!a || !b) return a | b;
+        unsigned shift = __builtin_ctz(a | b);
+        a >>= __builtin_ctz(a);
+        do {
+            b >>= __builtin_ctz(b);
+            if (a > b) swap(a, b);
+            b -= a;
+        } while (b);
+        return a << shift;
+    }
+
+    bool miller_rabin_subroutine(ll a, ll n, ll x, ll t) {
+        ll result = powmod(a, x, n);
         ll last = result;
         for (int i = 1; i <= t; i++) {
-            result = mult_mod(result, result, n);
+            result = multmod(result, result, n);
             if (result == 1 && last != 1 && last != n - 1)
                 return true;
             last = result;
@@ -2227,74 +2228,54 @@ namespace Factorization {
         return result != 1;
     }
 
-    // Miller Rabin's algo: check if the given number is a prime
-    // return False if n is not a prime
-    // return True if n could have a chance to be a prime
-    bool millerRabinPrimeCheck(ll n) {
-        const int s = 5;
-        if (n < 2)
-            return false;
-        if (n == 2)
-            return true;
-        if ((n & 1) == 0)
-            return false;
-        ll x = n - 1;
-        ll t = 0;
+    // O(Rlognlognlogn)
+    bool miller_rabin(ll n) {
+        constexpr int R = 5;   // rounds
+        if (n < 2) return false;
+        if (n == 2) return true;
+        if ((n & 1) == 0) return false;
+        ll x = n - 1, t = 0;
+        ll a;
         while ((x & 1) == 0) {
             x >>= 1;
-            t++;
+            ++t;
         }
-        for (int i = 0; i < s; i++) {
-            ll a = rand() % (n - 1) + 1;
-            if (millerRabinPrimeCheckHelper(a, n, x, t))
-                return false;
+        for (int i = 0; i < R; ++i) {
+            a = rand() % (n - 1) + 1;
+            if (miller_rabin_subroutine(a, n, x, t)) return false;
         }
         return true;
     }
 
-    ll gcd(ll a, ll b) { //A gcd func which considers the negative nums
-        if (a == 0)
-            return 1;
-        if (a < 0)
-            return gcd(-a, b);
-        while (b > 0) {
-            ll t;
-            t = a % b;
-            a = b;
-            b = t;
-        }
-        return a;
-    }
-
-    ll Pollard_rho(ll x, ll c) {
-        ll i = 1, k = 2;
-        ll x0 = rand() % x;
-        ll y = x0;
-        while (true) {
-            i++;
-            x0 = (mult_mod(x0, x0, x) + c) % x;
-            ll d = gcd(y - x0, x);
-            if (d != 1 && d != x)
-                return d;
-            if (y == x0)
-                return x;
-            if (i == k) {
-                y = x0;
-                k += k;
+    // Base on Brent's implementation, O(sqrt(p)) such that p is a small prime factor of n
+    ll pollard_rho(ll n) {
+        if (n % 2 == 0) return 2;
+        if (n % 3 == 0) return 3;
+        ll w = 0, a = 0, val = 1, g;
+        ll c = rand() % (n - 1) + 1;
+        for (ll k = 2;; k <<= 1, a = w, val = 1) {
+            for (ll i = 1; i <= k; ++i) {
+                w = (multmod(w, w, n) + c) % n;
+                val = multmod(val, abs(w - a), n);
+                if (! (i & 127)) {
+                    g = bingcd(val, n);
+                    if (g > 1) return g;
+                }
             }
+            g = bingcd(val, n);
+            if (g > 1) return g;
         }
     }
 
-    void findfac(ll n) {
-        if (millerRabinPrimeCheck(n)) {
+    void find_prime_factors(ll n) {
+        if (miller_rabin(n)) {
             factor[tol++] = n;
             return;
         }
         ll p = n;
-        while (p >= n)
-            p = Pollard_rho(p, rand() % (n - 1) + 1);
-        findfac(p);
-        findfac(n / p);
+        while (p >= n) p = pollard_rho(n);
+        find_prime_factors(p);
+        find_prime_factors(n / p);
     }
 }
 
