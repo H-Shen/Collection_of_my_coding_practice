@@ -30,7 +30,7 @@ The collection of my coding practice, will be updated inconsistently.
 
     * ***For SQL***
         * sqlite 3.33.0
-        * mysql  Ver 8.0.21 for osx10.15 on x86_64 (Homebrew)
+        * mysql  Ver 15.1 Distrib 10.5.8-MariaDB
 
     * ***For JavaScript***
         * v14.10.0
