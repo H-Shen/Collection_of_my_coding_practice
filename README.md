@@ -26,7 +26,7 @@ The collection of my coding practice, will be updated inconsistently.
 	* ***For C/Cpp***
 		* g++-10 (Homebrew GCC 10.2.0) 10.1.0 (-std=c++17 -Wall -O2)
 		* gcc-10 (Homebrew GCC 10.2.0) 10.1.0 (-std=c11 -Wall -O2)
-      * cmake version 3.18.2
+      * cmake version 3.19.3
 
     * ***For SQL***
         * sqlite 3.33.0
