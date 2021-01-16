@@ -1,32 +1,32 @@
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/hash_policy.hpp>
+
 class Solution {
+private:
+    struct custom_hash {
+        static uint64_t splitmix64(uint64_t x) {
+            // http://xorshift.di.unimi.it/splitmix64.c
+            x += 0x9e3779b97f4a7c15;
+            x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+            x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+            return x ^ (x >> 31);
+        }
+        size_t operator()(uint64_t x) const {
+            static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+            return splitmix64(x + FIXED_RANDOM);
+        }
+    };
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-
-        unordered_map <int, int> A;
-        vector <int> haveHalfOfTarget;
-
-        for (size_t i = 0 ; i < nums.size(); ++i) {
-            A[nums.at(i)] = static_cast<int>(i);
-            if (nums.at(i) * 2 == target) {
-                haveHalfOfTarget.emplace_back(i);
+        __gnu_pbds::gp_hash_table<int, int, custom_hash> hashMap;
+        int complement;
+        for (size_t i = 0; i != nums.size(); ++i) {
+            complement = target - nums[i];
+            if (hashMap.find(complement) != hashMap.end()) {
+                return vector<int>{(int)i, hashMap[complement]};
             }
+            hashMap[nums[i]] = i;
         }
-
-        if (haveHalfOfTarget.size() == 2) {
-            return haveHalfOfTarget;
-        }
-
-        vector <int> res(2);
-        for (auto it = A.begin(); it != A.end(); ++it) {
-            if ( A.find(target - it->first) != A.end() &&  it->first * 2 != target ) {
-                res.at(0) = it->second;
-                res.at(1) = A[target - it->first];
-                break;
-            }
-        }
-        if (res.at(0) > res.at(1)) {
-            swap(res.at(0), res.at(1));
-        }
-        return res;
+        throw invalid_argument("no answers found!");
     }
 };
