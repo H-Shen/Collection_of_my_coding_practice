@@ -581,7 +581,8 @@ struct TransitiveClosure {
 };
 
 // Find minimum weight cycle in an undirected graph using Floyd
-namespace MinimumWeightCycle {
+namespace MinimumWeightCycleUndirectedGraph {
+    
     constexpr int INF = 0x3f3f3f3f;
     vector<vector<int> > adj_matrix;
     int number_of_nodes;
@@ -621,6 +622,80 @@ namespace MinimumWeightCycle {
             }
         }
         return answer < INF;
+    }
+}
+
+// Find minimum weight cycle in a directed graph using Dijkstra with flag
+namespace MinimumWeightCycleDirectedGraph {
+
+    constexpr int INF = 0x3f3f3f3f;
+    constexpr int MAXN = 505;
+
+    vector<vector<pair<int, int> > > adj; // The adjacency list of the graph
+    int number_of_nodes;
+    bitset<MAXN> vis;
+
+    inline void
+    init(int n) {
+        number_of_nodes = n;
+        // initialize the containers
+        adj.resize(number_of_nodes + 5);
+    }
+
+    inline void
+    add_edge(int u, int v, int w) {
+        adj.at(u).emplace_back(v, w);
+    }
+
+    inline vector<int>
+    dijkstra(int source) {
+        vis.reset();
+        bool flag = true;
+        vector<int> dis(number_of_nodes + 5, INF);
+        dis.at(source) = 0;
+        std::priority_queue<pair<int, int>, vector<pair<int, int> >, greater<> > pq;
+        pq.push(make_pair(dis.at(source), source));
+        while (!pq.empty()) {
+            int v = pq.top().second;
+            pq.pop();
+            if (vis[v]) {
+                continue;
+            }
+            vis[v] = true;
+            for (const auto &[to, w] : adj.at(v)) {
+                if (dis.at(to) > dis.at(v) + w) {
+                    dis.at(to) = dis.at(v) + w;
+                    if (!vis[to]) {
+                        pq.push(make_pair(dis.at(to), to));
+                    }
+                }
+            }
+            // reset the start point
+            if (flag) {
+                vis[source] = false;
+                dis.at(source) = INF;
+                flag = false;
+            }
+        }
+        return dis;
+    }
+
+    // Usage:
+    int main() {
+        int n = 400;
+        init(n);
+        // ... After the construction of the graph, node id starts from 1
+        int minimalCycle = INF;
+        for (int i = 1; i <= n; ++i) {
+            auto dis = dijkstra(i);
+            minimalCycle = dis.at(i);
+        }
+        if (minimalCycle == INF) {
+            cout << "No cycle found!" << '\n';
+        } else {
+            cout << minimalCycle << '\n';
+        }
+        return 0;
     }
 }
 
