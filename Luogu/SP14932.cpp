@@ -1,4 +1,4 @@
-#include <bits/extc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;
@@ -85,6 +85,7 @@ namespace LCA2 {
         return tin[u] <= tin[v] && tout[u] >= tout[v];
     }
 
+    // O(logn)
     int lca(int u, int v) {
         if (is_ancestor(u, v)) return u;
         if (is_ancestor(v, u)) return v;
@@ -95,6 +96,14 @@ namespace LCA2 {
         return up[u][0];
     }
 
+    void reset() {
+        decltype(tin)().swap(tin);
+        decltype(tout)().swap(tout);
+        decltype(adj)().swap(adj);
+        decltype(up)().swap(up);
+    }
+
+    // O(nlogn)
     void preprocess(int number_of_nodes) {
         n = number_of_nodes;
         tin.resize(n);
@@ -112,23 +121,41 @@ namespace LCA2 {
 
 int main() {
 
-    int n, m, s, u, v;
-    IO::read(n, m, s);
-    LCA2::preprocess(n);
-    for (int i = 0; i < n - 1; ++i) {
-        IO::read(u, v);
-        --u;
-        --v;
-        LCA2::adj.at(u).emplace_back(v);
-        LCA2::adj.at(v).emplace_back(u);
-    }
-    --s;
-    LCA2::init(s);
-    while (m--) {
-        IO::read(u, v);
-        --u;
-        --v;
-        IO::writeln(LCA2::lca(u, v) + 1);
+    int t;
+    IO::read(t);
+    int n, u, v, m, root, q;
+    for (int kase = 1; kase <= t; ++kase) {
+        IO::read(n);
+        vector<int> parent(n, -1);
+        LCA2::preprocess(n);
+        for (int i = 1; i <= n; ++i) {
+            u = i;
+            --u;
+            IO::read(m);
+            while (m--) {
+                IO::read(v);
+                --v;
+                LCA2::adj[u].emplace_back(v);
+                LCA2::adj[v].emplace_back(u);
+                parent[v] = u;
+            }
+        }
+        // get root
+        root = 5;
+        while (parent[root] != -1) {
+            root = parent[root];
+        }
+        LCA2::init(root);
+        IO::read(q);
+        printf("Case %d:\n", kase);
+        while (q--) {
+            IO::read(u, v);
+            --u;
+            --v;
+            IO::writeln(LCA2::lca(u, v) + 1);
+        }
+        // reset
+        LCA2::reset();
     }
 
     return 0;

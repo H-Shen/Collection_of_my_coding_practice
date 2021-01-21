@@ -85,6 +85,7 @@ namespace LCA2 {
         return tin[u] <= tin[v] && tout[u] >= tout[v];
     }
 
+    // O(logn)
     int lca(int u, int v) {
         if (is_ancestor(u, v)) return u;
         if (is_ancestor(v, u)) return v;
@@ -95,6 +96,14 @@ namespace LCA2 {
         return up[u][0];
     }
 
+    void reset() {
+        decltype(tin)().swap(tin);
+        decltype(tout)().swap(tout);
+        decltype(adj)().swap(adj);
+        decltype(up)().swap(up);
+    }
+
+    // O(nlogn)
     void preprocess(int number_of_nodes) {
         n = number_of_nodes;
         tin.resize(n);
@@ -110,25 +119,67 @@ namespace LCA2 {
     }
 }
 
+vector<int> dist;
+vector<int> parent;
+void dfs(int u, int depth) {
+    dist[u] = depth;
+    for (const auto &v : LCA2::adj[u]) {
+        if (dist[v] == -1) {
+            dfs(v, depth + 1);
+        }
+    }
+}
+
 int main() {
 
-    int n, m, s, u, v;
-    IO::read(n, m, s);
+    int n, m, a, b, c;
+    IO::read(n, m);
+    dist.resize(n, -1);
+    parent.resize(n, -1);
     LCA2::preprocess(n);
     for (int i = 0; i < n - 1; ++i) {
-        IO::read(u, v);
-        --u;
-        --v;
-        LCA2::adj.at(u).emplace_back(v);
-        LCA2::adj.at(v).emplace_back(u);
+        IO::read(a, b);
+        --a;
+        --b;
+        parent[b] = a;
+        LCA2::adj[a].emplace_back(b);
+        LCA2::adj[b].emplace_back(a);
     }
-    --s;
-    LCA2::init(s);
+    // get root
+    int root = 0;
+    while (parent[root] != -1) {
+        root = parent[root];
+    }
+    LCA2::init(root);
+    dfs(root, 0);
+    int lca_ab, lca_ac, lca_bc, cost, destination;
     while (m--) {
-        IO::read(u, v);
-        --u;
-        --v;
-        IO::writeln(LCA2::lca(u, v) + 1);
+        IO::read(a, b, c);
+        --a;
+        --b;
+        --c;
+        lca_ab = LCA2::lca(a, b);
+        lca_ac = LCA2::lca(a, c);
+        lca_bc = LCA2::lca(b, c);
+        if (lca_ab == lca_ac && lca_ac == lca_bc) {
+            destination = lca_ac;
+            cost = dist[a] + dist[b] + dist[c] - 3 * dist[lca_ab];
+        }
+        else if (lca_ab == lca_ac) {
+            destination = lca_bc;
+            cost = dist[b] + dist[a] - 2 * dist[lca_ab] + dist[c] - dist[lca_bc];
+        }
+        else if (lca_ac == lca_bc) {
+            destination = lca_ab;
+            cost = dist[b] + dist[c] - 2 * dist[lca_bc] + dist[a] - dist[lca_ab];
+        }
+        else if (lca_ab == lca_bc) {
+            destination = lca_ac;
+            cost = dist[b] + dist[c] - 2 * dist[lca_bc] + dist[a] - dist[lca_ac];
+        }
+        IO::write(destination + 1);
+        putchar(' ');
+        IO::writeln(cost);
     }
 
     return 0;
