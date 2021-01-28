@@ -2565,6 +2565,76 @@ struct Rmq {
     }
 };
 
+// Find cut vertices and bridges in an undirected graph in O(m+n)
+namespace CutVertexAndBridges {
+
+    int n; // number of nodes
+    vector<vector<int>> adj; // adjacency list of graph
+    vector<bool> visited;
+    vector<bool> isCutVertex;
+    vector<pair<int, int> > bridges;
+    vector<int> tin, low;
+    int timer;
+
+    void reset() {
+        decltype(adj)().swap(adj);
+        decltype(visited)().swap(visited);
+        decltype(isCutVertex)().swap(isCutVertex);
+        decltype(bridges)().swap(bridges);
+        decltype(tin)().swap(tin);
+        decltype(low)().swap(low);
+    }
+
+    void init(int number_of_nodes) {
+        n = number_of_nodes;
+        adj.resize(n + 5);
+        visited.resize(n + 5, false);
+        isCutVertex.resize(n + 5, false);
+        tin.resize(n + 5);
+        low.resize(n + 5);
+    }
+
+    void dfs(int u, int p = -1) {
+        visited[u] = true;
+        tin[u] = low[u] = timer++;
+        int children = 0;
+        for (const auto v : adj[u]) {
+            if (v == p) continue;
+            if (visited[v]) {
+                low[u] = min(low[u], tin[v]);
+            } else {
+                dfs(v, u);
+                low[u] = min(low[u], low[v]);
+                if (low[v] > tin[u]) {
+                    if (u > v) {
+                        bridges.emplace_back(v, u);
+                    } else {
+                        bridges.emplace_back(u, v);
+                    }
+                }
+                if (low[v] >= tin[u] && p != -1)
+                    isCutVertex[u] = true;
+                ++children;
+            }
+        }
+        if (p == -1 && children > 1)
+            isCutVertex[u] = true;
+    }
+
+    void findCutVerticesAndBridges() {
+        timer = 0;
+        visited.resize(n, false);
+        tin.resize(n, -1);
+        low.resize(n, -1);
+        isCutVertex.resize(n, false);
+        vector<pair<int, int> >().swap(bridges);
+        // Assume node id starts from 0
+        for (int i = 0; i < n; ++i) {
+            if (!visited[i]) dfs(i);
+        }
+    }
+}
+
 int main() {
 
     //freopen("in", "r", stdin);

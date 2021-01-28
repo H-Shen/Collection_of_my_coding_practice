@@ -3,6 +3,85 @@
 using namespace std;
 using namespace __gnu_pbds;
 
+int n, u, v;
+int a, b;
+int answer = 0x3f3f3f3f;
+
+// Find cut vertices and bridges in an undirected graph in O(m+n)
+namespace CutVertexAndBridges {
+
+    int n; // number of nodes
+    vector<vector<int>> adj; // adjacency list of graph
+    vector<bool> visited;
+    vector<bool> isCutVertex;
+    vector<pair<int, int> > bridges;
+    vector<int> tin, low;
+    int timer;
+
+    void reset() {
+        decltype(adj)().swap(adj);
+        decltype(visited)().swap(visited);
+        decltype(isCutVertex)().swap(isCutVertex);
+        decltype(bridges)().swap(bridges);
+        decltype(tin)().swap(tin);
+        decltype(low)().swap(low);
+    }
+
+    void init(int number_of_nodes) {
+        n = number_of_nodes;
+        adj.resize(n + 5);
+        visited.resize(n + 5, false);
+        isCutVertex.resize(n + 5, false);
+        tin.resize(n + 5);
+        low.resize(n + 5);
+    }
+
+    bool f(int i) {
+        if (tin[i] <= tin[a] && tin[i] > tin[b]) return true;
+        if (tin[i] <= tin[b] && tin[i] > tin[a]) return true;
+        return false;
+    }
+
+    void dfs(int u, int p = -1) {
+        visited[u] = true;
+        tin[u] = low[u] = timer++;
+        for (const auto v : adj[u]) {
+            if (visited[v]) {
+                low[u] = min(low[u], tin[v]);
+            } else {
+                dfs(v, u);
+                low[u] = min(low[u], low[v]);
+                if (low[v] > tin[u]) {
+                    if (u > v) {
+                        bridges.emplace_back(v, u);
+                    } else {
+                        bridges.emplace_back(u, v);
+                    }
+                }
+                if (low[v] >= tin[u] && !isCutVertex[u]) {
+                    isCutVertex[u] = true;
+                    if (u != a && u != b && f(v)) {
+                        answer = min(answer, u);
+                    }
+                }
+            }
+        }
+    }
+
+    void findCutVerticesAndBridges() {
+        timer = 0;
+        visited.resize(n, false);
+        tin.resize(n, -1);
+        low.resize(n, -1);
+        isCutVertex.resize(n, false);
+        vector<pair<int, int> >().swap(bridges);
+        // Assume node id starts from 1
+        for (int i = 1; i <= n; ++i) {
+            if (!visited[i]) dfs(i);
+        }
+    }
+}
+
 namespace IO {
     template<typename T>
     inline
@@ -56,73 +135,23 @@ namespace IO {
     }
 }
 
-int a, b;
-int answer = 0x3f3f3f3f;
-
-// Obtain Articulation Points in an undirected graph by Tarjan
-namespace ArticulationPoint {
-    vector<vector<int> > adj;
-    vector<int> dfsNum, dfsLow;
-    int timestamp;
-    vector<bool> isArticulationPoint, vis;
-    void init(int n) {
-        adj.resize(n + 5);
-        dfsNum.resize(n + 5);
-        dfsLow.resize(n + 5);
-        isArticulationPoint.resize(n + 5, false);
-        vis.resize(n + 5, false);
-        timestamp = 0;
-    }
-    bool f(int v) {
-        if (dfsNum[v] <= dfsNum[a] && dfsNum[v] > dfsNum[b]) return true;
-        if (dfsNum[v] <= dfsNum[b] && dfsNum[v] > dfsNum[a]) return true;
-        return false;
-    }
-    void Tarjan(int u, int father_of_u) {
-        vis[u] = true;
-        dfsLow[u] = dfsNum[u] = ++timestamp;    // tag timestamp
-        for (const auto &v : adj[u]) {
-            if (!vis[v]) {
-                Tarjan(v, u);
-                dfsLow[u] = min(dfsLow[u], dfsLow[v]);
-                if (dfsLow[v] >= dfsNum[u] && !isArticulationPoint[u]) {
-                    isArticulationPoint[u] = true;
-                    // special process here
-                    if (u != a && u != b && f(v)) {
-                        answer = min(answer, u);
-                    }
-                }
-            } else if (v != father_of_u) {
-                dfsLow[u] = min(dfsLow[u], dfsNum[v]);
-            }
-        }
-    }
-}
-
 int main() {
 
-    int n, u, v;
     IO::read(n);
-    ArticulationPoint::init(n);
+    CutVertexAndBridges::init(n);
     while (true) {
         IO::read(u, v);
         if (u == 0 && v == 0) break;
-        ArticulationPoint::adj[u].emplace_back(v);
-        ArticulationPoint::adj[v].emplace_back(u);
+        CutVertexAndBridges::adj[u].emplace_back(v);
+        CutVertexAndBridges::adj[v].emplace_back(u);
     }
     IO::read(a, b);
-
-    // Usage:
-    for (int i = 1; i <= n; ++i) {
-        if (!ArticulationPoint::vis[i]) {
-            ArticulationPoint::timestamp = 0;   // reset the timestamp
-            ArticulationPoint::Tarjan(i, i);
-        }
-    }
+    CutVertexAndBridges::findCutVerticesAndBridges();
     if (answer == 0x3f3f3f3f) {
         puts("No solution");
     } else {
         IO::writeln(answer);
     }
+
     return 0;
 }
