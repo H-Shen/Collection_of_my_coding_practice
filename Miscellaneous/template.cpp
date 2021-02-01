@@ -629,7 +629,7 @@ namespace MinimumWeightCycleUndirectedGraph {
 namespace MinimumWeightCycleDirectedGraph {
 
     constexpr int INF = 0x3f3f3f3f;
-    constexpr int MAXN = 505;
+    constexpr int MAXN = 505;   // max nodes in the graph
 
     vector<vector<pair<int, int> > > adj; // The adjacency list of the graph
     int number_of_nodes;
@@ -682,7 +682,7 @@ namespace MinimumWeightCycleDirectedGraph {
 
     // Usage:
     int main() {
-        int n = 400;
+        int n = 400;    // suppose in this case we have 400 nodes
         init(n);
         // ... After the construction of the graph, node id starts from 1
         int minimalCycle = INF;
@@ -1286,16 +1286,16 @@ double inv_sqrt64(double n) {
 
 // A collection of containers and procedures that implements Tarjan's strongly
 // connected components algorithm. Assume that the node id starts from 1 and the
-// index of a strongly connected component (SCC) also starts from 1 Reference:
-// https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm#The_algorithm_in_pseudocode
+// index of a strongly connected component (SCC) also starts from 1
 namespace SCC_Tarjan {
 
     // adjacency list of the graph
-    unordered_map<int, unordered_set<int> > G;
-
-    int number_of_nodes; // number of nodes in the graph
-    int number_of_scc;            // number of strongly connected components
-    int current_timestamp;     // current timestamp
+    vector<vector<int> > G;
+    // number of nodes in the graph
+    int number_of_nodes;
+    // number of strongly connected components
+    int number_of_scc;
+    int current_timestamp;
     stack<int> s;   // A stack is used to store all nodes that may form a
     // strongly connected component
     vector<bool>
@@ -1311,9 +1311,8 @@ namespace SCC_Tarjan {
     // connected component whose index is id
 
     // reset all containers
-    inline
     void reset() {
-        G.clear();
+        decltype(G)().swap(G);
         stack<int>().swap(s);
         vector<bool>().swap(vis);
         vector<int>().swap(dfs_rank);
@@ -1323,22 +1322,19 @@ namespace SCC_Tarjan {
     }
 
     // Initialize all global variables in the namespace
-    inline
     void init(int n) {
         number_of_nodes = n;
         number_of_scc = 0;
-        current_timestamp = 1;  // NOTICE: starts from 1 if the node id starts from 1
-        // Give some flexibility of size of our containers since
-        // the node id/SCC id may not strictly start from 1
-        int offset = 5;
-        vis.resize(number_of_nodes + offset, false);
-        dfs_rank.resize(number_of_nodes + offset, 0);
-        low_link.resize(number_of_nodes + offset, 0);
-        scc.resize(number_of_nodes + offset, 0);
-        size_of_scc.resize(number_of_nodes + offset, 0);
+        // NOTICE: starts from 1 if the node id starts from 1
+        current_timestamp = 1;
+        G.resize(number_of_nodes + 5);
+        vis.resize(number_of_nodes + 5, false);
+        dfs_rank.resize(number_of_nodes + 5, 0);
+        low_link.resize(number_of_nodes + 5, 0);
+        scc.resize(number_of_nodes + 5, 0);
+        size_of_scc.resize(number_of_nodes + 5, 0);
     }
 
-    inline
     void Tarjan(int u) { // u: the node id being processed
         dfs_rank.at(u) = current_timestamp;
         low_link.at(u) = current_timestamp;
@@ -1369,6 +1365,25 @@ namespace SCC_Tarjan {
             ++size_of_scc.at(number_of_scc);
             vis.at(u) = false;
         }
+    }
+
+    // Usage:
+    int main() {
+        int n, m, u, v;
+        cin >> n >> m;
+        init(n);
+        while (m--) {
+            cin >> u >> v;
+            G[u].emplace_back(v);
+        }
+        // Run Tarjan's SCC algorithm
+        for (int i = 1; i <= n; ++i) {
+            // Process node i if the node i has not been visited
+            if (!dfs_rank.at(i)) {
+                Tarjan(i);
+            }
+        }
+        return 0;
     }
 }
 
