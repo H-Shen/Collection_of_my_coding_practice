@@ -894,7 +894,8 @@ namespace APSP_Johnson {
 // An example that does graph traversal with BFS from 's'
 namespace BFS_Example {
     constexpr int INF = 0x3f3f3f3f;
-    vector<vector<pair<int, int> > > adj;   // adjacency list
+    constexpr int WEIGHT = 1;
+    vector<vector<int> > adj;   // adjacency list
     int s;
     vector<int> prev; // an auxiliary container to store the path
     vector<bool> vis; // flag if any node is visited
@@ -914,11 +915,11 @@ namespace BFS_Example {
         while (!q.empty()) {
             int u = q.front();
             q.pop();
-            for (const auto &[to, weight] : adj.at(u)) {
+            for (const auto &to : adj.at(u)) {
                 if (!vis.at(to)) {
                     q.push(to);
                     vis.at(to) = true;
-                    dis.at(to) = dis.at(u) + weight;
+                    dis.at(to) = dis.at(u) + WEIGHT;
                     if (store_path) {
                         prev.at(to) = u;
                     }
@@ -1778,7 +1779,7 @@ namespace SSSP_SPFA {
 
     inline void
     reset() {
-        vector<vector<pair<int, int> > >().swap(adj);
+        decltype(adj)().swap(adj);
         vector<int>().swap(dis);
         number_of_nodes = 0;
         source = 0;
@@ -1786,12 +1787,9 @@ namespace SSSP_SPFA {
 
     inline void
     init(int n, int s) {
-        vector<vector<pair<int, int> > >().swap(adj);
         source = s;
         number_of_nodes = n;
-        dis.resize(number_of_nodes + 5, INF);
         adj.resize(number_of_nodes + 5);
-        dis.at(source) = 0;
     }
 
     inline void
@@ -1802,17 +1800,21 @@ namespace SSSP_SPFA {
     // O(mn)
     inline bool
     spfa() {
+
+        dis.resize(number_of_nodes + 5, INF);
+        dis.at(source) = 0;
         vector<int> cnt(number_of_nodes + 5);
         vector<bool> in_queue(number_of_nodes + 5, false);
         queue<int> q;
         q.push(source);
         in_queue.at(source) = true;
+
         while (!q.empty()) {
             int u = q.front();
             q.pop();
             in_queue.at(u) = false;
             for (const auto &[v, w] : adj.at(u)) {
-                if (dis.at(v) > dis.at(u) + w) {
+                if (dis.at(u) + w < dis.at(v)) {
                     dis.at(v) = dis.at(u) + w;
                     if (!in_queue.at(v)) {
                         q.push(v);
