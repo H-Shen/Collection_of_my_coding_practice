@@ -2547,7 +2547,7 @@ int main() {
     return 0;
 }
 
-// How to check if an edge E is on the shortest path from u to v
+// How to check if an edge E is on the shortest path from u to v in an undirected graph
 // 1. Get dis1.at(i) = the shortest path from u to i by Dij
 // 2. Get dis2.at(i) = the shortest path from v to i by Dij
 // 3. For each edge E:(a, b) -> w, if
