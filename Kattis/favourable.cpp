@@ -27,25 +27,25 @@ struct my_hash_func {
         return hash<int>()(obj.first) ^ hash<int>()(obj.second);
     }
 };
-unordered_map<pair<int, int>, ll, my_hash_func> dfs_count;
+unordered_map<pair<int, int>, ll, my_hash_func> dp;
 
+// dp[u][v] --> the number of paths from u to v
+// dp[u][u] = 1
+// dp[u][v] = Sum dp[adj of u][v]
 ll dfs(int u, int v) {
-    if (u == v) {
-        return 1;
-    }
+    if (u == v) return 1;
     ll sum = 0;
     ll temp;
     for (const int u_adj : adj[u]) {
-        if (dfs_count.find({u_adj, v}) != dfs_count.end()) {
-            sum += dfs_count[{u_adj, v}];
+        if (dp.find({u_adj, v}) != dp.end()) {
+            sum += dp[{u_adj, v}];
         }
         else {
             temp = dfs(u_adj, v);
             sum += temp;
-            dfs_count[{u_adj, v}] = temp;
         }
     }
-    dfs_count[{u, v}] = sum;
+    dp[{u, v}] = sum;
     return sum;
 }
 
@@ -57,7 +57,7 @@ int main() {
 
         Nodes.clear();
         adj.clear();
-        dfs_count.clear();
+        dp.clear();
 
         int s;
         int a, b, c, d;
