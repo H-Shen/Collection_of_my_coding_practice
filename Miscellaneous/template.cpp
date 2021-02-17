@@ -2202,13 +2202,11 @@ namespace Lucas {
 // Lowest Common Ancestor - Tarjan's off-line algorithm
 // O(n + m) for m queries
 namespace LCA0 {
-    
     vector<vector<int> > adj;
     vector<int> ancestor;
     vector<bool> vis;
     vector<vector<int> > queries;
     unordered_map<pii, int, custom_hash> unmap;
-
     void Tarjan(int u) {
         vis.at(u) = true;
         ancestor.at(u) = u;
@@ -2226,7 +2224,6 @@ namespace LCA0 {
             }
         }
     }
-
     void init(int n) {
         DSU::init(n);
         ancestor.resize(n + 5);
@@ -2234,11 +2231,10 @@ namespace LCA0 {
         adj.resize(n + 5);
         queries.resize(n + 5);
     }
-
+    // Usage:
     // n nodes, (n - 1) edges, the root is s, m queries,
     // for each query, u and v are given, print lca of u and v
     int main() {
-
         int n, m, s, u, v;
         IO::read(n, m, s);
         LCA0::init(n);
@@ -2261,6 +2257,50 @@ namespace LCA0 {
         }
         return 0;
     }
+}
+
+// Obtain LCA by binary lifting, Preprocess O(nlogn), each query costs O(logn).
+namespace LCA1 {
+    int n, l;
+    vector<vector<int>> adj;
+    int timer;
+    vector<int> tin, tout;
+    vector<vector<int>> up;
+    void dfs(int v, int p) {
+        tin[v] = ++timer;
+        up[v][0] = p;
+        for (int i = 1; i <= l; ++i)
+            up[v][i] = up[up[v][i-1]][i-1];
+
+        for (int u : adj[v]) {
+            if (u != p)
+                dfs(u, v);
+        }
+        tout[v] = ++timer;
+    }
+    bool is_ancestor(int u, int v) {
+        return tin[u] <= tin[v] && tout[u] >= tout[v];
+    }
+    int lca(int u, int v) {
+        if (is_ancestor(u, v)) return u;
+        if (is_ancestor(v, u)) return v;
+        for (int i = l; i >= 0; --i) {
+            if (!is_ancestor(up[u][i], v))
+                u = up[u][i];
+        }
+        return up[u][0];
+    }
+    // Assume node id starts from 0
+    void preprocess(int number_of_nodes) {
+        n = number_of_nodes;
+        tin.resize(n);
+        tout.resize(n);
+        adj.resize(n);
+        timer = 0;
+        l = ceil(log2(n));
+        up.resize(n, vector<int>(l + 1));
+    }
+    void init(int root) { dfs(root, root); }
 }
 
 // Factorization of an integer using Miller Rabin Prime Check + Pollard Rho
@@ -2557,6 +2597,136 @@ namespace CutVertexAndBridges {
         for (int i = 0; i < n; ++i) {
             if (!visited[i]) dfs(i);
         }
+    }
+}
+
+namespace PrefixSum2D {
+    vector<vector<ll> > pre;
+    int n, m;
+
+    void init(const vector<vector<ll> > &A) {
+
+        if (A.empty() || A.front().empty()) return;
+        n = (int) A.size();
+        m = (int) A.front().size();
+        decltype(pre)().swap(pre);
+        pre.resize(n, vector<ll>(m));
+
+        pre[0][0] = A[0][0];
+        for (int i = 1; i < m; ++i)
+            pre[0][i] = pre[0][i - 1] + A[0][i];
+        for (int i = 1; i < n; ++i)
+            pre[i][0] = pre[i - 1][0] + A[i - 1][0];
+        for (int i = 1; i < n; ++i)
+            for (int j = 1; j < m; ++j)
+                pre[i][j] = pre[i - 1][j] + pre[i][j - 1] - pre[i - 1][j - 1] + A[i][j];
+    }
+
+    ll rangeSum(int r0, int c0, int r1, int c1) {
+        if (r0 == 0 && c0 == 0) return pre[r1][c1];
+        else if (r0 == 0 && c0 != 0) return pre[r1][c1] - pre[r1][c0 - 1];
+        else if (r0 != 0 && c0 == 0) return pre[r1][c1] - pre[r0 - 1][c1];
+        return pre[r1][c1] - pre[r0 - 1][c1] - pre[r1][c0 - 1] + pre[r0 - 1][c0 - 1];
+    }
+}
+
+// Prefix sum of edges' weights on a rooted tree
+namespace PrefixSumTree0 {
+    vector<ll> pre;
+    vector<bool> vis;
+    vector<vector<pair<int, ll> > > adj;
+    void init(int n) {
+        adj.resize(n);
+        pre.resize(n);
+        vis.resize(n, false);
+    }
+    void dfs(int u, ll currSum) {
+        for (const auto &[v, w] : adj[u]) {
+            if (!vis[v]) {
+                vis[v] = true;
+                pre[v] = currSum + w;
+                dfs(v, pre[v]);
+            }
+        }
+    }
+    // Query the distance from u to v:
+    // ll dist(int u, int v) { return pre[u] + pre[v] - 2*pre[lca(u, v)]; }
+    // Usage
+    int main() {
+        int n, root, m, u, v, q; ll w;
+        cin >> n >> root >> m;
+        init(n);
+        while (m--) {
+            cin >> u >> v >> w;
+            adj[u].emplace_back(v, w);
+            adj[v].emplace_back(u, w);
+        }
+        vis[root] = true;
+        dfs(root, 0);
+        while (q--) {
+            cin >> u >> v;
+            // cout << dist(u, v) << '\n';
+        }
+        return 0;
+    }
+}
+
+// Prefix sum of nodes' weights on a rooted tree
+namespace PrefixSumTree1 {
+    vector<ll> pre;
+    vector<bool> vis;
+    vector<vector<int> > adj;
+    vector<ll> weight;
+    vector<int> father;
+
+    void init(int n) {
+        pre.resize(n);
+        vis.resize(n, false);
+        adj.resize(n);
+        weight.resize(n);
+        father.resize(n);
+    }
+
+    void dfs(int u, ll currSum) {
+        pre[u] = currSum + weight[u];
+        for (const auto &v : adj[u]) {
+            if (!vis[v]) {
+                vis[v] = true;
+                dfs(v, pre[u]);
+                father[v] = u;
+            }
+        }
+    }
+
+    // Query the distance from u to v:
+//    ll dist(int u, int v) { 
+//        int Lca = lca(u, v);
+//        // Case 1: lca is root
+//        if (father[Lca] == -1) {
+//            return pre[u] + pre[v] - pre[Lca];
+//        }
+//        // Case 2: otherwise
+//        return pre[u] + pre[v] - pre[Lca] - pre[father[Lca]];
+//    }
+    // Usage
+    int main() {
+        int n, root, m, u, v, q;
+        cin >> n >> root >> m;
+        init(n);
+        for (auto &i : weight) cin >> i;
+        while (m--) {
+            cin >> u >> v;
+            adj[u].emplace_back(v);
+            adj[v].emplace_back(u);
+        }
+        vis[root] = true;
+        father[root] = -1;
+        dfs(root, 0);
+        while (q--) {
+            cin >> u >> v;
+            // cout << dist(u, v) << '\n';
+        }
+        return 0;
     }
 }
 
