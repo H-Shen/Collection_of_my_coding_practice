@@ -481,55 +481,76 @@ void merge_pq(std::priority_queue<T> &dest, std::priority_queue<T> &src) {
 // An implementation of Floyd_Warshall Algorithm O(n^3) for finding
 // all pairs of shortest path in a graph
 namespace APSP_Floyd_Warshall {
-
     constexpr int INF = 0x3f3f3f3f;
-
-    vector<vector<int> > adj_matrix; // adjacency matrix
-    int number_of_nodes;
-
-    inline
-    void init(int n) {
+    vector<vector<int> > am; // adjacency matrix
+    vector<vector<int> > prev; // prev[i][j] is the previous vertex of j
+    int n;
+    void init(int number_of_nodes, bool store_path = false) {
         // reset
-        vector<vector<int> >().swap(adj_matrix);
-        number_of_nodes = n;
-        adj_matrix.resize(number_of_nodes, vector<int>(number_of_nodes, INF));
-        for (int i = 0; i < number_of_nodes; ++i) {
-            adj_matrix.at(i).at(i) = 0;
+        vector<vector<int> >().swap(am);
+        n = number_of_nodes;
+        am.resize(n, vector<int>(n, INF));
+        for (int i = 0; i < n; ++i) {
+            am[i][i] = 0;   // true on most cases
         }
-    }
-
-    inline
-    void floyd_warshall() {
-        for (int k = 0; k < number_of_nodes; ++k) {
-            for (int i = 0; i < number_of_nodes; ++i) {
-                for (int j = 0; j < number_of_nodes; ++j) {
-                    if (adj_matrix.at(i).at(k) < INF &&
-                        adj_matrix.at(k).at(j) < INF) {
-                        adj_matrix.at(i).at(j) = min(adj_matrix.at(i).at(j),
-                                                     adj_matrix.at(i).at(k) +
-                                                     adj_matrix.at(k).at(j));
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < number_of_nodes; ++i) {
-            for (int j = 0; j < number_of_nodes; ++j) {
-                for (int t = 0; t < number_of_nodes; ++t) {
-                    if (adj_matrix.at(i).at(t) < INF &&
-                        adj_matrix.at(t).at(t) < 0 &&
-                        adj_matrix.at(t).at(j) < INF) {
-                        adj_matrix.at(i).at(j) = -INF;
-                    }
-                }
+        if (store_path) {
+            prev.resize(n, vector<int>(n));
+            for (int i = 0; i < n; ++i) {
+                prev[i][i] = i;   // true on most cases
             }
         }
     }
-
-    // Query the shortest distance from node u to node v
-    inline
+    void floyd_warshall(bool store_path = false) { // order: k, i, j
+        for (int k = 0; k < n; ++k)
+            for (int i = 0; i < n; ++i)
+                for (int j = 0; j < n; ++j)
+                    if (am[i][k] < INF && am[k][j] < INF) {
+                        if (am[i][j] > am[i][k] + am[k][j]) {
+                            am[i][j] = am[i][k] + am[k][j];
+                            if (store_path) {
+                                prev[i][j] = prev[k][j];
+                            }
+                        }
+                    }
+        // No need for graph with edges of non-negative weights
+        for (int i = 0; i < n; ++i)
+            for (int j = 0; j < n; ++j)
+                for (int t = 0; t < n; ++t)
+                    if (am[i][t] < INF && am[t][t] < 0 && am[t][j] < INF)
+                        am[i][j] = -INF;
+    }
+    // Query the shortest distance from u to v
+    // INF: cant reach -INF: in a negative cycle
     int dist(const int &u, const int &v) {
-        return adj_matrix.at(u).at(
-                v);  // INF: cant reach -INF: in a negative cycle
+        return am[u][v];
+    }
+    // Print the path from u to v
+    void print_path(const int &u, const int &v) {
+        if (dist(u, v) == INF) {
+            cout << "\nthe final path does not exist\n";
+            return;
+        }
+        if (u != v) {
+            print_path(u, prev[u][v]);
+        }
+        cout << v << ' ';
+    }
+    // Usage
+    int main() {
+        int number_of_nodes, m, u, v, s, d;
+        cin >> number_of_nodes >> m;
+        init(number_of_nodes, true);
+        while (m--) {
+            cin >> u >> v;
+            am[u][v] = 1;
+            prev[u][v] = u;
+            am[v][u] = 1;
+            prev[v][u] = v;
+        }
+        cin >> s >> d;
+        floyd_warshall(true);
+        print_path(s, d);
+        return 0;
     }
 }
 
@@ -2077,7 +2098,7 @@ namespace SMP {
             } else {
                 int m_ = engaged.at(w);
                 if (w_pref.at(w).at(m) >
-                    w_pref.at(w).at(m_)) { // w prefers m to m'
+                    w_pref.at(w).at(m_)) { // w prefers m to m_
                     free_man.push(m_);
                     engaged.at(w) = m;
                     free_man.pop();
