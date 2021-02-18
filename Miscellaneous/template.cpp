@@ -1948,8 +1948,8 @@ static_assert(s.A.at(MAXN - 1) == 514229);
 
 
 // Twice DFS to query the diameter of a tree with different weight on each edge : O(n) 
-namespace TreeDiameter {
-    vector<vector<pii> > adj;
+namespace TreeDiameter0 {
+    vector<vector<pair<int, int> > > adj;
     vector<int> d;
     int c = 0;
 
@@ -1998,6 +1998,54 @@ int solve(int n, vector<Interval>& Tree_edge, vector<int>& Edge_value) {
         TreeDiameter::adj.at(v).emplace_back(make_pair(u, w));
     }
     return TreeDiameter::diameter();
+}
+
+// Obtain the tree diameter by DP
+namespace TreeDiameter1 {
+    // the longest distance each node can reach
+    vector<int> d1;
+    // the second longest distance each node can reach
+    vector<int> d2;
+    vector<vector<int> > adj;
+    void init(int n) {
+        adj.resize(n);
+        d1.resize(n);
+        d2.resize(n);
+    }
+    void dfs(int u, int father_of_u) {
+        d1.at(u) = 0;
+        d2.at(u) = 0;
+        for (const auto &v : adj.at(u)) {
+            if (v == father_of_u) continue;
+            dfs(v, u);
+            int temp = d1.at(v) + 1;
+            if (temp > d1.at(u)) {
+                d2.at(u) = d1.at(u);
+                d1.at(u) = temp;
+            } else if (temp > d2.at(u)) {
+                d2.at(u) = temp;
+            }
+        }
+    }
+    // Usage:
+    int main() {
+        int n, m, u, v;
+        cin >> n >> m;
+        init(n);
+        while (m--) {
+            cin >> u >> v;
+            adj[u].emplace_back(v);
+            adj[v].emplace_back(u);
+        }
+        // randomly pick one node 
+        // in the graph as root
+        dfs(0, -1);
+        int diameter = -1;
+        for (int i = 0; i < n; ++i) {
+            diameter = max(diameter, d1.at(i) + d2.at(i));
+        }
+        return 0;
+    }
 }
 
 // Fib(2k) = Fib(k) * (2Fib(k+1) - Fib(k))
@@ -2633,19 +2681,16 @@ namespace PrefixSum2D {
 // Prefix sum of edges' weights on a rooted tree
 namespace PrefixSumTree0 {
     vector<ll> pre;
-    vector<bool> vis;
     vector<vector<pair<int, ll> > > adj;
     void init(int n) {
         adj.resize(n);
         pre.resize(n);
-        vis.resize(n, false);
     }
-    void dfs(int u, ll currSum) {
+    void dfs(int u, int father_of_u, ll currSum) {
         for (const auto &[v, w] : adj[u]) {
-            if (!vis[v]) {
-                vis[v] = true;
+            if (v != father_of_u) {
                 pre[v] = currSum + w;
-                dfs(v, pre[v]);
+                dfs(v, u, pre[v]);
             }
         }
     }
@@ -2661,8 +2706,8 @@ namespace PrefixSumTree0 {
             adj[u].emplace_back(v, w);
             adj[v].emplace_back(u, w);
         }
-        vis[root] = true;
-        dfs(root, 0);
+        int dummy_node = -1;
+        dfs(root, dummy_node, 0);
         while (q--) {
             cin >> u >> v;
             // cout << dist(u, v) << '\n';
@@ -2674,25 +2719,22 @@ namespace PrefixSumTree0 {
 // Prefix sum of nodes' weights on a rooted tree
 namespace PrefixSumTree1 {
     vector<ll> pre;
-    vector<bool> vis;
     vector<vector<int> > adj;
     vector<ll> weight;
     vector<int> father;
 
     void init(int n) {
         pre.resize(n);
-        vis.resize(n, false);
         adj.resize(n);
         weight.resize(n);
         father.resize(n);
     }
 
-    void dfs(int u, ll currSum) {
+    void dfs(int u, int father_of_u, ll currSum) {
         pre[u] = currSum + weight[u];
         for (const auto &v : adj[u]) {
-            if (!vis[v]) {
-                vis[v] = true;
-                dfs(v, pre[u]);
+            if (v != father_of_u) {
+                dfs(v, u, pre[u]);
                 father[v] = u;
             }
         }
@@ -2719,9 +2761,9 @@ namespace PrefixSumTree1 {
             adj[u].emplace_back(v);
             adj[v].emplace_back(u);
         }
-        vis[root] = true;
         father[root] = -1;
-        dfs(root, 0);
+        int dummy_node = -1;
+        dfs(root, dummy_node, 0);
         while (q--) {
             cin >> u >> v;
             // cout << dist(u, v) << '\n';
