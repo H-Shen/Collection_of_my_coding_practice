@@ -2664,7 +2664,7 @@ namespace PrefixSum2D {
         for (int i = 1; i < m; ++i)
             pre[0][i] = pre[0][i - 1] + A[0][i];
         for (int i = 1; i < n; ++i)
-            pre[i][0] = pre[i - 1][0] + A[i - 1][0];
+            pre[i][0] = pre[i - 1][0] + A[i][0];
         for (int i = 1; i < n; ++i)
             for (int j = 1; j < m; ++j)
                 pre[i][j] = pre[i - 1][j] + pre[i][j - 1] - pre[i - 1][j - 1] + A[i][j];
@@ -2770,6 +2770,22 @@ namespace PrefixSumTree1 {
         }
         return 0;
     }
+}
+
+// C(n, m) = ((n-m+1)(n-m+2)...(n-m+m))/(m(m-1)(m-2)...2*1)
+// P(m,k): For all integers m, k, such that k >= 1
+// m(m+1)(m+2)...(m+k-1) is divided by k!
+// This can be proved by nested induction
+// Ref: 
+// https://math.stackexchange.com/questions/12065/the-product-of-n-consecutive-integers-is-divisible-by-n-factorial/12073#12073
+// https://gowers.wordpress.com/2010/09/18/are-these-the-same-proof/
+ll comb(ll n, ll m) {
+    if (m > n - m) m = n - m;
+    ll result = 1;
+    for (ll i = 1; i <= m; ++i) {
+        result = result * (n - m + i) / i;
+    }
+    return result;
 }
 
 int main() {
