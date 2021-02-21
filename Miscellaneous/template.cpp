@@ -2788,6 +2788,25 @@ ll comb(ll n, ll m) {
     return result;
 }
 
+// Suppose there is a majority element in n integers such that its occurrence is > (n / 2)
+// We can obtain in O(n) time and O(1) space
+namespace MajorityElement {
+    int main() {
+        int val = -1, cnt = 0;
+        while (n--) {
+            scanf("%d", &a);
+            if (a != val) {
+                if (--cnt <= 0) {
+                val = a, cnt = 1;
+                }
+            } else {
+                ++cnt;
+            }
+        }
+        cout << val << '\n';
+    }
+}
+
 int main() {
 
     //freopen("in", "r", stdin);
