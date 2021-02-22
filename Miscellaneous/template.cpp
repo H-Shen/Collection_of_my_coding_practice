@@ -2197,6 +2197,16 @@ namespace SMP {
         return 0;
     }
 }
+// Given the preferences of 2n people and n pairs of matching of them, check
+// how many unstable pairs among n pairs:
+// https://leetcode.com/problems/count-unhappy-friends/
+
+/** Pseudo-code
+for w in women:
+    for m in [men w would prefer over current_partner(w)]:
+        if m prefers w to current_partner(m) return false
+return true
+**/
 
 // Lucas's theorem
 namespace Lucas {
@@ -2805,6 +2815,82 @@ namespace MajorityElement {
         }
         cout << val << '\n';
     }
+}
+
+// Eulerian Circuit and Eulerian Path
+// Eulerian Path: a trail in a finite graph that visits every EDGE exactly once
+// Eulerian Circuit: an Eulerian trail that starts and ends on the same vertex
+//
+// For an undirected graph G:
+// G has an Eulerian Circuit <=> G is connected, G has no vertices with odd degree
+// G has an Eulerian Path <=> G is connected, G has 0 or 2 vertices with odd degree
+// 
+// For a directed graph G:
+// G has an Eulerian Circuit <=> G is a single SCC and for all vertex v, in_degree[v] = out_degree[v]
+// G has an Eulerian Path <=> Suppose its underlying undirected graph is G', for G'
+// 1. G' is a single CC
+// 2. there is at most 1 vertex v such that in_degree[v] - out_degree[v] = 1
+// 3. there is at most 1 vertex v such that out_degree[v] - in_degree[v] = 1
+// 4. for other vertices v, in_degree[v] = out_degree[v]
+//
+// We use Hierholzer's algorithm to find the Eulerian Circuit/Path
+// 1. If we confirms G contains an Eulerian Path, then 'startVertex' is one of the vertex with odd degree 
+//    if G is undirected, or out_degree[startVertex] - in_degree[startVertex] = 1 if G is directed.
+//
+// 2. If we confirms G contains an Eulerian Circuit, then 'startVertex' can be any of vertices.
+//
+// Sort the adjList if you need to find the lexicographically smallest/largest Eulerian Path/Circuit
+
+// Hierholzer for directed graphs
+vector<int> Hierholzer(int startVertex, vector<deque<int> > &adjList) {
+    stack<int> path;
+    vector<int> circuit;
+    int current = startVertex;
+    path.push(startVertex);
+    while (!path.empty()) {
+        if (!adjList.at(current).empty()) {
+            path.push(current);
+            int next = adjList.at(current).front();
+            adjList.at(current).pop_front();
+            current = next;
+        } else {
+            circuit.emplace_back(current);
+            current = path.top();
+            path.pop();
+        }
+    }
+    reverse(circuit.begin(), circuit.end());
+    return circuit;
+}
+
+// Hierholzer for undirected graphs
+// Once an edge (u,v) is added to the graph
+// We update 'stats' by ++stats[u][v], ++stats[v][u]
+unordered_map<int, unordered_map<int, int> > stats;
+vector<int> Hierholzer2(int startVertex, vector<deque<int> > &adjList) {
+    stack<int> path;
+    vector<int> circuit;
+    int current = startVertex;
+    path.push(startVertex);
+    while (!path.empty()) {
+        if (!adjList.at(current).empty()) {
+            path.push(current);
+            int next = adjList.at(current).front();
+            adjList.at(current).pop_front();
+            // avoid traversing the same edge twice
+            if (stats[current][next] > 0) {
+                --stats[current][next];
+                --stats[next][current];
+                current = next;
+            }
+        } else {
+            circuit.emplace_back(current);
+            current = path.top();
+            path.pop();
+        }
+    }
+    reverse(circuit.begin(), circuit.end());
+    return circuit;
 }
 
 int main() {
