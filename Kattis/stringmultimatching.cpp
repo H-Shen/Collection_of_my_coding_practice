@@ -6,67 +6,127 @@ using namespace std;
 using namespace __gnu_pbds;
 using ll = long long;
 
+// An implementation of Suffix Array with Induced-Sort
+// Can construct SA in O(n)
 namespace SA {
-    vector<int> sa, ra;
-    string s;
-    void reset() {
-        vector<int>().swap(sa);
-        vector<int>().swap(ra);
-    }
-    void csort(int l, int k) {
-        int m = max(300, l + 1);
-        vector<int> c(m);
-        vector<int> sa2(l);
-        for (int i = 0; i < l; ++i) {
-            c[i+k<l?ra[i+k]+1:0]++;
+    constexpr bool L_TYPE = false;
+    constexpr bool S_TYPE = !L_TYPE;
+    vector<int> sais(const vector<int> &s) {
+
+        int n = (int) s.size() - 1;
+        int maxValue = *max_element(s.begin(), s.end()) + 1;
+        vector<int> SA(n + 1, -1);
+        vector<int> bucket(maxValue), lbucket(maxValue), sbucket(maxValue);
+
+        for (auto x : s) ++bucket[x];
+        for (int i = 1; i < maxValue; ++i) {
+            bucket[i] += bucket[i - 1];
+            lbucket[i] = bucket[i - 1];
+            sbucket[i] = bucket[i] - 1;
         }
-        for (int s_ = 0, i = 0; i < m; ++i) {
-            swap(c[i], s_);
-            s_ += c[i];
+
+        // Confirm the type and the position of '*'
+        vector<bool> type(n + 1);
+        type[n] = S_TYPE;
+        for (int i = n - 1; i >= 0; --i) {
+            type[i] = (s[i] < s[i + 1] ? S_TYPE : (s[i] > s[i + 1] ? L_TYPE : type[i + 1]));
         }
-        for (int i = 0; i < l; ++i) {
-            sa2[c[sa[i]+k<l ? ra[sa[i]+k]+1 : 0]++] = sa[i];
-        }
-        sa = sa2;
-    }
-    void init() {
-        int l = (int)s.size();
-        sa.resize(l);
-        iota(sa.begin(), sa.end(), 0);
-        ra.assign(s.begin(), s.end());
-        for (int k = 1; k < l; k *= 2) {
-            csort(l, k);
-            csort(l, 0);
-            /*
-            sort(sa.begin(), sa.end(), [&](int a, int b) {
-                if (ra[a] != ra[b]) {
-                    return ra[a] < ra[b];
+
+        // Define helper lambda functions
+        auto is_lms_char = [&](int i) {
+            return i > 0 && type[i] == S_TYPE && type[i - 1] == L_TYPE;
+        };
+        auto equal_substring = [&](int x, int y) {
+            do {
+                if (s[x] != s[y]) return false;
+                ++x;
+                ++y;
+            } while (!is_lms_char(x) && !is_lms_char(y));
+            return s[x] == s[y];
+        };
+        auto induced_sort = [&]() {
+            for (int i = 0; i <= n; ++i) {
+                if (SA[i] > 0 && type[SA[i] - 1] == L_TYPE) {
+                    SA[lbucket[s[SA[i] - 1]]++] = SA[i] - 1;
                 }
-                int ak = a + k < l ? ra[a + k] : -1;
-                int bk = b + k < l ? ra[b + k] : -1;
-                return ak < bk;
-            });*/
-            vector<int> ra2(l);
-            int x = 0;
-            for (int i = 1; i < l; ++i) {
-                if (ra[sa[i]] != ra[sa[i - 1]] ||
-                    sa[i - 1] + k >= l ||
-                    ra[sa[i] + k] != ra[sa[i-1]+k]) {
-                    ++x;
-                }
-                ra2[sa[i]] = x;
             }
-            ra = ra2;
+            for (int i = 1; i < maxValue; ++i) {
+                sbucket[i] = bucket[i] - 1;
+            }
+            for (int i = n; i >= 0; --i) {
+                if (SA[i] > 0 && type[SA[i] - 1] == S_TYPE) {
+                    SA[sbucket[s[SA[i] - 1]]--] = SA[i] - 1;
+                }
+            }
+        };
+
+        vector<int> pos;
+        for (int i = 1; i <= n; ++i) {
+            if (type[i] == S_TYPE && type[i - 1] == L_TYPE) {
+                pos.emplace_back(i);
+            }
         }
+        for (auto x : pos) SA[sbucket[s[x]]--] = x;
+        induced_sort();
+        vector<int> name(n + 1, -1);
+        int lx = -1, cnt = 0;
+        bool flag = true;
+        for (const auto &x : SA) {
+            if (is_lms_char(x)) {
+                if (lx >= 0 && !equal_substring(lx, x)) {
+                    ++cnt;
+                }
+                if (lx >= 0 && cnt == name[lx]) {
+                    flag = false;
+                }
+                name[x] = cnt;
+                lx = x;
+            }
+        }
+        vector<int> s1;
+        for (const auto &x : name) {
+            if (x != -1) {
+                s1.emplace_back(x);
+            }
+        }
+        vector<int> sa1;
+        if (flag) {
+            int n1 = s1.size();
+            sa1.resize(n1);
+            for (int i = 0; i < n1; ++i) sa1[s1[i]] = i;
+        } else {
+            sa1 = sais(s1);
+        }
+        lbucket[0] = sbucket[0] = 0;
+        for (int i = 1; i < maxValue; ++i) {
+            lbucket[i] = bucket[i - 1];
+            sbucket[i] = bucket[i] - 1;
+        }
+
+        fill(SA.begin(), SA.end(), -1);
+        for (int i = (int) sa1.size() - 1; i >= 0; --i) {
+            SA[sbucket[s[pos[sa1[i]]]]--] = pos[sa1[i]];
+        }
+        induced_sort();
+        return SA;
     }
-    void saFind(const string &pattern) {
+
+    vector<int> sa;
+    void init(const string &str) {
+        vector<int> s(str.begin(), str.end());
+        s.emplace_back(0);
+        sa = sais(s);
+        sa = vector<int>(sa.begin() + 1, sa.end());
+    }
+
+    void saFind(const string &pattern, const string &text) {
         auto r = equal_range(sa.begin(), sa.end(), -1, [&](int i, int j) {
             int a = 1;
             if (i == -1) {
                 swap(i, j);
                 a = -1;
             }
-            return a*s.compare(i, pattern.size(), pattern) < 0;
+            return a * text.compare(i, pattern.size(), pattern) < 0;
         });
         vector occ(r.first, r.second);
         sort(occ.begin(), occ.end());
@@ -80,17 +140,17 @@ int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
     int n;
+    string text;
     while (true) {
         if (!(cin >> n)) break;
         cin.get();
         vector<string> pattern(n);
         for (auto &i : pattern) getline(cin, i);
-        getline(cin, SA::s);
-        SA::init();
+        getline(cin, text);
+        SA::init(text);
         for (const auto &i : pattern) {
-            SA::saFind(i);
+            SA::saFind(i, text);
         }
-        SA::reset();
     }
     return 0;
 }
