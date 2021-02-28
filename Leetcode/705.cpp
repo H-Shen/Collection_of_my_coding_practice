@@ -1,23 +1,25 @@
 class MyHashSet {
 private:
-    static const int MAXN = 1000005;
-    bitset<MAXN> exist;
+    static const int MAX_LENGTH = 1000005;
+    bitset<MAX_LENGTH> mBitset;
 public:
     /** Initialize your data structure here. */
     MyHashSet() {
 
+        
     }
+    
     void add(int key) {
-        exist[key] = true;
+        mBitset[key] = true;
     }
-
+    
     void remove(int key) {
-        exist[key] = false;
+        mBitset[key] = false;
     }
-
+    
     /** Returns true if this set contains the specified element */
     bool contains(int key) {
-        return exist[key];
+        return mBitset[key];
     }
 };
 

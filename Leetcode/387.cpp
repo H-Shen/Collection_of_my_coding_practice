@@ -1,16 +1,15 @@
 class Solution {
 public:
     int firstUniqChar(string s) {
-        unordered_map<char, int> A;
-        int len = static_cast<int>(s.size());
-        int i;
-        for (i = 0; i < len; ++i) {
-            ++A[s[i]];
+        constexpr int MAXN = 26;
+        int freq[MAXN]{};
+        for (const char &ch : s) {
+            ++freq[ch - 'a'];
         }
-        for (i = 0; i < len; ++i) {
-            if (A[s[i]] == 1) {
+        for (size_t i = 0; i != s.size(); ++i) {
+            if (freq[s[i] - 'a'] == 1) {
                 return i;
-            }
+            } 
         }
         return -1;
     }
