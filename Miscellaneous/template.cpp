@@ -267,76 +267,26 @@ namespace Catalan {
     }
 }
 
-// The collection of methods and data structures are used to obtain an MST of a
-// undirected-graph using Kruskal's algorithm with Disjoint Set
-// Usage: vector<Edge> A(n), .... , MST_Kruskal::kruskal(A, n);
+// Pre-condition: DSU
 namespace MST_Kruskal {
-    struct custom_hash {
-        static uint64_t splitmix64(uint64_t x) {
-            // http://xorshift.di.unimi.it/splitmix64.c
-            x += 0x9e3779b97f4a7c15;
-            x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
-            x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
-            return x ^ (x >> 31);
-        }
-
-        // For a pair of integers
-        size_t operator()(pair<uint64_t, uint64_t> x) const {
-            static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
-            return splitmix64(x.first + FIXED_RANDOM) ^
-                   (splitmix64(x.second + FIXED_RANDOM) >> 1);
-        }
-    };
-
     struct Edge {
         int u, v;
         int w;
-
         explicit Edge(int u, int v, int w) : u(u), v(v), w(w) {}
-
         Edge() = default;
     };
-
-    inline
-    vector<Edge> kruskal(const vector<Edge> &E, int number_of_nodes) {
+    vector<Edge> kruskal(vector<Edge> E, int number_of_nodes) {
         // initialize a DSU
         DSU::init(number_of_nodes);
-        // We use a hash-map to store the minimal weight between a pair of nodes
-        unordered_map<pair<int, int>, int, custom_hash> unmap;
-        pair<int, int> temp_pair;
-        decltype(unmap)::iterator temp_iter;
-        for (const auto &[u, v, w] : E) {
-            if (u > v) {
-                temp_pair.first = v;
-                temp_pair.second = u;
-            } else {
-                temp_pair.first = u;
-                temp_pair.second = v;
-            }
-            temp_iter = unmap.find(temp_pair);
-            if (temp_iter == unmap.end()) {
-                unmap[temp_pair] = w;
-            } else {
-                temp_iter->second = min(w, temp_iter->second);
-            }
-        }
-        vector<Edge> E_filter(unmap.size());
         int index = 0;
-        for (const auto &[nodes, w] : unmap) {
-            E_filter.at(index).u = nodes.first;
-            E_filter.at(index).v = nodes.second;
-            E_filter.at(index).w = w;
-            ++index;
-        }
         // sort by the edge's weight in increasing order
-        sort(E_filter.begin(), E_filter.end(),
+        sort(E.begin(), E.end(),
              [](const Edge &lhs, const Edge &rhs) {
                  return (lhs.w < rhs.w);
              });
-
         vector<Edge> minimum_spanning_tree;
         // int cost = 0;    // to calculate the total weight of the MST
-        for (const auto &[u, v, w] : E_filter) {
+        for (const auto &[u, v, w] : E) {
             if (!DSU::is_same_group(u, v)) {
                 DSU::merge(u, v);
                 minimum_spanning_tree.emplace_back(Edge(u, v, w));
@@ -352,56 +302,44 @@ namespace MST_Kruskal {
 // undirected-graph using Prim's algorithm with a priority queue optimized
 // O(mlogn)
 namespace MST_Prim {
-    constexpr int INF = 0x3f3f3f3f;
-    vector<vector<pair<int, int> > > adj; // adjacency list
-    vector<int> dis;
-    vector<bool> vis;
-    int number_of_nodes;
+    vector<vector<pair<int, ll> > > AL;
+    vector<bool> taken;
+    priority_queue<pair<ll, int> > pq;
+    int n;
+
+    void process(int u) {
+        taken[u] = true;
+        for (auto &[v, w] : AL[u])
+            if (!taken[v])
+                pq.push({-w, -v});
+    }
+
+    ll mst_cost = 0;
+    int num_taken = 0;
 
     void reset() {
-        number_of_nodes = 0;
-        vector<int>().swap(dis);
-        vector<bool>().swap(vis);
-        vector<vector<pair<int, int> > >().swap(adj);
+        mst_cost = 0;
+        num_taken = 0;
+        decltype(pq)().swap(pq);
+        vector<bool>().swap(taken);
+        decltype(AL)().swap(AL);
+        n = 0;
     }
 
-    void init(int n) {
-        number_of_nodes = n;
-        dis.resize(n + 5, INF);
-        adj.resize(n + 5);
-        vis.resize(n + 5, false);
-    }
-
-    void add_edge(int u, int v, int w) {
-        adj.at(u).emplace_back(make_pair(v, w));
-        adj.at(v).emplace_back(make_pair(u, w));
-    }
-
-    // Return false if the MST does not exist
-    bool prim(ll &sum_of_weights) {
-        std::priority_queue<pair<int, int>, vector<pair<int, int> >, greater<> > pq;
-        dis.at(1) = 0;  // the MST starts from node id: 1
-        pq.push({dis.at(1), 1}); // add {dist.at(node_id), node_id} to pq
-        int counter = 0;
-        int u, w;
-        while (!pq.empty() && counter < number_of_nodes) {
-            w = pq.top().first;
-            u = pq.top().second;
+    void prim(int source) {
+        taken.resize(n, false);
+        process(source);
+        while (!pq.empty()) {
+            auto[w, u] = pq.top();
             pq.pop();
-            if (vis.at(u)) {
-                continue;
-            }
-            ++counter;
-            sum_of_weights += w;
-            vis.at(u) = true;
-            for (const auto &[to, weight] : adj.at(u)) {
-                if (dis.at(to) > weight) {
-                    dis.at(to) = weight;
-                    pq.push({dis.at(to), to});
-                }
-            }
+            w = -w;
+            u = -u;
+            if (taken[u]) continue;
+            mst_cost += w;
+            process(u);
+            ++num_taken;
+            if (num_taken == n - 1) break;
         }
-        return counter == number_of_nodes;
     }
 }
 
@@ -1433,7 +1371,7 @@ namespace Toposort_Kahn {
         in_degree.resize(n + 5);
     }
 
-    // Main logic of Kahn's algorithm: O(|V|+|E|), return true if it does not
+    // Main logic of Kahn's algorithm: O(V+E), return true if it does not
     // have a cycle, otherwise false
     inline
     bool kahn() {
@@ -1739,68 +1677,43 @@ namespace SSSP_Dijkstra_1 {
     }
 }
 
-// An implementation of Bellman-Ford's algorithm
+// An implementation of Bellman Ford's algorithm
 namespace SSSP_Bellman_Ford {
     constexpr int INF = 0x3f3f3f3f;
-
-    struct Edge {
-        int u, v;
-        int w;
-
-        explicit Edge(int u, int v, int w) : u(u), v(v), w(w) {}
-    };
-
-    // After running the algorithm, dis[t] = INF indicates there is no path
-    // from source to t, dis[t] = -INF indicates if there are arbitrarily
-    // short paths from source to t
-    vector<int> dis;
-    vector<Edge> edges;
-    int number_of_nodes;
-    int source;
-
-    inline void
-    reset() {
-        vector<int>().swap(dis);
-        vector<Edge>().swap(edges);
-        number_of_nodes = 0;
-        source = 0;
-    }
-
-    inline void
-    init(int n, int s) {
-        number_of_nodes = n;
-        source = s;
-        dis.resize(n + 5, INF);
-        dis.at(source) = 0;
-    }
-
-    inline void
-    relax(const Edge &e) {
-        if (dis.at(e.v) > dis.at(e.u) + e.w) {
-            dis.at(e.v) = dis.at(e.u) + e.w;
+    vector<vector<pair<int, int> > > AL;
+    vector<int> dist;
+    int n, source;
+    // Return false if there is a negative cycle
+    bool bellman_ford() {
+        dist.resize(n, INF);
+        dist.at(source) = 0;
+        bool relaxed;
+        // relax all E edges V-1 times
+        for (int i = 0; i < n - 1; ++i) {
+            relaxed = false;
+            for (int u = 0; u < n; ++u) {
+                if (dist.at(u) != INF) {
+                    for (const auto &[v, w] : AL.at(u)) {
+                        // relax
+                        if (dist.at(v) > dist.at(u) + w) {
+                            dist.at(v) = dist.at(u) + w;
+                            relaxed = true;
+                        }
+                    }
+                }
+                if (!relaxed) break;
+            }
         }
-    }
-
-    // The main logic of the algorithm
-    inline void
-    bellman_ford() {
-        for (int i = 1; i <= number_of_nodes - 1; ++i) {
-            for (const auto &e : edges) {
-                if (dis.at(e.u) < INF) {
-                    relax(e);
+        for (int u = 0; u < n; ++u) {
+            if (dist.at(u) != INF) {
+                for (const auto &[v, w] : AL.at(u)) {
+                    if (dist.at(v) > dist.at(u) + w) {
+                        return false;
+                    }
                 }
             }
         }
-        for (int i = 1; i <= number_of_nodes - 1; ++i) {
-            for (auto &e : edges) {
-                if (dis.at(e.u) == -INF) {
-                    dis.at(e.v) = -INF;
-                } else if (dis.at(e.u) < INF &&
-                           dis.at(e.v) > dis.at(e.u) + e.w) {
-                    dis.at(e.v) = -INF;
-                }
-            }
-        }
+        return true;
     }
 }
 
@@ -2904,8 +2817,8 @@ int main() {
 // How to check if and only if an edge E is on the shortest 
 // path from u to v in an undirected graph:
 //
-// 1. Get dis1.at(i) = the shortest path from u to i by Dij
-// 2. Get dis2.at(i) = the shortest path from v to i by Dij
+// 1. Get dis1.at(i) = the shortest path from u to i by Dij (or the shortest path from i to u by Dij )
+// 2. Get dis2.at(i) = the shortest path from v to i by Dij (or the shortest path from i to v by Dij )
 // 3. For each edge E:(a, b) -> w,
 // dis1.at(a) + w + dis2.at(b) = shortest path from u to v
 // OR
