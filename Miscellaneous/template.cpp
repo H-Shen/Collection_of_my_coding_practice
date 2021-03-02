@@ -2806,6 +2806,45 @@ vector<int> Hierholzer2(int startVertex, vector<deque<int> > &adjList) {
     return circuit;
 }
 
+namespace Bitwise {
+    // All boolean array are in 0-based indexing
+    bool isOn(int S, int j) { return (S & (1 << j)); }
+    void setBit(int &S, int j) { S |= (1 << j); }
+    void clearBit(int &S, int j) { S &= ~(1 << j); }
+    void toggleBit(int &S, int j) { S ^= (1 << j); }
+    int lowBit(int S) { return S & (-S); }  // S&(-S) is 2^j such that the j-th of S is 0
+    void setAll(int &S, int n) { S = (1<<n)-1; } // set S to all '1' bit of length n
+    int modulo(int S, int n) { return S & (n - 1); } // Obtain S%n such that n is a power of 2
+    bool isPowerOfTwo(int S) { return !(S & (S-1)); }
+    int turnOffLastBit(int S) { return S & (S-1); } // pre: the last bit of S has not been turned off
+
+    // __builtin_ctz(2^n) = n
+    // Count how many bits are set in 'x'
+    // __builtin_popcount(x)
+    // __builtin_popcountl(x)
+    // __builtin_ctz(x) return the number of trailing 0
+    // __builtin_clz(x) return the number of leading 0
+
+    // Loop through all subsets except itself and the empty set
+    void loop_through_all_subsets(int s) {
+        for (int ss=(s-1)&s; ss; ss=(ss-1)&s) {
+            cout << bitset<5>(ss).to_string() << '\n';
+        }
+    }
+    // Compute the lexicographically next bit permutation
+    // 0b10001 --> 0b10010
+    // 0b00000 --> 0b11111 (32bits)
+    unsigned int next_bit_permutation(unsigned current_bit_permutation) {
+        unsigned int v = current_bit_permutation;
+        unsigned int w; // next permutation of bits
+        unsigned int t = v | (v - 1); // t gets v's least significant 0 bits set to 1
+        // Next set to 1 the most significant bit to change,
+        // set to 0 the least significant ones, and add the necessary 1 bits.
+        w = (t + 1) | (((~t & -~t) - 1) >> (__builtin_ctz(v) + 1));
+        return w;
+    }
+}
+
 int main() {
 
     //freopen("in", "r", stdin);
