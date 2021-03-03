@@ -1,3 +1,8 @@
+#pragma GCC optimize ("Ofast")
+#pragma GCC optimize ("unroll-loops")
+
+#define rep(i, a, b) for (int i = (a); i < (b); ++i)
+
 #include <bits/extc++.h>
 
 using namespace std;
@@ -1843,6 +1848,77 @@ struct SparseTable {
     }
 };
 
+// Preprocess takes O(nmlog(n)log(m))
+// Query index starts from 1
+// The usage is similar to SparseTable 1D
+// If the upperbound of n and m is fixed, use C style multiple dimension arrays instead!
+struct SparseTable2D {
+    vector<ll> Log2;
+    vector<vector<vector<vector<ll>>>> spt;
+    int n, m, logn, logm;
+
+    void init() {
+        int maxSize = max(n, m);
+        Log2.resize(maxSize + 5);
+        Log2[1] = 0;
+        Log2[2] = 1;
+        for (int i = 3; i < maxSize + 5; ++i)
+            Log2[i] = Log2[i >> 1] + 1;
+        logn = floor(log2(n) + 2);
+        logm = floor(log2(m) + 2);
+        spt.resize(n + 5);
+        for (auto &i:spt) i.resize(m + 5);
+        for (auto &i:spt) for (auto &j:i) j.resize(logn);
+        for (auto &i:spt) for (auto &j:i) for (auto &k:j) k.resize(logm);
+    }
+
+    SparseTable2D() = default;
+
+    explicit SparseTable2D(int n, int m) : n(n), m(m) {
+        init();
+    }
+
+    // input 2d array of n*m elements
+    void input() {
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= m; ++j) {
+                cin >> spt.at(i).at(j).at(0).at(0);
+            }
+        }
+    }
+
+    void build() {
+        for (int k = 0; k <= logn; ++k) {
+            for (int f = 0; f <= logm; ++f) {
+                if (k + f) {
+                    for (int i = 1; i + (1 << k) - 1 <= n; ++i) {
+                        for (int j = 1; j + (1 << f) - 1 <= m; ++j) {
+                            if (k) {
+                                spt[i][j][k][f] = max(spt[i][j][k - 1][f],
+                                                      spt[i + (1 << (k - 1))][j][k - 1][f]);
+                            } else {
+                                spt[i][j][k][f] = max(spt[i][j][k][f - 1],
+                                                      spt[i][j + (1 << (f - 1))][k][f - 1]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Pre: r1 <= r2, c1 <= c2
+    ll queryMax(int r1, int c1, int r2, int c2) {
+        assert(r1 <= r2);
+        assert(c1 <= c2);
+        ll k1 = Log2.at(r2 - r1 + 1);
+        ll k2 = Log2.at(c2 - c1 + 1);
+        r2 = r2 - (int) (1 << k1) + 1;
+        c2 = c2 - (int) (1 << k2) + 1;
+        return max({spt[r1][c1][k1][k2], spt[r1][c2][k1][k2], spt[r2][c1][k1][k2], spt[r2][c2][k1][k2]});
+    }
+};
+
 // Generate fixed-size array in compile-time
 template<int N>
 struct FibStruct {
@@ -2844,6 +2920,92 @@ namespace Bitwise {
         return w;
     }
 }
+
+template<typename T>
+struct FenwickTree {
+    int n;
+    T* tree = nullptr;
+    // Increase the value in 'pos' by val
+    void add(int pos, T val) {
+        while (pos <= n) {
+            tree[pos] += val;
+            pos += (pos & (-pos));
+        }
+    }
+    T sum(int r) const {
+        T ans = 0;
+        while (r) {
+            ans += tree[r];
+            r -= (r & (-r));
+        }
+        return ans;
+    }
+    // Index starts from 1
+    T range_sum(int l, int r) const {
+        return sum(r) - sum(l - 1);
+    }
+    explicit FenwickTree(const vector<T> &A) {
+        n = (int)A.size();
+        tree = new T[n + 1]{};
+        for (int i = 1; i <= n; ++i) {
+            add(i, A.at(i - 1));
+        }
+    }
+    explicit FenwickTree(int n) : n(n) {
+        tree = new T[n + 1]{};
+    }
+    ~FenwickTree() {
+        if (tree) {
+            delete[] tree;
+            tree = nullptr;
+        }
+    }
+};
+
+struct SegmentTree {
+    static const int INF = 0x3f3f3f3f;
+    vector<int> st, lz;
+    int n;
+    void build(int p, int l, int r, const vector<int> &A) {
+        if (l == r) { st[p] = A[l]; return; }
+        build(2*p, l, (l+r)/2, A);
+        build(2*p+1, (l+r)/2+1, r, A);
+        st[p] = min(st[2*p], st[2*p+1]); // RMQ -> min/max, RSQ -> +
+    }
+    SegmentTree(vector<int> &A) {
+        n = (int)A.size();
+        st.resize(n << 2);
+        lz.resize(n << 2);
+        // The p is id of the tree, which starts from root = 1
+        build(1, 0, n - 1, A);
+    }
+    void push(int p, int l, int r) {
+        if (lz[p]) {
+            st[p] = lz[p];
+            // RMQ -> add: = lz[p],         increment: += lz[p]
+            // RSQ -> add: = (r-l+1)*lz[p], increment: += (r-l+1)*lz[p]
+            if(l!=r) lz[2*p] = lz[2*p+1] = lz[p]; // add: =, increment +=
+            lz[p] = 0;
+        }
+    }
+    int query(int p, int l, int r, int i, int j) {
+        push(p, l, r);
+        if (r < i or l > j) return INF; // RMQ -> INF, RSQ -> 0
+        if (l >= i and r <= j) return st[p];
+        return min(query(2*p, l, (l+r)/2, i, j),
+                   query(2*p+1, (l+r)/2+1, r, i, j));
+        // RMQ -> min/max, RSQ -> +
+    }
+    void update(int p, int l, int r, int i, int j, int v) {
+        push(p, l, r);
+        if (r < i or l > j) return;
+        if (l >= i and r <= j) { lz[p] = v; push(p, l, r); return; }
+        update(2*p, l, (l+r)/2, i, j, v);
+        update(2*p+1, (l+r)/2+1, r, i, j, v);
+        st[p] = min(st[2*p], st[2*p+1]); // RMQ -> min/max, RSQ -> +
+    }
+};
+
 
 int main() {
 
