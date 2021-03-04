@@ -408,6 +408,134 @@ namespace MaximumSpanningTree {
     }
 }
 
+// Obtain Directed Minimum Spanning Tree using Edmond's algorithm, takes O(mn)
+namespace DMST {
+    constexpr ll INF = 0x3f3f3f3f3f3f;
+    struct Edge {
+        explicit Edge(int u, int v, ll w) : u(u), v(v), w(w) {}
+        Edge() = default;
+        int u, v;
+        ll w;
+    };
+    vector<Edge> edges;
+    vector<int> pre;
+    vector<int> id;
+    vector<int> visit;
+    vector<ll> in;
+
+    void reset() {
+        vector<Edge>().swap(edges);
+        vector<int>().swap(pre);
+        vector<int>().swap(id);
+        vector<int>().swap(visit);
+        vector<ll>().swap(in);
+    }
+
+    // return the sum of MDST, or -INF if there is no MDST
+    ll Edmonds(int root, int number_of_nodes) {
+
+        // init
+        int number_of_edges = (int)edges.size();
+        pre.resize(number_of_nodes + 5);
+        id.resize(number_of_nodes + 5);
+        visit.resize(number_of_nodes + 5);
+        in.resize(number_of_nodes + 5);
+
+        ll result = 0;
+        int u, v, tn;
+        while (true) {
+            for (int i = 0; i < number_of_nodes; ++i) {
+                in.at(i) = INF;
+            }
+            for (int i = 0; i < number_of_edges; ++i) {
+                if (edges.at(i).u != edges.at(i).v &&
+                    edges.at(i).w < in.at(edges.at(i).v)) {
+                    pre.at(edges.at(i).v) = edges.at(i).u;
+                    in.at(edges.at(i).v) = edges.at(i).w;
+                }
+            }
+            for (int i = 0; i < number_of_nodes; ++i) {
+                if (i != root && in.at(i) == INF) {
+                    return -INF;    // No MDST exists
+                }
+            }
+            tn = 0;
+            fill(id.begin(), id.end(), -1);
+            fill(visit.begin(), visit.end(), -1);
+            in.at(root) = 0;
+            for (int i = 0; i < number_of_nodes; ++i) {
+                result += in.at(i);
+                v = i;
+                while (visit.at(v) != i && id.at(v) == -1 && v != root) {
+                    visit.at(v) = i;
+                    v = pre.at(v);
+                }
+                if (v != root && id.at(v) == -1) {
+                    for (u = pre.at(v); u != v; u = pre.at(u)) {
+                        id.at(u) = tn;
+                    }
+                    id.at(v) = tn;
+                    ++tn;
+                }
+            }
+            if (tn == 0) {
+                break;  // No cycles found
+            }
+            for (int i = 0; i < number_of_nodes; ++i) {
+                if (id.at(i) == -1) {
+                    id.at(i) = tn;
+                    ++tn;
+                }
+            }
+            for (int i = 0; i < number_of_edges; ) {
+                v = edges.at(i).v;
+                edges.at(i).u = id.at(edges.at(i).u);
+                edges.at(i).v = id.at(edges.at(i).v);
+                if (edges.at(i).u != edges.at(i).v) {
+                    edges.at(i).w -= in.at(v);
+                    ++i;
+                } else {
+                    swap(edges.at(i), edges.at(--number_of_edges));
+                }
+            }
+            number_of_nodes = tn;
+            root = id.at(root);
+        }
+        return result;
+    }
+    // Usage:
+    int main() {
+        int n, m, r, u, v;
+        ll w;
+        vector<unordered_map<int, ll> > adj;
+        cin >> n >> m >> r;
+        --r;
+        adj.resize(n + 5);
+        for (int i = 0; i < m; ++i) {
+            cin >> u >> v >> w;
+            if (u == v) continue;
+            if (adj.at(u).find(v) == adj.at(u).end()) {
+                adj.at(u)[v] = w;
+            } else {
+                adj.at(u)[v] = min(adj.at(u)[v], w);
+            }
+        }
+        // add edges
+        for (int i = 0; i < n; ++i) {
+            for (const auto &[j, k] : adj.at(i)) {
+                edges.emplace_back(i, j, k);
+            }
+        }
+        ll result = Edmonds(r, n);
+        if (result == -INF) {
+            cout << -1 << endl;
+        } else {
+            cout << result << endl;
+        }
+        return 0;
+    }
+}
+
 // Merge two std::priority_queue efficiently (combine the heap with less nodes to the heap with more nodes)
 template<typename T>
 // O(n)
