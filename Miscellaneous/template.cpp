@@ -3091,7 +3091,9 @@ struct FenwickTree {
 };
 
 struct SegmentTree {
-    static const int INF = 0x3f3f3f3f;
+    // max: INF = numeric_limits<int>::min();
+    // min: INF = numeric_limits<int>::max();
+    static const int INF = numeric_limits<int>::max();
     vector<int> st, lz;
     int n;
     void build(int p, int l, int r, const vector<int> &A) {
@@ -3133,6 +3135,18 @@ struct SegmentTree {
         st[p] = min(st[2*p], st[2*p+1]); // RMQ -> min/max, RSQ -> +
     }
 };
+// Usage:
+/*
+int main() {
+    vector<int> p = {6,1,1,5,6,1,9};
+    SegmentTree st(p);
+    // Update p[1] to p[3] as 120
+    st.update(1, 0, st.n - 1, 1, 3, 120);
+    // Query the minimal value from p[0] to p[4]
+    cout << st.query(1, 0, st.n - 1, 0, 4) << '\n';
+    return 0;
+}
+*/
 
 // An implementation of Fast Fourier Transformation
 namespace FFT {
