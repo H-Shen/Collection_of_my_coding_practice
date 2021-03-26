@@ -3047,6 +3047,16 @@ namespace Bitwise {
         w = (t + 1) | (((~t & -~t) - 1) >> (__builtin_ctz(v) + 1));
         return w;
     }
+
+    // Iterate all set bits in a 'bitset' instance
+    void f() {
+        bitset<10> bs;
+        bs[0] = true;
+        bs[9] = true;
+        bs[5] = true;
+        for (size_t i = bs._Find_first(); i < bs.size(); i = bs._Find_next(i))
+            cout << i << endl;
+    }
 }
 
 template<typename T>

@@ -1,41 +1,25 @@
 class Solution {
 public:
     vector<string> topKFrequent(vector<string>& words, int k) {
-
-        unordered_map <string, int> Freq;
-        for (const auto &p : words) {
-            ++Freq[p];
+        unordered_map<string, int> unmap; 
+        // O(n)
+        for (const auto &i : words) {
+            ++unmap[i];
         }
-
-        struct A
-        {
-            string first;
-            int second{};
-            A()= default;
-            A(string _first, int _second) : first(std::move(_first)), second(_second){}
-            bool operator > (const A &b)
-            {
-                if (second == b.second) {
-                    return (first < b.first);
-                }
-                return (second > b.second);
-            }
+        // O(n)
+        vector<string> uniqueWords(unmap.size());
+        auto iter = uniqueWords.begin();
+        for (const auto &[k, v] : unmap) {
+            *iter = k;
+            ++iter;
+        }
+        auto cmp = [&](const string &l, const string &r){
+            int temp = unmap[l] - unmap[r];
+            if (temp == 0) return l < r;
+            return temp > 0;
         };
-
-        priority_queue < A, vector <A>, greater <> > myQueue;
-        for (const auto & it : Freq) {
-            myQueue.push(A(it.first, it.second));
-            if (static_cast<int>(myQueue.size()) > k) {
-                myQueue.pop();
-            }
-        }
-
-        vector <string> res(static_cast<unsigned long>(k));
-        for (int i = 0; i < k; ++i) {
-            res[i] = myQueue.top().first;
-            myQueue.pop();
-        }
-        reverse(res.begin(), res.end());
-        return res;
+        nth_element(uniqueWords.begin(), uniqueWords.begin() + k - 1, uniqueWords.end(), cmp);  // O(n)
+        sort(uniqueWords.begin(), uniqueWords.begin() + k, cmp); // O(klogk)
+        return vector<string>(uniqueWords.begin(), uniqueWords.begin() + k);  // O(k)
     }
 };
