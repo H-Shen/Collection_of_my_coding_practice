@@ -2951,8 +2951,9 @@ namespace MajorityElement {
 // 4. for other vertices v, in_degree[v] = out_degree[v]
 //
 // We use Hierholzer's algorithm to find the Eulerian Circuit/Path
-// 1. If we confirms G contains an Eulerian Path, then 'startVertex' is one of the vertex with odd degree 
-//    if G is undirected, or out_degree[startVertex] - in_degree[startVertex] = 1 if G is directed.
+// 1. If we confirms G contains an Eulerian Path, then:
+//    if G is undirected, 'startVertex' is one of the vertex with odd degree.
+//    if G is directed, out_degree[startVertex] - in_degree[startVertex] = 1.
 //
 // 2. If we confirms G contains an Eulerian Circuit, then 'startVertex' can be any of vertices.
 //
