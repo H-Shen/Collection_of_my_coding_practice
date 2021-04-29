@@ -1085,6 +1085,41 @@ void next_combination_usage() {
     } while (next_combination(s.begin(), s.begin() + comb_size, s.end()));
 }
 
+// Longest Common Substrings: O(a.size() * b.size())
+unordered_set<string> longestCommonSubstring(const string &a, const string &b) {
+
+    unordered_set<string> result;
+    if (a.empty() || b.empty()) return result;
+    int r = (int)a.size();
+    int n = (int)b.size();
+    vector<vector<int> > dp(r, vector<int>(n));
+    int z = 0;
+
+    for (int i = 0; i < r; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (a.at(i) == b.at(j)) {
+                if (i == 0 || j == 0) {
+                    dp.at(i).at(j) = 1;
+                } else {
+                    dp.at(i).at(j) = dp.at(i-1).at(j-1)+1;
+                }
+                if (dp.at(i).at(j) > z) {
+                    z = dp.at(i).at(j);
+                    result.clear();
+                    result.insert(a.substr(i-z+1,z));
+                }
+                else if (dp.at(i).at(j) == z) {
+                    result.insert(a.substr(i-z+1,z));
+                }
+            }
+            else {
+                dp.at(i).at(j) = 0;
+            }
+        }
+    }
+    return result;
+}
+
 // Longest Common Subsequence: O(A.size()*B.size())
 // assert( LCS("abcde", "bcef") == 3 );
 auto LCS = [](const auto &A, const auto &B) {
