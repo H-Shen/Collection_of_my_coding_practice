@@ -1620,49 +1620,44 @@ void test_for_toposort() {
 namespace Toposort_Dfs {
     // adjacency list of the graph
     unordered_map<int, unordered_set<int, custom_hash>, custom_hash> G;
-    vector<bool> vis;
+    vector<int> vis;
     vector<int> result;
 
     inline
-    void dfs(int u) {
-        vis.at(u) = true;
+    bool dfs(int u) {
+        vis[u] = -1;
         for (const auto &v : G[u]) {
-            if (!vis.at(v)) {
-                dfs(v);
+            if (vis[v] < 0) {
+                return false;
+            }
+            else if (vis[v] == 0) {
+                if (!dfs[v]) {
+                    return false;
+                }
             }
         }
+        vis[u] = 1;
         result.emplace_back(u);
+        return true;
     }
 
     inline
-    bool init(int number_of_nodes) {
+    bool toposort(int number_of_nodes) {
         // reset
-        vector<bool>().swap(vis);
+        vector<int>().swap(vis);
         vector<int>().swap(result);
-        vis.resize(number_of_nodes, false);
+        vis.resize(number_of_nodes);
         // start DFS from 0
         for (int i = 0; i < number_of_nodes; ++i) {
-            if (!vis.at(i)) {
-                dfs(i);
+            if (vis[i] == 0) {
+                if (!dfs(i)) {
+                    return false;
+                }
             }
         }
         reverse(result.begin(), result.end());
-        return (static_cast<int>(result.size()) == number_of_nodes);
+        return true;
     }
-}
-
-void construct_the_graph_() {
-    Toposort_Dfs::G[5].insert(2);
-    Toposort_Dfs::G[5].insert(0);
-    Toposort_Dfs::G[4].insert(0);
-    Toposort_Dfs::G[4].insert(1);
-    Toposort_Dfs::G[2].insert(3);
-    Toposort_Dfs::G[3].insert(1);
-}
-
-void test_for_toposort_by_dfs() {
-    construct_the_graph_();
-    assert(Toposort_Dfs::init(6));
 }
 
 // The implementation of Dijkstra using adjacency list (based on the index)
