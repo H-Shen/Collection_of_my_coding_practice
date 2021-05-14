@@ -2468,42 +2468,49 @@ namespace LCA0 {
 namespace LCA1 {
     int n, l;
     vector<vector<int>> adj;
-    int timer;
-    vector<int> tin, tout;
-    vector<vector<int>> up;
-    void dfs(int v, int p) {
-        tin[v] = ++timer;
-        up[v][0] = p;
-        for (int i = 1; i <= l; ++i)
-            up[v][i] = up[up[v][i-1]][i-1];
-
-        for (int u : adj[v]) {
-            if (u != p)
-                dfs(u, v);
+    int timer;  // dfs序计数器
+    vector<int> dfs_in, dfs_out;
+    vector<vector<int>> fa; //fa[x][y] = 节点x的第2^y个祖先
+    void dfs(int u, int father_of_u) {
+        dfs_in[u] = ++timer;
+        fa[u][0] = father_of_u;
+        for (int i = 1; i <= l; ++i) {
+            fa[u][i] = fa[fa[u][i - 1]][i - 1];
         }
-        tout[v] = ++timer;
+        for (const auto &v : adj[u]) {
+            if (v != father_of_u) {
+                dfs(v, u);
+            }
+        }
+        dfs_out[u] = ++timer;
     }
-    bool is_ancestor(int u, int v) {
-        return tin[u] <= tin[v] && tout[u] >= tout[v];
+    // 根据dfs出入序 可以确定u是否是v的祖先
+    bool is_ancestor_of(int u, int v) {
+        return dfs_in[u] <= dfs_in[v] && dfs_out[v] <= dfs_out[u];
     }
     int lca(int u, int v) {
-        if (is_ancestor(u, v)) return u;
-        if (is_ancestor(v, u)) return v;
-        for (int i = l; i >= 0; --i) {
-            if (!is_ancestor(up[u][i], v))
-                u = up[u][i];
+        if (is_ancestor_of(u, v)) {
+            return u;
         }
-        return up[u][0];
+        if (is_ancestor_of(v, u)) {
+            return v;
+        }
+        for (int i = l; i >= 0; --i) {
+            if (!is_ancestor_of(fa[u][i], v)) {
+                u = fa[u][i];
+            }
+        }
+        return fa[u][0];
     }
     // Assume node id starts from 0
     void preprocess(int number_of_nodes) {
         n = number_of_nodes;
-        tin.resize(n);
-        tout.resize(n);
+        dfs_in.resize(n);
+        dfs_out.resize(n);
         adj.resize(n);
         timer = 0;
         l = ceil(log2(n));
-        up.resize(n, vector<int>(l + 1));
+        fa.resize(n, vector<int>(l + 1));
     }
     void init(int root) { dfs(root, root); }
 }
