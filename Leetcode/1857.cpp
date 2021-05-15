@@ -5,8 +5,7 @@ vector<int> inDegree;
 int n;
 
 namespace Toposort {
-    vector<int> result;
-    vector<int> inDegreeCopy;
+    vector<int> result, inDegreeCopy;
     bool kahn() {
         vector<int>().swap(result);
         inDegreeCopy = inDegree;
@@ -30,13 +29,12 @@ namespace Toposort {
         return ((int)result.size() == n);
     }
 }
-
 class Solution {
 public:
     Solution() { ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); }
     int counter = 0;
     string str;
-    vector<vector<int> > dp;    // dp[i][j] 以i为起始点时颜色j最多的数量
+    vector<vector<int> > dp;
     int solve(int u, char color) {
         // Base case 1:
         if (dp[u][color - 'a'] != -1) {
@@ -68,7 +66,7 @@ public:
         decltype(AL)().swap(AL);
         decltype(inDegree)().swap(inDegree);
         decltype(dp)().swap(dp);
-        set<char> uniqueColors(colors.begin(), colors.end());
+        unordered_set<char> uniqueColors(colors.begin(), colors.end());
         counter = 0;
         n = (int)colors.size();
         str = colors;
