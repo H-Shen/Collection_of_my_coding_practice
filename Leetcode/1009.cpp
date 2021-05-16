@@ -2,7 +2,7 @@ constexpr int MAXN = 32;
 
 class Solution {
 public:
-    int findComplement(int num) {
+    int bitwiseComplement(int num) {
         bitset<MAXN> A(num);
         auto s = A.flip().to_string();
         deque<char> tempDeque (s.begin(), s.end());
