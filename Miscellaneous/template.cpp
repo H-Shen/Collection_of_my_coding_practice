@@ -2355,6 +2355,126 @@ for w in women:
 return true
 **/
 
+// Min Cost Max Flow, takes O(n^2m^2)
+namespace MCMF {
+    using edge = tuple<int, ll, ll, ll>;
+    constexpr ll INF = 1e18;
+    int n;
+    ll totalCost;
+    vector<edge> EL;
+    vector<vector<int> > AL;
+    vector<ll> d;
+    vector<int> last;
+    vector<bool> vis;
+
+    void reset() {
+        n = 0;
+        totalCost = 0;
+        decltype(EL)().swap(EL);
+        decltype(AL)().swap(AL);
+        decltype(d)().swap(d);
+        decltype(last)().swap(last);
+        decltype(vis)().swap(vis);
+    }
+
+    void init(int n_) {
+        reset();
+        n = n_;
+        d.resize(n);
+        vis.resize(n);
+        AL.resize(n);
+        last.resize(n);
+    }
+
+    // SPFA to find if there is an augmenting path
+    // in residual graph
+    bool spfa(int s, int t) {
+        fill(d.begin(), d.end(), INF);
+        d[s] = 0;
+        vis[s] = true;
+        queue<int> q;
+        q.push(s);
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            vis[u] = false;
+            for (const auto &idx : AL[u]) {
+                auto &[v, cap, flow, cost] = EL[idx];
+                if (cap > flow && d[v] > d[u] + cost) {
+                    d[v] = d[u] + cost;
+                    if (!vis[v]) {
+                        q.push(v);
+                        vis[v] = true;
+                    }
+                }
+            }
+        }
+        return d[t] != INF;
+    }
+
+    ll dfs(int u, int t, ll f = INF) {
+        if (u == t || f == 0) {
+            return f;
+        }
+        vis[u] = true;
+        for (int &i = last[u]; i < (int) AL[u].size(); ++i) {
+            auto &[v, cap, flow, cost] = EL[AL[u][i]];
+            if (!vis[v] && d[v] == d[u] + cost) {
+                if (ll pushed = dfs(v, t, min(f, cap - flow))) {
+                    totalCost += pushed * cost;
+                    flow += pushed;
+                    auto &[rv, rcap, rflow, rcost]
+                    = EL[AL[u][i] ^ 1];    // back edge
+                    rflow -= pushed;
+                    vis[u] = false;
+                    return pushed;
+                }
+            }
+        }
+        vis[u] = false;
+        return 0;
+    }
+
+    void addEdge(int u, int v, ll w, ll c,
+                 bool directed = true) {
+        if (u == v) {
+            return;
+        }
+        EL.emplace_back(v, w, 0, c);
+        AL[u].emplace_back((int) EL.size() - 1);
+        EL.emplace_back(u, directed ? 0 : w, 0, -c);
+        AL[v].emplace_back((int) EL.size() - 1);
+    }
+
+    pair<ll, ll> mcmf(int s, int t) {
+        ll mf = 0;
+        while (spfa(s, t)) {
+            fill(last.begin(), last.end(), 0);
+            while (ll f = dfs(s, t)) {
+                mf += f;
+            }
+        }
+        return {mf, totalCost};
+    }
+
+    // Usage: for a directed graph
+    int main() {
+        int n, m, s, t;
+        cin >> n >> m >> s >> t;
+        MCMF::init(n);
+        int u, v;
+        ll capacity, cost;
+        while (m--) {
+            cin >> u >> v >> capacity >> cost;
+            MCMF::addEdge(u, v, capacity, cost);
+        }
+        auto ans = MCMF::mcmf(s, t);
+        cout << ans.first << '\n';
+        cout << ans.second << '\n';
+        return 0;
+    }
+}
+
 // Lucas's theorem
 namespace Lucas {
     vector<ll> fac;
