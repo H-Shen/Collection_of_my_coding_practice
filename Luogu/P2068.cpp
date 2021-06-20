@@ -1,3 +1,8 @@
+#include <bits/extc++.h>
+
+using namespace std;
+using ll = long long;
+
 template<typename T>
 struct BIT {
     vector<T> t1, t2;
@@ -38,20 +43,27 @@ struct BIT {
     }
 };
 
-using ll = long long;
+void fast_io() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+}
+int main() {
 
-class Solution {
-public:
-    Solution() { ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); }
-    vector<int> corpFlightBookings(vector<vector<int>>& bookings, int n) {
-        BIT<ll> t(n+5);
-        vector<int> ans(n);
-        for (const auto &i : bookings) {
-            t.rupd(i[0],i[1],i[2]);
+    fast_io();
+    int n, w;
+    cin >> n >> w;
+    int a, b;
+    string op;
+    BIT<ll> bit(n);
+    while (w--) {
+        cin >> op >> a >> b;
+        if (op == "x") {
+            bit.rupd(a,a,b);
         }
-        for (int i = 0; i < n; ++i) {
-            ans[i] = t.rsum(i+1,i+1);
+        else {
+            cout << bit.rsum(a,b) << '\n';
         }
-        return ans;
     }
-};
+    return 0;
+}

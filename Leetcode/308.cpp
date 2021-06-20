@@ -1,67 +1,76 @@
 using ll = long long;
 
-template<ll N, ll D = 1>
-class FenwickTree {
-    vector<ll> tree;
-    ll isum(ll ps) { return tree[ps]; }
-    template<class... T>
-    ll isum(ll ps, ll n, T... tail) {
-        ll a = 0;
-        while (n) {
-            a += isum(ps * N + n, tail...);
-            n -= (n & -n);
-        }
-        return a;
+template<typename T>
+struct BIT_2D {
+    vector<vector<T> > t;
+    T lowbit(T i) {
+        return i & (-i);
     }
-    void iupd(ll u, ll ps) { tree[ps] += u; }
-    template<class... T>
-    void iupd(ll u, ll ps, ll n, T... tail) {
-        while (n < N) {
-            iupd(u, ps * N + n, tail...);
-            n += (n & -n);
+    int N, M;
+    // index starts from 1
+    BIT_2D() = default;
+    BIT_2D(int n, int m) : N(n), M(m) {
+        t.resize(N+1, vector<T>(M+1));
+    }
+    // add 'val'
+    void upd(int x, int y, T val) {
+        for (int i = x; i <= N; i += lowbit(i)) {
+            for (int j = y; j <= M; j += lowbit(j)) {
+                t[i][j] += val;
+            }
         }
     }
-public:
-    FenwickTree() : tree(pow(N, D)) {}
-    template<class... T>
-    ll sum(T... v) { return isum(0, v...); }
-    template<class... T>
-    void upd(ll u, T... v) { iupd(u, 0, v...); }
+    void rupd(int x1, int y1, int x2, int y2, T val) {
+        upd(x1, y1, val);
+        upd(x1, y2+1, -val);
+        upd(x2, y1+1, -val);
+        upd(x2+1, y2+1, val);
+    }
+    // rangesum from [1][1] to [x][y]
+    T sum(int x, int y) {
+        T ans(0);
+        for (int i = x; i > 0; i -= lowbit(i)) {
+            for (int j = y; j > 0; j -= lowbit(j)) {
+                ans += t[i][j];
+            }
+        }
+        return ans;
+    }
+    T rsum(int x1, int y1, int x2, int y2) {
+        return sum(x2,y2)-sum(x2,y1-1)-sum(x1-1,y2)+sum(x1-1,y1-1);
+    }
 };
-
-constexpr int MAXN = 305;
-constexpr int DIMENSION = 2;
 
 class NumMatrix {
 private:
-    FenwickTree<MAXN, DIMENSION> Tree;
-    vector<vector<ll> > matrix;
+    vector<vector<int> > mat;
+    BIT_2D<int> bit2d;
 public:
-    NumMatrix(vector<vector<int>>& matrix_) {
-        int n = (int)matrix_.size();
-        int m = (int)matrix_.front().size();
-        matrix.resize(n, vector<ll>(m));
+    NumMatrix(vector<vector<int>>& matrix) {
+        int n = (int)matrix.size();
+        int m = (int)matrix[0].size();
+        mat = matrix;
+        bit2d.N = n;
+        bit2d.M = m;
+        bit2d.t.resize(n+1);
+        for (auto &i : bit2d.t) {
+            i.resize(m+1);
+        }
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < m; ++j) {
-                matrix[i][j] = matrix_[i][j];
-                Tree.upd<ll>(matrix[i][j], i+1, j+1);
+                bit2d.upd(i+1,j+1,mat[i][j]);
             }
         }
     }
     
     void update(int row, int col, int val) {
-        ll original = matrix[row][col];
-        ll diff = val - original;
-        matrix[row][col] = val;
-        Tree.upd<ll>(diff, row+1, col+1);
+        int diff = val - mat[row][col];
+        bit2d.upd(row+1,col+1,diff);
+        mat[row][col] = val;
     }
     
     int sumRegion(int row1, int col1, int row2, int col2) {
-        ++row1; ++col1; ++row2; ++col2;
-        if (row1 == 1 && col1 == 1) { return (int)Tree.sum<ll>(row2,col2); }
-        else if (row1 == 1 && col1 != 1) { return (int)(Tree.sum<ll>(row2,col2)-Tree.sum<ll>(row2,col1-1));}
-        else if (row1 != 1 && col1 == 1) { return (int)(Tree.sum<ll>(row2,col2)-Tree.sum<ll>(row1-1,col2));}
-        return (int)(Tree.sum<ll>(row2,col2)-Tree.sum<ll>(row2,col1-1)-Tree.sum<ll>(row1-1,col2)+Tree.sum<ll>(row1-1,col1-1));
+        return bit2d.rsum(row1+1,col1+1,row2+1,col2+1);
     }
 };
 

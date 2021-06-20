@@ -3287,39 +3287,85 @@ namespace Bitwise {
 }
 
 // 1D BIT
+template<typename T>
 struct BIT {
-    using ll = long long;
-    vector<ll> t1, t2;
+    vector<T> t1, t2;
     int N;
-    BIT(int n) : N(n) {
+    int lowbit(int i) {
+        return i & (-i);
+    }
+    // index starts from 1
+    BIT(int n) : N(n+1) {
         t1.resize(N);
         t2.resize(N);
     }
-    ll sum(const vector<ll> &t, int n) {
-        ll a(0);
+    T sum(const vector<T> &t, int n) {
+        T a(0);
         while (n) {
             a += t[n];
-            n -= (n & (-n));
+            n -= lowbit(n);
         }
         return a;
     }
-    ll rsum(int n) {
+    T rsum(int n) {
         return sum(t1,n)*n-sum(t2,n);
     }
-    ll rsum(int l, int r) {
+    T rsum(int l, int r) {
         return rsum(r)-rsum(l-1);
     }
-    void upd(vector<ll> &t, int n, ll v) {
+    void upd(vector<T> &t, int n, T val) {
         while (n < N) {
-            t[n] += v;
-            n += (n & (-n));
+            t[n] += val;
+            n += lowbit(n);
         }
     }
-    void rupd(int l, int r, ll v) {
-        upd(t1,l,v);
-        upd(t1,r+1,-v);
-        upd(t2,l,v*(l-1));
-        upd(t2,r+1,-v*r);
+    void rupd(int l, int r, T val) {
+        upd(t1,l,val);
+        upd(t1,r+1,-val);
+        upd(t2,l,val*(l-1));
+        upd(t2,r+1,-val*r);
+    }
+};
+
+// 2D BIT
+template<typename T>
+struct BIT_2D {
+    vector<vector<T> > t;
+    T lowbit(T i) {
+        return i & (-i);
+    }
+    int N, M;
+    // index starts from 1
+    BIT_2D() = default;
+    BIT_2D(int n, int m) : N(n), M(m) {
+        t.resize(N+1, vector<T>(M+1));
+    }
+    // add 'val'
+    void upd(int x, int y, T val) {
+        for (int i = x; i <= N; i += lowbit(i)) {
+            for (int j = y; j <= M; j += lowbit(j)) {
+                t[i][j] += val;
+            }
+        }
+    }
+    void rupd(int x1, int y1, int x2, int y2, T val) {
+        upd(x1, y1, val);
+        upd(x1, y2+1, -val);
+        upd(x2, y1+1, -val);
+        upd(x2+1, y2+1, val);
+    }
+    // rangesum from [1][1] to [x][y]
+    T sum(int x, int y) {
+        T ans(0);
+        for (int i = x; i > 0; i -= lowbit(i)) {
+            for (int j = y; j > 0; j -= lowbit(j)) {
+                ans += t[i][j];
+            }
+        }
+        return ans;
+    }
+    T rsum(int x1, int y1, int x2, int y2) {
+        return sum(x2,y2)-sum(x2,y1-1)-sum(x1-1,y2)+sum(x1-1,y1-1);
     }
 };
 
