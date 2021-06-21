@@ -3519,6 +3519,88 @@ void* operator new(size_t s) {
 void operator delete(void*) {}
 #endif
 
+// get string_view from a substring
+string_view subStringView(
+  string_view s, 
+  size_t p, 
+  size_t n = string_view::npos) {
+  return s.substr(p, n);
+}
+// usage:
+// string s = "abcd"; int i = 0, j = 2;
+// string_view sv = subStringView(s, i, j-i+1);
+
+/**
+ * An implementation to use Zeller's congruence calculate the day of the week for any Julian or Gregorian calendar date
+ * if the date is given. The function will not check if the given date is valid.
+ */
+string zellerCongruence(int year, int month, int day) {
+    string result;
+    bool flag = false;
+    if (year <= 1581 || (year == 1582 && month <= 9) || (year == 1582 && month == 10 && month <= 4))
+        flag = true;
+
+    if (month == 1 || month == 2) {
+        --year;
+        month += 12;
+    }
+    int c = year / 100;
+    int y = year - c * 100;
+    int week = 0;
+
+    if (!flag) {
+        week = c / 4 - 2 * c + y + y / 4 + 13 * (month + 1) / 5 + day - 1;
+        while (week < 0)
+            week += 7;
+        week %= 7;
+    } else {
+        week = y + y / 4 + c / 4 - 2 * c + 13 * (month + 1) / 5 + day + 2;
+        while (week < 0)
+            week += 7;
+        week %= 7;
+    }
+
+    switch (week) {
+        case 1:
+            // printf("Monday\n");
+            result = "Monday";
+            break;
+        case 2:
+            // printf("Tuesday\n");
+            result = "Tuesday";
+            break;
+        case 3:
+            // printf("Wednesday\n");
+            result = "Wednesday";
+            break;
+        case 4:
+            // printf("Thursday\n");
+            result = "Thursday";
+            break;
+        case 5:
+            // printf("Friday\n");
+            result = "Friday";
+            break;
+        case 6:
+            // printf("Saturday\n");
+            result = "Saturday";
+            break;
+        default:
+            // printf("Sunday\n");
+            result = "Sunday";
+            break;
+    }
+    return result;
+}
+
+void zellerCongruenceTest() {
+    assert(ZellerCongruence(2019, 8, 16) == "Friday");
+    assert(ZellerCongruence(2019, 8, 17) == "Saturday");
+    assert(ZellerCongruence(2019, 8, 15) == "Thursday");
+    assert(ZellerCongruence(2019, 8, 14) != "Thursday");
+    return 0;
+}
+
 int main() {
 
     //freopen("in", "r", stdin);
