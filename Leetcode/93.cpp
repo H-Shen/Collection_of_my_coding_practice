@@ -3,8 +3,6 @@ public:
     vector<string> ans;
     bool check(const vector<string> &s) {
         for (const auto &i : s) {
-            if (i.size() > 1 && i.front() == '0') return false;
-            if (i.size() > 3) return false;
             int temp = stoi(i);
             if (temp > 255) return false;
         }
@@ -31,6 +29,8 @@ public:
         string substring;
         for (int index = i; index < n; ++index) {
             substring.push_back(s[index]);
+            if (substring.size() > 1 && substring.front() == '0') break;
+            if (substring.size() > 3) break;
             vec.emplace_back(substring);
             dfs(vec,s,index+1,n);
             vec.pop_back();
@@ -44,6 +44,8 @@ public:
         vector<string> vec;
         for (int i = 0; i < n; ++i) {
             substring.push_back(s[i]);
+            if (substring.size() > 1 && substring.front() == '0') break;
+            if (substring.size() > 3) break;
             vec.emplace_back(substring);
             dfs(vec,s,i+1,n);
             vec.pop_back();
