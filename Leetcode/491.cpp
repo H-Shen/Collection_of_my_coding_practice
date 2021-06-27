@@ -1,4 +1,5 @@
 constexpr int MAXN = 15+1;
+constexpr int INF = -105;
 
 struct myHashFunc {
     size_t operator () (const vector<int> &v) const {
@@ -21,11 +22,11 @@ public:
         int counter;
         for (int i = 0; i < total; ++i) {
             haveAns = true;
-            int lastOne = -105;
+            int lastOne = INF;
             counter = 0;
             for (int j = 0; j < n; ++j) {
                 if (bs[j]) {
-                    if (lastOne == -105) {
+                    if (lastOne == INF) {
                         lastOne = nums[j];
                         ++counter;
                         continue;
