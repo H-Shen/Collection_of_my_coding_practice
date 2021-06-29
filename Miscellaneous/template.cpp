@@ -3262,6 +3262,20 @@ namespace Bitwise {
             cout << bitset<5>(ss).to_string() << '\n';
         }
     }
+
+    // Loop through all subsets with size r in N
+    constexpr int N = 10;
+    void loop_through_subsets_with_size_r(int r) {
+        for (int s = (1<<r)-1; s<1<<N;) {
+            // output
+            cout << (bitset<N>)s << '\n';
+            // update
+            int x = s&(-s);
+            int y = s+x;
+            s = ((s&(~y))/x>>1)|y;
+        }
+    }
+
     // Compute the lexicographically next bit permutation
     // 0b10001 --> 0b10010
     // 0b00000 --> 0b11111 (32bits)
