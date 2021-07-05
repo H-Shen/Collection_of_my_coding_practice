@@ -984,6 +984,7 @@ namespace APSP_Johnson {
 }
 
 // An example that does graph traversal with BFS from 's'
+// Suppose the weight of each edge is the same.
 namespace BFS_Example {
     constexpr int INF = 0x3f3f3f3f;
     constexpr int WEIGHT = 1;
@@ -1121,8 +1122,8 @@ unordered_set<string> longestCommonSubstring(const string &a, const string &b) {
 }
 
 // Longest Common Subsequence: O(A.size()*B.size())
-// assert( LCS("abcde", "bcef") == 3 );
-auto LCS = [](const auto &A, const auto &B) {
+// assert( longestCommonSubseq("abcde", "bcef") == 3 );
+auto longestCommonSubseq = [](const auto &A, const auto &B) {
 
     int len_A = static_cast<int>(A.size());
     int len_B = static_cast<int>(B.size());
@@ -3606,7 +3607,6 @@ string zellerCongruence(int year, int month, int day) {
     }
     return result;
 }
-
 void zellerCongruenceTest() {
     assert(ZellerCongruence(2019, 8, 16) == "Friday");
     assert(ZellerCongruence(2019, 8, 17) == "Saturday");
