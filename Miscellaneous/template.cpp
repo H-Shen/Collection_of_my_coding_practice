@@ -3384,6 +3384,8 @@ struct BIT_2D {
     }
 };
 
+// RMQ: Range Max/Min Query
+// RSQ: Range Sum Query
 struct SegmentTree {
     // max: INF = numeric_limits<int>::min();
     // min: INF = numeric_limits<int>::max();
@@ -3434,7 +3436,7 @@ struct SegmentTree {
 int main() {
     vector<int> p = {6,1,1,5,6,1,9};
     SegmentTree st(p);
-    // Update p[1] to p[3] as 120
+    // Range-update from p[1] to p[3] to 120
     st.update(1, 0, st.n - 1, 1, 3, 120);
     // Query the minimal value from p[0] to p[4]
     cout << st.query(1, 0, st.n - 1, 0, 4) << '\n';
