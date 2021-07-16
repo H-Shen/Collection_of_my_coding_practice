@@ -3002,6 +3002,74 @@ namespace CutVertexAndBridges {
     }
 }
 
+// How to obtain edges biconnected Components (eBCC) in an undirected graph G
+// 1. Identify all bridges in an undirected graph G
+// 2. Remove all bridges in G, we have G'
+// 3. Use DSU to get CCs in G'
+// 4. Each CC in G' is an eBCC
+
+// obtain vertice-biconnected components
+// Notice: dont add self-loops in 'adj'
+namespace vBCC {
+    int n, bccCnt, dfnCnt;
+    vector<vector<int> > adj, bcc;
+    vector<int> dfn, low;
+    stack<int> sta;
+    void init(int number_of_nodes) {
+        n = number_of_nodes;
+        dfn.resize(n+5);
+        low.resize(n+5);
+        bcc.resize(n+5);
+    }
+    void Tarjan(int u, int fa) {
+        ++dfnCnt;
+        dfn[u] = dfnCnt;
+        low[u] = dfnCnt;
+        sta.push(u);
+        if (adj[u].empty()) {
+            bcc[++bccCnt].emplace_back(u);
+            return;
+        }
+        int temp;
+        for (const auto &v : adj[u]) {
+            if (v == fa) continue;
+            if (!dfn[v]) {
+                Tarjan(v,u);
+                low[u] = min(low[u],low[v]);
+                if (low[v] >= dfn[u]) {
+                    ++bccCnt;
+                    do {
+                        temp = sta.top();
+                        sta.pop();
+                        bcc[bccCnt].emplace_back(temp);
+                    } while (temp != v);
+                    bcc[bccCnt].emplace_back(u);
+                }
+            }
+            else {
+                low[u] = min(low[u], dfn[v]);
+            }
+        }
+    }
+    // node id starts from 1
+    void run() {
+        for (int i = 1; i <= n; ++i) {
+            if (!dfn[i]) {
+                Tarjan(i, -1);
+            }
+        }
+    }
+    // print all vbccs
+    void print() {
+        for (int i = 1; i <= bccCnt; ++i) {
+            for (const int &j : bcc[i]) {
+                cout << j << ' ';
+            }
+            cout << '\n';
+        }
+    }
+}
+
 namespace PrefixSum2D {
     vector<vector<ll> > pre;
     int n, m;
