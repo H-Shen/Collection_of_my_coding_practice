@@ -3685,6 +3685,104 @@ void zellerCongruenceTest() {
     return 0;
 }
 
+// Maxflow
+// Dinic: O(V^2*E)
+// Edmonds Karp: O(V*E^2)
+struct Maxflow {
+    static constexpr ll INF = 4e18;
+    using edge = tuple<int, ll, ll>;
+    int n;
+    vector<edge> el;
+    vector<vector<int> > adj;
+    vector<int> d, last;
+    vector<pair<int, int> > p;
+    bool bfs(int s, int t) {                       // find augmenting path
+        d.assign(n, -1); d[s] = 0;
+        queue<int> q({s});
+        p.assign(n, {-1, -1});                       // record bfs sp tree
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            if (u == t) break;                         // stop as sink t reached
+            for (auto &idx : adj[u]) {                  // explore neighbors of u
+                auto &[v, cap, flow] = el[idx];          // stored in el[idx]
+                if ((cap-flow > 0) && (d[v] == -1))      // positive residual edge
+                    d[v] = d[u]+1, q.push(v), p[v] = {u, idx}; // 3 lines in one!
+            }
+        }
+        return d[t] != -1;                           // has an augmenting path
+    }
+
+    ll send_one_flow(int s, int t, ll f = INF) {   // send one flow from s->t
+        if (s == t) return f;                        // bottleneck edge f found
+        auto &[u, idx] = p[t];
+        auto &cap = get<1>(el[idx]), &flow = get<2>(el[idx]);
+        ll pushed = send_one_flow(s, u, min(f, cap-flow));
+        flow += pushed;
+        auto &rflow = get<2>(el[idx ^ 1]);             // back edge
+        rflow -= pushed;                             // back flow
+        return pushed;
+    }
+
+    ll dfs(int u, int t, ll f = INF) {             // traverse from s->t
+        if ((u == t) || (f == 0)) return f;
+        for (int &i = last[u]; i < (int)adj[u].size(); ++i) { // from last edge
+            auto &[v, cap, flow] = el[adj[u][i]];
+            if (d[v] != d[u]+1) continue;              // not part of layer graph
+            if (ll pushed = dfs(v, t, min(f, cap - flow))) {
+                flow += pushed;
+                auto &rflow = get<2>(el[adj[u][i] ^ 1]);     // back edge
+                rflow -= pushed;
+                return pushed;
+            }
+        }
+        return 0;
+    }
+
+// interfaces
+    Maxflow() = default;
+    Maxflow(int number_of_nodes) : n(number_of_nodes) {
+        adj.resize(n);
+    }
+    // if you are adding a bidirectional edge u<->v with weight w into your
+    // flow graph, set directed = false (default value is directed = true)
+    void add_edge(int u, int v, ll w, bool directed = true) {
+        if (u == v) return;                          // safeguard: no self loop
+        el.emplace_back(v, w, 0);                    // u->v, cap w, flow 0
+        adj[u].push_back(el.size() - 1);                // remember this index
+        el.emplace_back(u, directed ? 0 : w, 0);     // back edge
+        adj[v].push_back(el.size() - 1);                // remember this index
+    }
+    ll edmonds_karp(int s, int t) {
+        ll mf = 0;                                   // mf stands for max_flow
+        while (bfs(s, t)) {                          // an O(V*E^2) algorithm
+            ll f = send_one_flow(s, t);              // find and send 1 flow f
+            if (f == 0) break;                       // if f == 0 stop
+            mf += f;                                 // if f > 0, add to mf
+        }
+        return mf;
+    }
+    ll dinic(int s, int t) {
+        ll mf = 0;                                   // mf stands for max_flow
+        while (bfs(s, t)) {                          // an O(V^2*E) algorithm
+            last.assign(n, 0);                         // important speedup
+            while (ll f = dfs(s, t))                   // exhaust blocking flow
+                mf += f;
+        }
+        return mf;
+    }
+};
+
+// 如何将无权二分图最大匹配转换为最大流问题? 复杂度O(E*sqrt(V))
+// Example: https://www.luogu.com.cn/problem/B3605
+// 假设左侧有n个点 右侧有m个点
+// 1. 将左侧点重新编号1到n
+// 2. 将右侧点重新编号n+1到n+m
+// 3. 构造虚假源点0和虚假汇点n+m+1
+// 4. 源点到点1到n连一条容量为1的边
+// 5. 点n+1到n+m连一条容量为1的边到汇点
+// 6. 原来的每条从左往右的边容量也为1
+// 7. 跑Dinic求最大流 即为最大匹配数
+
 int main() {
 
     //freopen("in", "r", stdin);
