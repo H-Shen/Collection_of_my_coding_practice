@@ -18,7 +18,6 @@ using pll = pair<ll, ll>;
 using int128 = __int128_t;
 using uint128 = __uint128_t;
 
-inline
 string print_int128(int128 a) {
     if (!a) {
         return "0";
@@ -34,7 +33,6 @@ string print_int128(int128 a) {
     return s;
 }
 
-inline
 int128 stoint128(const string &s) {
     int128 a = 0, sgn = 1;
     for (const char &ch : s) {
@@ -63,7 +61,6 @@ auto fast_io = []() {
 
 namespace IO {
     template<typename T>
-    inline
     bool can_read(T &t) {
         int n = 0;
         int ch = getchar_unlocked();
@@ -81,12 +78,10 @@ namespace IO {
         return true;
     }
     template<typename T, typename... Args>
-    inline
     bool can_read(T &t, Args &... args) {
         return can_read(t) && can_read(args...);
     }
     template<typename T>
-    inline
     void read(T &t) {
         int n = 0;
         int c = getchar_unlocked();
@@ -96,19 +91,18 @@ namespace IO {
         if (n) t = -t;
     }
     template<typename T, typename... Args>
-    inline
     void read(T &t, Args &... args) {
         read(t);
         read(args...);
     }
     template<typename T>
-    inline void write(T x) {
+    void write(T x) {
         if (x < 0) x = -x, putchar_unlocked('-');
         if (x > 9) write(x / 10);
         putchar_unlocked(x % 10 + 48);
     }
     template<typename T>
-    inline void writeln(T x) {
+    void writeln(T x) {
         write(x);
         putchar_unlocked('\n');
     }
@@ -126,7 +120,6 @@ namespace DSU {
     int number_of_sets;      // the number of disjoint sets
 
     // iniitalization
-    inline
     void init(int n) {
         // reset
         vector<int>().swap(father);
@@ -139,7 +132,6 @@ namespace DSU {
     }
 
     // find the ancestor of i with path compression
-    inline
     int find(int x) {
         if (x != father[x]) {
             father[x] = find(father[x]);
@@ -148,7 +140,6 @@ namespace DSU {
     }
 
     // merge x and y
-    inline
     void merge(int x, int y) {
         x = find(x);
         y = find(y);
@@ -165,19 +156,16 @@ namespace DSU {
     }
 
     // check if x and y are in the same set
-    inline
     bool is_same_group(int i, int j) {
         return find(i) == find(j);
     }
 
     // check the size of set where 'x' is
-    inline
     int check_set_size(int x) {
         return Size[find(x)];
     }
 
     // check the number of disjoint sets
-    inline
     int number_of_disjoint_sets() {
         return number_of_sets;
     }
@@ -392,7 +380,6 @@ namespace MaximumSpanningTree {
         explicit Edge(int u, int v, int w) : u(u), v(v), w(w), neg_w(-w) {}
         Edge() = default;
     };
-    inline
     vector<Edge> kruskal(vector<Edge> &E) {
         sort(E.begin(), E.end(), [](const Edge &l, const Edge &r) {
             return (l.neg_w < r.neg_w);
@@ -626,7 +613,7 @@ namespace APSP_Floyd_Warshall {
 }
 
 // An implementation of Floyd Warshall Algorithm to obtain the transitive closure of a directed-graph in O(N^3)
-inline vector<vector<bool> >
+vector<vector<bool> >
 floyd_warshall(int n, const vector<vector<bool> > &adjacency_matrix) {
     vector<vector<bool> > reach(n, vector<bool>(n));
     for (int i = 0; i < n; ++i) {
@@ -727,20 +714,17 @@ namespace MinimumWeightCycleDirectedGraph {
     int number_of_nodes;
     bitset<MAXN> vis;
 
-    inline void
-    init(int n) {
+    void init(int n) {
         number_of_nodes = n;
         // initialize the containers
         adj.resize(number_of_nodes + 5);
     }
 
-    inline void
-    add_edge(int u, int v, int w) {
+    void add_edge(int u, int v, int w) {
         adj.at(u).emplace_back(v, w);
     }
 
-    inline vector<int>
-    dijkstra(int source) {
+    vector<int> dijkstra(int source) {
         vis.reset();
         bool flag = true;
         vector<int> dis(number_of_nodes + 5, INF);
@@ -816,8 +800,7 @@ namespace APSP_Johnson {
         vector<int> dis;
 
         // O(mn)
-        inline bool
-        spfa() {
+        bool spfa() {
             vector<int> cnt(number_of_nodes + 5);
             queue<int> q;
             q.push(source);
@@ -878,8 +861,7 @@ namespace APSP_Johnson {
         int source;         // the node id of the source
         std::priority_queue<Node> pq;
 
-        inline void
-        init(int n, int e) {
+        void init(int n, int e) {
             number_of_nodes = n;
             number_of_edges = e;
             // initialize the containers
@@ -888,15 +870,13 @@ namespace APSP_Johnson {
             dis.resize(number_of_nodes + 5, INF);
         }
 
-        inline void
-        reset() {
+        void reset() {
             fill(dis.begin(), dis.end(), INF);
             vis.reset();
             std::priority_queue<Node>().swap(pq);
         }
 
-        inline void
-        add_edge(int u, int v, int w) {
+        void add_edge(int u, int v, int w) {
             ++counter;
             E.at(counter).distance = w;
             E.at(counter).to = v;
@@ -904,8 +884,7 @@ namespace APSP_Johnson {
             head.at(u) = counter;
         }
 
-        inline void
-        dijkstra() {
+        void dijkstra() {
             dis.at(source) = 0;
             pq.push(Node(dis.at(source), source));
             while (!pq.empty()) {
@@ -930,8 +909,7 @@ namespace APSP_Johnson {
     }
 
     vector<vector<int> > d; // d[i][j] indicates the distance of shortest path from i to j after running Johnson's algorithm
-    inline bool
-    johnson() {
+    bool johnson() {
         // construct the graph G_prime
         source = 0;
         for (int v = 1; v <= number_of_nodes; ++v) {
@@ -1033,7 +1011,6 @@ namespace BFS_Example {
 
 // Implementation of next_combination, duplicated values will be shown once
 template<typename Itr>
-inline static
 bool next_combination(const Itr &first, Itr k, const Itr &last) {
     if ((first == last) || (first == k) || (last == k))
         return false;
@@ -1190,8 +1167,7 @@ namespace EulerPrimeSieve {
     bool isNotPrime[MAXN] = {true, true};
 
     // Generate the prime table from 1 to MAXN
-    inline static
-    void init() {
+    static void init() {
         for (int i = 2; i < MAXN; i++) {
             if (!isNotPrime[i])
                 prime[num_prime++] = i;
@@ -1208,8 +1184,7 @@ namespace EulerPrimeSieve {
 namespace EulerPrimeSieve_ {
     constexpr int MAXN = 100005;
     bitset<MAXN> isNotPrime;
-    inline static
-    void init() {
+    static void init() {
         isNotPrime[0] = true;
         isNotPrime[1] = true;
         for (int i = 2; i < MAXN; i++) {
@@ -1226,7 +1201,6 @@ namespace EulerPrimeSieve_ {
 }
 
 // Calculate a^n (n >= 0) in O(lgn) without recursion
-inline static
 ll quickPower(ll a, ll n) {
     ll res = 1;
     while (n > 0) {
@@ -1239,7 +1213,6 @@ ll quickPower(ll a, ll n) {
     return res;
 }
 
-inline static
 bool isPrime(ll n) {
     if (n <= 1) {
         return false;
@@ -1253,7 +1226,6 @@ bool isPrime(ll n) {
 }
 
 // Calculate (a^n) % m (n >= 0, m > 0) in O(lgn) without recursion
-inline static
 ll quickPower(ll a, ll n, ll m) {
 
     // Corner case:
@@ -1267,7 +1239,7 @@ ll quickPower(ll a, ll n, ll m) {
     }
 
     a %= m;
-    long long res = 1;
+    ll res = 1;
     while (n > 0) {
         if (n & 1) {
             res = res * a % m;
@@ -1304,10 +1276,10 @@ ll powmod(ll a, ll b, ll m) {
 constexpr int MAXLENGTH = 26;
 
 struct myHashFunc {
-    std::size_t operator()(const array<int, MAXLENGTH> &A) const {
-        std::size_t h = 0;
+    size_t operator()(const array<int, MAXLENGTH> &A) const {
+        size_t h = 0;
         for (const auto &i : A) {
-            h ^= std::hash<int>{}(i) + 0x9e3779b9 + (h << 6) + (h >> 2);
+            h ^= hash<int>{}(i) + 0x9e3779b9 + (h << 6) + (h >> 2);
         }
         return h;
     }
@@ -1343,11 +1315,11 @@ gp_hash_table<int, pair<int, int>, custom_hash> my_hash_table;
 // auto dp__ = MultiDimensionArray::Array<double>(4, 5, 1, 1.0);
 namespace MultiDimensionArray {
     template<typename T, typename ... Args>
-    auto Array(std::size_t n, Args &&... args) {
+    auto Array(size_t n, Args &&... args) {
         if constexpr (1 == sizeof ... (args)) {
-            return std::vector<T>(n, args ...);
+            return vector<T>(n, args ...);
         } else {
-            return std::vector(n, Array<T>(args...));
+            return vector(n, Array<T>(args...));
         }
     }
 }
@@ -1396,7 +1368,6 @@ T & doubleMin(const T &l, const Args &... args) {
 // http://www.lomont.org/papers/2003/InvSqrt.pdf
 //
 // FAST INVERSE SQUARE ROOT in long double
-inline static
 double inv_sqrt64(double n) {
     double x2 = n * 0.5;
     double y = n;
@@ -1526,7 +1497,6 @@ namespace Toposort_Kahn {
     vector<int> in_degree;
     vector<int> result; // store the result after toposort
 
-    inline
     void reset() {
         G.clear();
         vector<int>().swap(in_degree);
@@ -1534,7 +1504,6 @@ namespace Toposort_Kahn {
         vector<int>().swap(result);
     }
 
-    inline
     void init(int n) {
         number_of_nodes = n;
         in_degree.resize(n + 5);
@@ -1542,7 +1511,6 @@ namespace Toposort_Kahn {
 
     // Main logic of Kahn's algorithm: O(V+E), return true if it does not
     // have a cycle, otherwise false
-    inline
     bool kahn() {
         queue<int> q;
         for (int i = 1; i <= number_of_nodes; ++i) {
@@ -1565,8 +1533,7 @@ namespace Toposort_Kahn {
     }
 
     // Main logic of Kahn's algorithm but the output should be lexicographically
-    // smallest among all possible results after toposort: O(|V|log|V|+|E|)
-    inline
+    // smallest among all possible results after toposort: O(|V|log|V|+|E|)    
     bool kahn_with_lexicographically_smallest() {
         std::priority_queue<int, vector<int>, greater<> > q;
         for (int i = 1; i <= number_of_nodes; ++i) {
@@ -1624,7 +1591,6 @@ namespace Toposort_Dfs {
     vector<int> vis;
     vector<int> result;
 
-    inline
     bool dfs(int u) {
         vis[u] = -1;
         for (const auto &v : G[u]) {
@@ -1642,7 +1608,6 @@ namespace Toposort_Dfs {
         return true;
     }
 
-    inline
     bool toposort(int number_of_nodes) {
         // reset
         vector<int>().swap(vis);
@@ -1699,8 +1664,7 @@ namespace SSSP_Dijkstra_0 {
     // __gnu_pbds::priority_queue<Node, less<>, pairing_heap_tag> pq; // Alternative option if you want to use pairing heap
     std::priority_queue<Node> pq;
 
-    inline void
-    init(int n, int e, bool store_path = false) {
+    void init(int n, int e, bool store_path = false) {
         number_of_nodes = n;
         number_of_edges = e;
         // initialize the containers
@@ -1713,8 +1677,7 @@ namespace SSSP_Dijkstra_0 {
         }
     }
 
-    inline void
-    reset(bool store_path = false) {
+    void reset(bool store_path = false) {
         fill(dis.begin(), dis.end(), INF);
         fill(vis.begin(), vis.end(), false);
         std::priority_queue<Node>().swap(pq);
@@ -1723,8 +1686,7 @@ namespace SSSP_Dijkstra_0 {
         }
     }
 
-    inline void
-    add_edge(int u, int v, int w) {
+    void add_edge(int u, int v, int w) {
         ++counter;
         E.at(counter).distance = w;
         E.at(counter).to = v;
@@ -1732,7 +1694,7 @@ namespace SSSP_Dijkstra_0 {
         head.at(u) = counter;
     }
 
-    inline void
+    void
     dijkstra(bool store_path = false) {
         dis.at(source) = 0;
         pq.push(Node(dis.at(source), source));
@@ -1759,7 +1721,7 @@ namespace SSSP_Dijkstra_0 {
         }
     }
 
-    inline vector<int>
+    vector<int>
     get_path(int destination) {
         vector<int> path;
         for (; destination != -1; destination = prev.at(destination)) {
@@ -1782,7 +1744,7 @@ namespace SSSP_Dijkstra_1 {
     vector<int> prev;   // an auxiliary container to store the path
     std::priority_queue<pair<int, int>, vector<pair<int, int> >, greater<> > pq;
 
-    inline void
+    void
     init(int n, bool store_path = false) {
         number_of_nodes = n;
         // initialize the containers
@@ -1793,7 +1755,7 @@ namespace SSSP_Dijkstra_1 {
         }
     }
 
-    inline void
+    void
     reset(bool store_path = false) {
         fill(dis.begin(), dis.end(), INF);
         decltype(pq)().swap(pq);
@@ -1802,12 +1764,12 @@ namespace SSSP_Dijkstra_1 {
         }
     }
 
-    inline void
+    void
     add_edge(int u, int v, int w) {
         adj.at(u).emplace_back(make_pair(v, w));
     }
 
-    inline void
+    void
     dijkstra(bool store_path = false) {
         dis.at(source) = 0;
         pq.push(make_pair(dis.at(source), source));
@@ -1830,7 +1792,7 @@ namespace SSSP_Dijkstra_1 {
         }
     }
 
-    inline vector<int>
+    vector<int>
     get_path(int destination) {
         vector<int> path;
         for (; destination != -1; destination = prev.at(destination)) {
@@ -1890,7 +1852,7 @@ namespace SSSP_SPFA {
     int number_of_nodes;
     vector<int> dis;
 
-    inline void
+    void
     reset() {
         decltype(adj)().swap(adj);
         vector<int>().swap(dis);
@@ -1898,22 +1860,21 @@ namespace SSSP_SPFA {
         source = 0;
     }
 
-    inline void
+    void
     init(int n, int s) {
         source = s;
         number_of_nodes = n;
         adj.resize(number_of_nodes + 5);
     }
 
-    inline void
+    void
     add_edge(int u, int v, int w) {
         adj.at(u).emplace_back(make_pair(v, w));
     }
 
     // O(mn)
-    inline bool
+    bool
     spfa() {
-
         dis.resize(number_of_nodes + 5, INF);
         dis.at(source) = 0;
         vector<int> cnt(number_of_nodes + 5);
@@ -2424,126 +2385,6 @@ for w in women:
         if m prefers w to current_partner(m) return false
 return true
 **/
-
-// Min Cost Max Flow, takes O(n^2m^2)
-namespace MCMF {
-    using edge = tuple<int, ll, ll, ll>;
-    constexpr ll INF = 1e18;
-    int n;
-    ll totalCost;
-    vector<edge> EL;
-    vector<vector<int> > AL;
-    vector<ll> d;
-    vector<int> last;
-    vector<bool> vis;
-
-    void reset() {
-        n = 0;
-        totalCost = 0;
-        decltype(EL)().swap(EL);
-        decltype(AL)().swap(AL);
-        decltype(d)().swap(d);
-        decltype(last)().swap(last);
-        decltype(vis)().swap(vis);
-    }
-
-    void init(int n_) {
-        reset();
-        n = n_;
-        d.resize(n);
-        vis.resize(n);
-        AL.resize(n);
-        last.resize(n);
-    }
-
-    // SPFA to find if there is an augmenting path
-    // in residual graph
-    bool spfa(int s, int t) {
-        fill(d.begin(), d.end(), INF);
-        d[s] = 0;
-        vis[s] = true;
-        queue<int> q;
-        q.push(s);
-        while (!q.empty()) {
-            int u = q.front();
-            q.pop();
-            vis[u] = false;
-            for (const auto &idx : AL[u]) {
-                auto &[v, cap, flow, cost] = EL[idx];
-                if (cap > flow && d[v] > d[u] + cost) {
-                    d[v] = d[u] + cost;
-                    if (!vis[v]) {
-                        q.push(v);
-                        vis[v] = true;
-                    }
-                }
-            }
-        }
-        return d[t] != INF;
-    }
-
-    ll dfs(int u, int t, ll f = INF) {
-        if (u == t || f == 0) {
-            return f;
-        }
-        vis[u] = true;
-        for (int &i = last[u]; i < (int) AL[u].size(); ++i) {
-            auto &[v, cap, flow, cost] = EL[AL[u][i]];
-            if (!vis[v] && d[v] == d[u] + cost) {
-                if (ll pushed = dfs(v, t, min(f, cap - flow))) {
-                    totalCost += pushed * cost;
-                    flow += pushed;
-                    auto &[rv, rcap, rflow, rcost]
-                    = EL[AL[u][i] ^ 1];    // back edge
-                    rflow -= pushed;
-                    vis[u] = false;
-                    return pushed;
-                }
-            }
-        }
-        vis[u] = false;
-        return 0;
-    }
-
-    void addEdge(int u, int v, ll w, ll c,
-                 bool directed = true) {
-        if (u == v) {
-            return;
-        }
-        EL.emplace_back(v, w, 0, c);
-        AL[u].emplace_back((int) EL.size() - 1);
-        EL.emplace_back(u, directed ? 0 : w, 0, -c);
-        AL[v].emplace_back((int) EL.size() - 1);
-    }
-
-    pair<ll, ll> mcmf(int s, int t) {
-        ll mf = 0;
-        while (spfa(s, t)) {
-            fill(last.begin(), last.end(), 0);
-            while (ll f = dfs(s, t)) {
-                mf += f;
-            }
-        }
-        return {mf, totalCost};
-    }
-
-    // Usage: for a directed graph
-    int main() {
-        int n, m, s, t;
-        cin >> n >> m >> s >> t;
-        MCMF::init(n);
-        int u, v;
-        ll capacity, cost;
-        while (m--) {
-            cin >> u >> v >> capacity >> cost;
-            MCMF::addEdge(u, v, capacity, cost);
-        }
-        auto ans = MCMF::mcmf(s, t);
-        cout << ans.first << '\n';
-        cout << ans.second << '\n';
-        return 0;
-    }
-}
 
 // Lucas's theorem
 namespace Lucas {
@@ -3738,7 +3579,6 @@ struct Maxflow {
         return 0;
     }
 
-// interfaces
     Maxflow() = default;
     Maxflow(int number_of_nodes) : n(number_of_nodes) {
         adj.resize(n);
@@ -3782,6 +3622,133 @@ struct Maxflow {
 // 5. 点n+1到n+m连一条容量为1的边到汇点
 // 6. 原来的每条从左往右的边容量也为1
 // 7. 跑Dinic求最大流 即为最大匹配数
+
+// Min Cost Max Flow, takes O(n^2m^2)
+namespace MCMF {
+    using edge = tuple<int, ll, ll, ll>;
+    constexpr ll INF = 1e18;
+    int n;
+    ll totalCost;
+    vector<edge> EL;
+    vector<vector<int> > AL;
+    vector<ll> d;
+    vector<int> last;
+    vector<bool> vis;
+
+    void reset() {
+        n = 0;
+        totalCost = 0;
+        decltype(EL)().swap(EL);
+        decltype(AL)().swap(AL);
+        decltype(d)().swap(d);
+        decltype(last)().swap(last);
+        decltype(vis)().swap(vis);
+    }
+
+    void init(int n_) {
+        reset();
+        n = n_;
+        d.resize(n);
+        vis.resize(n);
+        AL.resize(n);
+        last.resize(n);
+    }
+
+    // SPFA to find if there is an augmenting path
+    // in residual graph
+    bool spfa(int s, int t) {
+        fill(d.begin(), d.end(), INF);
+        d[s] = 0;
+        vis[s] = true;
+        queue<int> q;
+        q.push(s);
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            vis[u] = false;
+            for (const auto &idx : AL[u]) {
+                auto &[v, cap, flow, cost] = EL[idx];
+                if (cap > flow && d[v] > d[u] + cost) {
+                    d[v] = d[u] + cost;
+                    if (!vis[v]) {
+                        q.push(v);
+                        vis[v] = true;
+                    }
+                }
+            }
+        }
+        return d[t] != INF;
+    }
+
+    ll dfs(int u, int t, ll f = INF) {
+        if (u == t || f == 0) {
+            return f;
+        }
+        vis[u] = true;
+        for (int &i = last[u]; i < (int) AL[u].size(); ++i) {
+            auto &[v, cap, flow, cost] = EL[AL[u][i]];
+            if (!vis[v] && d[v] == d[u] + cost) {
+                if (ll pushed = dfs(v, t, min(f, cap - flow))) {
+                    totalCost += pushed * cost;
+                    flow += pushed;
+                    auto &[rv, rcap, rflow, rcost]
+                    = EL[AL[u][i] ^ 1];    // back edge
+                    rflow -= pushed;
+                    vis[u] = false;
+                    return pushed;
+                }
+            }
+        }
+        vis[u] = false;
+        return 0;
+    }
+
+    void addEdge(int u, int v, ll w, ll c,
+                 bool directed = true) {
+        if (u == v) {
+            return;
+        }
+        EL.emplace_back(v, w, 0, c);
+        AL[u].emplace_back((int) EL.size() - 1);
+        EL.emplace_back(u, directed ? 0 : w, 0, -c);
+        AL[v].emplace_back((int) EL.size() - 1);
+    }
+
+    pair<ll, ll> mcmf(int s, int t) {
+        ll mf = 0;
+        while (spfa(s, t)) {
+            fill(last.begin(), last.end(), 0);
+            while (ll f = dfs(s, t)) {
+                mf += f;
+            }
+        }
+        return {mf, totalCost};
+    }
+
+    // Usage: for a directed graph
+    int main() {
+        int n, m, s, t;
+        cin >> n >> m >> s >> t;
+        MCMF::init(n);
+        int u, v;
+        ll capacity, cost;
+        while (m--) {
+            cin >> u >> v >> capacity >> cost;
+            MCMF::addEdge(u, v, capacity, cost);
+        }
+        auto ans = MCMF::mcmf(s, t);
+        cout << ans.first << '\n';
+        cout << ans.second << '\n';
+        return 0;
+    }
+}
+
+// 如果一个图是完全图 如何求出它的带权二分图最大匹配?
+// 可以规约为最小费用最大流问题
+// 1. 构造虚假源点s并连上所有左边的点 容量1费用0
+// 2. 构造虚假汇点t并被所有右边的点连上 容量1费用0
+// 3. 所有左边的点连右边的点的容量为1 费用为权重
+// 4. 跑mcmf 最小费用即为原最大匹配数
 
 int main() {
 
