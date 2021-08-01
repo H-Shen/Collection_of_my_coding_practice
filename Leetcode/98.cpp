@@ -9,31 +9,11 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution2 {
-public:
-    vector<int> vec;
-    bool notUnique = false;
-    void f(TreeNode* root) {
-        if (root) {
-            f(root->left);
-            if (!vec.empty() && vec.back() == root->val) {
-                notUnique = true;
-                return;
-            }
-            vec.emplace_back(root->val);
-            f(root->right);
-        }
-    }
-    bool isValidBST(TreeNode* root) {
-        f(root);
-        if (notUnique) return false;
-        return is_sorted(vec.begin(), vec.end());
-    }
-};
+
+using ll = long long;
 
 class Solution {
 public:
-    using ll = long long;
     bool f(TreeNode* root, ll lowerbound, ll upperbound) {
         if (root) {
             if (!(root->val > lowerbound && root->val < upperbound)) {
