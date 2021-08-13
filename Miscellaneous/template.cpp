@@ -2097,6 +2097,7 @@ namespace TreeDiameter0 {
 // The maximum distances from every vertex are stored in maxDist[]
 // Time cost: O(n)
 namespace Eccentricity {
+    constexpr int WEIGHT = 1;
     vector<vector<int> > AL;
     int n;
     vector<int> edged, maxDist;
@@ -2116,7 +2117,7 @@ namespace Eccentricity {
             if (v == fa) {
                 continue;
             }
-            edged[u] = max(edged[u],1+dfs1(v,u));
+            edged[u] = max(edged[u],WEIGHT+dfs1(v,u));
         }
         return edged[u];
     }
@@ -2129,14 +2130,14 @@ namespace Eccentricity {
             }
             if (edged[v]+1>maxEdges[0]) {
                 maxEdges[1] = maxEdges[0];
-                maxEdges[0] = edged[v]+1;
+                maxEdges[0] = edged[v]+WEIGHT;
                 nwmg = 1;
             }
-            else if (edged[v]+1==maxEdges[0]) {
+            else if (edged[v]+WEIGHT==maxEdges[0]) {
                 ++nwmg;
             }
-            else if (edged[v]+1>maxEdges[1]) {
-                maxEdges[1]=edged[v]+1;
+            else if (edged[v]+WEIGHT>maxEdges[1]) {
+                maxEdges[1]=edged[v]+WEIGHT;
             }
         }
         for (const auto &v : AL[u]) {
@@ -2147,7 +2148,7 @@ namespace Eccentricity {
             if (upd == edged[v]+1 && nwmg == 1) {
                 upd = maxEdges[1];
             }
-            dfs2(v,u,upd+1);
+            dfs2(v,u,upd+WEIGHT);
         }
         maxDist[u] = max(pd, maxEdges[0]);
     }
