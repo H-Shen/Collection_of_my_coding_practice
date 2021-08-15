@@ -3771,3 +3771,21 @@ int main() {
 // OR
 // dis2.at(a) + w + dis1.at(b) = shortest path from u to v
 // <=> the E:(a, b) -> w is on the shortest path from u to v
+
+// 格雷码生成
+// 1. k位格雷码从k个0开始
+// 2. 翻转最低位得到下一个格雷码 比如000->001
+// 3. 把最右边的1的左边翻位得到下一个格雷码 比如010->110
+// 4. 重复2 3步 直到生成2^k-1个格雷码为止
+
+// 求第n个格雷码
+int g(int n) {
+    return n ^ (n >> 1);
+}
+
+// 根据格雷码求其排名 从0开始
+int rev_g(int g) {
+    int n = 0;
+    for (; g; g >>= 1) n ^= g;
+    return n;
+}
