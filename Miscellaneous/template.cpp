@@ -2500,53 +2500,53 @@ namespace LCA0 {
 
 // Obtain LCA by binary lifting, Preprocess O(nlogn), each query costs O(logn).
 namespace LCA1 {
-    int n, l;
-    vector<vector<int>> adj;
-    int timer;  // dfs序计数器
-    vector<int> dfs_in, dfs_out;
+    // dfn: dfs序计数器
+    int dfn,l,n;
+    vector<int> dfsIn,dfsOut;
+    vector<vector<int>> AL;
     vector<vector<int>> fa; //fa[x][y] = 节点x的第2^y个祖先
-    void dfs(int u, int father_of_u) {
-        dfs_in[u] = ++timer;
-        fa[u][0] = father_of_u;
-        for (int i = 1; i <= l; ++i) {
-            fa[u][i] = fa[fa[u][i - 1]][i - 1];
-        }
-        for (const auto &v : adj[u]) {
-            if (v != father_of_u) {
-                dfs(v, u);
-            }
-        }
-        dfs_out[u] = ++timer;
+    void pre(int numberOfNodes) {
+        vector<int>().swap(dfsIn);
+        vector<int>().swap(dfsOut);
+        decltype(fa)().swap(fa);
+        decltype(AL)().swap(AL);
+        n = numberOfNodes;
+        dfn = 0;
+        l = ceil(log2(n));
+        dfsIn.resize(n);
+        dfsOut.resize(n);
+        AL.resize(n);
+        fa.resize(n, vector<int>(l+1));
+        vis.clear();
     }
-    // 根据dfs出入序 可以确定u是否是v的祖先
-    bool is_ancestor_of(int u, int v) {
-        return dfs_in[u] <= dfs_in[v] && dfs_out[v] <= dfs_out[u];
+    // 根据dfs出入序 可以确定u是否是v的祖先 作为祖先 必然先进后出
+    bool isAncestorOf(int u, int v) {
+        return dfsIn[u] <= dfsIn[v] && dfsOut[u] >= dfsOut[v];
+    }
+    void dfs(int u, int father) {
+        dfsIn[u] = ++dfn;
+        fa[u][0] = father;
+        for (int i = 1; i <= l; ++i) {
+            fa[u][i] = fa[fa[u][i-1]][i-1];
+        }
+        for (const auto &v : AL[u]) {
+            if (v != father) dfs(v,u);
+        }
+        dfsOut[u] = ++dfn;
     }
     int lca(int u, int v) {
-        if (is_ancestor_of(u, v)) {
-            return u;
-        }
-        if (is_ancestor_of(v, u)) {
-            return v;
-        }
+        if (isAncestorOf(u,v)) return u;
+        else if (isAncestorOf(v,u)) return v;
         for (int i = l; i >= 0; --i) {
-            if (!is_ancestor_of(fa[u][i], v)) {
+            if (!isAncestorOf(fa[u][i],v)) {
                 u = fa[u][i];
             }
         }
         return fa[u][0];
     }
-    // Assume node id starts from 0
-    void preprocess(int number_of_nodes) {
-        n = number_of_nodes;
-        dfs_in.resize(n);
-        dfs_out.resize(n);
-        adj.resize(n);
-        timer = 0;
-        l = ceil(log2(n));
-        fa.resize(n, vector<int>(l + 1));
+    void init(int root) {
+        dfs(root,root);
     }
-    void init(int root) { dfs(root, root); }
 }
 
 // Factorization of an integer using Miller Rabin Prime Check + Pollard Rho
@@ -3753,13 +3753,6 @@ namespace MCMF {
 // 3. 所有左边的点连右边的点的容量为1 费用为权重
 // 4. 跑mcmf 最小费用即为原最大匹配数
 
-int main() {
-
-    //freopen("in", "r", stdin);
-    //freopen("out", "w", stdout);
-
-    return 0;
-}
 
 // How to check if and only if an edge E is on the shortest 
 // path from u to v in an undirected graph:
@@ -3788,4 +3781,142 @@ int rev_g(int g) {
     int n = 0;
     for (; g; g >>= 1) n ^= g;
     return n;
+}
+
+// Kruskal重构树
+// https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths-ii/
+namespace KruskalReconstructionTree {
+    vector<vector<int>> AL; // 重构树
+    vector<int> weight; // 重构树点权
+    namespace DSU { // 没有启发式合并
+        vector<int> father;
+        void init(int n) {
+            vector<int>().swap(father);
+            father.resize(n+5);
+            iota(father.begin(),father.end(),0);
+        }
+        int find(int x) {
+            if (x != father[x]) {
+                father[x] = find(father[x]);
+            }
+            return father[x];
+        }
+        void merge(int x,int y) {
+            x = find(x);
+            y = find(y);
+            if (x == y) return;
+            father[y] = x;
+        }
+        bool isSameGroup(int x,int y) {
+            return find(x) == find(y);
+        }
+    }
+    namespace LCA {
+        constexpr int MAXN = 2e5+5;
+        bitset<MAXN> vis;
+        int dfn,l,n;
+        vector<int> dfsIn,dfsOut;
+        vector<vector<int>> fa;
+        void pre(int numberOfNodes) {
+            vector<int>().swap(dfsIn);
+            vector<int>().swap(dfsOut);
+            decltype(fa)().swap(fa);
+            n = numberOfNodes;
+            dfn = 0;
+            l = ceil(log2(n));
+            dfsIn.resize(n);
+            dfsOut.resize(n);
+            fa.resize(n, vector<int>(l+1));
+            vis.reset();
+        }
+        bool isAncestorOf(int u, int v) {
+            return dfsIn[u] <= dfsIn[v] && dfsOut[u] >= dfsOut[v];
+        }
+        void dfs(int u, int father) {
+            vis[u] = true;
+            dfsIn[u] = ++dfn;
+            fa[u][0] = father;
+            for (int i = 1; i <= l; ++i) {
+                fa[u][i] = fa[fa[u][i-1]][i-1];
+            }
+            for (const auto &v : AL[u]) {
+                if (v != father) dfs(v,u);
+            }
+            dfsOut[u] = ++dfn;
+        }
+        int lca(int u, int v) {
+            if (isAncestorOf(u,v)) return u;
+            else if (isAncestorOf(v,u)) return v;
+            for (int i = l; i >= 0; --i) {
+                if (!isAncestorOf(fa[u][i],v)) {
+                    u = fa[u][i];
+                }
+            }
+            return fa[u][0];
+        }
+        void init(int root) {
+            dfs(root,root);
+        }
+    }
+    struct Edge {
+        int u,v,w;
+        Edge() = default;
+        Edge(int u,int v,int w) : u(u),v(v),w(w){}
+        bool operator < (const Edge &e) const {
+            return w < e.w;
+        }
+    }
+    void construct(int n, vector<Edge> edgeList) {
+        // 当求两点间所有简单路径上最小值的最大值 按边权从小到大排序
+        // 当求两点间所有简单路径上最大值的最小值 按边权从大到小排序
+        sort(edgeList.begin(),edgeList.end());
+        int m = (int)edgeList.size();
+        int m = (int)edgeList.size();
+        weight.resize(n+m+1);
+        AL.resize(n+m+1);
+        DSU::init(n+m+1);
+        int u,v,w,rootOfU,rootOfV;
+        int id = n;
+        // 构建Kruskal重构树
+        for (const auto &i : edgeList) {
+            u = i[0];
+            v = i[1];
+            w = i[2];
+            rootOfU = DSU::find(u);
+            rootOfV = DSU::find(v);
+            if (rootOfU != rootOfV) {
+                weight[id] = w;
+                // 将两个集合的根作为新节点的左右子并合并
+                DSU::merge(id, rootOfU);
+                DSU::merge(id, rootOfV);
+                AL[id].emplace_back(rootOfU);
+                AL[rootOfU].emplace_back(id);
+                AL[id].emplace_back(rootOfV);
+                AL[rootOfV].emplace_back(id);
+                ++id;
+            }
+        }
+        LCA::pre(id);
+        // 对所有未访问的节点进行dfs 避免森林的情况
+        for (int i = 0; i < id; ++i) {
+            // 从集合的根上进行dfs
+            if (!LCA::vis[i]) LCA::init(DSU::find(i));
+        }
+    }
+    // 求两点间所有简单路径上最小值的最大值 或 两点间所有简单路径上最大值的最小值
+    int get(int u, int v) {
+        // 两点不连通 返回-1
+        if (DSU::find(u) != DSU::find(v)) {
+            return -1;
+        }
+        return weight[LCA::lca(u,v)];
+    }
+}
+
+int main() {
+
+    //freopen("in", "r", stdin);
+    //freopen("out", "w", stdout);
+
+    return 0;
 }
