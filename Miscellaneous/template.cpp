@@ -1264,8 +1264,9 @@ ll multmod(ll a, ll b, ll m) {
 ll powmod(ll a, ll b, ll m) {
     if (m == 1) return 0;
     ll r;
-    for (r = 1, a %= m; b; a = multmod(a, a, m), b >>= 1)
+    for (r = 1, a %= m; b; a = multmod(a, a, m), b >>= 1) {
         if (b % 2) r = multmod(r, a, m);
+    }
     return r;
 }
 
