@@ -3008,15 +3008,15 @@ namespace PrefixSumTree1 {
     }
 
     // Query the distance from u to v:
-//    ll dist(int u, int v) { 
-//        int Lca = lca(u, v);
-//        // Case 1: lca is root
-//        if (father[Lca] == -1) {
-//            return pre[u] + pre[v] - pre[Lca];
-//        }
-//        // Case 2: otherwise
-//        return pre[u] + pre[v] - pre[Lca] - pre[father[Lca]];
-//    }
+    //    ll dist(int u, int v) { 
+    //        int Lca = lca(u, v);
+    //        // Case 1: lca is root
+    //        if (father[Lca] == -1) {
+    //            return pre[u] + pre[v] - pre[Lca];
+    //        }
+    //        // Case 2: otherwise
+    //        return pre[u] + pre[v] - pre[Lca] - pre[father[Lca]];
+    //    }
     // Usage
     int main() {
         int n, root, m, u, v, q;
