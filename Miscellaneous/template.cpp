@@ -1256,7 +1256,7 @@ ll quickPower(ll a, ll n, ll m) {
 ll multmod(ll a, ll b, ll m) {
     a = (a % m + m) % m;
     b = (b % m + m) % m;
-    return ((a * b - static_cast<ll>(static_cast<ld>(a) / m * b) * m) %
+    return ((a * b - (ll)((long double)(a) / m * b) * m) %
             m + m) % m;
 }
 
