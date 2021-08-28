@@ -1,8 +1,10 @@
 class Solution {
 public:
-    bool f(string &a, string &b, int lena, int lenb) {
+    bool f(string &a, string &b) {
+        int lena = (int)a.size();
+        int lenb = (int)b.size();
         int i;
-        for (i = 0; i < lena; ++i) {
+        for (i = 0; i < lenb; ++i) {
             if (a[i] != b[i]) {
                 break;
             }
@@ -31,10 +33,10 @@ public:
             return diff == 1;
         }
         else if (m == n - 1) {
-            return f(s, t, n, m);
+            return f(s, t);
         }
         else if (n == m - 1) {
-            return f(t, s, m, n);
+            return f(t, s);
         }
         return false;
     }

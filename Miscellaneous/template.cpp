@@ -1534,6 +1534,28 @@ namespace Toposort_Kahn {
         }
         return (static_cast<int>(result.size()) == number_of_nodes);
     }
+    // Kahn's algo if G is an undirected graph 
+    bool kahn2() {
+        queue<int> q;
+        for (int i = 1; i <= number_of_nodes; ++i) {
+            if (in_degree.at(i) <= 1) {
+                q.push(i);
+            }
+        }
+        int visCounter = 0;
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            ++visCounter;
+            for (const auto &adj_v : G[u]) {
+                --in_degree.at(adj_v);
+                if (in_degree.at(adj_v) == 1) {
+                    q.push(adj_v);
+                }
+            }
+        }
+        return visCounter == number_of_nodes;
+    }
 
     // Main logic of Kahn's algorithm but the output should be lexicographically
     // smallest among all possible results after toposort: O(|V|log|V|+|E|)    
