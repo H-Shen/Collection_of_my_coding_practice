@@ -3199,7 +3199,7 @@ namespace Bitwise {
         }
     }
 
-    // Loop through all subsets with size r in N
+    // Loop through all subsets with size r in N (Gosper's Hack)
     constexpr int N = 10;
     void loop_through_subsets_with_size_r(int r) {
         for (int s = (1<<r)-1; s<1<<N;) {
