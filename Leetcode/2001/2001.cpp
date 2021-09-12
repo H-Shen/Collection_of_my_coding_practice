@@ -33,10 +33,8 @@ public:
         }
         ll counter = 0;
         for (const auto &[k,v] : unmap) {
-            if (v > 1) {
-                ll temp = (ll)v;
-                counter += (temp*(temp-1))>>1;
-            }
+            ll temp = (ll)v;
+            counter += (temp*(temp-1))>>1;
         }
         return counter;
     }

@@ -1,6 +1,5 @@
 constexpr int N = 12;
 constexpr int MAXN = 4096+5;
-using ull = unsigned long long;
 
 vector<pair<int,int>> isPalin;
 bitset<N> bs;
