@@ -4067,6 +4067,63 @@ namespace SA {
     }
 }
 
+namespace Prufer {
+    // 对树求prufer序列 节点从1开始
+    vector<int> prufer_code(const vector<vector<int>>& AL) {
+        int n = (int)AL.size();
+        priority_queue<int, vector<int>, greater<>> leaves;
+        vector<int> degree(n+1);
+        vector<bool> removed(n+1, false);
+        for (int i = 1; i <= n; ++i) {
+            degree[i] = (int)AL[i].size();
+            if (degree[i] == 1) {
+                leaves.push(i);
+            }
+        }
+        vector<int> ans;
+        while (!leaves.empty()) {
+            int u = leaves.top();
+            leaves.pop();
+            removed[u] = true;
+            for (auto &v : AL[u]) {
+                if (!removed[v]) {
+                    ans.emplace_back(v);
+                    --degree[v];
+                    if (degree[v] == 1) {
+                        leaves.push(v);
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+    // 根据Prufer序列重建树 节点从1开始
+    vector<pair<int,int>> prufer_decode(const vector<int>& prufer_code) {
+        vector<pair<int,int>> edgeList;
+        int n = (int)prufer_code.size() + 1;
+        vector<int> degree(n, 1);
+        for (auto &i : prufer_code) {
+            ++degree[i];
+        }
+        priority_queue<int, vector<int>, greater<>> leaves;
+        for (int i = 1; i <= n; ++i) {
+            if (degree[i] == 1) {
+                leaves.push(i);
+            }
+        }
+        for (auto &v : prufer_code) {
+            int u = leaves.top();
+            leaves.pop();
+            edgeList.emplace_back(u, v);
+            --degree[v];
+            if (degree[v] == 1) {
+                leaves.push(v);
+            }
+        }
+        return edgeList;
+    }
+}
+
 int main() {
 
     //freopen("in", "r", stdin);
