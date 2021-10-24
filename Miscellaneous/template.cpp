@@ -4124,6 +4124,18 @@ namespace Prufer {
     }
 }
 
+// coordinate compression (离散化)
+vector<int> coordinateCompression(vector<int> a) {
+    vector<int> b = a;
+    sort(a.begin(),a.end());
+    a.erase(unique(a.begin(),a.end()), a.end());
+    int n = (int)b.size();
+    for (int i = 0; i < n; ++i) {
+        b[i] = lower_bound(a.begin(),a.end(),b[i]) - a.begin();
+    }
+    return b;
+}
+
 int main() {
 
     //freopen("in", "r", stdin);
