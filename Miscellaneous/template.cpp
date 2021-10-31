@@ -4136,6 +4136,32 @@ vector<int> coordinateCompression(vector<int> a) {
     return b;
 }
 
+// 通过前缀异或和求子序列异或和 假设索引从1开始
+// pre[0] = 0
+// pre[i] = A[1] (i = 1) 
+// pre[i] = pre[i-1]^A[i] (i >= 2)
+// Then:
+// If 2<=l<=r<=n, then
+// pre[l-1]^pre[r] = (A[1]^A[2]^...^A[l-1])^(A[1]^A[2]^...^A[l-1]^A[l]^...^A[r])
+// = A[l]^...^A[r]
+namespace RangeXorSum {
+    vector<int> pre;
+    int rangeXorSum(int l, int r) {
+        if (l == 1) {
+            return pre[r];
+        }
+        return pre[l-1]^pre[r];
+    }
+    void init(const vector<int> &arr) {
+        int n = (int)arr.size();
+        vector<int>().swap(pre);
+        pre.resize(n+1);
+        for (int i = 1; i <= n; ++i) {
+            pre[i] = pre[i-1]^arr[i-1];
+        }
+    }
+}
+
 int main() {
 
     //freopen("in", "r", stdin);
