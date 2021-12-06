@@ -3126,7 +3126,7 @@ vector<int> Hierholzer(int startVertex, vector<deque<int> > &adjList) {
     stack<int> path;
     vector<int> circuit;
     int current = startVertex;
-    path.push(startVertex);
+    path.push(current);
     while (!path.empty()) {
         if (!adjList.at(current).empty()) {
             path.push(current);
