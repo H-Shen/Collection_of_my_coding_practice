@@ -2,15 +2,9 @@ using ll = long long;
 
 struct SparseTable {
     vector<vector<ll> > sptMax, sptMin;
-    vector<ll> Log2;
     int n, logn;
     explicit SparseTable(int n) : n(n) {
-        Log2.resize(n + 5);
-        Log2.at(1) = 0;
-        Log2.at(2) = 1;
-        for (int i = 3; i < n + 5; ++i)
-            Log2.at(i) = Log2.at(i >> 1) + 1;
-        logn = floor(log2(n) + 2);
+        logn = floor(__lg(n) + 2);
         sptMax.resize(n + 5, vector<ll>(logn));
         sptMin.resize(n + 5, vector<ll>(logn));
     }
@@ -28,12 +22,12 @@ struct SparseTable {
         }
     }
     ll queryMax(int l, int r) {
-        int s = Log2.at(r - l + 1);
+        int s = __lg(r-l+1);        // std::__lg(n) = log2(n)
         ll ans = max(sptMax.at(l).at(s), sptMax.at(r - (1 << s) + 1).at(s));
         return ans;
     }
     ll queryMin(int l, int r) {
-        int s = Log2.at(r - l + 1);
+        int s = __lg(r-l+1);
         ll ans = min(sptMin.at(l).at(s), sptMin.at(r - (1 << s) + 1).at(s));
         return ans;
     }
