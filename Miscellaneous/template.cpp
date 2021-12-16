@@ -3249,7 +3249,7 @@ struct BIT {
         t1.resize(N);
         t2.resize(N);
     }
-    T sum(const vector<T> &t, int n) {
+    T sum(vector<T> &t, int n) {
         T a(0);
         while (n) {
             a += t[n];
