@@ -1,7 +1,6 @@
 #pragma GCC optimize ("Ofast")
 #pragma GCC optimize ("unroll-loops")
-
-#define rep(i, a, b) for (int i = (a); i < (b); ++i)
+#pragma GCC target ("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 
 #include <bits/extc++.h>
 
@@ -117,10 +116,8 @@ namespace IO {
 namespace DSU {
     // father[x]: the father of x
     // Size[x]:  the size of tree/disjoint set whose ancestor is 'x'
-    vector<int> father;
-    vector<int> Size;
-    int number_of_sets;      // the number of disjoint sets
-
+    vector<int> father, Size;
+    int cc;      // the number of disjoint sets
     // iniitalization
     void init(int n) {
         // reset
@@ -130,46 +127,34 @@ namespace DSU {
         father.resize(n + 5);
         iota(father.begin(), father.end(), 0);
         Size.resize(n + 5, 1);
-        number_of_sets = n;
+        cc = n;
     }
-
     // find the ancestor of i with path compression
     int find(int x) {
-        if (x != father[x]) {
-            father[x] = find(father[x]);
-        }
+        if (x != father[x]) father[x] = find(father[x]);
         return father[x];
     }
-
     // merge x and y
     void merge(int x, int y) {
-        x = find(x);
-        y = find(y);
-        if (x == y) {
-            return;
-        }
-        if (Size[x] >
-            Size[y]) {  // Make sure the tree with less nodes combines to the tree with more nodes
-            swap(x, y);
-        }
+        x = find(x); y = find(y);
+        if (x == y) return;
+        // Make sure the tree with less nodes combines to the tree with more nodes
+        if (Size[x] > Size[y]) swap(x, y);
+        --cc;
         father[x] = y;
         Size[y] += Size[x];
-        --number_of_sets;
     }
-
     // check if x and y are in the same set
     bool is_same_group(int i, int j) {
         return find(i) == find(j);
     }
-
     // check the size of set where 'x' is
     int check_set_size(int x) {
         return Size[find(x)];
     }
-
     // check the number of disjoint sets
     int number_of_disjoint_sets() {
-        return number_of_sets;
+        return cc;
     }
 }
 
@@ -178,7 +163,6 @@ namespace DSU {
 namespace DSU_Modified {
     vector<int> father;
     vector<int> Size;
-
     void init(int n) {
         vector<int>().swap(father);
         vector<int>().swap(Size);
@@ -190,14 +174,12 @@ namespace DSU_Modified {
             Size.at(i + n) = 1;
         }
     }
-
     int find(int x) {
         if (x != father[x]) {
             father[x] = find(father[x]);
         }
         return father[x];
     }
-
     void merge(int x, int y) {
         x = find(x);
         y = find(y);
@@ -210,7 +192,6 @@ namespace DSU_Modified {
         father[x] = y;
         Size[y] += Size[x];
     }
-
     // move x_ from its set to the set contains y_
     void move_to(int x_, int y_) {
         int x = find(x_);
@@ -222,7 +203,6 @@ namespace DSU_Modified {
         ++Size[y];
         father[x_] = y;
     }
-
     bool is_same_group(int x, int y) {
         return find(x) == find(y);
     }
@@ -4159,6 +4139,31 @@ namespace RangeXorSum {
         for (int i = 1; i <= n; ++i) {
             pre[i] = pre[i-1]^arr[i-1];
         }
+    }
+}
+
+// 高精度计算
+namespace BigNum {
+    string add(const string& a, const string& b) {
+        int n = (int)max(a.size(), b.size()) + 1;
+        string ans(n, '0');
+        int i = (int)a.size() - 1;
+        int j = (int)b.size() - 1;
+        int k = 0;
+        int x, y;
+        while (i >= 0 || j >= 0) {
+            x = (i >= 0) ? (a[i] - '0') : 0;
+            y = (j >= 0) ? (b[j] - '0') : 0;
+            ans[k] += x + y;
+            if (ans[k] - '0' >= 10) {
+                ++ans[k+1];
+                ans[k] -= 10;
+            }
+            --i; --j; ++k;
+        }
+        if (ans.size() > 1 && ans.back() == '0') ans.pop_back();
+        reverse(ans.begin(),ans.end());
+        return ans;
     }
 }
 
