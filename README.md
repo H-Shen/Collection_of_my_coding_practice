@@ -2,6 +2,7 @@
 
 The collection of my coding practice, will be updated inconsistently.
 
+* [***My Leetcode Profile***](https://leetcode.com/HarrisonShen)
 * [***My Kattis Profile***](https://open.kattis.com/users/haohushen)
 * [***My Hackerrank Profile***](https://www.hackerrank.com/Harrison_Shen)
 
