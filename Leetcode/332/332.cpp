@@ -1,66 +1,69 @@
+vector<deque<int>> adj;
+vector<int> inDeg, outDeg;
+
+vector<int> Hierholzer(int startVertex) {
+    stack<int> path;
+    vector<int> circuit;
+    int current = startVertex;
+    path.push(current);
+    while (!path.empty()) {
+        if (!adj[current].empty()) {
+            path.push(current);
+            int next = adj[current].front();
+            adj[current].pop_front();
+            current = next;
+        }
+        else {
+            circuit.emplace_back(current);
+            current = path.top();
+            path.pop();
+        }
+    }
+    reverse(circuit.begin(),circuit.end());
+    return circuit;
+}
+
 class Solution {
 public:
     vector<string> findItinerary(vector<vector<string>>& tickets) {
-        // id each station
-        unordered_map<string, int> name2id;
+        unordered_map<string,int> str2id;
+        vector<string> id2str;
         int id = 0;
-        vector<string> id2name;
-        for (const auto &i : tickets) {
-            for (const auto &j : i) {
-                if (name2id.find(j) == name2id.end()) {
-                    name2id[j] = id;
+        for (auto&i : tickets) {
+            for (auto&j : i) {
+                if (str2id.find(j) == str2id.end()) {
+                    str2id[j] = id;
+                    id2str.emplace_back(j);
                     ++id;
-                    id2name.emplace_back(j);
                 }
             }
         }
-        // create the graph and store in an adjacency list, and sort each element in the list lexicalgraphically
-        int u, v;
-        vector<deque<int> > AL(id);
-        vector<int> inDegree(id);
-        vector<int> outDegree(id);
-        for (const auto &i : tickets) {
-            u = name2id[i[0]];
-            v = name2id[i[1]];
-            AL[u].emplace_back(v);
-            ++outDegree.at(u);
-            ++inDegree.at(v);
+        vector<deque<int>>().swap(adj);
+        adj.resize(id);
+        vector<int>().swap(inDeg);
+        inDeg.resize(id);
+        vector<int>().swap(outDeg);
+        outDeg.resize(id);
+        int u,v;
+        for (auto&i : tickets) {
+            u = str2id[i[0]];
+            v = str2id[i[1]];
+            adj[u].emplace_back(v);
+            ++outDeg[u];
+            ++inDeg[v];
         }
-        int startVertex = name2id["JFK"];   //
-        for (auto &i : AL) {
-            sort(i.begin(), i.end(), [&](const auto &l, const auto &r){
-                return id2name[l] < id2name[r];
-            });
-        }
-        // run Hierholzer
-        auto Hierholzer = [&]() {
-            stack<int> path;
-            vector<int> circuit;
-            int current = startVertex;
-            path.push(current);
-            while (!path.empty()) {
-                if (!AL.at(current).empty()) {
-                    path.push(current);
-                    int next = AL.at(current).front();
-                    AL.at(current).pop_front();
-                    current = next;
-                } else {
-                    circuit.emplace_back(current);
-                    current = path.top();
-                    path.pop();
-                }
-            }
-            reverse(circuit.begin(), circuit.end());
-            return circuit;
+        auto cmp = [&](const int &l, const int &r){
+            return id2str[l] < id2str[r];
         };
-        auto result = Hierholzer();
-        vector<string> output(result.size());
-        auto iter = output.begin();
-        // output
-        for (const auto &i : result) {
-            *iter = id2name[i];
-            ++iter;
+        for (auto&i : adj) {
+            sort(i.begin(),i.end(),cmp);
         }
-        return output;
+        vector<string> ans;
+        int startVertex = str2id["JFK"];
+        auto path = Hierholzer(startVertex);
+        for (auto&i : path) {
+            ans.emplace_back(id2str[i]);
+        }
+        return ans;
     }
 };

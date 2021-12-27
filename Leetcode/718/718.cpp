@@ -5,6 +5,7 @@ constexpr ll MOD = 1e9+9;
 constexpr ll Pow = 31;
 
 ll p_pow[MAXN];
+ll p_pow_inv[MAXN];
 ll hash1[MAXN];
 ll hash2[MAXN];
 
@@ -30,15 +31,13 @@ public:
         }
         // ((hash1[r] - hash1[l-1]) / p_pow[l]) % MOD = ((hash1[r] - hash1[l-1]) * p_pow[l]^(MOD-2)%MOD) % MOD
         // You need the modular multiplicative inverse of p_pow[l] here!
-        ll temp = (hash1[r] - hash1[l-1] + MOD) * powmod(p_pow[l], MOD-2, MOD) % MOD;
-        return temp;
+        return multmod(hash1[r] - hash1[l-1] + MOD, p_pow_inv[l], MOD);
     }
     ll hashSubstr2(int l, int r) {
         if (l == 0) {
             return hash2[r] % MOD;
         }
-        ll temp = (hash2[r] - hash2[l-1] + MOD) * powmod(p_pow[l], MOD-2, MOD) % MOD;
-        return temp;
+        return multmod(hash2[r] - hash2[l-1] + MOD, p_pow_inv[l], MOD);
     }
     bool checkOneByOne(vector<int>& nums1, vector<int>& nums2, int l1, int r1, int l2, int r2) {
         if (r1 - l1 != r2 - l2) return false;
@@ -64,7 +63,6 @@ public:
                     for (auto&j : unmap2[k]) {
                         l2 = j.first;
                         r2 = j.second;
-                        cout << l1 << ' ' << r1 << ' ' << l2 << ' ' << r2 << '\n';
                         if (checkOneByOne(nums1,nums2,l1,r1,l2,r2)) {
                             return true;
                         }
@@ -80,6 +78,9 @@ public:
         p_pow[0] = 1;
         for (int i = 1; i < MAXN; ++i) {
             p_pow[i] = (p_pow[i-1] * Pow) % MOD;
+        }
+        for (int i = 0; i < MAXN; ++i) {
+            p_pow_inv[i] = powmod(p_pow[i], MOD-2, MOD);
         }
         memset(hash1, 0, sizeof hash1);
         ll hashVal = 0;
