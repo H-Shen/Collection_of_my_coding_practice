@@ -1,27 +1,20 @@
 class Solution {
 public:
-    vector<int> dp;
-    int n;
-    int solve(int pos, const vector<int> &A) {
-        if (dp[pos] != -1) {
-            return dp[pos];
-        }
-        dp[pos] = 1;
-        for (int i = pos; i < n; ++i) {
-            if (A.at(pos) < A.at(i)) {
-                dp[pos] = max(dp[pos], solve(i, A)+1);
+    int lengthOfLIS(vector<int>& nums) {
+        // LIS越长 LIS各元素增长率越小
+        int n = (int)nums.size();
+        vector<int> lis;
+        for (int i = 0; i < n; ++i) {
+            auto iter = lower_bound(lis.begin(),lis.end(),nums[i]);
+            // 在当前LIS中没有比它大的或者相等的了
+            if (iter == lis.end()) {
+                lis.emplace_back(nums[i]);
+            }
+            // 在当前LIS中有比它大的或相等的 替换掉那个大的或相等的
+            else {
+                *iter = nums[i];
             }
         }
-        return dp[pos];
-    }
-    int lengthOfLIS(vector<int>& nums) {
-        vector<int>().swap(dp);
-        n = (int)nums.size();
-        dp.resize(n,-1);
-        int ans = 0;
-        for (int i = 0; i < n; ++i) {
-            ans = max(ans, solve(i, nums));
-        }
-        return ans;
+        return (int)lis.size();
     }
 };
