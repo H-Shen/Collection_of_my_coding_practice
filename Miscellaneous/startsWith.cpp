@@ -11,10 +11,6 @@
  */
 inline static
 bool startsWith(const std::string &original, const std::string &starting, const bool &isCaseSensitive) {
-    if (starting.empty()) {
-        return true;
-    }
-
     std::function<bool(const char &lhs, const char &rhs)> charIsEqual;
     if (isCaseSensitive) {
         charIsEqual = [](const char &lhs, const char &rhs) -> bool {
@@ -32,10 +28,9 @@ bool startsWith(const std::string &original, const std::string &starting, const 
                 return false;
             }
         }
-    } else {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 
 inline static
