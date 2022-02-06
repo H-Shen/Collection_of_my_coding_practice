@@ -1,12 +1,12 @@
 class Bitset {
 private:
-    vector<bool> vec;
+    vector<int> vec;
     int size;
     int counter;
     bool allFalse;
 public:
     Bitset(int size) {
-        vec.resize(size, false);
+        vec.resize(size, 0);
         this->size = size;
         counter = 0;
         allFalse = true;
@@ -14,22 +14,22 @@ public:
     
     void fix(int idx) {
         if (!vec[idx] && allFalse) {
-            vec[idx] = true;
+            vec[idx] = 1;
             ++counter;
         }
         else if (vec[idx] && !allFalse) {
-            vec[idx] = false;
+            vec[idx] = 0;
             ++counter;
         }
     }
     
     void unfix(int idx) {
         if (vec[idx] && allFalse) {
-            vec[idx] = false;
+            vec[idx] = 0;
             --counter;
         }
         else if (!vec[idx] && !allFalse) {
-            vec[idx] = true;
+            vec[idx] = 1;
             --counter;
         }
     }
