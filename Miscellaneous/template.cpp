@@ -4231,6 +4231,54 @@ struct PushRelabel {
     bool leftOfMinCut(int a) { return H[a] >= (int) g.size(); }
 };
 
+// Rolling hash
+namespace RH {
+    constexpr ll MOD = 1e9+7;
+    constexpr ll P = 31;
+    unordered_set<ll> vis;
+    vector<ll> Pow;
+    vector<ll> Pow_inv;
+    vector<ll> H;
+    int n;
+    ll multmod(ll a, ll b, ll m) {
+        a = (a % m + m) % m;
+        b = (b % m + m) % m;
+        return ((a * b - (ll) ((long double) a / m * b) * m) % m + m) % m;
+    }
+
+    ll powmod(ll a, ll b, ll m) {
+        if (m == 1) return 0;
+        ll r;
+        for (r = 1, a %= m; b; a = multmod(a, a, m), b >>= 1)
+            if (b % 2) r = multmod(r, a, m);
+        return r;
+    }
+    void pre(const string& s) {
+        n = (int)s.size();
+        Pow.resize(n);
+        Pow_inv.resize(n);
+        Pow[0] = 1;
+        Pow_inv[0] = 1;
+        for (int i = 1; i < n; ++i) {
+            Pow[i] = (Pow[i-1] * P) % MOD;
+            Pow_inv[i] = powmod(Pow[i], MOD - 2, MOD);
+        }
+        H.resize(n);
+        ll h = 0;
+        for (int i = 0; i < n; ++i) {
+            h = (h + (s[i] - 'a' + 1) * Pow[i]) % MOD;
+            H[i] = h;
+        }
+    }
+    ll getHash(int l, int r) {
+        if (l == 0) {
+            return H[r];
+        }
+        return multmod(H[r] - H[l-1] + MOD, Pow_inv[l], MOD);
+    }
+    
+}
+
 int main() {
 
     //freopen("in", "r", stdin);
