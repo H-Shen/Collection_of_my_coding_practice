@@ -39,19 +39,17 @@ public:
                 vis[i[1]] = id;
                 ++id;
             }
-        }
-        for (int i = 0; i < MAXVALUE; ++i) {
-            if (vis[i] != 0) {
-                val[vis[i]] = i;
-            }
-        }
-        for (auto&i : descriptions) {
             parent[vis[i[1]]] = vis[i[0]];
             if (i[2]) {
                 child[vis[i[0]]][0] = vis[i[1]];
             }
             else {
                 child[vis[i[0]]][1] = vis[i[1]];
+            }
+        }
+        for (int i = 0; i < MAXVALUE; ++i) {
+            if (vis[i] != 0) {
+                val[vis[i]] = i;
             }
         }
         vector<TreeNode*> tree(id+1);
