@@ -58,6 +58,7 @@ auto fast_io = []() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
+    cin.exceptions(cin.failbit);    // throw an exception if cin fails
 };
 
 namespace IO {
