@@ -1,20 +1,19 @@
 class Solution {
 public:
-    // O(nlogn)
+    // O(n)
     int trap(vector<int>& height) {
         int n = (int)height.size();
         if (n <= 2) return 0;
-        vector<int> maxFromLeft;
-        multiset<int, greater<int>> right;
-        maxFromLeft.emplace_back(height[0]);
-        for (int i = 2; i < n; ++i) {
-            right.insert(height[i]);
+        vector<int> maxFromRight(n);
+        maxFromRight[n-1] = height[n-1];
+        for (int i = n-2; i >= 0; --i) {
+            maxFromRight[i] = max(maxFromRight[i+1], height[i]);
         }
+        int maxFromLeft = height[0];
         int sum = 0;
         for (int i = 1; i < n-1; ++i) {
-            sum += max(min(maxFromLeft.back(), *right.begin()) - height[i], 0);
-            maxFromLeft.emplace_back(max(maxFromLeft.back(), height[i]));
-            right.erase(right.lower_bound(height[i+1]));
+            sum += max(min(maxFromLeft, maxFromRight[i+1]) - height[i], 0);
+            maxFromLeft = max(maxFromLeft, height[i]);
         }
         return sum;
     }
