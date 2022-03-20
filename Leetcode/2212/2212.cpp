@@ -3,7 +3,7 @@ constexpr int MAXN = 12;
 class Solution {
 public:
     vector<int> maximumBobPoints(int numArrows, vector<int>& aliceArrows) {
-        int tot = 1<<12;
+        int tot = 1<<MAXN;
         int maxVal = 0;
         int sum = 0;
         bitset<MAXN> result;
@@ -30,17 +30,17 @@ public:
                 }
             }
         }
-        vector<int> bob(12);
+        vector<int> bobArrows(MAXN);
         sum = numArrows;
         for (int j = 0; j < MAXN; ++j) {
             if (result[j]) {
-                bob[j] = aliceArrows[j]+1;
-                sum -= bob[j];
+                bobArrows[j] = aliceArrows[j]+1;
+                sum -= bobArrows[j];
             }
         }
         if (sum > 0) {
-            bob[0] = sum;
+            bobArrows[0] = sum;
         }
-        return bob;
+        return bobArrows;
     }
 };
