@@ -210,7 +210,7 @@ namespace DSU_Modified {
 }
 
 /*
-Catalan[0] = 1, Catalan[2] = 1
+Catalan[0] = 1, Catalan[1] = 1
 Catalan[n] = (4n-2)/(n+1) * Catalan[n-1]
 Catalan[n] % p
 = ( (4n-2)/(n+1) * Catalan[n-1] ) % p
