@@ -1515,9 +1515,10 @@ namespace Toposort_Kahn {
         }
         return (static_cast<int>(result.size()) == number_of_nodes);
     }
-    // Kahn's algo if G is an undirected graph 
+    // Kahn's algo if G is an undirected graph
     bool kahn2() {
         queue<int> q;
+        vector<bool> vis(number_of_nodes+1);
         for (int i = 1; i <= number_of_nodes; ++i) {
             if (in_degree.at(i) <= 1) {
                 q.push(i);
@@ -1526,6 +1527,7 @@ namespace Toposort_Kahn {
         int visCounter = 0;
         while (!q.empty()) {
             int u = q.front();
+            vis[u] = true;
             q.pop();
             ++visCounter;
             for (const auto &adj_v : G[u]) {
@@ -1535,6 +1537,7 @@ namespace Toposort_Kahn {
                 }
             }
         }
+        // if vis[i] is false (i is not visited), then i is a node in cycles
         return visCounter == number_of_nodes;
     }
 
