@@ -4283,6 +4283,61 @@ namespace RH {
     
 }
 
+// Trie树模版
+constexpr int LETTERS = 26;
+struct Node {
+    Node* children[LETTERS];
+    bool isEnd; // 表示是否存在以该节点作为结尾的单词
+    Node() {
+        for (int i = 0; i < LETTERS; ++i) {
+            children[i] = nullptr;
+        }
+        isEnd = false;
+    }
+};
+struct Trie {
+    Node* root;
+    Trie() {
+        root = new Node();
+    }
+    
+    void insert(string word) {
+        Node* node = root;
+        int n = (int)word.size();
+        for (int i = 0; i < n; ++i) {
+            if (!node->children[word[i] - 'a']) {
+                node->children[word[i] - 'a'] = new Node();
+            }
+            node = node->children[word[i] - 'a'];
+        }
+        node->isEnd = true;
+    }
+    
+    bool search(string word) {
+        Node* node = root;
+        int n = (int)word.size();
+        for (int i = 0; i < n; ++i) {
+            if (!node->children[word[i] - 'a']) {
+                return false;
+            }
+            node = node->children[word[i] - 'a'];
+        }
+        return node->isEnd;
+    }
+    
+    bool startsWith(string prefix) {
+        Node* node = root;
+        int n = (int)prefix.size();
+        for (int i = 0; i < n; ++i) {
+            if (!node->children[prefix[i] - 'a']) {
+                return false;
+            }
+            node = node->children[prefix[i] - 'a'];
+        }
+        return true;
+    }
+};
+
 int main() {
 
     //freopen("in", "r", stdin);
