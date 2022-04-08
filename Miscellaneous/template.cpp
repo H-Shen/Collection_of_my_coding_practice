@@ -51,8 +51,7 @@ using float128 = __float128;
 template<typename T>
 using RBTree = tree<T, null_type, less<>, rb_tree_tag, tree_order_statistics_node_update>;
 
-template<typename T>
-using Trie = trie<T, null_type, less<>, pat_trie_tag, trie_prefix_search_node_update>;
+using Trie = trie<string, null_type, trie_string_access_traits<>, pat_trie_tag, trie_prefix_search_node_update>;
 
 auto fast_io = []() {
     ios_base::sync_with_stdio(false);
@@ -952,7 +951,6 @@ namespace BFS_Example {
     vector<vector<int> > adj;   // adjacency list
     int s;
     vector<int> prev; // an auxiliary container to store the path
-    vector<bool> vis; // flag if any node is visited
     vector<int> dis; // dis.at(n) = the distance of shortest path from 's' to n
     void init(int number_of_nodes, bool store_path = false) {
         dis.resize(number_of_nodes + 5, INF);
@@ -964,15 +962,13 @@ namespace BFS_Example {
     void bfs(bool store_path = false) {
         queue<int> q;
         q.push(s);
-        vis.at(s) = true;
         dis.at(s) = 0;
         while (!q.empty()) {
             int u = q.front();
             q.pop();
             for (const auto &to : adj.at(u)) {
-                if (!vis.at(to)) {
+                if (dis.at(to) == INF) {
                     q.push(to);
-                    vis.at(to) = true;
                     dis.at(to) = dis.at(u) + WEIGHT;
                     if (store_path) {
                         prev.at(to) = u;
@@ -1942,6 +1938,7 @@ vector<int> sum_of_factors(int n) {
     return result;
 }
 
+// using Log2 = __lg2
 struct SparseTable {
     vector<vector<ll> > spt;
     vector<ll> Log2;
