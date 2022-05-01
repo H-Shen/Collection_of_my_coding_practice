@@ -55,7 +55,7 @@ public:
                     }
                 }
                 if (haveAns) {
-                    unset[r-(l-1)].insert(Node(l-1,r-1,&nums));
+                    unset[r-(l-1)].emplace(l-1,r-1,&nums);
                 }
             }
         }
