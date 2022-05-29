@@ -4335,6 +4335,31 @@ struct Trie {
     }
 };
 
+// 01 bfs (bfs with only two different weights)
+namespace ZeroOneBFS {
+    void bfs() {
+        vector<int> d(n, INF);
+        d[s] = 0;
+        deque<int> dq;
+        dq.push_front(s);
+        while (!dq.empty()) {
+            int v = dq.front();
+            dq.pop_front();
+            for (auto edge : adj[v]) {
+                int u = edge.first;
+                int w = edge.second;
+                if (d[v] + w < d[u]) {
+                    d[u] = d[v] + w;
+                    if (w == 1) // larger weights on the back
+                        dq.push_back(u);
+                    else
+                        dq.push_front(u);
+                }
+            }
+        }
+    }
+}
+
 int main() {
 
     //freopen("in", "r", stdin);
