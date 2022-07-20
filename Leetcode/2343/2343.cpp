@@ -8,6 +8,7 @@ public:
         for (int i = 0; i < m; ++i) {
             unmap[queries[i][1]].clear();
         }
+
         vector<int> vec(n);
         iota(vec.begin(),vec.end(),0);
         int outer_k;
