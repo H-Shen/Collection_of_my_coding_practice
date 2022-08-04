@@ -1339,7 +1339,7 @@ T & doubleMin(const T &l, const T &r) {
 }
 template<typename T = double, typename ... Args>
 inline const static
-T & doubleMin(const T &l, const Args &... args) {
+T & doubleMin(const T& l, const Args& ... args) {
     return doubleMin(l, doubleMin(args ...));
 }
 
@@ -1511,7 +1511,7 @@ namespace Toposort_Kahn {
         }
         return (static_cast<int>(result.size()) == number_of_nodes);
     }
-    // Kahn's algo if G is an undirected graph
+    // Kahn's algo if G is an undirected graph (also can be used to find nodes in the cycle)
     bool kahn2() {
         queue<int> q;
         vector<bool> vis(number_of_nodes+1);
@@ -3758,7 +3758,7 @@ namespace MCMF {
 // 4. 跑mcmf 最小费用即为原最大匹配数
 
 
-// How to check if and only if an edge E is on the shortest 
+// How to check if and only if an edge E is on the shortest 求边是否在u到v的最短路上
 // path from u to v in an undirected graph:
 //
 // 1. Get dis1.at(i) = the shortest path from u to i by Dij (or the shortest path from i to u by Dij )
@@ -4232,7 +4232,7 @@ struct PushRelabel {
     bool leftOfMinCut(int a) { return H[a] >= (int) g.size(); }
 };
 
-// Rolling hash
+// Rolling hash 滚动哈希
 namespace RH {
     constexpr ll MOD = 1e9+7;
     constexpr ll P = 31;
@@ -4246,7 +4246,6 @@ namespace RH {
         b = (b % m + m) % m;
         return ((a * b - (ll) ((long double) a / m * b) * m) % m + m) % m;
     }
-
     ll powmod(ll a, ll b, ll m) {
         if (m == 1) return 0;
         ll r;
@@ -4284,7 +4283,7 @@ namespace RH {
 constexpr int LETTERS = 26;
 struct Node {
     Node* children[LETTERS];
-    bool isEnd; // 表示是否存在以该节点作为结尾的单词
+    bool isEnd; // 表示是否存在以该节点作为结尾的单词 或者用个counter表示树中该单词出现的次数
     Node() {
         for (int i = 0; i < LETTERS; ++i) {
             children[i] = nullptr;
@@ -4337,7 +4336,7 @@ struct Trie {
 
 // 01 bfs (bfs with only two different weights)
 namespace ZeroOneBFS {
-    void bfs() {
+    void bfs(int n, int s, const vector<pair<int,int>>& edges) {
         vector<int> d(n, INF);
         d[s] = 0;
         deque<int> dq;
@@ -4345,7 +4344,7 @@ namespace ZeroOneBFS {
         while (!dq.empty()) {
             int v = dq.front();
             dq.pop_front();
-            for (auto edge : adj[v]) {
+            for (auto& edge : adj[v]) {
                 int u = edge.first;
                 int w = edge.second;
                 if (d[v] + w < d[u]) {
