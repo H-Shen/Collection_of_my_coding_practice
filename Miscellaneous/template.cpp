@@ -3271,19 +3271,13 @@ struct BIT_2D {
     BIT_2D(int n, int m) : N(n), M(m) {
         t.resize(N+1, vector<T>(M+1));
     }
-    // add 'val'
+    // add 'val' to t[x][y]
     void upd(int x, int y, T val) {
         for (int i = x; i <= N; i += lowbit(i)) {
             for (int j = y; j <= M; j += lowbit(j)) {
                 t[i][j] += val;
             }
         }
-    }
-    void rupd(int x1, int y1, int x2, int y2, T val) {
-        upd(x1, y1, val);
-        upd(x1, y2+1, -val);
-        upd(x2, y1+1, -val);
-        upd(x2+1, y2+1, val);
     }
     // rangesum from [1][1] to [x][y]
     T sum(int x, int y) {

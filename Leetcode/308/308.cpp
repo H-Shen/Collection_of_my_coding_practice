@@ -7,12 +7,10 @@ struct BIT_2D {
         return i & (-i);
     }
     int N, M;
-    // index starts from 1
     BIT_2D() = default;
     BIT_2D(int n, int m) : N(n), M(m) {
         t.resize(N+1, vector<T>(M+1));
     }
-    // add 'val'
     void upd(int x, int y, T val) {
         for (int i = x; i <= N; i += lowbit(i)) {
             for (int j = y; j <= M; j += lowbit(j)) {
@@ -20,13 +18,6 @@ struct BIT_2D {
             }
         }
     }
-    void rupd(int x1, int y1, int x2, int y2, T val) {
-        upd(x1, y1, val);
-        upd(x1, y2+1, -val);
-        upd(x2, y1+1, -val);
-        upd(x2+1, y2+1, val);
-    }
-    // rangesum from [1][1] to [x][y]
     T sum(int x, int y) {
         T ans(0);
         for (int i = x; i > 0; i -= lowbit(i)) {
