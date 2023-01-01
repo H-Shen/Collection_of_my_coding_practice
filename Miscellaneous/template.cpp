@@ -1957,7 +1957,7 @@ struct SparseTable {
             cin >> spt.at(i).at(0);
         }
     }
-    // 也可以求区间和 区间或 区间gcd 区间最小 
+    // 也可以求区间和 区间或 区间gcd/lcm 区间最小 
     // 只需修改spt.at(i).at(j - 1)和spt.at(i + (1 << (j - 1))).at(j - 1)的二元运算符即可
     void init() {
         for (int j = 1; j <= logn; ++j) {
