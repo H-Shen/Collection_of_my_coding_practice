@@ -4353,6 +4353,37 @@ namespace ZeroOneBFS {
     }
 }
 
+namespace ZeroOneKnapSack {
+    constexpr int N = 500;
+    constexpr int W_SUM = 1200;
+    // 0-1 knapsack
+    int memo[N+5][W_SUM+5];
+    int W[N+5];
+    int V[N+5];
+    // dp(i, j) = Max value we can have under the current weight restrictions
+    // consider all items from 0 to i-1
+    int dp(int index, int remaining_weight) {
+        if (index == N) {
+            return 0;
+        }
+        else if (remaining_weight == 0) {
+            return 0;
+        }
+        else if (memo[index][remaining_weight] != -1) {
+            return memo[index][remaining_weight];
+        }
+        int result = -1;
+        if (W[index] > remaining_weight) {
+            result = dp(index + 1, remaining_weight);   // skip
+            memo[index][remaining_weight] = result;
+            return result;
+        }
+        result = max(dp(index + 1, remaining_weight), V[index] + dp(index + 1, remaining_weight - W[index])); // compare 'take it' and 'skip'
+        memo[index][remaining_weight] = result;
+        return result;
+    }
+}
+
 int main() {
 
     //freopen("in", "r", stdin);
