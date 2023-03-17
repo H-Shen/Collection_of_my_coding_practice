@@ -4391,3 +4391,5 @@ int main() {
 
     return 0;
 }
+
+// For unweight graphs, use BFS+vis array to find the shortest path between two nodes, dont use DFS+vis array which only works on weight graphs
