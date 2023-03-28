@@ -1,6 +1,6 @@
 // https://loj.ac/problem/6284
 //
-// Calculate how many different elements in a range and calculate the occurrence of a value in a range 
+// Calculate how many elements in a range equal to a value 'c' and calculate the occurrence of 'c' in a range 
 //
 #include <bits/stdc++.h>
 
