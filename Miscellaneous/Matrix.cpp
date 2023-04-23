@@ -112,7 +112,7 @@ std::string matrixToString(const std::vector<std::vector<T> > &C) {
 template<typename T>
 inline static
 std::vector<std::vector<T> >
-matrixMulMod(const std::vector<std::vector<T> > &A,
+matrixMul(const std::vector<std::vector<T> > &A,
           const std::vector<std::vector<T> > &B, const T &mod) {
 
     // Case 1:
