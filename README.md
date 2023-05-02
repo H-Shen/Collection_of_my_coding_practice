@@ -12,25 +12,24 @@ The collection of my coding practice, will be updated inconsistently.
 * Unless otherwise stated, the coding environment of my laptop is:
 
   * ***For Python***
-     * Python 2.7.16 (.py)
-     * Python 3.8.11 (.py3)
+     * Python 2 (.py)
+     * Python 3 (.py3)
 
   * ***For Java***
-    * javac 1.8.0_191
+    * javac >= 1.8.0
 
   * ***For C/Cpp***
-    * g++-11 (Homebrew GCC 11.2.0) 11.2.0 (-std=c++17 -Wall -O2)
-    * gcc-11 (Homebrew GCC 11.2.0) 11.2.0 (-std=c11 -Wall -O2)
-      * cmake version 3.21.1
+    * C11
+    * C++17
 
   * ***For SQL***
-    * sqlite 3.36.0
-    * mysql  Ver 8.0.26 for macos11.3 on x86_64 (Homebrew)
+    * sqlite 3
+    * mysql 8
 
   * ***For Javascript***
     * v14.10.0
   * ***For Golang***
-    * go version go1.16.5 darwin/amd64
+    * go1.19
   * ***For Shell***
     * GNU bash, version 3.2.57(1)-release (x86_64-apple-darwin20)
   * ***For Haskell***
