@@ -1,27 +1,11 @@
 class Solution {
 public:
-    int maximumNumberOfStringPairs(vector<string>& words) {
-        int ans = 0;
-        string s, sRev;
-        int length;
-        int pos;
-        while (!words.empty()) {
-            s = words.front();
-            sRev = s;
-            reverse(sRev.begin(),sRev.end());
-            length = (int)words.size();
-            pos = -1;
-            for (int i = 1; i < length; ++i) {
-                if (words[i] == sRev) {
-                    pos = i;
-                    break;
-                }
-            }
-            if (pos != -1) {
-                words.erase(words.begin() + pos);
-                ++ans;
-            }
-            words.erase(words.begin());
+    int findValueOfPartition(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int ans = numeric_limits<int>::max();
+        int n = (int)nums.size();
+        for (int i = 0; i < n-1; ++i) {
+            ans = min(ans, abs(nums[i] - nums[i+1]));
         }
         return ans;
     }
