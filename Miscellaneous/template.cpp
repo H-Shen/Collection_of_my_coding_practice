@@ -3348,6 +3348,7 @@ int main() {
     SegmentTree st(p);
     // Range-update from p[1] to p[3] to 120
     st.update(1, 0, st.n - 1, 1, 3, 120);
+    // 注意 当区间赋值为0时有问题 用其他值代替0
     // Query the minimal value from p[0] to p[4]
     cout << st.query(1, 0, st.n - 1, 0, 4) << '\n';
     return 0;
