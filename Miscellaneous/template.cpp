@@ -10,8 +10,8 @@ using namespace __gnu_cxx;
 using ll = long long;
 using ld = long double;
 using ull = unsigned long long;
-using pii = pair<int, int>;
-using pll = pair<ll, ll>;
+using ii = pair<int, int>;
+using vii = vector<pair<int,int>>;
 
 #ifdef __SIZEOF_INT128__
 using int128 = __int128_t;
