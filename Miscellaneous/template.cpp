@@ -7,6 +7,8 @@
 using namespace std;
 using namespace __gnu_pbds;
 using namespace __gnu_cxx;
+
+// alias
 using ll = long long;
 using ld = long double;
 using ull = unsigned long long;
@@ -3784,6 +3786,7 @@ int rev_g(int g) {
 
 // Kruskal重构树
 // https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths-ii/
+// https://codeforces.com/blog/entry/85714
 namespace KruskalReconstructionTree {
     vector<vector<int>> AL; // 重构树
     vector<int> weight; // 重构树点权
