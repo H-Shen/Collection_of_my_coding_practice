@@ -1,119 +1,154 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <array>
+#include <iostream>
+#include <iterator>
+#include <random>
+#include <sstream>
+#include <string>
+#include <string_view>
+#include <vector>
 
-/**
- * Split a string by using single character as the delimiter.
- * @return a vector of strings after splitting.
- */
-inline static
-std::vector<std::string> splitByChar(std::string s, const char &delim) {
-    std::vector<std::string> res;
-    std::istringstream f(s);
-    while (getline(f, s, delim)) {
-        res.emplace_back(s);
-    }
-    return res;
-}
+// A small utility namespace for string splitting, joining, and random string generation
+namespace Util {
 
-inline static
-std::vector<std::string> splitByString(std::string s, const std::string &delim) {
+// ——— Splitting ——————————————————————————————————————————————————————
 
+// Split a string_view by a single character delimiter.
+// Returns a vector of std::string (each substring owns its data).
+inline std::vector<std::string> split(std::string_view s, char delim) {
     std::vector<std::string> result;
-    if (delim.empty()) {
-        result.emplace_back(s);
-        return result;
-    }
-
-    size_t pos{0};
-    std::string token;
-    while ((pos = s.find(delim)) != std::string::npos) {
-        token = s.substr(0, pos);
-        if (!token.empty()) {
-            result.emplace_back(token);
-        }
-        s.erase(0, pos + delim.length());
-    }
-    if (!s.empty()) {
-        result.emplace_back(s);
+    size_t start = 0;
+    while (true) {
+        auto pos = s.find(delim, start);
+        // Extract substring [start, pos)
+        result.emplace_back(s.substr(start, pos - start));
+        if (pos == std::string_view::npos)
+            break;  // no more delimiters
+        start = pos + 1;
     }
     return result;
 }
 
-/**
- * Split a string by whitespaces with unknown length.
- */
-inline static
-std::vector<std::string> splitByWhitespaces(const std::string &s) {
-    std::istringstream iss(s);
-    return std::vector<std::string>{std::istream_iterator<std::string>(iss),
-                                    std::istream_iterator<std::string>()};
-}
-
-constexpr static size_t MIN_STRING_LEN = 50;
-constexpr static size_t MAX_STRING_LEN = 100;
-const static std::vector<char> charSet = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
-                                          'f',
-                                          'g', 'h',
-                                          'i',
-                                          'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
-                                          'y',
-                                          'z'};
-static std::random_device dev;
-static std::mt19937 random_generator(dev());
-static std::uniform_int_distribution<size_t> range(0, charSet.size() - 1);
-static std::uniform_int_distribution<size_t> length(MIN_STRING_LEN, MAX_STRING_LEN);
-
-inline static
-char getRandomAlnum() {
-    return charSet.at(range(random_generator));
-}
-
-inline static
-std::string generateRandomString() {
-    size_t strLength = length(random_generator);
-    std::string s;
-    for (size_t i = 0; i != strLength; ++i) {
-        s.push_back(getRandomAlnum());
+// Split a string_view by a string delimiter.
+// Skips empty tokens except when delim is empty.
+inline std::vector<std::string> split(std::string_view s, std::string_view delim) {
+    std::vector<std::string> result;
+    if (delim.empty()) {
+        // Edge case: no delimiter specified
+        result.emplace_back(s);
+        return result;
     }
-    return s;
-}
-
-inline static
-std::string generateRandomString(size_t strlength) {
-    std::string s;
-    for (size_t i = 0; i != strlength; ++i) {
-        s.push_back(getRandomAlnum());
-    }
-    return s;
-}
-
-inline static
-std::string toString(const std::vector<std::string> &A) {
-    std::string res;
-    bool firstItem = true;
-    for (const std::string &i : A) {
-        if (firstItem) {
-            firstItem = false;
-        } else {
-            res.append(" ");
+    size_t start = 0;
+    while (true) {
+        auto pos = s.find(delim, start);
+        if (pos == std::string_view::npos) {
+            // Last token after final delimiter
+            result.emplace_back(s.substr(start));
+            break;
         }
-        res.append(i);
+        if (pos > start) {
+            // Non-empty token before delimiter
+            result.emplace_back(s.substr(start, pos - start));
+        }
+        start = pos + delim.size();
     }
-    return res;
+    return result;
 }
 
+// Split a string_view on any whitespace sequence.
+// Uses an istringstream to handle varying amounts of spaces/tabs/newlines.
+inline std::vector<std::string> splitWhitespace(std::string_view s) {
+    // We need a std::string for istringstream, so copy the view into a string
+    std::istringstream iss{std::string{s}};
+    return { std::istream_iterator<std::string>(iss),
+             std::istream_iterator<std::string>() };
+}
+
+// ——— Joining ——————————————————————————————————————————————————————
+
+// Join a vector of strings using 'sep' between elements.
+// Precomputes total length for a single allocation.
+inline std::string join(
+    const std::vector<std::string>& parts,
+    std::string_view sep = " ")
+{
+    if (parts.empty()) return {};
+    // Calculate total characters needed
+    size_t total = (parts.size() - 1) * sep.size();
+    for (auto const& p : parts) total += p.size();
+
+    std::string out;
+    out.reserve(total);
+    auto it = parts.begin();
+    out += *it++;  // first element
+    for (; it != parts.end(); ++it) {
+        out += sep; // separator
+        out += *it; // next element
+    }
+    return out;
+}
+
+// ——— Random string generation —————————————————————————————————————
+
+// Min/max lengths for the default random-string generator
+constexpr size_t MIN_STRING_LEN = 50;
+constexpr size_t MAX_STRING_LEN = 100;
+
+// A compile-time char set of digits + lowercase letters
+constexpr std::array<char, 36> CHARSET = [] {
+    std::array<char, 36> arr{};
+    std::string_view chars{"0123456789abcdefghijklmnopqrstuvwxyz"};
+    std::copy_n(chars.begin(), arr.size(), arr.begin());
+    return arr;
+}();
+
+// Returns a reference to a single RNG instance (thread-unsafe / single-threaded context)
+inline std::mt19937& rng() {
+    static std::random_device rd;
+    static std::mt19937 gen{rd()};
+    return gen;
+}
+
+// Pick one random alphanumeric character from CHARSET
+inline char getRandomAlnum() {
+    std::uniform_int_distribution<size_t> dist(0, CHARSET.size() - 1);
+    return CHARSET[dist(rng())];
+}
+
+// Generate a random string of specified length
+inline std::string generateRandomString(size_t length) {
+    std::string s;
+    s.reserve(length);  // avoid reallocations
+    for (size_t i = 0; i < length; ++i) {
+        s.push_back(getRandomAlnum());
+    }
+    return s;
+}
+
+// Generate a random string with length in [MIN_STRING_LEN, MAX_STRING_LEN]
+inline std::string generateRandomString() {
+    std::uniform_int_distribution<size_t> dist(MIN_STRING_LEN, MAX_STRING_LEN);
+    return generateRandomString(dist(rng()));
+}
+
+} // namespace Util
+
+// ——— Main driver demonstrating usage —————————————————————————————————
 int main() {
-
-    // splitByWhitespaces
-    int testNumber = 10;
-    for (int i = 0; i < testNumber; ++i) {
-        std::string tempString;
-        for (int gap = 0; gap < testNumber; ++gap) {
-            tempString.append(generateRandomString(5));
-            tempString.append("\t   ");
+    constexpr int testCount = 10;
+    for (int i = 0; i < testCount; ++i) {
+        // Build a random line with 5-char tokens separated by tabs
+        std::string temp;
+        for (int j = 0; j < testCount; ++j) {
+            temp += Util::generateRandomString(5);
+            temp += '\t';
         }
-        std::cout << tempString << std::endl;
-        std::cout << toString(splitByWhitespaces(tempString)) << std::endl;
-    }
+        // Print the raw line
+        std::cout << temp << '\n';
 
+        // Split on whitespace (tabs/spaces), then re-join with single spaces
+        auto tokens = Util::splitWhitespace(temp);
+        std::cout << Util::join(tokens) << "\n\n";
+    }
     return 0;
 }
