@@ -1,139 +1,67 @@
-// Get the longest palindrome substring's first instance. (Manacher Algorithm)
-// In Cpp17, std::string_view will be used for using substring to reduce space and time complexity.
+// Finds the first longest palindromic substring in O(n) using Manacher's algorithm.
+// C++20 version, leveraging std::string_view for zero-copy slicing.
 
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <string_view>
+#include <vector>
 
-// #define USE_STRING_VIEW
+namespace Util {
 
-#ifdef USE_STRING_VIEW
-
-inline static
-std::string preProcess(const std::string_view &s) {
-    if (s.empty()) {
-        return "^$";
-    }
-    std::string ret{"^"};
-    for (size_t i = 0; i != s.length(); i++) {
-        ret.push_back('#');
-        ret.append(s.substr(i, 1));
-    }
-    ret.append("#$");
-    return ret;
-}
-
-inline static
-std::string_view longestPalindrome(const std::string_view &s) {
-
-    std::string T{preProcess(s)};
-    auto P {std::make_unique<int[]>(T.length())};
-    int n {static_cast<int>(T.length())};
-    int C{0};
-    int R{0};
-
-    for (int i = 1; i < n - 1; i++) {
-        int i_mirror = 2 * C - i; // equals to i' = C - (i-C)
-
-        if (R > i) {
-            P[i] = std::min(R - i, P[i_mirror]);
-        } else {
-            P[i] = 0;
+    // Preprocess input by inserting sentinels and separators to handle even-length palindromes uniformly.
+    inline std::string preprocess(std::string_view s) {
+        if (s.empty()) return "^$";
+        std::string t;
+        t.reserve(s.size() * 2 + 3);
+        t.push_back('^');
+        for (char c : s) {
+            t.push_back('#');
+            t.push_back(c);
         }
-
-        // Attempt to expand palindrome centered at i
-        while ( T[i + 1 + P[i]] == T[i - 1 - P[i]] ) {
-            ++P[i];
-        }
-        // If palindrome centered at i expand past R,
-        // adjust center based on expanded palindrome.
-        if (i + P[i] > R) {
-            C = i;
-            R = i + P[i];
-        }
+        t += "#$";
+        return t;
     }
 
-    // Find the maximum element in P.
-    int maxLength{0};
-    int indexOfCenter{0};
-    for (int i = 1; i < n - 1; i++) {
-        if (P[i] > maxLength) {
-            maxLength = P[i];
-            indexOfCenter = i;
-        }
-    }
+    // Manacher's algorithm: returns a string_view into the original s.
+    inline std::string_view longest_palindrome(std::string_view s) {
+        auto t = preprocess(s);
+        int n = static_cast<int>(t.size());
+        std::vector<int> p(n);
+        int center = 0, right = 0;
 
-    // maxLength: the length of the longest palindrome substring
-    return s.substr((indexOfCenter - 1 - maxLength) / 2, maxLength);
-}
+        for (int i = 1; i < n - 1; ++i) {
+            int mirror = 2 * center - i;
+            if (i < right) {
+                p[i] = std::min(right - i, p[mirror]);
+            }
+            // Expand around i
+            while (t[i + 1 + p[i]] == t[i - 1 - p[i]]) ++p[i];
 
-#endif
-
-#ifndef USE_STRING_VIEW
-
-inline static
-std::string preProcess(const std::string &s) {
-    if (s.empty()) {
-        return "^$";
-    }
-    std::string ret{"^"};
-    for (size_t i = 0; i != s.length(); i++) {
-        ret.push_back('#');
-        ret.append(s.substr(i, 1));
-    }
-    ret.append("#$");
-    return ret;
-}
-
-inline static
-std::string longestPalindrome(const std::string &s) {
-
-    std::string T{preProcess(s)};
-    auto P{std::make_unique<int[]>(T.length())};
-    int n{static_cast<int>(T.length())};
-    int C{0};
-    int R{0};
-
-    for (int i = 1; i < n - 1; i++) {
-        int i_mirror = 2 * C - i; // equals to i' = C - (i-C)
-
-        if (R > i) {
-            P[i] = std::min(R - i, P[i_mirror]);
-        } else {
-            P[i] = 0;
+            // Update center and right boundary
+            if (i + p[i] > right) {
+                center = i;
+                right = i + p[i];
+            }
         }
 
-        // Attempt to expand palindrome centered at i
-        while (T[i + 1 + P[i]] == T[i - 1 - P[i]]) {
-            ++P[i];
-        }
-        // If palindrome centered at i expand past R,
-        // adjust center based on expanded palindrome.
-        if (i + P[i] > R) {
-            C = i;
-            R = i + P[i];
-        }
+        // Find iterator to maximum palindrome radius in range [1, n-1)
+        auto it = std::ranges::max_element(p.begin() + 1, p.begin() + n - 1);
+        int max_center = static_cast<int>(std::distance(p.begin(), it));
+        int max_len = *it;
+
+        // Calculate start index in original string
+        int start = (max_center - 1 - max_len) / 2;
+        return s.substr(start, max_len);
     }
 
-    // Find the maximum element in P.
-    int maxLength{0};
-    int indexOfCenter{0};
-    for (int i = 1; i < n - 1; i++) {
-        if (P[i] > maxLength) {
-            maxLength = P[i];
-            indexOfCenter = i;
-        }
-    }
-
-    // maxLength: the length of the longest palindrome substring
-    return s.substr((indexOfCenter - 1 - maxLength) / 2, maxLength);
-}
-
-#endif
+} // namespace util
 
 int main() {
+    std::string input;
+    std::getline(std::cin, input);
 
-    std::string s;
-    std::getline(std::cin, s);
-    std::cout << longestPalindrome(s).size() << std::endl;
-
+    auto result = Util::longest_palindrome(input);
+    std::cout << result << '\n';
     return 0;
 }
