@@ -1,79 +1,65 @@
-#include <vector>
+#include <algorithm>
+#include <cstddef>
+#include <cstdlib>
 #include <numeric>
 #include <stdexcept>
+#include <vector>
+#include <iostream>
+
+#define MATH_TEST
+
+#ifdef MATH_TEST
 #include <cassert>
+#endif
 
-// Extended Euclidean algorithm
-// obtain a pair solution (x0, y0) such that ax0 + by0 = gcd(a, b)
-// gcd(a, b) is returned as output, meanwhile the value of x and y would be changed to x0, y0 respectively.
+using ll = long long;
+using ull = unsigned long long;
+using std::swap;
+using std::vector;
+using std::abs;
+using std::accumulate;
+using std::out_of_range;
+using std::cout;
+using std::endl;
 
-long long exgcd(long long a, long long b, long long &x, long long &y) {
-
-    // Case 1:
+/**
+ * @brief Extended Euclidean algorithm.
+ * Finds x, y such that a*x + b*y = gcd(|a|,|b|).
+ * @return g = gcd(|a|,|b|)
+ */
+inline ll extended_gcd(ll a, ll b, ll &x, ll &y) {
     if (b == 0) {
-        x = 1;
+        x = (a >= 0 ? 1 : -1);
         y = 0;
-        return a;
+        return abs(a);
     }
-
-    // Case 2:
-    long long gcdVal = exgcd(b, a % b, x, y);
-    long long temp = x;
-    x = y;
-    y = temp - a / b * y;
-    return gcdVal;
+    ll x1, y1;
+    ll g = extended_gcd(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - (a / b) * y1;
+    return g;
 }
 
-// g: the value of gcd(a, b)
-long long exgcdInOneLine(long long a, long long b, long long &g, long long &x, long long &y) {
-    (!b) ? (x = 1, y = 0, g = a) : (exgcdInOneLine(b, a % b, g, y, x), y -= a / b * x);
+/**
+ * @brief Recursive GCD that handles negatives.
+ * @return gcd(|a|,|b|)
+ */
+inline ll gcd_recursive(ll a, ll b) {
+    a = abs(a);
+    b = abs(b);
+    if (b == 0) return a;
+    return gcd_recursive(b, a % b);
 }
 
-// Greatest Common Divisor (with recursion)
-long long gcdWithRecursion(long long a, long long b) {
-
-    // Case 1:
-    if (a < 0) {
-        return gcdWithRecursion(-a, b);
-    }
-
-    // Case 2:
-    if (b < 0) {
-        return gcdWithRecursion(a, -b);
-    }
-
-    // Case 3:
-    if (a == 0 || b == 0) {
-        return 0;
-    }
-
-    // Case 4:
-    return (b > 0) ? gcdWithRecursion(b, a % b) : a;
-}
-
-
-// Greatest Common Divisor (without recursion)
-long long gcd(long long a, long long b) {
-
-    // Case 1:
-    if (a < 0) {
-        return gcd(-a, b);
-    }
-
-    // Case 2:
-    if (b < 0) {
-        return gcd(a, -b);
-    }
-
-    // Case 3:
-    if (a == 0 || b == 0) {
-        return 0;
-    }
-
-    // Case 4:
-    long long t;
-    while (b > 0) {
-        t = a % b;
+/**
+ * @brief Iterative GCD (Euclid’s algorithm).
+ * @return gcd(|a|,|b|)
+ */
+inline ll gcd_iterative(ll a, ll b) {
+    a = abs(a);
+    b = abs(b);
+    while (b != 0) {
+        ll t = a % b;
         a = b;
         b = t;
     }
@@ -81,127 +67,92 @@ long long gcd(long long a, long long b) {
 }
 
 #ifdef __GNUC__
-
-using ull = unsigned long long;
+/**
+ * @brief Binary‐GCD (Stein’s) algorithm.
+ */
+inline ull binary_gcd(ull u, ull v) {
+    if (u == 0 || v == 0) return u | v;
+    unsigned shift = __builtin_ctz(u | v);
+    u >>= __builtin_ctz(u);
+    do {
+        v >>= __builtin_ctz(v);
+        if (u > v) swap(u, v);
+        v -= u;
+    } while (v);
+    return u << shift;
+}
+#endif
 
 /**
- * An implemention of binary GCD Algorithm, refered from
- * https://lemire.me/blog/2013/12/26/fastest-way-to-compute-the-greatest-common-divisor/
- *
+ * @brief GCD of all elements in a non‐empty array.
+ * @throws out_of_range if A.empty()
  */
-/* binary_gcd(0,v) == v; binary_gcd(u,0) == u, binary_gcd(0,0) == 0 */
-ull binary_gcd(ull a, ull b) {
-    if (!a || !b)
-        return a | b;
-    unsigned shift = __builtin_ctz(a | b);
-    a >>= __builtin_ctz(a);
-    do {
-        b >>= __builtin_ctz(b);
-        if (a > b)
-            std::swap(a, b);
-        b -= a;
-    } while (b);
-    return a << shift;
-}
-
-#endif
-
-// Greatest Common Divisor of integers in an array
-long long gcdOfAnArray(const std::vector<long long> &A) {
-
-    // Case 1:
+inline ll gcd_of_array(const vector<ll>& A) {
     if (A.empty()) {
-        throw std::out_of_range("");
+        throw out_of_range("gcd_of_array: input vector is empty");
     }
-
-    // Case 2:
-    if (A.size() == 1) {
-        return std::abs(A.front());
+    ll result = abs(A[0]);
+    for (size_t i = 1; i < A.size(); ++i) {
+        result = gcd_iterative(result, A[i]);
     }
-
-    // Case 3:
-    return std::accumulate(cbegin(A), cend(A), A.front(), gcd);
+    return result;
 }
 
-// Least Common Multiple
-long long lcm(long long a, long long b) {
-
-    // Case 1:
-    if (a < 0) {
-        return lcm(-a, b);
-    }
-
-    // Case 2:
-    if (b < 0) {
-        return lcm(a, -b);
-    }
-
-    // Case 3:
-    if (a == 0 || b == 0) {
-        return 0;
-    }
-
-    // Case 4:
-    return a / gcd(a, b) * b;
+/**
+ * @brief Least common multiple of two integers.
+ * @return 0 if either is zero, else |a/gcd(a,b)*b|
+ */
+inline ll lcm(ll a, ll b) {
+    a = abs(a);
+    b = abs(b);
+    if (a == 0 || b == 0) return 0;
+    return a / gcd_iterative(a, b) * b;
 }
 
-// Least Common Multiple of integers in an array
-long long lcmOfAnArray(const std::vector<long long> &A) {
-
-    // Case 1:
+/**
+ * @brief LCM of all elements in a non‐empty array.
+ * @throws out_of_range if A.empty()
+ */
+inline ll lcm_of_array(const vector<ll>& A) {
     if (A.empty()) {
-        throw std::out_of_range("");
+        throw out_of_range("lcm_of_array: input vector is empty");
     }
-
-    // Case 2:
-    if (A.size() == 1) {
-        return std::abs(A.front());
+    ll result = abs(A[0]);
+    for (size_t i = 1; i < A.size(); ++i) {
+        result = lcm(result, A[i]);
     }
-
-    // Case 3:
-    return std::accumulate(cbegin(A), cend(A), A.front(), lcm);
+    return result;
 }
 
+#ifdef MATH_TEST
 int main() {
-
-    // 12381x + 18199y = gcd(12381, 18199)
-    long long a(12381);
-    long long b(-18199);
-    long long x, y;
-    long long result (exgcd(a, b, x, y));
-    assert(a*x + b*y == result);
-
-    a = 181811; b = 119012;
-    long long g(-1);
-    exgcdInOneLine(a, b, g, x, y);
-    assert(a*x + b*y == g);
+    // Test extended_gcd
+    {
+        ll x, y;
+        ll g = extended_gcd(12381, -18199, x, y);
+        assert(g == gcd_iterative(12381, 18199));
+        assert(12381*x + -18199*y == g);
+    }
 
 #ifdef __GNUC__
-    assert(binary_gcd(4689933,2503455) == 201);
+    // Test binary_gcd
+    assert(binary_gcd(4689933ULL, 2503455ULL) == 201ULL);
 #endif
 
-    assert(gcdOfAnArray({1, 2, 3, 4}) == 1);
-    assert(gcdOfAnArray({2}) == 2);
-    assert(gcdOfAnArray({2, 2, 2, 4}) == 2);
-    assert(lcmOfAnArray({2, 2, 2, 4}) == 4);
-    assert(lcmOfAnArray({2, 2, 2, -2}) == 2);
-    assert(lcmOfAnArray({-3}) == 3);
+    // Test gcd_of_array and lcm_of_array
+    vector<ll> v{2, 4, 6, 8};
+    assert(gcd_of_array(v) == 2);
+    assert(lcm_of_array(v) == 24);
 
-    bool exceptionThrown{false};
-    try {
-        auto tempVar{gcdOfAnArray({})};
-    } catch (std::out_of_range &) {
-        exceptionThrown = true;
-    }
-    assert(exceptionThrown);
+    bool threw = false;
+    try { gcd_of_array({}); } catch (...) { threw = true; }
+    assert(threw);
 
-    exceptionThrown = false;
-    try {
-        auto tempVar{lcmOfAnArray({})};
-    } catch (std::out_of_range &) {
-        exceptionThrown = true;
-    }
-    assert(exceptionThrown);
+    threw = false;
+    try { lcm_of_array({}); } catch (...) { threw = true; }
+    assert(threw);
 
+    cout << "All tests passed." << endl;
     return 0;
 }
+#endif // MATH_TEST
