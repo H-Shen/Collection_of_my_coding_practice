@@ -4443,6 +4443,67 @@ void kmp_usage() {
     printf("\n");
 }
 
+// Manacher’s algorithm: 在 O(n) 时间内找到第一个最长回文子串。
+// 输入为 string_view，返回同一字符串上的 string_view（零拷贝）。
+string_view manacher(string_view s) {
+    // 在原始串两端和字符间插入分隔符，方便统一处理奇偶回文
+    auto preprocess = [](string_view str) {
+        if (str.empty()) return string("^$");
+        string t;
+        t.reserve(str.size() * 2 + 3);
+        t.push_back('^');
+        for (char c : str) {
+            t.push_back('#');
+            t.push_back(c);
+        }
+        t += "#$";
+        return t;
+    };
+
+    std::string t = preprocess(s);
+    int n = int(t.size());
+    vector<int> p(n);     // p[i] = 以 i 为中心的回文半径
+    int center = 0, right = 0; // 当前回文中心及其右边界
+
+    // 构造回文半径数组
+    for (int i = 1; i < n - 1; ++i) {
+        int mirror = 2 * center - i;
+        if (i < right) {
+            p[i] = std::min(right - i, p[mirror]);
+        }
+        // 向两边扩展
+        while (t[i + 1 + p[i]] == t[i - 1 - p[i]]) {
+            ++p[i];
+        }
+        // 更新 center 和 right
+        if (i + p[i] > right) {
+            center = i;
+            right = i + p[i];
+        }
+    }
+
+    // 找到最大回文长度及其中心
+    int max_center = 1;
+    int max_len = p[1];
+    for (int i = 2; i < n - 1; ++i) {
+        if (p[i] > max_len) {
+            max_len = p[i];
+            max_center = i;
+        }
+    }
+
+    // 计算原始字符串中的起始位置
+    int start = (max_center - 1 - max_len) / 2;
+    return s.substr(start, max_len);
+}
+
+void manacher_usage() {
+    string input;
+    getline(std::cin, input);
+    string_view result = manacher(input);
+    cout << result << '\n';
+}
+
 int main() {
 
     //freopen("in", "r", stdin);
