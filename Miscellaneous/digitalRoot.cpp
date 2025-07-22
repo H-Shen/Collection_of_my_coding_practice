@@ -1,5 +1,10 @@
 #include <bits/stdc++.h>
 
+//def getDigitalRoot(n):
+//    if n < 0:
+//        return getDigitalRoot(-n)
+//    return 1 + (n - 1) % 9
+    
 /**
  * Calculate the digital root of random integer.
  */
