@@ -1267,42 +1267,82 @@ struct myHashFunc {
     }
 };
 
-// Use gp_hash_table + custom hash function to accelerate
-struct custom_hash {
-    static uint64_t splitmix64(uint64_t x) {
-        // http://xorshift.di.unimi.it/splitmix64.c
-        x += 0x9e3779b97f4a7c15;
-        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
-        x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
-        return x ^ (x >> 31);
-    }
-
-    size_t operator()(uint64_t x) const {
-        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
-        return splitmix64(x + FIXED_RANDOM);
-    }
-
-    // For a pair of integers
-    size_t operator()(pair<uint64_t, uint64_t> x) const {
-        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
-        return splitmix64(x.first + FIXED_RANDOM) ^
-               (splitmix64(x.second + FIXED_RANDOM) >> 1);
+// Custom Hash for std::pair/std::tuple/std::array
+// -------- mix & salt --------
+constexpr std::uint64_t splitmix64(std::uint64_t x) noexcept {
+    x += 0x9e3779b97f4a7c15ULL;
+    x  = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9ULL;
+    x  = (x ^ (x >> 27)) * 0x94d049bb133111ebULL;
+    return x ^ (x >> 31);
+}
+inline std::uint64_t global_salt() noexcept {
+    static const std::uint64_t s =
+            static_cast<std::uint64_t>(std::chrono::steady_clock::now().time_since_epoch().count());
+    return s;
+}
+// -------- tuple-like detection (simple) --------
+template<class T>
+concept tuple_like = requires {
+    std::tuple_size<std::remove_cvref_t<T>>::value;
+    std::get<0>(std::declval<T>());
+};
+// -------- combine --------
+template<class... Args>
+std::size_t hash_combine_all(const Args&... xs) noexcept {
+    std::uint64_t seed = global_salt();
+    ((seed = splitmix64(seed ^ static_cast<std::uint64_t>(
+            std::hash<std::remove_cvref_t<Args>>{}(xs)))), ...);
+    return static_cast<std::size_t>(seed);
+}
+// -------- generic hash --------
+template<class T>
+struct CustomHash {
+    std::size_t operator()(const T& v) const noexcept {
+        if constexpr (tuple_like<T>) {
+            return std::apply([](const auto&... e){ return hash_combine_all(e...); }, v);
+        } else {
+            return static_cast<std::size_t>(
+                    splitmix64(global_salt() ^
+                               static_cast<std::uint64_t>(std::hash<std::remove_cvref_t<T>>{}(v))));
+        }
     }
 };
+// -------- Usage --------
+void custom_hash_usage() {
+    
+    using Tup = std::tuple<int, int, std::string>;
+    using Arr = std::array<int, 3>;
+    using Pr = std::pair<int, std::string>;
 
-gp_hash_table<int, pair<int, int>, custom_hash> my_hash_table;
+    std::unordered_set<Tup, CustomHash<Tup>> st;
+    st.emplace(1, 2, "asd");
+    st.emplace(4, 5, "zxc");
 
-// Usage:
-// auto dp = MultiDimensionArray::Array<int>(5, 4, 12);
-// auto dp__ = MultiDimensionArray::Array<double>(4, 5, 1, 1.0);
-namespace MultiDimensionArray {
-    template<typename T, typename ... Args>
-    auto Array(size_t n, Args &&... args) {
-        if constexpr (1 == sizeof ... (args)) {
-            return vector<T>(n, args ...);
-        } else {
-            return vector(n, Array<T>(args...));
-        }
+    std::unordered_set<Arr, CustomHash<Arr>> sa;
+    sa.insert({1, 2, 3});
+    sa.insert({4, 5, 6});
+
+    std::unordered_set<Pr, CustomHash<Pr>> sp;
+    sp.emplace(7, "xx");
+    sp.emplace(8, "yy");
+
+    __gnu_pbds::gp_hash_table<int, std::pair<int, int>, CustomHash<int>> sp2;
+    sp2[0] = {1, 2};
+    sp2[1] = {2, 3};
+
+    for (const auto &[a, b, c]: st) {
+        std::cout << "tuple: " << a << ' ' << b << ' ' << c << '\n';
+    }
+    for (const auto &ar: sa) {
+        std::cout << "array: ";
+        for (auto x: ar) std::cout << x << ' ';
+        std::cout << '\n';
+    }
+    for (const auto &[x, s]: sp) {
+        std::cout << "pair : " << x << ' ' << s << '\n';
+    }
+    for (const auto &[k, v] : sp2) {
+        std::cout << k << ':' << v.first << ',' << v.second << '\n';
     }
 }
 
