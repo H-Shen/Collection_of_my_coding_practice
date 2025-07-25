@@ -1145,15 +1145,15 @@ namespace EulerPrimeSieve {
     const int MAXN = 1005;
     int prime[MAXN] = {0};
     int num_prime = 0;
-    bool isNotPrime[MAXN] = {true, true};
+    bool isNotPrime[MAXN] = {true, true};    // To store SPF(smallest prime factor), change it to int spf[MAXN] = {0, 0};
 
     // Generate the prime table from 1 to MAXN
     static void init() {
         for (int i = 2; i < MAXN; i++) {
-            if (!isNotPrime[i])
+            if (!isNotPrime[i])    // if (spf[i] == 0)
                 prime[num_prime++] = i;
-            for (int j = 0; j < num_prime && i * prime[j] < MAXN; j++) {
-                isNotPrime[i * prime[j]] = true;
+            for (int j = 0; j < num_prime && i * prime[j] < MAXN; j++) {    
+                isNotPrime[i * prime[j]] = true;    // spf[i * prime[j]] = prime[j]
                 if (!(i % prime[j]))
                     break;
             }
